@@ -50,29 +50,37 @@ def shell(cmd, *args, **kwargs):
   return out
 
 
-def mod_gitignore():
+def add_to_gitignore(string):
+  cyan('going to ensure that {} is in .gitignore...'.format(string))
   with open('.gitignore', 'r') as gitignore_f:
     for line in gitignore_f.readlines():
-      if line == '_site\n':
+      if line == string + '\n':
         cyan('_site is already in .gitignore!')
         return
 
   with open('.gitignore', 'a') as gitignore_f:
-    gitignore_f.write('_site\n')
+    gitignore_f.write(string + '\n')
   cyan('wrote _site to .gitignore')
 
 
 def main():
 
-  mod_gitignore()
+  # add _site to gitignore
+  add_to_gitignore('_site')
   shell('rm -rf _site/')
   shell('git clone git@github.com:bellsociety/bellsociety.com.git _site')
+
   # go to _site, which is an entirely different git checkout
   os.chdir('_site')
   puts('now in folder {}'.format(os.getcwd()))
   shell('git checkout gh-pages')
   time.sleep(1)
   shell('git branch -D master')
+
+  # run jekyll build for initial content
+  os.chdir('..')
+  puts('now in folder {}'.format(os.getcwd()))
+  shell('jekyll build')
 
 if __name__ == '__main__':
   puts(os.getcwd())
