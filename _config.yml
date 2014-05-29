@@ -1,0 +1,18 @@
+
+collections:
+  pieces:
+    output: true
+
+
+title: David S. Lefkowitz
+description: "Professor of Composition & Theory at the UCLA Herb Alpert School of Music. "
+author:
+  name: Alex Rattray
+  email: rattray.alex@gmail.com
+  github: rattrayalex
+
+production_url: http://davidlefkowitz.com
+exclude:
+  - bin
+
+markdown: kramdown
