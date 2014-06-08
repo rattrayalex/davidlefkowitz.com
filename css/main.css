@@ -1,31 +1,12 @@
 .site-subtitle {
   color: #ccc;
 }
-/*.main-container,
-.main-container > .row,
-.main-container > .row > .col-sm-3 {
-  height: 100%;
-}*/
 .site-nav {
-  position: absolute;
-  left: 0;
-  top: 0;
-  border-right: 1px solid #ccc;
-  height: 100%;
-  width: 200px;
+
 }
-.main-container {
-  margin-left: 200px;
+.site-content {
+  border-left: 1px solid #eee;
 }
-
-
-
-
-
-
-
-
-
 
 /* Sticky footer styles
 -------------------------------------------------- */
