@@ -1,0 +1,35 @@
+---
+layout: default
+---
+
+<ul>
+  <li>title: {{ page.title }}</li>
+  <li>instrumentation: {{ page.instrumentation }}</li>
+  <li>genre: {{ page.genre }}</li>
+  <li>date: {{ page.date }}</li>
+  <li>duration: {{ page.duration }}</li>
+  <li>publisher: {{ page.publisher }}</li>
+  <li>soundcloud: {{ page.soundcloud }}</li>
+  <li>
+    history:
+    <ul>
+      {% for h in page.history %}
+        <li>{{ h }}</li>
+      {% endfor %}
+    </ul>
+  </li>
+  <li>
+    reviews:
+    <ul>
+      {% for r in page.reviews %}
+        <li>{{ r }}</li>
+      {% endfor %}
+    </ul>
+  </li>
+</ul>
+
+<hr>
+
+<p>
+  {{ content }}
+</p>

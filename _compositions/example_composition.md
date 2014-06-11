@@ -13,6 +13,9 @@ history:
 reviews: 
     - link_to_review_1
     - link_to_review_2
+
+layout: composition
+
 ---
 
 In publishing and graphic design, lorem ipsum is a placeholder text commonly used to demonstrate the graphic elements of a document or visual presentation. By replacing the distraction of meaningful content with filler text of scrambled Latin it allows viewers to focus on graphical elements such as font, typography, and layout.

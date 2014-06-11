@@ -1,11 +1,56 @@
 <div class="">
-  <h1 id="site-title">
-    David S. Lefkowitz
-  </h1>
-  <h3 class="site-subtitle">
-    Professor of Music
-  </h3>
+  <a href="/" class="brand">
+    <h1 id="site-title">
+      David S. Lefkowitz
+    </h1>
+    <h3 class="site-subtitle">
+      Professor of Music
+    </h3>
+  </a>
+  <hr>
+  <ul class="nav nav-stacked panel-group" id="accordion">
+    {% for p in site.pages %}
+      <li class="{% if p.url == page.url %} active {% endif %}">
+        <a href="{{ p.url }}" class="btn btn-default">{{ p.title }}</a>
+      </li>
+    {% endfor %}
 
-  <div class="nav">
-  </div>
+    <!-- <div class="panel-group" id="accordion"> -->
+<!--
+      <li class="panel panel-default">
+        <div class="panel-heading">
+          <h4 class="panel-title">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+              Discography
+            </a>
+          </h4>
+        </div>
+        <div id="collapseOne" class="panel-collapse collapse in">
+          <div class="panel-body">
+            Thing1
+          </div>
+        </div>
+      </li> -->
+      {% if page.url contains "compositions" %}
+        <li class="panel panel-default">
+          <div class="panel-heading">
+            <h4 class="panel-title">
+              <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
+                Compositions
+              </a>
+            </h4>
+          </div>
+          <div id="collapseTwo" class="panel-collapse collapse in">
+            <div class="panel-body">
+              Thing2
+            </div>
+          </div>
+        </li>
+      {% else %}
+        <li>
+          <a href="/compositions/" class="btn btn-default">Compositions</a>
+        </li>
+      {% endif %}
+    <!-- </div> -->
+  </ul>
 </div>

@@ -1,6 +1,8 @@
 
 collections:
-  pieces:
+  compositions:
+    output: true
+  discography:
     output: true
 
 
