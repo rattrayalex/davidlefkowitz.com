@@ -9,10 +9,72 @@
   </a>
   <hr>
   <ul class="nav nav-stacked panel-group" id="accordion">
-    {% for p in site.pages %}
-      <li class="{% if p.url == page.url %} active {% endif %}">
-        <a href="{{ p.url }}" class="btn btn-default">{{ p.title }}</a>
+    {% if page.url contains "compositions" %}
+      <li class="panel panel-default">
+        <div class="panel-heading">
+          <h4 class="panel-title">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
+              Compositions
+            </a>
+          </h4>
+        </div>
+        <div id="collapseTwo" class="panel-collapse collapse in">
+          <div class="panel-body">
+            <form action="" class="form-vertical">
+
+              <div class="checkbox">
+                <label>
+                  <input type="checkbox"> Solos
+                </label>
+              </div>
+              <div class="checkbox">
+                <label>
+                  <input type="checkbox"> Duos
+                </label>
+              </div>
+              <div class="checkbox">
+                <label>
+                  <input type="checkbox"> Chamber
+                </label>
+              </div>
+              <h5>Instrumentation</h5>
+              <div class="checkbox">
+                <label>
+                  <input type="checkbox"> Strings
+                </label>
+                <div class="checkbox">
+                  <label>
+                    <input type="checkbox"> Violin
+                  </label>
+                </div>
+                <div class="checkbox">
+                  <label>
+                    <input type="checkbox"> Viola
+                  </label>
+                </div>
+              </div>
+              <div class="checkbox">
+                <label>
+                  <input type="checkbox"> Winds
+                </label>
+              </div>
+            </form>
+          </div>
+        </div>
       </li>
+    {% else %}
+      <li>
+        <a href="/compositions/" class="btn btn-default">Compositions</a>
+      </li>
+    {% endif %}
+
+
+    {% for p in site.pages %}
+      {% if p.url != "/" %}
+        <li class="{% if p.url == page.url %} active {% endif %}">
+          <a href="{{ p.url }}" class="btn btn-default">{{ p.title }}</a>
+        </li>
+      {% endif %}
     {% endfor %}
 
     <!-- <div class="panel-group" id="accordion"> -->
@@ -31,26 +93,7 @@
           </div>
         </div>
       </li> -->
-      {% if page.url contains "compositions" %}
-        <li class="panel panel-default">
-          <div class="panel-heading">
-            <h4 class="panel-title">
-              <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
-                Compositions
-              </a>
-            </h4>
-          </div>
-          <div id="collapseTwo" class="panel-collapse collapse in">
-            <div class="panel-body">
-              Thing2
-            </div>
-          </div>
-        </li>
-      {% else %}
-        <li>
-          <a href="/compositions/" class="btn btn-default">Compositions</a>
-        </li>
-      {% endif %}
+
     <!-- </div> -->
   </ul>
 </div>
