@@ -18,7 +18,7 @@ layout: composition
 
 ---
 
-	Written in April, 2010 for Guillaume Sutre and Kyunghee Sutre-Kim, *On Hearing Her Play the Harp* is a response to the 8th-Century Tang Dynasty poet Li Duan’s poem *The Harp Sings*:
+Written in April, 2010 for Guillaume Sutre and Kyunghee Sutre-Kim, *On Hearing Her Play the Harp* is a response to the 8th-Century Tang Dynasty poet Li Duan’s poem *The Harp Sings*:
 
 聽箏	tíng zhēng
 
@@ -41,5 +41,5 @@ De temps en temps, elle touche les mauvaises cordes.
 
 The first “wrong note” is the G-natural at the end of measure 8, drawing the attention of the violin.
 
-	The music should be performed freely and expressively.  It is approximately 6’20” in duration.
+The music should be performed freely and expressively.  It is approximately 6’20” in duration.
 
