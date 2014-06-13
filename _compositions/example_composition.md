@@ -19,11 +19,13 @@ layout: composition
 ---
 
 &nbsp; &nbsp; &nbsp;Written in April, 2010 for Guillaume Sutre and Kyunghee Sutre-Kim, *On Hearing Her Play the Harp* is a response to the 8th-Century Tang Dynasty poet Li Duan’s poem *The Harp Sings*:
-<br><br>&nbsp; &nbsp;聽箏	        |     tíng zhēng
-<br><br>鳴箏金粟柱，	| míng zhēng jīn sù zhù 
+<br><br>&nbsp; &nbsp;聽箏	        | &nbsp; &nbsp; &nbsp; &nbsp;tíng zhēng
+ | 
+鳴箏金粟柱，	| míng zhēng jīn sù zhù 
 素手玉房前。	| sù shǒu yù fáng qián
 欲得周郎顧，	| yù dé zhōu láng gù
 時時誤拂絃。	| shí shí wù fú xián
+
 <br><br>The harp—of fragrant sweet osmanthus—sings,
 <br>Her bare hands floating in the air above.
 <br>Longing to catch young Zhou Yu’s attention,
