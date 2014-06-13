@@ -18,17 +18,17 @@ layout: composition
 
 ---
 
-&nbsp; &nbsp; &nbsp;Written in April, 2010 for Guillaume Sutre and Kyunghee Sutre-Kim, *On Hearing Her Play the Harp* is a response to the 8th-Century Tang Dynasty poet Li Duan’s poem *The Harp Sings*:
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Written in April, 2010 for Guillaume Sutre and Kyunghee Sutre-Kim, *On Hearing Her Play the Harp* is a response to the 8th-Century Tang Dynasty poet Li Duan’s poem *The Harp Sings*:
 <br>
 
-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;聽箏	        | &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;tíng zhēng
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;聽箏	        | &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;tíng zhēng
  | 
-&nbsp; &nbsp;鳴箏金粟柱，	| &nbsp; &nbsp;míng zhēng jīn sù zhù 
-&nbsp; &nbsp;素手玉房前。	| &nbsp; &nbsp;sù shǒu yù fáng qián
-&nbsp; &nbsp;欲得周郎顧，	| &nbsp; &nbsp;yù dé zhōu láng gù
-&nbsp; &nbsp;時時誤拂絃。	| &nbsp; &nbsp;shí shí wù fú xián
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;鳴箏金粟柱，	| &nbsp; &nbsp;míng zhēng jīn sù zhù 
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;素手玉房前。	| &nbsp; &nbsp;sù shǒu yù fáng qián
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;欲得周郎顧，	| &nbsp; &nbsp;yù dé zhōu láng gù
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;時時誤拂絃。	| &nbsp; &nbsp;shí shí wù fú xián
 
-The harp—of fragrant sweet osmanthus—sings,
+<br>The harp—of fragrant sweet osmanthus—sings,
 <br>Her bare hands floating in the air above.
 <br>Longing to catch young Zhou Yu’s attention,
 <br>From time to time she touches the wrong strings.
@@ -40,4 +40,4 @@ La harpe d’osmanthus parfumé chante,
 
 *(Translations from the Chinese by David S. Lefkowitz)*
 
-The first “wrong note” is the G-natural at the end of measure 8, drawing the attention of the violin.
+<br>The first “wrong note” is the G-natural at the end of measure 8, drawing the attention of the violin.
