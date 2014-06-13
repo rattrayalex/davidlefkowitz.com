@@ -1,0 +1,53 @@
+.site-subtitle {
+  color: #ccc;
+}
+.site-nav {
+  padding: 20px 40px;
+}
+.site-content {
+  border-left: 1px solid #eee;
+  padding: 40px;
+}
+a.brand, a.brand:hover, a.brand:visited {
+  color: inherit;
+  text-decoration: none;
+}
+body {
+  font-family: Georgia, "Times New Roman", Serif;
+}
+body, .btn-default {
+  background: none repeat scroll 0% 0% rgba(252, 244, 220, 0.11);
+  /*color: rgba(104, 100, 90, 0.95);*/
+}
+p {
+  font-size: 16px;
+}
+/*a.btn {
+  font-family: "Helvetica Neue";
+}*/
+h1, h2, h3 {
+  font-family: "EB Garamond", Garamond, Georgia, Serif;
+}
+#instantclick-bar {
+  background: #ccc;
+}
+
+/* Sticky footer styles
+-------------------------------------------------- */
+html {
+  position: relative;
+  min-height: 100%;
+}
+body {
+  /* Margin bottom by footer height */
+  margin-bottom: 60px;
+}
+#footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  /* Set the fixed height of the footer here */
+  height: 60px;
+  background-color: #f5f5f5;
+  padding: 20px;
+}

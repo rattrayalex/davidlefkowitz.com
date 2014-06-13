@@ -1,0 +1,31 @@
+<script data-no-instant src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script data-no-instant src="//maxcdn.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+
+<script data-no-instant src="/js/instantclick.min.js"></script>
+
+<script data-no-instant>
+  function writeEmail(selector) {
+    var codePoints = [108,101,102,107,111,64,117,99,108,97,46,101,100,117];
+    var email = "";
+    for (var i = 0; i < codePoints.length; i++) {
+      email += String.fromCharCode(codePoints[i]);
+    }
+    console.log(email);
+    $(selector).html(email)
+    $('a' + selector).attr('href', 'mailto:' + email)
+  }
+</script>
+
+<script data-no-instant>
+  var pageLoad = function init() {
+    writeEmail('.email-goes-here');
+    // $('.collapse').collapse();
+  }
+  InstantClick.init();
+  InstantClick.on('change', function(){
+    console.log('page changed')
+    pageLoad()
+  });
+  $(pageLoad)
+</script>
+
