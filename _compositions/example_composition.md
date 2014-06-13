@@ -1,11 +1,16 @@
 ---
 title: Bird of Paradise
-instrumentation: Harp
+instrumentation: Oud, Nay, Flute, Clarinet, Violin, Violoncello, & Piano
 genre: Chamber, Solo
 date: 2014
-duration: 6:45
+duration: 
+  m: 6
+  s: 45
 publisher: Fatrock Ink 
-soundcloud: 32423439
+soundcloud_ids: 
+  - 32423439
+youtube_ids: 
+  -
 history:
   - performer: 
     timeplaces:

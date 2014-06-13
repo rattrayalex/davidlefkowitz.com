@@ -4,35 +4,25 @@ title: Contact &amp; Bio
 
 ---
 
-## Contact 
+<h2 id="contact">Contact</h2> 
 
-<div class="row">
-  <div class="col-md-6">
-    <p>
-      David Lefkowitz
-      <br>
-      Associate Professor, Composition &amp; Theory
-      <br>
-      office: (310) 206-1003 
-      <br>
-      email: 
-      <a href="" class="email-goes-here"></a>
-      <br>
-      Office: 2410
-    </p>
-  </div>
-  <div class="col-md-6">
-    <img src="/images/profile.jpeg" 
-      alt="Photo of David Lefkowitz" 
-      style="max-width: 100%;"
-      class="thumbnail">
-  </div>
-</div>
+
+David S. Lefkowitz
+<br>Associate Professor, Composition &amp; Theory
+<br>office: (310) 206-1003 
+<br>email: <a href="" class="email-goes-here"></a>
+<br>Office: 2410
 
 
 ---
 
-## Extended Bio
+<h2 id="short_bio">Short Bio</h2>
+
+DAVID S. LEFKOWITZ, a native of New York City, studied music composition at The Eastman School of Music, Cornell University, and University of Pennsylvania, where his principal teachers were Joseph Schwantner, Samuel Adler, George Crumb, and Karel Husa. 
+
+---
+
+<h2 id="long_bio">Extended Bio</h2>
 
 DAVID S. LEFKOWITZ, a native of New York City, studied music composition at The Eastman School of Music, Cornell University, and University of Pennsylvania, where his principal teachers were Joseph Schwantner, Samuel Adler, George Crumb, and Karel Husa. 
 
@@ -42,3 +32,11 @@ Recent commissions include works for Melia Watras of the Corigliano Quartet, ’
 
 As a theorist Lefkowitz has researched “meta-theoretical” issues such as the process of segmentation (a Component of post-tonal analysis) and the internal structure of set-classes, he has written extensively on Schoenberg’s piano music, and also has done work on music theory pedagogy, culminating with his textbook Music Theory: Syntax, Function, and Form which is expected to be published soon.
 
+---
+
+<h2 id="photos">Photos</h2> 
+
+<img src="/images/profile.jpeg" 
+  alt="Photo of David Lefkowitz" 
+  style="max-width: 100%;"
+  class="thumbnail">

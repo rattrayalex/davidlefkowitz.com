@@ -7,7 +7,10 @@ duration:
   m: 6
   s: 44
 publisher: Fatrock Ink 
-soundcloud: 32423438
+soundcloud_ids: 
+  - 32423438
+youtube_ids: 
+  - hJ69dOD4uM0
 history:
   - performer: Adam Lefkowitz, Violin; Talia Lefkowitz, Violin.
     timeplaces:

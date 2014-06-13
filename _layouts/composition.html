@@ -2,16 +2,62 @@
 layout: default
 ---
 
-<center>
-  <h1>{{ page.title }} <span class="text-muted">- {{ page.date }}</span></h1>
-  <p>
-    <span class="pull-left">{{ page.instrumentation }}</span>
-    <span class="pull-right">{{ page.duration.m }}:{{ page.duration.s }}</span>
-    <span>&nbsp;</span>
+<section class="composition-header">
+  <center>
+    <h1>{{ page.title }} <!-- <span class="text-muted">- {{ page.date }}</span> --></h1>
+    <p class="lead text-muted text-center">
+      <span class="">{{ page.instrumentation }}</span>
+    <br>
+      <span class="pull-left">{{ page.date }}</span>
+<!--       <span>&bull;</span>
+      <span class="">{{ page.instrumentation }}</span>
+      <span>&bull;</span>
+ -->      <span class="pull-right">{{ page.duration.m }}:{{ page.duration.s }}</span>
+      <span>&nbsp;</span>
+    </p>
 
-  </p>
-  <hr>
-</center>
+  </center>
+</section>
+
+<hr>
+
+<section class="soundcloud">
+  {% capture num_recordings %}{{ page.soundcloud_ids | first | size }}{% endcapture %}
+  {% if num_recordings != "0" %}
+    <h2>Recordings</h2>
+    <center>
+      {% for s_id in page.soundcloud_ids %}
+          <iframe
+            id="sc-widget-{{ s_id }}"
+            src="https://w.soundcloud.com/player/?url=http://api.soundcloud.com/tracks/154261260"
+            width="90%"
+            height="100"
+            scrolling="no"
+            frameborder="no">
+          </iframe>
+      {% endfor %}
+    </center>
+  {% endif %}
+</section>
+
+<section class="youtube">
+  {% capture num_videos %}{{ page.youtube_ids | first | size }}{% endcapture %}
+  {% if num_videos != "0" %}
+    <h2>Videos</h2>
+    <center>
+      {% for y_id in page.youtube_ids %}
+        <iframe
+          id="ytplayer-{{ y_id }}"
+          type="text/html"
+          width="640"
+          height="390"
+          src="http://www.youtube.com/embed/{{ y_id }}?autoplay=0"
+          frameborder="0">
+        </iframe>
+      {% endfor %}
+    </center>
+  {% endif %}
+</section>
 
 <section class="performance-history">
   {% capture len_performer %}{{ page.history | first | first | last | size }}{% endcapture %}
@@ -59,7 +105,7 @@ layout: default
 
 <section class="program-notes">
   {% if content %}
-    <h2>Program Notes</h2>
+    <h2>Program Note</h2>
     <div class="list-group">
       <div class="list-group-item">
         <p class="list-group-item-text">

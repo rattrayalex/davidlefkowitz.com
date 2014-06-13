@@ -5,13 +5,15 @@
 
   <body>
 
-    <div class="container-fluid">
+    <div class="container">
 
+      <div class="col-sm-3 site-nav">
+        {% include nav.html %}
+      </div>
       <div class="row">
-        <div class="col-sm-3 site-nav">
-            {% include nav.html %}
+        <div class="col-sm-3 hidden-xs">
+          &nbsp;
         </div>
-
         <div class="col-sm-9 site-content">
           <hr class="visible-xs">
           <div class="row">
@@ -24,8 +26,9 @@
 
     </div>
 
+    {% comment %}
     {% include footer.html %}
-
+    {% endcomment %}
   {% include js.html %}
 
   </body>

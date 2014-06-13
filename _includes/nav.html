@@ -1,4 +1,4 @@
-<div class="">
+<div>
   <a href="/" class="brand">
     <h1 id="site-title">
       David S. Lefkowitz
@@ -68,9 +68,43 @@
       </li>
     {% endif %}
 
+    {% if page.url == "/bio.html" %}
+      <li class="panel panel-default">
+        <div class="panel-heading">
+          <h4 class="panel-title">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
+              Contact &amp; Bio
+            </a>
+          </h4>
+        </div>
+        <div id="collapseTwo" class="panel-collapse collapse in">
+          <div class="panel-body">
+          <ul>
+            <li>
+              <a href="#contact" title="">Contact</a>
+            </li>
+            <li>
+              <a href="#short_bio" title="">Short Bio</a>
+            </li>
+            <li>
+              <a href="#long_bio" title="">Long Bio</a>
+            </li>
+            <li>
+              <a href="#photos" title="">Photos</a>
+            </li>
+          </ul>
+          </div>
+        </div>
+      </li>
+    {% else %}
+      <li>
+        <a href="/bio.html" class="btn btn-default">Contact &amp; Bio</a>
+      </li>
+    {% endif %}
+
 
     {% for p in site.pages %}
-      {% if p.url != "/" %}
+      {% if p.url != "/" and p.url != "/bio.html" %}
         <li class="{% if p.url == page.url %} active {% endif %}">
           <a href="{{ p.url }}" class="btn btn-default">{{ p.title }}</a>
         </li>
@@ -96,4 +130,6 @@
 
     <!-- </div> -->
   </ul>
+
+  {% include footer.html %}
 </div>

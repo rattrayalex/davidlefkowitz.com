@@ -3,9 +3,23 @@
 }
 .site-nav {
   padding: 20px 40px;
+  border-right: 1px solid #eee;
+}
+@media (min-width: 768px) {
+  .site-nav {
+    position:fixed;
+    left: 0px;
+    height: 100%;
+    overflow: auto;
+  }
+}
+@media (min-width: 768px) {
+  .site-content {
+    /*min-height: 1024px;*/
+  }
 }
 .site-content {
-  border-left: 1px solid #eee;
+  /*border-left: 1px solid #eee;*/
   padding: 40px;
 }
 a.brand, a.brand:hover, a.brand:visited {
@@ -14,10 +28,13 @@ a.brand, a.brand:hover, a.brand:visited {
 }
 body {
   font-family: Georgia, "Times New Roman", Serif;
-}
-body, .btn-default {
+  /*margin-left: 400px;*/
   background: none repeat scroll 0% 0% rgba(252, 244, 220, 0.11);
   /*color: rgba(104, 100, 90, 0.95);*/
+}
+.btn-default, .panel-default, .panel-default > .panel-heading {
+  /*background: #f5f5f5;*/
+  /*background: rgba(252, 244, 220, 0.11);*/
 }
 p {
   font-size: 16px;
@@ -31,15 +48,16 @@ p {
 h1, h2, h3 {
   font-family: "EB Garamond", Garamond, Georgia, Serif;
 }
-#instantclick-bar {
+/*#instantclick-bar {
   background: #ccc;
-}
+}*/
 blockquote {
   border-left: none;
   font-style: italic;
   quotes: "\201C""\201D""\2018""\2019";
 }
 blockquote:before {
+  /* http://css-tricks.com/snippets/css/simple-and-nice-blockquote-styling/ */
   color: #ccc;
   content: open-quote;
   font-size: 4em;
@@ -47,26 +65,18 @@ blockquote:before {
   margin-right: 0.25em;
   vertical-align: -0.4em;
 }
+/*blockquote:after {
+  color: #ccc;
+  content: close-quote;
+  font-size: 4em;
+  line-height: 0.1em;
+  margin-right: 0.25em;
+  vertical-align: -0.4em;
+}*/
 blockquote p {
   display: inline;
 }
 
-/* Sticky footer styles
--------------------------------------------------- */
-html {
-  position: relative;
-  min-height: 100%;
-}
-body {
-  /* Margin bottom by footer height */
-  margin-bottom: 60px;
-}
 #footer {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  /* Set the fixed height of the footer here */
-  height: 60px;
-  background-color: #f5f5f5;
-  padding: 20px;
+  position: relative;
 }
