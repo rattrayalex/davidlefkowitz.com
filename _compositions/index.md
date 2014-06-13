@@ -6,4 +6,10 @@ layout: default
 
 ---
 
-This is where compositions will be listed
+<div>
+    {% for composition in site.compositions %}
+        <div>
+            {{ composition.title }}
+        </div>
+    {% endfor %}
+</div>

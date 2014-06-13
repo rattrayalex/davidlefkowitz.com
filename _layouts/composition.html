@@ -2,9 +2,75 @@
 layout: default
 ---
 
-<ul>
-  <li>title: {{ page.title }}</li>
-  <li>instrumentation: {{ page.instrumentation }}</li>
+<center>
+  <h1>{{ page.title }} <span class="text-muted">- {{ page.date }}</span></h1>
+  <p>
+    <span class="pull-left">{{ page.instrumentation }}</span>
+    <span class="pull-right">{{ page.duration.m }}:{{ page.duration.s }}</span>
+    <span>&nbsp;</span>
+
+  </p>
+  <hr>
+</center>
+
+<section class="performance-history">
+  {% capture len_performer %}{{ page.history | first | first | last | size }}{% endcapture %}
+  {% if len_performer != "0" %}
+    <h2>Performance History</h2>
+    <div class="list-group">
+      {% for h in page.history %}
+          <div class="list-group-item">
+            <h4 class="list-group-item-heading">{{ h.performer }}</h4>
+            <p class="list-group-item-text">
+              <ul>
+                {% for timeplace in h.timeplaces %}
+                  <li>{{ timeplace }}</li>
+                {% endfor %}
+              </ul>
+            </p>
+          </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+</section>
+
+<section class="reviews">
+  {% capture len_quote %}{{ page.reviews | first | first | last | size }}{% endcapture %}
+  {% if len_quote != "0" %}
+    <h2>Reviews</h2>
+    <div class="list-group">
+      {% for r in page.reviews %}
+          <div class="list-group-item">
+            <p class="list-group-item-text">
+              <blockquote cite="{{ r.link }}">
+                <p>{{ r.quote }}</p>
+              </blockquote>
+              <p class='text-right'>
+                - {{ r.reviewer }}
+                <br>
+                <a href="{{ r.link }}">{{ r.publication }}</a>
+              </p>
+            </p>
+          </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+</section>
+
+<section class="program-notes">
+  {% if content %}
+    <h2>Program Notes</h2>
+    <div class="list-group">
+      <div class="list-group-item">
+        <p class="list-group-item-text">
+          {{ content }}
+        </p>
+      </div>
+    </div>
+  {% endif %}
+</section>
+
+<!-- <ul>
   <li>genre: {{ page.genre }}</li>
   <li>date: {{ page.date }}</li>
   <li>duration: {{ page.duration }}</li>
@@ -14,7 +80,12 @@ layout: default
     history:
     <ul>
       {% for h in page.history %}
-        <li>{{ h }}</li>
+        <li>{{ h.performer }}</li>
+        <ul>
+          {% for time in h.timeplaces %}
+            <li>{{ time }}</li>
+          {% endfor %}
+        </ul>
       {% endfor %}
     </ul>
   </li>
@@ -26,10 +97,4 @@ layout: default
       {% endfor %}
     </ul>
   </li>
-</ul>
-
-<hr>
-
-<p>
-  {{ content }}
-</p>
+</ul> -->

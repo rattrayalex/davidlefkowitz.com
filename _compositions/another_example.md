@@ -3,16 +3,30 @@ title: Bird of Paradise 2
 instrumentation: Harp
 genre: Chamber, Solo
 date: 2013
-duration: 6:44
+duration: 
+  m: 6
+  s: 44
 publisher: Fatrock Ink 
 soundcloud: 32423438
 history:
-    - played here in 2012
-    - played there in 2014
-    - played elsewhere in 2008
+  - performer: Adam Lefkowitz, Violin; Talia Lefkowitz, Violin.
+    timeplaces:
+      - June 12, 2014, The Living Room, Westwood, Los Angeles
+      - June 13, 2014, The Dining Room, Westwood, Los Angeles
+  - performer: Anna Kate Rattray, Violin; Zachary Rattray, Trumpet
+    timeplaces:
+      - June 12, 2014, The Living Room, Westwood, Los Angeles
+      - June 13, 2014, The Dining Room, Westwood, Los Angeles
+#  - performer: 
+#    timeplaces:
+#      - 
+#      - 
 reviews: 
-    - link_to_review_1
-    - link_to_review_2
+    - quote: "This...was...great!"
+      reviewer: Adam Lefkowitz
+      publication: TheAdamSon.com
+      date: Jan 20 1997
+      link: http://TheAdamSon.com/DavidIsGreat 
 
 layout: composition
 

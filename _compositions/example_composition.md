@@ -7,12 +7,16 @@ duration: 6:45
 publisher: Fatrock Ink 
 soundcloud: 32423439
 history:
-    - played here in 2013
-    - played there in 2012
-    - played somewhere in 2009
+  - performer: 
+    timeplaces:
+      - 
+      - 
 reviews: 
-    - link_to_review_1
-    - link_to_review_2
+  - quote: "This...was...great!"
+    reviewer: Adam Lefkowitz
+    publication: TheAdamSon.com
+    date: Jan 20 1997
+    link: http://TheAdamSon.com/DavidIsGreat 
 
 layout: composition
 
