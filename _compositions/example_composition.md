@@ -18,8 +18,28 @@ layout: composition
 
 ---
 
-In publishing and graphic design, lorem ipsum is a placeholder text commonly used to demonstrate the graphic elements of a document or visual presentation. By replacing the distraction of meaningful content with filler text of scrambled Latin it allows viewers to focus on graphical elements such as font, typography, and layout.
+	Written in April, 2010 for Guillaume Sutre and Kyunghee Sutre-Kim, *On Hearing Her Play the Harp* is a response to the 8th-Century Tang Dynasty poet Li Duan’s poem *The Harp Sings*:
 
-The lorem ipsum text is typically a mangled section of De finibus bonorum et malorum, a 1st-century BC Latin text by Cicero, with words altered, added, and removed that make it nonsensical, improper Latin.
+聽箏	tíng zhēng
 
-A variation of the common lorem ipsum text has been used during typesetting since the 1960s or earlier, when it was popularized by advertisements for Letraset transfer sheets. It was introduced to the Digital Age by Aldus Corporation in the mid-1980s, which employed it in graphics and word processing templates for its breakthrough desktop publishing program, PageMaker for the Apple Macintosh.
+鳴箏金粟柱，	míng zhēng jīn sù zhù 
+素手玉房前。	sù shǒu yù fáng qián
+欲得周郎顧，	yù dé zhōu láng gù
+時時誤拂絃。	shí shí wù fú xián
+
+The harp—of fragrant sweet osmanthus—sings,
+Her bare hands floating in the air above.
+Longing to catch young Zhou Yu’s attention,
+From time to time she touches the wrong strings.
+
+La harpe d’osmanthus parfumé chante,
+Ses mains nues flottent dans l’air au-dessus.
+Voulant attirer l'attention de Zhou Yu,
+De temps en temps, elle touche les mauvaises cordes.
+
+*(Translations from the Chinese by David S. Lefkowitz)*
+
+The first “wrong note” is the G-natural at the end of measure 8, drawing the attention of the violin.
+
+	The music should be performed freely and expressively.  It is approximately 6’20” in duration.
+
