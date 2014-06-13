@@ -18,9 +18,9 @@ layout: composition
 
 ---
 
-This is Bird of Paradise 2
+## This is Bird of Paradise 2
 
-In publishing and graphic design, lorem ipsum is a placeholder text commonly used to demonstrate the graphic elements of a document or visual presentation. By replacing the distraction of meaningful content with filler text of scrambled Latin it allows viewers to focus on graphical elements such as font, typography, and layout.
+In publishing and graphic design, *lorem ipsum* is a placeholder text commonly used to demonstrate the graphic elements of a document or visual presentation. By replacing the distraction of meaningful content with filler text of scrambled Latin it allows viewers to focus on graphical elements such as font, typography, and layout.
 
 The lorem ipsum text is typically a mangled section of De finibus bonorum et malorum, a 1st-century BC Latin text by Cicero, with words altered, added, and removed that make it nonsensical, improper Latin.
 
