@@ -19,25 +19,25 @@ layout: composition
 ---
 
 &nbsp; &nbsp; &nbsp;Written in April, 2010 for Guillaume Sutre and Kyunghee Sutre-Kim, *On Hearing Her Play the Harp* is a response to the 8th-Century Tang Dynasty poet Li Duan’s poem *The Harp Sings*:
-<br><br>
+<br>
 
-&nbsp; &nbsp;聽箏	        | &nbsp; &nbsp; &nbsp; &nbsp;tíng zhēng
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;聽箏	        | &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;tíng zhēng
  | 
-鳴箏金粟柱，	| míng zhēng jīn sù zhù 
-素手玉房前。	| sù shǒu yù fáng qián
-欲得周郎顧，	| yù dé zhōu láng gù
-時時誤拂絃。	| shí shí wù fú xián
+&nbsp; &nbsp;鳴箏金粟柱，	| &nbsp; &nbsp;míng zhēng jīn sù zhù 
+&nbsp; &nbsp;素手玉房前。	| &nbsp; &nbsp;sù shǒu yù fáng qián
+&nbsp; &nbsp;欲得周郎顧，	| &nbsp; &nbsp;yù dé zhōu láng gù
+&nbsp; &nbsp;時時誤拂絃。	| &nbsp; &nbsp;shí shí wù fú xián
 
-<br>The harp—of fragrant sweet osmanthus—sings,
+The harp—of fragrant sweet osmanthus—sings,
 <br>Her bare hands floating in the air above.
 <br>Longing to catch young Zhou Yu’s attention,
 <br>From time to time she touches the wrong strings.
 
-<br>La harpe d’osmanthus parfumé chante,
+La harpe d’osmanthus parfumé chante,
 <br>Ses mains nues flottent dans l’air au-dessus.
 <br>Voulant attirer l'attention de Zhou Yu,
 <br>De temps en temps, elle touche les mauvaises cordes.
 
-<br>*(Translations from the Chinese by David S. Lefkowitz)*
+*(Translations from the Chinese by David S. Lefkowitz)*
 
-<br>The first “wrong note” is the G-natural at the end of measure 8, drawing the attention of the violin.
+The first “wrong note” is the G-natural at the end of measure 8, drawing the attention of the violin.
