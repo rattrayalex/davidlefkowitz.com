@@ -22,11 +22,11 @@ history:
 #      - 
 #      - 
 reviews: 
-    - quote: "This...was...great!"
-      reviewer: Adam Lefkowitz
-      publication: TheAdamSon.com
-      date: Jan 20 1997
-      link: http://TheAdamSon.com/DavidIsGreat 
+  - quote: "This...was...great!"
+    reviewer: Adam Lefkowitz
+    publication: TheAdamSon.com
+    date: Jan 20 1997
+    link: http://TheAdamSon.com/DavidIsGreat 
 
 layout: composition
 
