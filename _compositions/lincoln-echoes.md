@@ -9,7 +9,8 @@ genre:
 - Vocal
 history:
 - performer: ''
-  timeplaces: []
+  timeplaces:
+  - ''
 instrumentation: {}
 instrumentation_name: Tenor, Baritone, Narrator, SATB Choir, Orchestra (3333 4331
   3 Perc Timp 2 Harps, Piano, Strings)

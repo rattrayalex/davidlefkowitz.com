@@ -8,7 +8,8 @@ genre:
 - Chamber
 history:
 - performer: ''
-  timeplaces: []
+  timeplaces:
+  - ''
 instrumentation:
   Guitar:
   - Guitar

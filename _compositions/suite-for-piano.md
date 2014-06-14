@@ -8,7 +8,8 @@ genre:
 - Solo
 history:
 - performer: ''
-  timeplaces: []
+  timeplaces:
+  - ''
 instrumentation:
   Keyboard:
   - Piano

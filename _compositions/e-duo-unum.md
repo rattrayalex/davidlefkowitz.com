@@ -8,9 +8,10 @@ genre:
 - Chamber
 history:
 - performer: ''
-  timeplaces: []
+  timeplaces:
+  - ''
 instrumentation: {}
-instrumentation_name: Violin Duo
+instrumentation_name: Violoncello Duo
 layout: composition
 publisher: ''
 reviews:

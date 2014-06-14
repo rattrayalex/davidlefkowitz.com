@@ -7,7 +7,8 @@ duration:
 genre: []
 history:
 - performer: ''
-  timeplaces: []
+  timeplaces:
+  - ''
 instrumentation: {}
 instrumentation_name: 'String Orchestra '
 layout: composition
@@ -26,3 +27,7 @@ youtube_ids:
 - ''
 
 ---
+
+## I am writing something
+
+I hope it stays here!

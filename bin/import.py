@@ -1,9 +1,12 @@
 #!/usr/bin/env python
 
 import argparse
-import tablib
 import yaml
 import os
+
+import tablib
+from clint.textui import puts, indent
+from clint.textui.colored import green, red
 from django.utils.text import slugify
 
 
@@ -29,23 +32,23 @@ def read_jekyll_file(filepath):
       split_contents = contents.split('---\n', 2)
       front_matter_text = split_contents[1]
 
-      print 'found existing front-matter: ', front_matter_text
+      # print 'found existing front-matter: ', front_matter_text
       front_matter = yaml.load(front_matter_text)
-      print 'python formatted: ', front_matter
+      # print 'python formatted: ', front_matter
 
       body_text = split_contents[2]
       if body_text:
-        print 'existing body_text: ', body_text
+        puts(u'existing body_text: {}'.format(body_text))
 
   except IOError:
-    print 'file does not yet exist, will create...'
+    puts(green('file does not yet exist, will create...'))
   except IndexError:
-    print 'file does not have front-matter yet, will overwrite...'
+    puts(red('file does not have front-matter yet, will overwrite...'))
 
   return front_matter, body_text
 
 
-def create_front_matter(row, front_matter=None):
+def create_front_matter(row, old_front_matter=None):
   # OrderedDict([(u'Title', u'Winds Suite'),
   # (u'Instrumentation', u'Piano'),
   # (u'# Instr.', 1.0),
@@ -119,7 +122,7 @@ def create_front_matter(row, front_matter=None):
     'history': [
       {
         'performer': '',
-        'timeplaces': []
+        'timeplaces': ['']
       },
     ],
     'reviews': [
@@ -132,9 +135,98 @@ def create_front_matter(row, front_matter=None):
       }
     ]
   }
-  print data
-  new_front_matter = yaml.safe_dump(data, default_flow_style=False)
-  return new_front_matter
+  # print data
+
+  new_front_matter = recursively_check_conflicts(data, old_front_matter)
+
+  new_front_matter_text = yaml.safe_dump(
+    new_front_matter, default_flow_style=False)
+
+  return new_front_matter_text
+
+
+def recursively_check_conflicts(new, old):
+  puts(u'checking {}'.format(new))
+  if hasattr(new, 'Title'):
+    puts(u'TITLE: {}'.format(new['Title']))
+
+  with indent(2, quote=" | "):
+
+    if old is None:
+      return new
+
+    if new == old:
+      return new
+
+    # check if, eg 1990 == '1990' == u'1990'
+    u_new = unicode(new)
+    u_old = unicode(old)
+    if u_new == u_old:
+      return new
+
+    puts(green('GREEN (FROM EXCEL):'))
+    puts(green(u_new))
+    puts(red('RED (FROM OLD VERSION OF DOCUMENT):'))
+    puts(red(u_old))
+
+    while True:
+      selection = raw_input(
+        'Should we keep [G]REEN, [R]ED? \n'
+        'Or should we [C]ONTINUE recursing, '
+        'so you can make a more granular decision? \n'
+        'OR Would you prefer to enter some [O]THER value (will be text)? \n'
+        '[g/r/c/o]: '
+      ).lower()[0]
+      if selection in ['g', 'r', 'c', 'o']:
+        if selection == 'o':
+          new = raw_input('enter a new value: \n')
+          puts('Do you confirm the following?')
+          puts(new)
+          if raw_input('[y/n]: ').lower().startswith('y'):
+            return new
+        else:
+          break
+      else:
+        puts('-> You must enter g, r, c, or o!')
+
+    if selection == 'g':
+      return new
+    elif selection == 'r':
+      return old
+    elif selection == 'c':
+
+      if isinstance(new, dict) and isinstance(old, dict):
+        checked = []
+        for k, v in new.items():
+          new[k] = recursively_check_conflicts(v, old.get(k, None))
+          checked.append(k)
+        for k, v in old.items():
+          if k in checked:
+            continue
+          v = recursively_check_conflicts(new.get(k, None), v)
+          if v:
+            new[k] = v
+
+      elif isinstance(new, list) and isinstance(old, list):
+        for i, item in enumerate(new):
+          if item in old:
+            continue
+          else:
+            new[i] = recursively_check_conflicts(item, old[i])
+        for i, item in enumerate(old):
+          if item in new:
+            continue
+          else:
+            item = recursively_check_conflicts(new[i], item)
+            if item:
+              new.append(item)
+
+      else:  # int, str, or unicode (probably)
+        if selection == 'c':
+          puts(red('-> You cannot recurse further. Try again.'))
+          return recursively_check_conflicts(new, old)
+
+      return new
 
 
 def write_jekyll_file(filepath, new_front_matter, body_text=''):
@@ -144,7 +236,7 @@ def write_jekyll_file(filepath, new_front_matter, body_text=''):
 
 
 def process_entry(row, dest):
-  print row
+  # puts(row)
 
   filename = slugify(row['Title'])
   filepath = os.path.abspath('{}/{}.md'.format(dest, filename))
@@ -154,7 +246,7 @@ def process_entry(row, dest):
   new_front_matter = create_front_matter(row, front_matter)
 
   write_jekyll_file(filepath, new_front_matter, body_text)
-  print
+  # puts('')
 
 
 def main(input_xls, dest):
@@ -163,10 +255,6 @@ def main(input_xls, dest):
 
   for row in sheet.dict:
     process_entry(row, dest)
-
-  # print yaml.dump(yaml.load(sheet.yaml), default_flow_style=False)
-  # for row in sheet.dict:
-  #   print yaml.dump(row)
 
 
 if __name__ == '__main__':

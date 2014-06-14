@@ -9,7 +9,8 @@ genre:
 - Vocal
 history:
 - performer: ''
-  timeplaces: []
+  timeplaces:
+  - ''
 instrumentation:
   Perc:
   - Perc

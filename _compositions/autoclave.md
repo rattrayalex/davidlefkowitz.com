@@ -7,7 +7,8 @@ duration:
 genre: []
 history:
 - performer: ''
-  timeplaces: []
+  timeplaces:
+  - ''
 instrumentation:
   Perc:
   - Perc

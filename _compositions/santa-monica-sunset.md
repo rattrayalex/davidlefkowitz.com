@@ -7,7 +7,8 @@ duration:
 genre: []
 history:
 - performer: ''
-  timeplaces: []
+  timeplaces:
+  - ''
 instrumentation: {}
 instrumentation_name: Orchestra (2222 221 3 Perc Strings)
 layout: composition

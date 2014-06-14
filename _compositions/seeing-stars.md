@@ -7,7 +7,8 @@ duration:
 genre: []
 history:
 - performer: ''
-  timeplaces: []
+  timeplaces:
+  - ''
 instrumentation: {}
 instrumentation_name: Wind Ensemble
 layout: composition

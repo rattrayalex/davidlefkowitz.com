@@ -8,7 +8,8 @@ genre:
 - Solo
 history:
 - performer: ''
-  timeplaces: []
+  timeplaces:
+  - ''
 instrumentation: {}
 instrumentation_name: Violoncello Solo
 layout: composition

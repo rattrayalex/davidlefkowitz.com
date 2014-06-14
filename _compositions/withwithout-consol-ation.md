@@ -9,7 +9,8 @@ genre:
 - Solo
 history:
 - performer: ''
-  timeplaces: []
+  timeplaces:
+  - ''
 instrumentation:
   Harp:
   - Harp

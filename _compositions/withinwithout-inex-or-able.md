@@ -1,19 +1,21 @@
 ---
 author_of_text: ''
-date: 2002
+date: 02/08
 duration:
   m: 7
   s: 15
-genre: []
+genre:
+- Chamber
 history:
 - performer: ''
-  timeplaces: []
+  timeplaces:
+  - ''
 instrumentation:
-  Brass:
-  - Brass
   Perc:
   - Perc
-instrumentation_name: Trumpet & Marimba
+  Winds:
+  - Winds
+instrumentation_name: Alto Flute & Marimba
 layout: composition
 publisher: ''
 reviews:
