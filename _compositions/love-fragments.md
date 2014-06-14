@@ -1,0 +1,29 @@
+---
+author_of_text: ''
+date: 2014
+duration:
+  m: 12
+  s: 45
+genre:
+- Chamber
+history:
+- performer: ''
+  timeplaces: []
+instrumentation: {}
+instrumentation_name: Mezzo Soprano, Viola, Harp
+layout: composition
+publisher: Fatrock Ink
+reviews:
+- date: ''
+  link: ''
+  publication: ''
+  quote: ''
+  reviewer: ''
+soundcloud_ids:
+- ''
+title: Love Fragments
+translator: ''
+youtube_ids:
+- ''
+
+---

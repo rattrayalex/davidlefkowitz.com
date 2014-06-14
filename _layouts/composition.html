@@ -6,7 +6,7 @@ layout: default
   <center>
     <h1>{{ page.title }} <!-- <span class="text-muted">- {{ page.date }}</span> --></h1>
     <p class="lead text-muted text-center">
-      <span class="">{{ page.instrumentation }}</span>
+      <span class="">{{ page.instrumentation_name }}</span>
     <br>
       <span class="pull-left">{{ page.date }}</span>
 <!--       <span>&bull;</span>
@@ -104,7 +104,7 @@ layout: default
 </section>
 
 <section class="program-notes">
-  {% if content %}
+  {% if content.size > 3 %}
     <h2>Program Note</h2>
     <div class="list-group">
       <div class="list-group-item">

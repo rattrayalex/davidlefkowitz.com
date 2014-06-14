@@ -1,0 +1,36 @@
+---
+author_of_text: ''
+date: 2002
+duration:
+  m: 13
+  s: 0
+genre: []
+history:
+- performer: ''
+  timeplaces: []
+instrumentation:
+  Brass:
+  - Brass
+  Keyboard:
+  - Piano
+  Perc:
+  - Perc
+  Winds:
+  - Winds
+instrumentation_name: ''
+layout: composition
+publisher: ''
+reviews:
+- date: ''
+  link: ''
+  publication: ''
+  quote: ''
+  reviewer: ''
+soundcloud_ids:
+- ''
+title: 'Desire: Music for Dance (Introduction)'
+translator: ''
+youtube_ids:
+- ''
+
+---

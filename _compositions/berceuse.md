@@ -1,0 +1,35 @@
+---
+author_of_text: ''
+date: 2010
+duration:
+  m: 6
+  s: 30
+genre:
+- Chamber
+history:
+- performer: ''
+  timeplaces: []
+instrumentation:
+  Harp:
+  - Harp
+  Keyboard:
+  - Piano
+  Winds:
+  - Winds
+instrumentation_name: Clarinet (or Viola), Violin (or Flute), & Harp (or Piano)
+layout: composition
+publisher: Fatrock Ink
+reviews:
+- date: ''
+  link: ''
+  publication: ''
+  quote: ''
+  reviewer: ''
+soundcloud_ids:
+- ''
+title: Berceuse
+translator: ''
+youtube_ids:
+- ''
+
+---
