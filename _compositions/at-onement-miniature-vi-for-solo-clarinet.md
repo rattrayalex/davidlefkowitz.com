@@ -13,7 +13,7 @@ history:
 instrumentation:
   Winds:
   - Winds
-instrumentation_name: ''
+instrumentation_name: Clarinet Solo
 layout: composition
 publisher: ''
 reviews:

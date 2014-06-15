@@ -28,10 +28,13 @@ reviews:
   quote: ''
   reviewer: ''
 soundcloud_ids:
-- ''
+- '154350001'
+- '154350394'
+- '154351153'
+- '154351557'
 title: Snows Sing a Farewell
 translator: 'Benjamin & Barbara Harshav, '
 youtube_ids:
-- ''
+- UUosUzGNc075u2MIgwGCVyWw
 
 ---

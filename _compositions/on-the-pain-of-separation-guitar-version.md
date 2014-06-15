@@ -1,22 +1,23 @@
 ---
 author_of_text: ''
-date: 1999
+date: 2013
 duration:
-  m: 3
-  s: 15
+  m: 16
+  s: 0
 genre:
 - Chamber
-- Vocal
 history:
 - performer: ''
   timeplaces:
   - ''
 instrumentation:
+  Guitar:
+  - Guitar
   Keyboard:
   - Piano
   Winds:
   - Winds
-instrumentation_name: Soprano, Clarinet, & Piano
+instrumentation_name: Flute, Clarinet, Violin, Violoncello, Guitar, & Piano
 layout: composition
 publisher: ''
 reviews:
@@ -26,8 +27,13 @@ reviews:
   quote: ''
   reviewer: ''
 soundcloud_ids:
-- ''
-title: Colloquy
+- '154388725'
+- '154389232'
+- '154390404'
+- '154390778'
+- '154391079'
+- '154392984'
+title: On the Pain of Separation (Guitar version)
 translator: ''
 youtube_ids:
 - ''

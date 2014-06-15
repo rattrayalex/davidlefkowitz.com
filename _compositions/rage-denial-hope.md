@@ -15,7 +15,7 @@ instrumentation:
   - Harp
   Winds:
   - Winds
-instrumentation_name: ''
+instrumentation_name: Flute, Viola & Harp
 layout: composition
 publisher: Fatrock Ink
 reviews:

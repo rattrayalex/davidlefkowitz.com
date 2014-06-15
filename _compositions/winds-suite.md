@@ -13,7 +13,7 @@ history:
 instrumentation:
   Keyboard:
   - Piano
-instrumentation_name: ''
+instrumentation_name: Piano Solo
 layout: composition
 publisher: ''
 reviews:

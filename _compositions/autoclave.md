@@ -4,7 +4,8 @@ date: 1997
 duration:
   m: 8
   s: 30
-genre: []
+genre:
+- Chamber
 history:
 - performer: ''
   timeplaces:
@@ -12,7 +13,7 @@ history:
 instrumentation:
   Perc:
   - Perc
-instrumentation_name: ''
+instrumentation_name: Percussion Trio
 layout: composition
 publisher: C. Alan Music
 reviews:

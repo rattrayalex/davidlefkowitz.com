@@ -15,7 +15,7 @@ instrumentation:
   - Piano
   Winds:
   - Winds
-instrumentation_name: ''
+instrumentation_name: Flute, Violin, Violoncello, & Piano
 layout: composition
 publisher: ''
 reviews:

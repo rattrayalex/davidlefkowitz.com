@@ -14,7 +14,7 @@ history:
 instrumentation:
   Keyboard:
   - Piano
-instrumentation_name: ''
+instrumentation_name: Soprano & Piano
 layout: composition
 publisher: ''
 reviews:

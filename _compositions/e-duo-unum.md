@@ -11,7 +11,7 @@ history:
   timeplaces:
   - ''
 instrumentation: {}
-instrumentation_name: Violoncello Duo
+instrumentation_name: Violin Duo, Arr. Viola Duo, Arr. Violoncello Duo
 layout: composition
 publisher: ''
 reviews:

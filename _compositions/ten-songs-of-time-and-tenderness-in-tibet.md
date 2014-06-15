@@ -14,7 +14,7 @@ history:
 instrumentation:
   Perc:
   - Perc
-instrumentation_name: ''
+instrumentation_name: Tenor, Tibetan Lute, Percussion
 layout: composition
 publisher: ''
 reviews:

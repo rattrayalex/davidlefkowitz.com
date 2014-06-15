@@ -5,13 +5,14 @@ duration:
   m: 6
   s: 0
 genre:
+- Chamber
 - Solo
 history:
 - performer: ''
   timeplaces:
   - ''
 instrumentation: {}
-instrumentation_name: ''
+instrumentation_name: Violin Solo, Arr. Violin Duo, Arr. Violin & Viola
 layout: composition
 publisher: ''
 reviews:

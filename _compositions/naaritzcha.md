@@ -14,7 +14,7 @@ history:
 instrumentation:
   Keyboard:
   - Organ
-instrumentation_name: Cantor, Chior, Organ
+instrumentation_name: Cantor, Choir, Organ
 layout: composition
 publisher: Yelton Rhodes Music
 reviews:

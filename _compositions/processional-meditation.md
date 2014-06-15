@@ -11,7 +11,7 @@ history:
   timeplaces:
   - ''
 instrumentation: {}
-instrumentation_name: ''
+instrumentation_name: String Quartet
 layout: composition
 publisher: ''
 reviews:

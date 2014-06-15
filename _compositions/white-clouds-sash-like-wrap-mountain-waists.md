@@ -23,7 +23,8 @@ reviews:
   quote: ''
   reviewer: ''
 soundcloud_ids:
-- ''
+- '154346409'
+- '154346837'
 title: White Clouds, Sash-Like, Wrap Mountain Waists
 translator: ''
 youtube_ids:

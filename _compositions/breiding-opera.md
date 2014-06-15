@@ -13,7 +13,8 @@ history:
 instrumentation:
   Winds:
   - Winds
-instrumentation_name: ''
+instrumentation_name: Flute, Oboe, English Horn, Percussion, Two Violins, Two Violas,
+  Two Violoncellos
 layout: composition
 publisher: ''
 reviews:

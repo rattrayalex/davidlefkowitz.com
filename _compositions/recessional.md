@@ -10,7 +10,7 @@ history:
   timeplaces:
   - ''
 instrumentation: {}
-instrumentation_name: ''
+instrumentation_name: Band
 layout: composition
 publisher: ''
 reviews:

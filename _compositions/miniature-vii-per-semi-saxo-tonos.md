@@ -14,7 +14,8 @@ history:
 instrumentation:
   Winds:
   - Winds
-instrumentation_name: Alto Saxophone & Recording
+instrumentation_name: Alto Saxophone Solo, or Alto Saxophone Trio, or Alto Saxophone
+  & Recording
 layout: composition
 publisher: ''
 reviews:

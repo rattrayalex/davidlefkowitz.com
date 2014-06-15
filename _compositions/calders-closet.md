@@ -1,6 +1,6 @@
 ---
 author_of_text: ''
-date: 2014
+date: 1990/2014
 duration:
   m: 15
   s: 30
@@ -11,11 +11,13 @@ history:
   timeplaces:
   - ''
 instrumentation:
+  Harp:
+  - Harp
   Keyboard:
   - Piano
   Perc:
   - Perc
-instrumentation_name: ''
+instrumentation_name: Harp, Piano, Vibraphone, & Percussion, Arr. 2 Pianos & 2 Percussion
 layout: composition
 publisher: Fatrock Ink
 reviews:

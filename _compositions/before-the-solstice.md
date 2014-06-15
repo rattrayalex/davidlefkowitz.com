@@ -1,6 +1,6 @@
 ---
 author_of_text: ''
-date: 1999/2004
+date: 2004
 duration:
   m: 9
   s: 15
@@ -15,7 +15,7 @@ instrumentation:
   - Harp
   Winds:
   - Winds
-instrumentation_name: Flute & Harp
+instrumentation_name: Flute & Guitar, Arr. Flute & Harp
 layout: composition
 publisher: Fatrock Ink
 reviews:

@@ -14,7 +14,7 @@ history:
 instrumentation:
   Keyboard:
   - Piano
-instrumentation_name: ''
+instrumentation_name: SATB Choir & Piano
 layout: composition
 publisher: Yelton Rhodes Music
 reviews:

@@ -14,7 +14,7 @@ history:
 instrumentation:
   Keyboard:
   - Piano
-instrumentation_name: ''
+instrumentation_name: Bass & Piano, Arr. Baritone & Piano, Arr. Tenor & Piano
 layout: composition
 publisher: ''
 reviews:

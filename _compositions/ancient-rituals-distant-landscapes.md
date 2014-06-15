@@ -13,7 +13,7 @@ history:
 instrumentation:
   Harp:
   - Harp
-instrumentation_name: ''
+instrumentation_name: Harp Solo
 layout: composition
 publisher: Fatrock Ink
 reviews:

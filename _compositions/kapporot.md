@@ -13,7 +13,7 @@ history:
 instrumentation:
   Winds:
   - Winds
-instrumentation_name: ''
+instrumentation_name: Oboe, English Horn, Bassoon, 2 Clarinets, Bass Clarinet
 layout: composition
 publisher: ''
 reviews:

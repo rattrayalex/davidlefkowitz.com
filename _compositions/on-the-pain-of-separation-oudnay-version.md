@@ -1,12 +1,11 @@
 ---
 author_of_text: ''
-date: 1999
+date: 2013
 duration:
-  m: 3
-  s: 15
+  m: 16
+  s: 0
 genre:
 - Chamber
-- Vocal
 history:
 - performer: ''
   timeplaces:
@@ -16,7 +15,7 @@ instrumentation:
   - Piano
   Winds:
   - Winds
-instrumentation_name: Soprano, Clarinet, & Piano
+instrumentation_name: Oud, Nay, Flute, Clarinet, Violin, Violoncello, Piano
 layout: composition
 publisher: ''
 reviews:
@@ -26,8 +25,13 @@ reviews:
   quote: ''
   reviewer: ''
 soundcloud_ids:
-- ''
-title: Colloquy
+- '154388725'
+- '154389232'
+- '154390404'
+- '154390778'
+- '154391079'
+- '154392984'
+title: On the Pain of Separation (Oud/Nay version)
 translator: ''
 youtube_ids:
 - ''

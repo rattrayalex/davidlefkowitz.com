@@ -13,7 +13,7 @@ history:
 instrumentation:
   Keyboard:
   - Organ
-instrumentation_name: ''
+instrumentation_name: Soprano, Organ, & 2 Optional Handclaps
 layout: composition
 publisher: ''
 reviews:

@@ -21,7 +21,7 @@ reviews:
   reviewer: ''
 soundcloud_ids:
 - ''
-title: Klezmory
+title: '*Klezmory'
 translator: ''
 youtube_ids:
 - ''

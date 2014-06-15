@@ -18,7 +18,8 @@ instrumentation:
   - Perc
   Winds:
   - Winds
-instrumentation_name: ''
+instrumentation_name: Flute, Oboe, Clarinet, Bassoon, Saxophone, Trumpet, Piano, 3
+  Percussionists, 2 Violins, Viola, Violoncello, String Bass
 layout: composition
 publisher: ''
 reviews:

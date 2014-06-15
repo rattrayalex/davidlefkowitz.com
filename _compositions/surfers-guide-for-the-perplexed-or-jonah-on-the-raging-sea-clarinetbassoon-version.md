@@ -1,17 +1,21 @@
 ---
 author_of_text: ''
-date: 2007
+date: 2004
 duration:
-  m: 4
-  s: 0
+  m: 9
+  s: 30
 genre:
 - Chamber
 history:
 - performer: ''
   timeplaces:
   - ''
-instrumentation: {}
-instrumentation_name: Violin Duo
+instrumentation:
+  Keyboard:
+  - Piano
+  Winds:
+  - Winds
+instrumentation_name: Clarinet, Bassoon, Violin, Violoncello, Piano
 layout: composition
 publisher: ''
 reviews:
@@ -22,9 +26,10 @@ reviews:
   reviewer: ''
 soundcloud_ids:
 - ''
-title: Elegy for Grandpa
+title: 'Surfer''s Guide for the Perplexed (or: Jonah on the Raging Sea) (Clarinet/Bassoon
+  version)'
 translator: ''
 youtube_ids:
-- LfC-YVtQh1Y
+- ''
 
 ---

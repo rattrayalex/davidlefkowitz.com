@@ -1,6 +1,6 @@
 ---
 author_of_text: ''
-date: 02/08
+date: 2008
 duration:
   m: 7
   s: 15
@@ -15,7 +15,7 @@ instrumentation:
   - Perc
   Winds:
   - Winds
-instrumentation_name: Alto Flute & Marimba
+instrumentation_name: Trumpet & Marimba, Arr. Alto Flute & Marimba
 layout: composition
 publisher: ''
 reviews:

@@ -15,7 +15,7 @@ instrumentation:
   - Brass
   Winds:
   - Winds
-instrumentation_name: ''
+instrumentation_name: Woodwind Quintet
 layout: composition
 publisher: ''
 reviews:

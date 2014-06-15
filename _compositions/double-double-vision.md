@@ -23,7 +23,8 @@ reviews:
   quote: ''
   reviewer: ''
 soundcloud_ids:
-- ''
+- '154394045'
+- '154394517'
 title: Double Double Vision
 translator: ''
 youtube_ids:

@@ -15,7 +15,7 @@ instrumentation:
   - Piano
   Winds:
   - Winds
-instrumentation_name: ''
+instrumentation_name: Clarinet & Piano
 layout: composition
 publisher: ''
 reviews:

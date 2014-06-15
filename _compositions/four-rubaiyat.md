@@ -22,7 +22,9 @@ reviews:
   quote: ''
   reviewer: ''
 soundcloud_ids:
-- ''
+- '154402985'
+- '154404630'
+- '154405296'
 title: "Four Rub\xE1iy\xE1t"
 translator: Edward Fitzgerald
 youtube_ids:

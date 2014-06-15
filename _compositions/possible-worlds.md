@@ -11,7 +11,7 @@ history:
   timeplaces:
   - ''
 instrumentation: {}
-instrumentation_name: ''
+instrumentation_name: Violoncello Solo
 layout: composition
 publisher: ''
 reviews:

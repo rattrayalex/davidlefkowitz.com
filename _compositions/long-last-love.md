@@ -6,6 +6,7 @@ duration:
   s: 0
 genre:
 - Chamber
+- Vocal
 history:
 - performer: ''
   timeplaces:
@@ -13,9 +14,7 @@ history:
 instrumentation:
   Keyboard:
   - Piano
-  Winds:
-  - Winds
-instrumentation_name: Flute & Piano
+instrumentation_name: Soprano & Piano, Arr. Flute & Piano
 layout: composition
 publisher: ''
 reviews:

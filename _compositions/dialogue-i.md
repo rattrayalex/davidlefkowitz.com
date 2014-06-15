@@ -11,11 +11,11 @@ history:
   timeplaces:
   - ''
 instrumentation:
-  Perc:
-  - Perc
+  Keyboard:
+  - Piano
   Winds:
   - Winds
-instrumentation_name: ''
+instrumentation_name: Oboe & Piano, Arr. Oboe & Marimba
 layout: composition
 publisher: ''
 reviews:

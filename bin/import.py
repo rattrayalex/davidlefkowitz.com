@@ -115,8 +115,8 @@ def create_front_matter(row, old_front_matter=None):
     'publisher': row['Publisher'],
     'author_of_text': row['Author of Text'],
     'translator': row['Translator'],
-    'soundcloud_ids': row['SoundCloud URL'].split(', '),
-    'youtube_ids': row['YouTube'].split(', '),
+    'soundcloud_ids': str(row['SoundCloud URL']).split(', '),
+    'youtube_ids': str(row['YouTube']).split(', '),
 
     'layout': 'composition',
     'history': [

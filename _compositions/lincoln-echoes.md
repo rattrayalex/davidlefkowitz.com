@@ -23,7 +23,15 @@ reviews:
   quote: ''
   reviewer: ''
 soundcloud_ids:
-- ''
+- '154371171'
+- '154371555'
+- '154372158'
+- '154372569'
+- '154372812'
+- '15437405'
+- '154382837'
+- '154380223'
+- '154385631'
 title: Lincoln Echoes
 translator: ''
 youtube_ids:

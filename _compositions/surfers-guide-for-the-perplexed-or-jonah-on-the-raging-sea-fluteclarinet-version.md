@@ -1,8 +1,8 @@
 ---
 author_of_text: ''
-date: 2010
+date: 2004
 duration:
-  m: 6
+  m: 9
   s: 30
 genre:
 - Chamber
@@ -11,11 +11,13 @@ history:
   timeplaces:
   - ''
 instrumentation:
-  Harp:
-  - Harp
-instrumentation_name: Violin & Harp
+  Keyboard:
+  - Piano
+  Winds:
+  - Winds
+instrumentation_name: Flute, Clarinet (B-flat and Bass), Violin, Violoncello, Piano
 layout: composition
-publisher: Fatrock Ink
+publisher: ''
 reviews:
 - date: ''
   link: ''
@@ -24,7 +26,8 @@ reviews:
   reviewer: ''
 soundcloud_ids:
 - ''
-title: '*On Hearing Her Play the Harp'
+title: 'Surfer''s Guide for the Perplexed (or: Jonah on the Raging Sea) (Flute/Clarinet
+  version)'
 translator: ''
 youtube_ids:
 - ''
