@@ -13,7 +13,8 @@ history:
   - ''
 instrumentation:
   Keyboard:
-  - Organ or Piano
+  - Organ
+  - Piano
 instrumentation_name: SATB Choir plus Optional Soprano or Tenor Soloist, with Optional
   Keyboard Accompaniment (Piano or Organ)
 layout: composition
@@ -35,3 +36,4 @@ youtube_ids:
 - ''
 
 ---
+

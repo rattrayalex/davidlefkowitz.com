@@ -1,0 +1,39 @@
+---
+layout: default
+---
+
+<h1>Compositions</h1>
+<hr>
+
+<div id="compositions-container">
+  {% for c in site.compositions %}
+    <div class="list-group composition-item"
+      data-date='{{ c.date }}'
+      data-duration-m='{{ c.duration.m }}'
+      data-duration-s='{{ c.duration.s }}'
+      data-genres='{{ c.genre | append:" " }}'
+      data-instrumentation='{{ c.genre | append:" " }}'
+      data-genres='{{ c.genre | append:" " }}'
+      data-genres='{{ c.genre | append:" " }}'
+
+      >
+      <a href="{{ c.url }}">
+        <div class="list-group-item">
+          <h3>{{ c.title }}</h3>
+          <p class="text-muted">
+            <span>Composed: {{ c.date }}</span>
+            {% if c.publisher.size > 1 %}
+              <br>
+              <span>Publisher: {{ c.publisher }}</span>
+            {% endif %}
+            <br>
+            <span>
+              Duration:
+              {{ c.duration.m }}:{% if c.duration.s < 10 %}0{% endif %}{{ c.duration.s }}
+            </span>
+          </p>
+        </div>
+      </a>
+    </div>
+  {% endfor %}
+</div>
