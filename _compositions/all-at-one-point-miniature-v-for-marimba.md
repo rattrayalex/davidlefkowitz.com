@@ -16,7 +16,8 @@ instrumentation:
   - Perc
 instrumentation_name: Marimba Solo, Arr. Marimba Duo
 layout: composition
-publisher: ''
+publisher: C. Alan Publications
+publisher_link: http://www.c-alanpublications.com/composers/lefkowitz-david.html
 reviews:
 - date: ''
   link: ''
@@ -27,6 +28,8 @@ soundcloud_ids:
 - ''
 title: All at One Point (Miniature V for Marimba)
 translator: ''
+vimeo_ids:
+- ''
 youtube_ids:
 - ''
 

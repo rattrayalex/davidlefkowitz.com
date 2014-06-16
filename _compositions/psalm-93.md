@@ -17,6 +17,7 @@ instrumentation:
 instrumentation_name: SATB Choir & Piano
 layout: composition
 publisher: Yelton Rhodes Music
+publisher_link: http://yrmusic.com/v2/artists/bios/artist.php?ID=61
 reviews:
 - date: ''
   link: ''
@@ -27,6 +28,8 @@ soundcloud_ids:
 - ''
 title: Psalm 93
 translator: Jewish Publication Society
+vimeo_ids:
+- ''
 youtube_ids:
 - ''
 

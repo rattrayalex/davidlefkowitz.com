@@ -16,6 +16,7 @@ instrumentation:
 instrumentation_name: Harp Quartet
 layout: composition
 publisher: Fatrock Ink
+publisher_link: http://fatrockink.com/lefkowitzdavid.html
 reviews:
 - date: ''
   link: ''
@@ -27,6 +28,8 @@ soundcloud_ids:
 - '154394517'
 title: Double Double Vision
 translator: ''
+vimeo_ids:
+- ''
 youtube_ids:
 - ''
 

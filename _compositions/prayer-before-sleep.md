@@ -15,6 +15,7 @@ instrumentation: {}
 instrumentation_name: Children's Choir
 layout: composition
 publisher: ''
+publisher_link: ''
 reviews:
 - date: ''
   link: ''
@@ -25,6 +26,8 @@ soundcloud_ids:
 - '154396113.0'
 title: Prayer Before Sleep
 translator: David S. Lefkowitz
+vimeo_ids:
+- ''
 youtube_ids:
 - ''
 

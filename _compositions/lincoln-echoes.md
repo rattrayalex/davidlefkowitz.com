@@ -16,6 +16,7 @@ instrumentation_name: Tenor, Baritone, Narrator, SATB Choir, Orchestra (3333 433
   3 Perc Timp 2 Harps, Piano, Strings)
 layout: composition
 publisher: ''
+publisher_link: ''
 reviews:
 - date: ''
   link: ''
@@ -34,6 +35,8 @@ soundcloud_ids:
 - '154385631'
 title: Lincoln Echoes
 translator: ''
+vimeo_ids:
+- ''
 youtube_ids:
 - ''
 

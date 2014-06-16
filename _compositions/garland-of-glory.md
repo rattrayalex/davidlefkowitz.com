@@ -16,6 +16,7 @@ instrumentation:
 instrumentation_name: Soprano, Organ, & 2 Optional Handclaps
 layout: composition
 publisher: ''
+publisher_link: ''
 reviews:
 - date: ''
   link: ''
@@ -26,6 +27,8 @@ soundcloud_ids:
 - ''
 title: Garland of Glory
 translator: ''
+vimeo_ids:
+- ''
 youtube_ids:
 - ''
 

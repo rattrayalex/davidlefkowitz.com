@@ -20,6 +20,7 @@ instrumentation:
 instrumentation_name: Clarinet (or Viola), Violin (or Flute), & Harp (or Piano)
 layout: composition
 publisher: Fatrock Ink
+publisher_link: http://fatrockink.com/lefkowitzdavid.html
 reviews:
 - date: ''
   link: ''
@@ -30,6 +31,8 @@ soundcloud_ids:
 - ''
 title: Berceuse
 translator: ''
+vimeo_ids:
+- ''
 youtube_ids:
 - hJ69dOD4uM0
 

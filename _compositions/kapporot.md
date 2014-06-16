@@ -16,6 +16,7 @@ instrumentation:
 instrumentation_name: Oboe, English Horn, Bassoon, 2 Clarinets, Bass Clarinet
 layout: composition
 publisher: ''
+publisher_link: ''
 reviews:
 - date: ''
   link: ''
@@ -26,6 +27,8 @@ soundcloud_ids:
 - ''
 title: Kapporot
 translator: ''
+vimeo_ids:
+- ''
 youtube_ids:
 - ''
 

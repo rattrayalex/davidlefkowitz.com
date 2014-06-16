@@ -21,6 +21,7 @@ instrumentation_name: Flute, Alto Flute, Oboe, English Horn, Clarinet, Bass Clar
   2 Violas, 2 Violoncellos
 layout: composition
 publisher: ''
+publisher_link: ''
 reviews:
 - date: ''
   link: ''
@@ -31,6 +32,8 @@ soundcloud_ids:
 - ''
 title: 'Desire: Music for Dance (Act II, Scene i)'
 translator: ''
+vimeo_ids:
+- ''
 youtube_ids:
 - ''
 

@@ -16,6 +16,7 @@ instrumentation:
 instrumentation_name: Violin & Harp
 layout: composition
 publisher: Fatrock Ink
+publisher_link: http://fatrockink.com/lefkowitzdavid.html
 reviews:
 - date: ''
   link: ''
@@ -26,6 +27,8 @@ soundcloud_ids:
 - ''
 title: '*On Hearing Her Play the Harp'
 translator: ''
+vimeo_ids:
+- ''
 youtube_ids:
 - ''
 

@@ -18,6 +18,7 @@ instrumentation_name: Alto Saxophone Solo, or Alto Saxophone Trio, or Alto Saxop
   & Recording
 layout: composition
 publisher: ''
+publisher_link: ''
 reviews:
 - date: ''
   link: ''
@@ -28,6 +29,8 @@ soundcloud_ids:
 - ''
 title: 'Miniature VII: Per Semi-Saxo-Tonos'
 translator: ''
+vimeo_ids:
+- ''
 youtube_ids:
 - ''
 

@@ -16,6 +16,7 @@ instrumentation:
 instrumentation_name: Bass or Alto Flute
 layout: composition
 publisher: ''
+publisher_link: ''
 reviews:
 - date: ''
   link: ''
@@ -26,6 +27,8 @@ soundcloud_ids:
 - ''
 title: Four Mythological Creatures
 translator: ''
+vimeo_ids:
+- ''
 youtube_ids:
 - ''
 

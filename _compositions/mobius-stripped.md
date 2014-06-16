@@ -17,6 +17,7 @@ instrumentation:
 instrumentation_name: 2 Tenors, 2 Baritones, 2 Basses, Bassoon, & String Bass
 layout: composition
 publisher: ''
+publisher_link: ''
 reviews:
 - date: ''
   link: ''
@@ -27,6 +28,8 @@ soundcloud_ids:
 - ''
 title: "M\xF6bius Stripped"
 translator: ''
+vimeo_ids:
+- ''
 youtube_ids:
 - ''
 

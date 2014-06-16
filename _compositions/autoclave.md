@@ -15,7 +15,8 @@ instrumentation:
   - Perc
 instrumentation_name: Percussion Trio
 layout: composition
-publisher: C. Alan Music
+publisher: ''
+publisher_link: ''
 reviews:
 - date: ''
   link: ''
@@ -26,6 +27,8 @@ soundcloud_ids:
 - ''
 title: Autoclave
 translator: ''
+vimeo_ids:
+- ''
 youtube_ids:
 - ''
 

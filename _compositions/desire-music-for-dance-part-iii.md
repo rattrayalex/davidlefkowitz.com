@@ -22,6 +22,7 @@ instrumentation_name: Flute, Oboe, Clarinet, Bassoon, Saxophone, Voice, Piano, 6
   2 Violins, Viola, Violoncello, String Bass
 layout: composition
 publisher: ''
+publisher_link: ''
 reviews:
 - date: ''
   link: ''
@@ -32,6 +33,8 @@ soundcloud_ids:
 - ''
 title: 'Desire: Music for Dance (Part III)'
 translator: ''
+vimeo_ids:
+- ''
 youtube_ids:
 - ''
 

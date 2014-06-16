@@ -40,20 +40,36 @@ layout: default
   {% endif %}
 </section>
 
-<section class="youtube">
-  {% capture num_videos %}{{ page.youtube_ids | first | size }}{% endcapture %}
-  {% if num_videos != "0" %}
+<section class="videos">
+  {% capture num_videos %}{{ page.youtube_ids | first | size }}{{ page.vimeo_ids | first | size }}{% endcapture %}
+  {% if num_videos != "00" %}
     <h2>Videos</h2>
     <center>
       {% for y_id in page.youtube_ids %}
-        <iframe
-          id="ytplayer-{{ y_id }}"
-          type="text/html"
-          width="640"
-          height="390"
-          src="http://www.youtube.com/embed/{{ y_id }}?autoplay=0"
-          frameborder="0">
-        </iframe>
+        {% if y_id.size > 1 %}
+          <iframe
+            id="ytplayer-{{ y_id }}"
+            type="text/html"
+            width="640"
+            height="390"
+            src="http://www.youtube.com/embed/{{ y_id }}?autoplay=0"
+            allowfullscreen webkitallowfullscreen mozallowfullscreen
+            frameborder="0">
+          </iframe>
+        {% endif %}
+      {% endfor %}
+      {% for v_id in page.vimeo_ids %}
+        {% if v_id.size > 1 %}
+          <iframe
+            id="vplayer-{{ v_id }}"
+            type="text/html"
+            width="640"
+            height="390"
+            src="//player.vimeo.com/video/{{ v_id }}"
+            allowfullscreen webkitallowfullscreen mozallowfullscreen
+            frameborder="0">
+          </iframe>
+        {% endif %}
       {% endfor %}
     </center>
   {% endif %}

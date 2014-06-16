@@ -18,6 +18,7 @@ instrumentation:
 instrumentation_name: Oboe & Piano, Arr. Oboe & Marimba
 layout: composition
 publisher: ''
+publisher_link: ''
 reviews:
 - date: ''
   link: ''
@@ -28,6 +29,8 @@ soundcloud_ids:
 - ''
 title: Dialogue I
 translator: ''
+vimeo_ids:
+- ''
 youtube_ids:
 - ''
 

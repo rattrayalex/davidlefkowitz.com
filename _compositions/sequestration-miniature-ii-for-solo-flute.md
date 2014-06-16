@@ -15,7 +15,8 @@ instrumentation:
   - Winds
 instrumentation_name: Flute Solo
 layout: composition
-publisher: ''
+publisher: MMB Music
+publisher_link: http://www.mmbmusic.com
 reviews:
 - date: ''
   link: ''
@@ -26,6 +27,8 @@ soundcloud_ids:
 - ''
 title: Sequestration (Miniature II for Solo Flute)
 translator: ''
+vimeo_ids:
+- ''
 youtube_ids:
 - ''
 

@@ -18,6 +18,7 @@ instrumentation:
 instrumentation_name: Flute, Viola & Harp
 layout: composition
 publisher: Fatrock Ink
+publisher_link: http://fatrockink.com/lefkowitzdavid.html
 reviews:
 - date: ''
   link: ''
@@ -28,6 +29,8 @@ soundcloud_ids:
 - ''
 title: Rage, Denial, Hope
 translator: ''
+vimeo_ids:
+- ''
 youtube_ids:
 - ''
 

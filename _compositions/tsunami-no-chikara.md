@@ -18,6 +18,7 @@ instrumentation_name: 'Brass Ensemble (6 Tpts, 4 Hns, 2 Tbns, B. Tbn., 2 Euph., 
   Tub.) & Optional Percussion (Mar./Timp.) '
 layout: composition
 publisher: ''
+publisher_link: ''
 reviews:
 - date: ''
   link: ''
@@ -28,6 +29,8 @@ soundcloud_ids:
 - ''
 title: Tsunami No Chikara
 translator: ''
+vimeo_ids:
+- ''
 youtube_ids:
 - ''
 

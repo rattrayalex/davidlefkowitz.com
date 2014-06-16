@@ -17,6 +17,7 @@ instrumentation:
 instrumentation_name: Tenor & Piano
 layout: composition
 publisher: ''
+publisher_link: ''
 reviews:
 - date: ''
   link: ''
@@ -27,6 +28,8 @@ soundcloud_ids:
 - ''
 title: Listen, Beloved
 translator: ''
+vimeo_ids:
+- ''
 youtube_ids:
 - ''
 

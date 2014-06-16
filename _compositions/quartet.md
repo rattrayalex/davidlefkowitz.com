@@ -18,6 +18,7 @@ instrumentation:
 instrumentation_name: Flute, Violin, Violoncello, & Piano
 layout: composition
 publisher: ''
+publisher_link: ''
 reviews:
 - date: ''
   link: ''
@@ -28,6 +29,8 @@ soundcloud_ids:
 - ''
 title: Quartet
 translator: ''
+vimeo_ids:
+- ''
 youtube_ids:
 - ''
 

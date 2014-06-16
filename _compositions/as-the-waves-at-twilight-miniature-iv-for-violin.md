@@ -13,7 +13,8 @@ history:
 instrumentation: {}
 instrumentation_name: Violin Solo
 layout: composition
-publisher: ''
+publisher: MMB Music
+publisher_link: http://www.mmbmusic.com
 reviews:
 - date: ''
   link: ''
@@ -24,6 +25,8 @@ soundcloud_ids:
 - ''
 title: "\u2026as the waves at twilight\u2026 (Miniature IV for Violin)"
 translator: ''
+vimeo_ids:
+- ''
 youtube_ids:
 - ''
 

@@ -12,7 +12,8 @@ history:
 instrumentation: {}
 instrumentation_name: Wind Ensemble
 layout: composition
-publisher: ''
+publisher: MMB Music
+publisher_link: http://www.mmbmusic.com
 reviews:
 - date: ''
   link: ''
@@ -23,6 +24,8 @@ soundcloud_ids:
 - ''
 title: Seeing Stars
 translator: ''
+vimeo_ids:
+- ''
 youtube_ids:
 - ''
 

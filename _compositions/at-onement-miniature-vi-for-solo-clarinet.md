@@ -15,7 +15,8 @@ instrumentation:
   - Winds
 instrumentation_name: Clarinet Solo
 layout: composition
-publisher: ''
+publisher: MMB Music
+publisher_link: http://www.mmbmusic.com
 reviews:
 - date: ''
   link: ''
@@ -26,6 +27,8 @@ soundcloud_ids:
 - ''
 title: At Onement (Miniature VI for Solo Clarinet)
 translator: ''
+vimeo_ids:
+- ''
 youtube_ids:
 - ''
 

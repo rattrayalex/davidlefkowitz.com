@@ -14,6 +14,7 @@ instrumentation: {}
 instrumentation_name: Violoncello Solo
 layout: composition
 publisher: ''
+publisher_link: ''
 reviews:
 - date: ''
   link: ''
@@ -24,6 +25,8 @@ soundcloud_ids:
 - ''
 title: Possible Worlds
 translator: ''
+vimeo_ids:
+- ''
 youtube_ids:
 - ''
 

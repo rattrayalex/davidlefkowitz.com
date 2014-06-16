@@ -17,6 +17,7 @@ instrumentation:
 instrumentation_name: SATB Choir & Piano or Organ
 layout: composition
 publisher: Yelton Rhodes Music
+publisher_link: ''
 reviews:
 - date: ''
   link: ''
@@ -27,6 +28,8 @@ soundcloud_ids:
 - ''
 title: Psalm 8
 translator: Jewish Publication Society
+vimeo_ids:
+- ''
 youtube_ids:
 - ''
 

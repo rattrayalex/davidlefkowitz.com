@@ -14,6 +14,7 @@ instrumentation: {}
 instrumentation_name: Violin Duo, Arr. Viola Duo, Arr. Violoncello Duo
 layout: composition
 publisher: ''
+publisher_link: ''
 reviews:
 - date: ''
   link: ''
@@ -24,6 +25,8 @@ soundcloud_ids:
 - ''
 title: E Duo Unum
 translator: ''
+vimeo_ids:
+- ''
 youtube_ids:
 - ''
 

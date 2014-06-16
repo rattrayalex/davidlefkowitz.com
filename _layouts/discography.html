@@ -1,0 +1,39 @@
+---
+layout: default
+
+---
+
+<h1>Discography</h1>
+<hr>
+
+{% for disc in page.discs %}
+  <div class="list-group">
+    <div class="list-group-item">
+      <div class="row">
+        <div class="col-sm-6">
+          <img src="/images/albums/{{ disc.image }}"
+            style="width: 100%;" class="thumbnail">
+        </div>
+        <div class="col-sm-6">
+          <h3>{{ disc.title }}</h3>
+          <span>{{ disc.publisher }}, {{ disc.released }}</span>
+          {% if disc.catalogue %}
+            <span class="text-muted pull-right"># {{ disc.catalogue }}</span>
+          {% endif %}
+        </div>
+      </div>
+      <!-- <hr> -->
+      <table class="table">
+        {% for t in disc.tracks %}
+          <tr>
+            <td class='text-right'><p style="margin-top:0px; font-size:22px;">{{ t.track }}</p></td>
+            <td>
+              <div>{{ t.title | markdownify }}</div>
+              <div><em>{{ t.featuring }}</em></div>
+            </td>
+          </tr>
+        {% endfor %}
+      </table>
+    </div>
+  </div>
+{% endfor %}

@@ -21,6 +21,7 @@ instrumentation:
 instrumentation_name: Soprano, Flute, Clarinet, Violin, Violoncello, Piano, Marimba
 layout: composition
 publisher: ''
+publisher_link: ''
 reviews:
 - date: ''
   link: ''
@@ -34,6 +35,8 @@ soundcloud_ids:
 - '154351557'
 title: Snows Sing a Farewell
 translator: 'Benjamin & Barbara Harshav, '
+vimeo_ids:
+- ''
 youtube_ids:
 - UUosUzGNc075u2MIgwGCVyWw
 

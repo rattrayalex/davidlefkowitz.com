@@ -18,6 +18,7 @@ instrumentation:
 instrumentation_name: Flute, Clarinet (B-flat and Bass), Violin, Violoncello, Piano
 layout: composition
 publisher: ''
+publisher_link: ''
 reviews:
 - date: ''
   link: ''
@@ -29,6 +30,8 @@ soundcloud_ids:
 title: 'Surfer''s Guide for the Perplexed (or: Jonah on the Raging Sea) (Flute/Clarinet
   version)'
 translator: ''
+vimeo_ids:
+- ''
 youtube_ids:
 - ''
 

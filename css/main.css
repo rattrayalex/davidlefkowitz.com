@@ -83,9 +83,6 @@ blockquote p {
   vertical-align: middle;
   text-align: center;
 }
-.index-img h1, .index-img h3 {
-  text-shadow: white 0 0 15px;
-}
 html, body,
 body > .container,
 body > .container > .row,

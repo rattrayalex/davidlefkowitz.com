@@ -17,6 +17,7 @@ instrumentation_name: Flute, Oboe, English Horn, Percussion, Two Violins, Two Vi
   Two Violoncellos
 layout: composition
 publisher: ''
+publisher_link: ''
 reviews:
 - date: ''
   link: ''
@@ -27,6 +28,8 @@ soundcloud_ids:
 - ''
 title: BR/EIDING OPERA
 translator: ''
+vimeo_ids:
+- ''
 youtube_ids:
 - ''
 

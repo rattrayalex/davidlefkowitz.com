@@ -17,6 +17,7 @@ instrumentation:
 instrumentation_name: Tenor, Tibetan Lute, Percussion
 layout: composition
 publisher: ''
+publisher_link: ''
 reviews:
 - date: ''
   link: ''
@@ -27,6 +28,8 @@ soundcloud_ids:
 - ''
 title: Ten Songs of Time and Tenderness in Tibet
 translator: ''
+vimeo_ids:
+- ''
 youtube_ids:
 - ''
 

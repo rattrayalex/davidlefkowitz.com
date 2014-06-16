@@ -13,6 +13,7 @@ instrumentation: {}
 instrumentation_name: ''
 layout: composition
 publisher: ''
+publisher_link: ''
 reviews:
 - date: ''
   link: ''
@@ -23,6 +24,8 @@ soundcloud_ids:
 - ''
 title: "Pr\xE9lude: Dawn to Twilight"
 translator: ''
+vimeo_ids:
+- ''
 youtube_ids:
 - ''
 

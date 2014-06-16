@@ -15,6 +15,7 @@ instrumentation: {}
 instrumentation_name: TTBB Choir
 layout: composition
 publisher: ''
+publisher_link: ''
 reviews:
 - date: ''
   link: ''
@@ -27,6 +28,8 @@ soundcloud_ids:
 - '154405296'
 title: "Four Rub\xE1iy\xE1t"
 translator: Edward Fitzgerald
+vimeo_ids:
+- http://vimeo.com/19425707
 youtube_ids:
 - ''
 

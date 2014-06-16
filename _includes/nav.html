@@ -81,16 +81,19 @@
           <div class="panel-body">
           <ul>
             <li>
-              <a href="#contact" title="">Contact</a>
+              <a href="#contact">Contact</a>
             </li>
             <li>
-              <a href="#short_bio" title="">Short Bio</a>
+              <a href="#short-bio">Short Bio</a>
             </li>
             <li>
-              <a href="#long_bio" title="">Long Bio</a>
+              <a href="#medium-bio">Medium Bio</a>
             </li>
             <li>
-              <a href="#photos" title="">Photos</a>
+              <a href="#extended-bio">Long Bio</a>
+            </li>
+            <li>
+              <a href="#photos">Photos</a>
             </li>
           </ul>
           </div>
@@ -102,9 +105,50 @@
       </li>
     {% endif %}
 
+    {% if page.url == "/teaching.html" %}
+      <li class="panel panel-default">
+        <div class="panel-heading">
+          <h4 class="panel-title">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
+              Teaching &amp; Music Theory
+            </a>
+          </h4>
+        </div>
+        <div id="collapseTwo" class="panel-collapse collapse in">
+          <div class="panel-body">
+          <ul>
+            <li>
+              <a href="#teaching">Teaching</a>
+              <ul>
+                <li>
+                  <a href="#undergraduate">Undergraduate</a>
+                </li>
+                <li>
+                  <a href="#graduate">Graduate</a>
+                </li>
+              </ul>
+            </li>
+            <li>
+              <a href="#music-theory">Music Theory</a>
+              <ul>
+                <li>
+                  <a href="#publications">Publications</a>
+                </li>
+              </ul>
+            </li>
+          </ul>
+          </div>
+        </div>
+      </li>
+    {% else %}
+      <li>
+        <a href="/teaching.html" class="btn btn-default">Teaching &amp; Music Theory</a>
+      </li>
+    {% endif %}
+
 
     {% for p in site.pages %}
-      {% if p.url != "/" and p.url != "/bio.html" %}
+      {% if p.url != "/" and p.url != "/bio.html" and p.url != "/teaching.html" %}
         <li class="{% if p.url == page.url %} active {% endif %}">
           <a href="{{ p.url }}" class="btn btn-default">{{ p.title }}</a>
         </li>

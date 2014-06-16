@@ -18,6 +18,7 @@ instrumentation:
 instrumentation_name: Woodwind Quintet
 layout: composition
 publisher: ''
+publisher_link: ''
 reviews:
 - date: ''
   link: ''
@@ -28,6 +29,8 @@ soundcloud_ids:
 - ''
 title: Processional
 translator: ''
+vimeo_ids:
+- ''
 youtube_ids:
 - ''
 

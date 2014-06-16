@@ -12,7 +12,8 @@ history:
 instrumentation: {}
 instrumentation_name: ''
 layout: composition
-publisher: ''
+publisher: MMB Musicq
+publisher_link: http://www.mmbmusic.com
 reviews:
 - date: ''
   link: ''
@@ -23,6 +24,8 @@ soundcloud_ids:
 - ''
 title: An Autumn Flowering
 translator: ''
+vimeo_ids:
+- ''
 youtube_ids:
 - ''
 

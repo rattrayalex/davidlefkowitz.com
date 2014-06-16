@@ -17,6 +17,7 @@ instrumentation:
 instrumentation_name: Bass & Piano, Arr. Baritone & Piano, Arr. Tenor & Piano
 layout: composition
 publisher: ''
+publisher_link: ''
 reviews:
 - date: ''
   link: ''
@@ -27,6 +28,8 @@ soundcloud_ids:
 - ''
 title: Three William Carlos Williams Songs
 translator: ''
+vimeo_ids:
+- ''
 youtube_ids:
 - ''
 

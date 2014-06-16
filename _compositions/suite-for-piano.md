@@ -16,6 +16,7 @@ instrumentation:
 instrumentation_name: Piano Solo
 layout: composition
 publisher: ''
+publisher_link: ''
 reviews:
 - date: ''
   link: ''
@@ -26,6 +27,8 @@ soundcloud_ids:
 - ''
 title: Suite for Piano
 translator: ''
+vimeo_ids:
+- ''
 youtube_ids:
 - ''
 

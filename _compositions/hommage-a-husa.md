@@ -18,6 +18,7 @@ instrumentation:
 instrumentation_name: Brass Quintet & Timpani
 layout: composition
 publisher: ''
+publisher_link: ''
 reviews:
 - date: ''
   link: ''
@@ -28,6 +29,8 @@ soundcloud_ids:
 - ''
 title: "Hommage \xE0 Husa"
 translator: ''
+vimeo_ids:
+- ''
 youtube_ids:
 - ''
 

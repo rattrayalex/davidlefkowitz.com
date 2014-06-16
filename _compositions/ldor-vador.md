@@ -15,6 +15,7 @@ instrumentation: {}
 instrumentation_name: Children's Choir & Cantor
 layout: composition
 publisher: ''
+publisher_link: ''
 reviews:
 - date: ''
   link: ''
@@ -25,6 +26,8 @@ soundcloud_ids:
 - ''
 title: L'Dor Vador
 translator: ''
+vimeo_ids:
+- ''
 youtube_ids:
 - ''
 

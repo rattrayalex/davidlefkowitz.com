@@ -48,7 +48,7 @@ def read_jekyll_file(filepath):
   return front_matter, body_text
 
 
-def create_front_matter(row, old_front_matter=None):
+def create_front_matter(row, old_front_matter=None, accept=False):
   # OrderedDict([(u'Title', u'Winds Suite'),
   # (u'Instrumentation', u'Piano'),
   # (u'# Instr.', 1.0),
@@ -113,11 +113,12 @@ def create_front_matter(row, old_front_matter=None):
       's': int(row['Duration'].split(':')[1])
     },
     'publisher': row['Publisher'],
+    'publisher_link': row['Publisher Link'],
     'author_of_text': row['Author of Text'],
     'translator': row['Translator'],
     'soundcloud_ids': str(row['SoundCloud URL']).split(', '),
     'youtube_ids': str(row['YouTube']).split(', '),
-
+    'vimeo_ids': str(row['vimeo']).split(', '),
     'layout': 'composition',
     'history': [
       {
@@ -137,7 +138,8 @@ def create_front_matter(row, old_front_matter=None):
   }
   # print data
 
-  new_front_matter = recursively_check_conflicts(data, old_front_matter)
+  new_front_matter = recursively_check_conflicts(
+    data, old_front_matter, accept=accept)
 
   new_front_matter_text = yaml.safe_dump(
     new_front_matter, default_flow_style=False)
@@ -145,7 +147,7 @@ def create_front_matter(row, old_front_matter=None):
   return new_front_matter_text
 
 
-def recursively_check_conflicts(new, old):
+def recursively_check_conflicts(new, old, accept=False):
   puts(u'checking {}'.format(new))
   if hasattr(new, 'Title'):
     puts(u'TITLE: {}'.format(new['Title']))
@@ -168,6 +170,10 @@ def recursively_check_conflicts(new, old):
     puts(green(u_new))
     puts(red('RED (FROM OLD VERSION OF DOCUMENT):'))
     puts(red(u_old))
+
+    if accept:
+      puts(green('accepting Excel version (green)'))
+      return new
 
     while True:
       selection = raw_input(
@@ -235,26 +241,26 @@ def write_jekyll_file(filepath, new_front_matter, body_text=''):
     f.write(new_file_contents)
 
 
-def process_entry(row, dest):
+def process_entry(row, dest, accept=False):
   # puts(row)
 
   filename = slugify(row['Title'])
   filepath = os.path.abspath('{}/{}.md'.format(dest, filename))
 
-  front_matter, body_text = read_jekyll_file(filepath)
+  old_front_matter, body_text = read_jekyll_file(filepath)
 
-  new_front_matter = create_front_matter(row, front_matter)
+  new_front_matter = create_front_matter(row, old_front_matter, accept=accept)
 
   write_jekyll_file(filepath, new_front_matter, body_text)
   # puts('')
 
 
-def main(input_xls, dest):
+def main(input_xls, dest, accept=False):
   with open(input_xls, 'rb') as f:
     sheet = tablib.import_set(f.read())
 
   for row in sheet.dict:
-    process_entry(row, dest)
+    process_entry(row, dest, accept=accept)
 
 
 if __name__ == '__main__':
@@ -262,6 +268,7 @@ if __name__ == '__main__':
   parser = argparse.ArgumentParser(prog='bin/import.py')
   parser.add_argument('excel_file', action='store')
   parser.add_argument('destination_directory', action='store')
+  parser.add_argument('--accept', action='store_true')
   args = parser.parse_args()
 
-  main(args.excel_file, args.destination_directory)
+  main(args.excel_file, args.destination_directory, accept=args.accept)

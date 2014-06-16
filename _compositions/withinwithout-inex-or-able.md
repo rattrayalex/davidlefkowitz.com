@@ -18,6 +18,7 @@ instrumentation:
 instrumentation_name: Trumpet & Marimba, Arr. Alto Flute & Marimba
 layout: composition
 publisher: ''
+publisher_link: ''
 reviews:
 - date: ''
   link: ''
@@ -28,6 +29,8 @@ soundcloud_ids:
 - ''
 title: Within/Without [In/Ex (or able)]
 translator: ''
+vimeo_ids:
+- ''
 youtube_ids:
 - ''
 

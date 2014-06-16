@@ -16,6 +16,7 @@ instrumentation:
 instrumentation_name: Violoncello & Piano
 layout: composition
 publisher: ''
+publisher_link: ''
 reviews:
 - date: ''
   link: ''
@@ -26,6 +27,8 @@ soundcloud_ids:
 - ''
 title: "Amour et Biaut\xE9 Parfaite"
 translator: ''
+vimeo_ids:
+- ''
 youtube_ids:
 - ''
 

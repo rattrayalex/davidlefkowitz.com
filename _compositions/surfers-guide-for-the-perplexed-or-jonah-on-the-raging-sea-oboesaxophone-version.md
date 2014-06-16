@@ -19,6 +19,7 @@ instrumentation_name: Oboe, Saxophone (Soprano, Alto, Baritone), Violin, Violonc
   Piano
 layout: composition
 publisher: ''
+publisher_link: ''
 reviews:
 - date: ''
   link: ''
@@ -30,6 +31,8 @@ soundcloud_ids:
 title: 'Surfer''s Guide for the Perplexed (or: Jonah on the Raging Sea) (Oboe/Saxophone
   version)'
 translator: ''
+vimeo_ids:
+- ''
 youtube_ids:
 - ''
 

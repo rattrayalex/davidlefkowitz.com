@@ -20,6 +20,7 @@ instrumentation:
 instrumentation_name: Flute, Clarinet, Violin, Violoncello, Guitar, & Piano
 layout: composition
 publisher: ''
+publisher_link: ''
 reviews:
 - date: ''
   link: ''
@@ -35,6 +36,8 @@ soundcloud_ids:
 - '154392984'
 title: On the Pain of Separation (Guitar version)
 translator: ''
+vimeo_ids:
+- ''
 youtube_ids:
 - ''
 

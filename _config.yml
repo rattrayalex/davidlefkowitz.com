@@ -1,11 +1,4 @@
 
-collections:
-  compositions:
-    output: true
-  discography:
-    output: true
-
-
 title: David S. Lefkowitz
 description: "Professor of Composition & Theory at the UCLA Herb Alpert School of Music. "
 author:
@@ -16,5 +9,9 @@ author:
 production_url: http://davidlefkowitz.com
 exclude:
   - bin
+
+collections:
+  compositions:
+    output: true
 
 markdown: kramdown

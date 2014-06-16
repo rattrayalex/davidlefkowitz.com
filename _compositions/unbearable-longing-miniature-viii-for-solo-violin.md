@@ -15,6 +15,7 @@ instrumentation: {}
 instrumentation_name: Violin Solo, Arr. Violin Duo, Arr. Violin & Viola
 layout: composition
 publisher: ''
+publisher_link: ''
 reviews:
 - date: ''
   link: ''
@@ -25,6 +26,8 @@ soundcloud_ids:
 - ''
 title: Unbearable Longing (Miniature VIII for Solo Violin)
 translator: ''
+vimeo_ids:
+- ''
 youtube_ids:
 - ''
 

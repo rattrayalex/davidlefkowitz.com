@@ -14,6 +14,7 @@ instrumentation: {}
 instrumentation_name: String Quartet
 layout: composition
 publisher: ''
+publisher_link: ''
 reviews:
 - date: ''
   link: ''
@@ -24,6 +25,8 @@ soundcloud_ids:
 - ''
 title: Four Works, Exhibited
 translator: ''
+vimeo_ids:
+- ''
 youtube_ids:
 - ''
 

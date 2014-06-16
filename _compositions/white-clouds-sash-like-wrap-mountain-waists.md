@@ -16,6 +16,7 @@ instrumentation:
 instrumentation_name: Violin Solo, String Orchestra (54331), Optional Percussion (Vib./Mar./Glsp.)
 layout: composition
 publisher: ''
+publisher_link: ''
 reviews:
 - date: ''
   link: ''
@@ -27,6 +28,8 @@ soundcloud_ids:
 - '154346837'
 title: White Clouds, Sash-Like, Wrap Mountain Waists
 translator: ''
+vimeo_ids:
+- ''
 youtube_ids:
 - ''
 

@@ -16,6 +16,7 @@ instrumentation:
 instrumentation_name: Oboe, Clarinet, & Wind Ensemble
 layout: composition
 publisher: ''
+publisher_link: ''
 reviews:
 - date: ''
   link: ''
@@ -26,6 +27,8 @@ soundcloud_ids:
 - ''
 title: 'Of Love and Loss: Double Concerto for Oboe, Clarinet, and Wind Ensemble'
 translator: ''
+vimeo_ids:
+- ''
 youtube_ids:
 - ''
 
