@@ -17,21 +17,28 @@ layout: default
       data-genres='{{ c.genre | append:" " }}'
 
       >
-      <a href="{{ c.url }}">
-        <div class="list-group-item">
-          <h3>{{ c.title }}</h3>
-          <p class="text-muted">
-            <span>Composed: {{ c.date }}</span>
-            {% if c.publisher.size > 1 %}
+      <a href="{{ c.url }}" class="list-group-item">
+        <h3 class="list-group-item-heading">{{ c.title }}</h3>
+        <div class="row list-group-item-text">
+          <div class="col-sm-6">
+            <p class="lead" style="color:#333;">
+              {{ c.instrumentation_name }}
+            </p>
+          </div>
+          <div class="col-sm-6">
+            <p class="text-muted">
+              <span>Composed: {{ c.date }}</span>
+              {% if c.publisher.size > 1 %}
+                <br>
+                <span>Publisher: {{ c.publisher }}</span>
+              {% endif %}
               <br>
-              <span>Publisher: {{ c.publisher }}</span>
-            {% endif %}
-            <br>
-            <span>
-              Duration:
-              {{ c.duration.m }}:{% if c.duration.s < 10 %}0{% endif %}{{ c.duration.s }}
-            </span>
-          </p>
+              <span>
+                Duration:
+                {{ c.duration.m }}:{% if c.duration.s < 10 %}0{% endif %}{{ c.duration.s }}
+              </span>
+            </p>
+          </div>
         </div>
       </a>
     </div>

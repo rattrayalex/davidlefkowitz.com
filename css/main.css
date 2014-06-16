@@ -44,7 +44,7 @@ body {
   /*background: rgba(252, 244, 220, 0.06);*/
 }
 .panel-default > .panel-heading {
-  background: rgba(252, 244, 220, 0.32);
+  background: rgba(252, 244, 220, 0.48);
 }
 .btn-default,
 p {
@@ -113,6 +113,25 @@ body > .container > .row,
   .site-content > .row > .col-md-5 {
     height: 80%;
   }
+}
+a.list-group-item .list-group-item-heading {
+  color: #428BCA;
+  text-decoration: underline;
+}
+a.list-group-item:hover .list-group-item-heading,
+a.list-group-item:focus .list-group-item-heading {
+  color: #2A6496;
+  text-decoration: underline;
+}
+a.list-group-item:hover,
+a.list-group-item:hover {
+  box-shadow: 0 3px 3px rgba(0,0,0,.10);
+}
+.text-muted {
+  color: #888;
+}
+p.lead {
+  font-size: 19px;
 }
 #footer {
   position: relative;
