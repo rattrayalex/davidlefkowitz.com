@@ -10,11 +10,11 @@ layout: default
   <div class="list-group">
     <div class="list-group-item">
       <div class="row">
-        <div class="col-sm-6">
+        <div class="col-sm-7">
           <img src="/images/albums/{{ disc.image }}"
             style="width: 100%;" class="thumbnail">
         </div>
-        <div class="col-sm-6">
+        <div class="col-sm-5">
           <h3>{{ disc.title }}</h3>
           <span>{{ disc.publisher }}, {{ disc.released }}</span>
           {% if disc.catalogue %}
@@ -23,17 +23,20 @@ layout: default
         </div>
       </div>
       <!-- <hr> -->
-      <table class="table">
+      <table class="table" style="margin-bottom: 0px;">
         {% for t in disc.tracks %}
-          <tr>
-            <td class='text-right'><p style="margin-top:0px; font-size:22px;">{{ t.track }}</p></td>
-            <td>
+          <tr class="row">
+            <td class='text-right col-xs-1'>
+              <p style="margin-top:0px; font-size:22px;">{{ t.track }}</p>
+            </td>
+            <td class="col-xs-11">
               <div>{{ t.title | markdownify }}</div>
-              <div><em>{{ t.featuring }}</em></div>
+              <div style="margin-top: -5px; margin-bottom: 3px;">{{ t.featuring }}</div>
             </td>
           </tr>
         {% endfor %}
       </table>
     </div>
   </div>
+  <br>
 {% endfor %}
