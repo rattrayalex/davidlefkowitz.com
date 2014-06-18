@@ -1,6 +1,5 @@
 ---
 title: Compositions
 layout: compositions
-
 ---
 

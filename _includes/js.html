@@ -1,8 +1,17 @@
+<!-- jquery -->
 <script data-no-instant src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-<script data-no-instant src="//maxcdn.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
-<script data-no-instant src="/js/isotope.pkgd.min.js"></script>
-<script data-no-instant type="text/javascript" src="/js/soundcloud.html5.api.js"></script>
+<script data-no-instant>
+  window.jQuery || document.write('<script src="/js/jquery.min.js" data-no-instant><\/script>');
+</script>
 
+<!-- bootstrap -->
+<script data-no-instant src="//maxcdn.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+<script data-no-instant>
+  window.bootstrap || document.write('<script src="/js/bootstrap.min.js" data-no-instant><\/script>');
+</script>
+
+<script data-no-instant src="/js/isotope.pkgd.min.js"></script>
+<script data-no-instant src="/js/soundcloud.html5.api.js"></script>
 <script data-no-instant src="/js/instantclick.min.js"></script>
 
 <script data-no-instant>
@@ -12,7 +21,7 @@
     for (var i = 0; i < codePoints.length; i++) {
       email += String.fromCharCode(codePoints[i]);
     }
-    console.log(email);
+    // console.log(email);
     $(selector).html(email)
     $('a' + selector).attr('href', 'mailto:' + email)
   }

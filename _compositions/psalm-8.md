@@ -13,9 +13,11 @@ history:
   - ''
 instrumentation:
   Keyboard:
-  - Organ or Piano
+  - Organ
+  - Piano
 instrumentation_name: SATB Choir & Piano or Organ
 layout: composition
+n_instruments: 3
 publisher: Yelton Rhodes Music
 publisher_link: ''
 reviews:

@@ -18,6 +18,7 @@ instrumentation:
 instrumentation_name: Oboe, Saxophone (Soprano, Alto, Baritone), Violin, Violoncello,
   Piano
 layout: composition
+n_instruments: 5
 publisher: ''
 publisher_link: ''
 reviews:

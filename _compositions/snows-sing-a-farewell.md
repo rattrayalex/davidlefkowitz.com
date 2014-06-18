@@ -20,6 +20,7 @@ instrumentation:
   - Winds
 instrumentation_name: Soprano, Flute, Clarinet, Violin, Violoncello, Piano, Marimba
 layout: composition
+n_instruments: 7
 publisher: ''
 publisher_link: ''
 reviews:

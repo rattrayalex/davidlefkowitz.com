@@ -21,6 +21,7 @@ instrumentation:
 instrumentation_name: Flute, Oboe, Clarinet, Bassoon, Saxophone, Trumpet, Piano, 3
   Percussionists, 2 Violins, Viola, Violoncello, String Bass
 layout: composition
+n_instruments: 15
 publisher: ''
 publisher_link: ''
 reviews:

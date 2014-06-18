@@ -16,6 +16,7 @@ instrumentation:
   - Winds
 instrumentation_name: 2 Tenors, 2 Baritones, 2 Basses, Bassoon, & String Bass
 layout: composition
+n_instruments: 8
 publisher: ''
 publisher_link: ''
 reviews:

@@ -15,6 +15,7 @@ instrumentation: {}
 instrumentation_name: Tenor, Baritone, Narrator, SATB Choir, Orchestra (3333 4331
   3 Perc Timp 2 Harps, Piano, Strings)
 layout: composition
+n_instruments: 100
 publisher: ''
 publisher_link: ''
 reviews:
@@ -29,7 +30,7 @@ soundcloud_ids:
 - '154372158'
 - '154372569'
 - '154372812'
-- '154374054'
+- '15437405'
 - '154382837'
 - '154380223'
 - '154385631'

@@ -13,6 +13,7 @@ history:
 instrumentation: {}
 instrumentation_name: Mezzo Soprano, Viola, Harp
 layout: composition
+n_instruments: 3
 publisher: Fatrock Ink
 publisher_link: http://fatrockink.com/lefkowitzdavid.html
 reviews:

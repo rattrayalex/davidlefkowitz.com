@@ -13,6 +13,7 @@ history:
 instrumentation: {}
 instrumentation_name: Violoncello Solo
 layout: composition
+n_instruments: 1
 publisher: ''
 publisher_link: ''
 reviews:

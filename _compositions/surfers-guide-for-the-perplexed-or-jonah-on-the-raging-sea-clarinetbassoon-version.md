@@ -17,6 +17,7 @@ instrumentation:
   - Winds
 instrumentation_name: Clarinet, Bassoon, Violin, Violoncello, Piano
 layout: composition
+n_instruments: 5
 publisher: ''
 publisher_link: ''
 reviews:

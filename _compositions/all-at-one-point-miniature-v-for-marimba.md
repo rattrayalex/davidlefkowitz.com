@@ -16,6 +16,7 @@ instrumentation:
   - Perc
 instrumentation_name: Marimba Solo, Arr. Marimba Duo
 layout: composition
+n_instruments: 1
 publisher: C. Alan Publications
 publisher_link: http://www.c-alanpublications.com/composers/lefkowitz-david.html
 reviews:

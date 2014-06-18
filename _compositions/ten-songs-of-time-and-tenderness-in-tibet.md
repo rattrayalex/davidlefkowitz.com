@@ -16,6 +16,7 @@ instrumentation:
   - Perc
 instrumentation_name: Tenor, Tibetan Lute, Percussion
 layout: composition
+n_instruments: 3
 publisher: ''
 publisher_link: ''
 reviews:

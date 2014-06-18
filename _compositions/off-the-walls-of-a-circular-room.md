@@ -13,6 +13,7 @@ instrumentation: {}
 instrumentation_name: Flute, Oboe, Clarinet, Bass Clarinet, Bassoon, French Horn,
   Trumpet, Trombone, Tuba, Percussion, 2 Violins, Viola, Violoncello
 layout: composition
+n_instruments: 14
 publisher: ''
 publisher_link: ''
 reviews:

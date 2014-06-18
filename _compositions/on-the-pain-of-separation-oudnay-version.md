@@ -17,6 +17,7 @@ instrumentation:
   - Winds
 instrumentation_name: Oud, Nay, Flute, Clarinet, Violin, Violoncello, Piano
 layout: composition
+n_instruments: 7
 publisher: ''
 publisher_link: ''
 reviews:

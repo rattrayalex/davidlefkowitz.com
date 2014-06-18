@@ -17,6 +17,7 @@ instrumentation:
 instrumentation_name: 'Brass Ensemble (6 Tpts, 4 Hns, 2 Tbns, B. Tbn., 2 Euph., 2
   Tub.) & Optional Percussion (Mar./Timp.) '
 layout: composition
+n_instruments: 100
 publisher: ''
 publisher_link: ''
 reviews:

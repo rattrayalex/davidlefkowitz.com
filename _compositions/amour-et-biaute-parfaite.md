@@ -15,6 +15,7 @@ instrumentation:
   - Piano
 instrumentation_name: Violoncello & Piano
 layout: composition
+n_instruments: 2
 publisher: ''
 publisher_link: ''
 reviews:

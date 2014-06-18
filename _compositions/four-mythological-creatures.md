@@ -15,6 +15,7 @@ instrumentation:
   - Winds
 instrumentation_name: Bass or Alto Flute
 layout: composition
+n_instruments: 1
 publisher: ''
 publisher_link: ''
 reviews:

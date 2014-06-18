@@ -16,6 +16,7 @@ instrumentation:
   - Harp
 instrumentation_name: Harp Solo
 layout: composition
+n_instruments: 1
 publisher: Fatrock Ink
 publisher_link: http://fatrockink.com/lefkowitzdavid.html
 reviews:

@@ -14,6 +14,7 @@ history:
 instrumentation: {}
 instrumentation_name: Violin Solo, Arr. Violin Duo, Arr. Violin & Viola
 layout: composition
+n_instruments: 1
 publisher: ''
 publisher_link: ''
 reviews:

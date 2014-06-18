@@ -16,6 +16,7 @@ instrumentation:
   - Piano
 instrumentation_name: SATB Choir & Piano
 layout: composition
+n_instruments: 2
 publisher: Yelton Rhodes Music
 publisher_link: http://yrmusic.com/v2/artists/bios/artist.php?ID=61
 reviews:

@@ -19,6 +19,7 @@ instrumentation:
   - Perc
 instrumentation_name: Harp, Piano, Vibraphone, & Percussion, Arr. 2 Pianos & 2 Percussion
 layout: composition
+n_instruments: 4
 publisher: Fatrock Ink
 publisher_link: http://fatrockink.com/lefkowitzdavid.html
 reviews:

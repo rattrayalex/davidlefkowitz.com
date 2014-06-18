@@ -12,6 +12,7 @@ history:
 instrumentation: {}
 instrumentation_name: Band
 layout: composition
+n_instruments: 100
 publisher: ''
 publisher_link: ''
 reviews:

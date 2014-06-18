@@ -15,6 +15,7 @@ instrumentation:
   - Winds
 instrumentation_name: Saxophone Quartet (SATBari)
 layout: composition
+n_instruments: 4
 publisher: ''
 publisher_link: ''
 reviews:

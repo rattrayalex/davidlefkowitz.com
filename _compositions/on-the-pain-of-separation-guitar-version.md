@@ -19,6 +19,7 @@ instrumentation:
   - Winds
 instrumentation_name: Flute, Clarinet, Violin, Violoncello, Guitar, & Piano
 layout: composition
+n_instruments: 6
 publisher: ''
 publisher_link: ''
 reviews:

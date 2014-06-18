@@ -17,6 +17,7 @@ instrumentation:
 instrumentation_name: Alto Saxophone Solo, or Alto Saxophone Trio, or Alto Saxophone
   & Recording
 layout: composition
+n_instruments: 1
 publisher: ''
 publisher_link: ''
 reviews:

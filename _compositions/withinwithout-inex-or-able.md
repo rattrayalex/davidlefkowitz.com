@@ -17,6 +17,7 @@ instrumentation:
   - Winds
 instrumentation_name: Trumpet & Marimba, Arr. Alto Flute & Marimba
 layout: composition
+n_instruments: 2
 publisher: ''
 publisher_link: ''
 reviews:

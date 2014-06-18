@@ -17,6 +17,7 @@ instrumentation:
   - Winds
 instrumentation_name: Woodwind Quintet
 layout: composition
+n_instruments: 5
 publisher: ''
 publisher_link: ''
 reviews:

@@ -16,6 +16,7 @@ instrumentation:
 instrumentation_name: Flute, Oboe, English Horn, Percussion, Two Violins, Two Violas,
   Two Violoncellos
 layout: composition
+n_instruments: 10
 publisher: ''
 publisher_link: ''
 reviews:

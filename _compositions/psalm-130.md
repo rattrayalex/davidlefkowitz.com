@@ -14,6 +14,7 @@ history:
 instrumentation: {}
 instrumentation_name: Cantor & SATB Choir
 layout: composition
+n_instruments: 100
 publisher: Yelton Rhodes Music
 publisher_link: http://yrmusic.com/v2/artists/bios/artist.php?ID=61
 reviews:

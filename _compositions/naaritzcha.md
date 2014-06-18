@@ -16,6 +16,7 @@ instrumentation:
   - Organ
 instrumentation_name: Cantor, Choir, Organ
 layout: composition
+n_instruments: 3
 publisher: Yelton Rhodes Music
 publisher_link: http://yrmusic.com/v2/artists/bios/artist.php?ID=61
 reviews:

@@ -13,6 +13,7 @@ history:
 instrumentation: {}
 instrumentation_name: Piano Trio
 layout: composition
+n_instruments: 3
 publisher: ''
 publisher_link: ''
 reviews:

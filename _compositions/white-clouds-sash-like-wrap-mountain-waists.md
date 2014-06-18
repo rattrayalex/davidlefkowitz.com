@@ -15,6 +15,7 @@ instrumentation:
   - Perc
 instrumentation_name: Violin Solo, String Orchestra (54331), Optional Percussion (Vib./Mar./Glsp.)
 layout: composition
+n_instruments: 17
 publisher: ''
 publisher_link: ''
 reviews:

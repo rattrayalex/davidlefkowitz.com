@@ -20,6 +20,7 @@ instrumentation_name: Flute, Alto Flute, Oboe, English Horn, Clarinet, Bass Clar
   Bassoon, Saxophones, French Horn, Trumpet, Trombone, 6 Percussionists, 2 Violins,
   2 Violas, 2 Violoncellos
 layout: composition
+n_instruments: 23
 publisher: ''
 publisher_link: ''
 reviews:

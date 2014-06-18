@@ -15,6 +15,7 @@ instrumentation:
   - Winds
 instrumentation_name: Oboe, English Horn, Bassoon, 2 Clarinets, Bass Clarinet
 layout: composition
+n_instruments: 6
 publisher: ''
 publisher_link: ''
 reviews:

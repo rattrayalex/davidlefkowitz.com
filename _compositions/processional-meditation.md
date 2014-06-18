@@ -13,6 +13,7 @@ history:
 instrumentation: {}
 instrumentation_name: String Quartet
 layout: composition
+n_instruments: 4
 publisher: ''
 publisher_link: ''
 reviews:

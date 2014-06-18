@@ -18,6 +18,7 @@ instrumentation:
 instrumentation_name: SATB Choir plus Optional Soprano or Tenor Soloist, with Optional
   Keyboard Accompaniment (Piano or Organ)
 layout: composition
+n_instruments: 100
 publisher: Yelton Rhodes Music
 publisher_link: http://yrmusic.com/v2/artists/bios/artist.php?ID=61
 reviews:

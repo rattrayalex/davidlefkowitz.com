@@ -1,5 +1,71 @@
 ---
 layout: default
+
+categories:
+  Orchestra:
+  - name: Solos
+  - name: Duos
+  - name: Chamber
+  - name: Large Ensemble
+    instruments:
+    - name: String Orchestra
+    - name: Orchestra
+    - name: Wind Ensemble
+    - name: Band
+  Instrumentation:
+  - name: Vocal
+    instruments:
+    - name: Soprano
+    - name: Mezzo Soprano
+    - name: Tenor
+    - name: Baritone
+    - name: Cantor
+    - name: Children's Choir
+    - name: TTBB Choir
+    - name: Choir
+    - name: Narrator
+    - name: Voice
+  - name: Keyboard
+    instruments:
+    - name: Piano
+    - name: Organ
+  - name: Harp
+  - name: Strings
+    instruments:
+    - name: Violin
+    - name: Viola
+    - name: Violoncello
+    - name: Cello
+    - name: String Bass
+    - name: Nay
+    - name: Tibetan Lute
+    - name: Orchestra
+  - name: Percussion
+    instruments:
+    - name: Handclap
+    - name: Marimba
+    - name: Timpani
+    - name: Optional Percussion
+    - name: Vibraphone
+  - name: Winds
+    instruments:
+    - name: Flute
+    - name: Alto Flute
+    - name: Bass Flute
+    - name: Clarinet
+    - name: Bass Clarinet
+    - name: Saxophone
+    - name: Bassoon
+    - name: Oboe
+    - name: Trumpet
+    - name: French Horn
+    - name: English Horn
+    - name: Trombone
+    - name: Bass Trombone
+    - name: Tuba
+    - name: Oud
+    - name: Band
+
 ---
 
 <h1>Compositions</h1>
@@ -7,17 +73,24 @@ layout: default
 
 <div id="compositions-container">
   {% for c in site.compositions %}
-    <div class="list-group composition-item"
+    {% capture filter_classes %}
+      {% for cat in c.instrumentation %}
+        {% for instrument in cat[1] %}
+          {{ instrument | downcase | replace:' ','-' | replace:"'","" }}
+        {% endfor %}
+      {% endfor %}
+    {% endcapture %}
+    <div class="list-group composition-item {{ filter_classes }}"
       data-date='{{ c.date }}'
       data-duration-m='{{ c.duration.m }}'
       data-duration-s='{{ c.duration.s }}'
       data-genres='{{ c.genre | append:" " }}'
-      data-instrumentation='{{ c.genre | append:" " }}'
+      data-instrumentation='{{ filter_classes }}'
       data-genres='{{ c.genre | append:" " }}'
       data-genres='{{ c.genre | append:" " }}'
 
       >
-      <a href="{{ c.url }}" class="list-group-item">
+      <a href="{{ c.url }}" class="list-group-item thumbnail">
         <h3 class="list-group-item-heading">{{ c.title }}</h3>
         <div class="row list-group-item-text">
           <div class="col-sm-6">

@@ -13,6 +13,7 @@ history:
 instrumentation: {}
 instrumentation_name: Violin Duo, Arr. Viola Duo, Arr. Violoncello Duo
 layout: composition
+n_instruments: 2
 publisher: ''
 publisher_link: ''
 reviews:

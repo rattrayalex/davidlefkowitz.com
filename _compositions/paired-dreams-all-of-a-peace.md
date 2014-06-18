@@ -15,6 +15,7 @@ instrumentation:
   - Piano
 instrumentation_name: Violin & Piano
 layout: composition
+n_instruments: 2
 publisher: Pacific Serenades
 publisher_link: http://pacser.org/v2/store/265/dreams:-all-of-a-peace/
 reviews:

@@ -2,6 +2,12 @@
 layout: default
 title: Contact &amp; Bio
 
+images: 
+- DavidSLefkowitz_2013.jpg
+- DavidSLefkowitz_harp.jpg
+- DavidSLefkowitz_ocean.jpg
+- profile.jpeg
+
 ---
 
 <h2 id="contact">About David Lefkowitz</h2> 
@@ -66,8 +72,14 @@ office: (310) 206-1003
 ---
 
 ## Photos
-
-<img src="/images/profile.jpeg" 
-  alt="Photo of David Lefkowitz" 
-  style="max-width: 100%;"
-  class="thumbnail">
+<section id="photos" class="row">
+  {% for img in page.images %}
+    <div class="col-sm-3 col-xs-6">
+      <a href="/images/{{ img }}" class="thumbnail">
+        <img src="/images/{{ img }}" 
+          alt="Photo of David Lefkowitz" 
+          class="img-responsive">
+      </a>
+    </div>
+  {% endfor %}    
+</section>

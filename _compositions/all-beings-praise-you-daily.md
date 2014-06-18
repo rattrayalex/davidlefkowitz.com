@@ -14,6 +14,7 @@ instrumentation:
   - Organ
 instrumentation_name: Organ Solo
 layout: composition
+n_instruments: 1
 publisher: ''
 publisher_link: ''
 reviews:

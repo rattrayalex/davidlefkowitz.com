@@ -18,6 +18,7 @@ instrumentation:
   - Winds
 instrumentation_name: Soprano, Clarinet, & Piano
 layout: composition
+n_instruments: 3
 publisher: ''
 publisher_link: ''
 reviews:

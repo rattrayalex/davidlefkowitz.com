@@ -12,6 +12,7 @@ history:
 instrumentation: {}
 instrumentation_name: ''
 layout: composition
+n_instruments: 100
 publisher: MMB Musicq
 publisher_link: http://www.mmbmusic.com
 reviews:

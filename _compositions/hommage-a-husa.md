@@ -17,6 +17,7 @@ instrumentation:
   - Perc
 instrumentation_name: Brass Quintet & Timpani
 layout: composition
+n_instruments: 6
 publisher: ''
 publisher_link: ''
 reviews:

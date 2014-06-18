@@ -12,6 +12,7 @@ history:
 instrumentation: {}
 instrumentation_name: Wind Ensemble
 layout: composition
+n_instruments: 100
 publisher: MMB Music
 publisher_link: http://www.mmbmusic.com
 reviews:

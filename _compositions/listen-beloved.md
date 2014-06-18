@@ -16,6 +16,7 @@ instrumentation:
   - Piano
 instrumentation_name: Tenor & Piano
 layout: composition
+n_instruments: 2
 publisher: ''
 publisher_link: ''
 reviews:

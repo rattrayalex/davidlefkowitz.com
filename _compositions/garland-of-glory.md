@@ -15,6 +15,7 @@ instrumentation:
   - Organ
 instrumentation_name: Soprano, Organ, & 2 Optional Handclaps
 layout: composition
+n_instruments: 2
 publisher: ''
 publisher_link: ''
 reviews:

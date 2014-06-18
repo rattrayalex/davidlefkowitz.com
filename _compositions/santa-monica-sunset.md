@@ -12,6 +12,7 @@ history:
 instrumentation: {}
 instrumentation_name: Orchestra (2222 221 3 Perc Strings)
 layout: composition
+n_instruments: 100
 publisher: ''
 publisher_link: ''
 reviews:

@@ -15,6 +15,7 @@ instrumentation:
   - Winds
 instrumentation_name: Flute Solo
 layout: composition
+n_instruments: 1
 publisher: MMB Music
 publisher_link: http://www.mmbmusic.com
 reviews:

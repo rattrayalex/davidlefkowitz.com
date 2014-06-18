@@ -15,6 +15,7 @@ instrumentation:
   - Winds
 instrumentation_name: Oboe, Clarinet, & Wind Ensemble
 layout: composition
+n_instruments: 100
 publisher: ''
 publisher_link: ''
 reviews:

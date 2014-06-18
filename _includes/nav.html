@@ -20,46 +20,136 @@
         </div>
         <div id="collapseTwo" class="panel-collapse collapse in">
           <div class="panel-body">
-            <form action="" class="form-vertical">
+            <form action="" class="form-vertical" id="compositions-filters">
+              {% for category in layout.categories %}
+                <h5>{{ category[0] }}</h5>
+                {% for subcat in category[1] %}
+                  <div class="checkbox">
+                    {% capture slug %}{{ subcat.name | downcase | replace:' ','-' | replace:"'","" }}{% endcapture %}
+                    <label for="{{ slug }}">
+                      <input type="checkbox"
+                        id="{{ slug }}"
+                        name="{{ slug }}"
+                        checked
+                        > {{ subcat.name }}
+                    </label>
+                    {% for instrument in subcat.instruments %}
+                      {% capture slug %}{{ instrument.name | downcase | replace:' ','-' | replace:"'","" }}{% endcapture %}
+                      <div class="checkbox">
+                        <label for="{{ slug }}">
+                          <input type="checkbox"
+                            id="{{ slug }}"
+                            name="{{ slug }}"
+                            class="filter-checkbox"
+                            checked="false"
+                            > {{ instrument.name }}
+                        </label>
+                      </div>
+                    {% endfor %}
+                  </div>
+                {% endfor %}
+              {% endfor %}
+            </form>
+            <!-- <form action="" class="form-vertical">
+              <div id="orchestra-nav">
+                <h5>Orchestra</h5>
+                <div class="checkbox">
+                  <label>
+                    <input type="checkbox"> Solos
+                  </label>
+                </div>
+                <div class="checkbox">
+                  <label>
+                    <input type="checkbox"> Duos
+                  </label>
+                </div>
+                <div class="checkbox">
+                  <label>
+                    <input type="checkbox"> Chamber
+                  </label>
+                </div>
+                <div class="checkbox">
+                  <label>
+                    <input type="checkbox"> Large Ensemble
+                  </label>
+                  <div class="checkbox">
+                    <label>
+                      <input type="checkbox"> String Orchestra
+                    </label>
+                  </div>
+                  <div class="checkbox">
+                    <label>
+                      <input type="checkbox"> Orchestra
+                    </label>
+                  </div>
+                  <div class="checkbox">
+                    <label>
+                      <input type="checkbox"> Wind Ensemble
+                    </label>
+                  </div>
+                  <div class="checkbox">
+                    <label>
+                      <input type="checkbox"> Band
+                    </label>
+                  </div>
+                </div>
+              </div>
 
-              <div class="checkbox">
-                <label>
-                  <input type="checkbox"> Solos
-                </label>
-              </div>
-              <div class="checkbox">
-                <label>
-                  <input type="checkbox"> Duos
-                </label>
-              </div>
-              <div class="checkbox">
-                <label>
-                  <input type="checkbox"> Chamber
-                </label>
-              </div>
-              <h5>Instrumentation</h5>
-              <div class="checkbox">
-                <label>
-                  <input type="checkbox"> Strings
-                </label>
+              <div id="instrumentation-nav">
+                <h5>Instrumentation</h5>
                 <div class="checkbox">
                   <label>
-                    <input type="checkbox"> Violin
+                    <input type="checkbox"> Vocal
                   </label>
                 </div>
                 <div class="checkbox">
                   <label>
-                    <input type="checkbox"> Viola
+                    <input type="checkbox"> Keyboard
+                  </label>
+                  <div class="checkbox">
+                    <label>
+                      <input type="checkbox"> Piano
+                    </label>
+                  </div>
+                  <div class="checkbox">
+                    <label>
+                      <input type="checkbox"> Organ
+                    </label>
+                  </div>
+                </div>
+                <div class="checkbox">
+                  <label>
+                    <input type="checkbox"> Harp
                   </label>
                 </div>
-              </div>
-              <div class="checkbox">
-                <label>
-                  <input type="checkbox"> Winds
-                </label>
+                <div class="checkbox">
+                  <label>
+                    <input type="checkbox"> Strings
+                  </label>
+                  <div class="checkbox">
+                    <label>
+                      <input type="checkbox"> Violin
+                    </label>
+                  </div>
+                  <div class="checkbox">
+                    <label>
+                      <input type="checkbox"> Viola
+                    </label>
+                  </div>
+                </div>
+                <div class="checkbox">
+                  <label>
+                    <input type="checkbox"> Percussion
+                  </label>
+                </div>
+                <div class="checkbox">
+                  <label>
+                    <input type="checkbox"> Winds
+                  </label>
+                </div>
               </div>
             </form>
-          </div>
+ -->          </div>
         </div>
       </li>
     {% else %}

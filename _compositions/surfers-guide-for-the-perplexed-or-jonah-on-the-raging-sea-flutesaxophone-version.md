@@ -18,6 +18,7 @@ instrumentation:
 instrumentation_name: Flute, Saxophone (Soprano, Alto, Baritone), Violin, Violoncello,
   Piano
 layout: composition
+n_instruments: 5
 publisher: ''
 publisher_link: ''
 reviews:

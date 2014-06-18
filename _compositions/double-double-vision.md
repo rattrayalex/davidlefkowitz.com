@@ -15,6 +15,7 @@ instrumentation:
   - Harp
 instrumentation_name: Harp Quartet
 layout: composition
+n_instruments: 4
 publisher: Fatrock Ink
 publisher_link: http://fatrockink.com/lefkowitzdavid.html
 reviews:

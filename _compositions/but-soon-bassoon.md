@@ -15,6 +15,7 @@ instrumentation:
   - Winds
 instrumentation_name: Bassoon Duo
 layout: composition
+n_instruments: 2
 publisher: ''
 publisher_link: ''
 reviews:

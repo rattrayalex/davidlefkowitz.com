@@ -17,6 +17,7 @@ instrumentation:
   - Winds
 instrumentation_name: Flute (or Oboe), Violin, & Two Guitars
 layout: composition
+n_instruments: 4
 publisher: ''
 publisher_link: ''
 reviews:

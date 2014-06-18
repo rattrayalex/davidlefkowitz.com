@@ -14,6 +14,7 @@ history:
 instrumentation: {}
 instrumentation_name: Children's Choir & Cantor
 layout: composition
+n_instruments: 2
 publisher: ''
 publisher_link: ''
 reviews:

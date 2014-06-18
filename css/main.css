@@ -123,10 +123,10 @@ a.list-group-item:focus .list-group-item-heading {
   color: #2A6496;
   text-decoration: underline;
 }
-a.list-group-item:hover,
+/*a.list-group-item:hover,
 a.list-group-item:hover {
   box-shadow: 0 3px 3px rgba(0,0,0,.10);
-}
+}*/
 .text-muted {
   color: #888;
 }

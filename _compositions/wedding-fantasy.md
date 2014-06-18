@@ -15,6 +15,7 @@ instrumentation:
   - Piano
 instrumentation_name: Piano Solo
 layout: composition
+n_instruments: 1
 publisher: ''
 publisher_link: ''
 reviews:

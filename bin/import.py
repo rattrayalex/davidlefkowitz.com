@@ -96,12 +96,13 @@ def create_front_matter(row, old_front_matter=None, accept=False):
   data = {
     'title': row['Title'],
     'instrumentation': {
-      k: v.split(', ')
+      k: v.replace(' or ', ', ').split(', ')
       for k, v in row.items()
       if k in instruments
       and v
     },
     'instrumentation_name': row['Instrumentation Name'],
+    'n_instruments': int(row.get('# Instr.', 100) or 100),
     'genre': [
       k for k, v in row.items()
       if k == v
