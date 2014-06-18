@@ -69,19 +69,19 @@ var requestFilterAll = function requestFilterAll() {
   }
 }
 
-$(".filter-checkbox").click(function(e) {
+$(".filter-checkbox > label > input").click(function(e) {
   e.stopPropagation();
-  var input = $(this).find('input');
-  // console.log('clicked ', input)
+  var input = $(this);
+  console.log('clicked ', input)
   toggleInput(input);
   requestFilterAll();
 });
 
-$('.parent-checkbox > label').click(function(e) {
-  var $parent_checkbox = $(this).parent('.parent-checkbox');
+$('.parent-checkbox > label > input').click(function(e) {
+  var $parent_checkbox = $(this).parent('label').parent('.parent-checkbox');
 
   // toggle/get val of the top-level checkbox
-  var $parent_input = $parent_checkbox.find('input').first();
+  var $parent_input = $(this);
   $parent_input = toggleInput($parent_input);
   var parent_val = $parent_input.val();
 
