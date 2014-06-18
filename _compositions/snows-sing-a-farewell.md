@@ -14,8 +14,8 @@ history:
 instrumentation:
   Keyboard:
   - Piano
-  Perc:
-  - Perc
+  Percussion:
+  - Percussion
   Winds:
   - Winds
 instrumentation_name: Soprano, Flute, Clarinet, Violin, Violoncello, Piano, Marimba

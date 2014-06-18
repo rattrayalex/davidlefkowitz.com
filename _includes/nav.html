@@ -24,7 +24,13 @@
               {% for category in layout.categories %}
                 <h5>{{ category[0] }}</h5>
                 {% for subcat in category[1] %}
-                  <div class="checkbox">
+                  <div
+                    {% if subcat.children.size > 0 %}
+                      class="checkbox parent-checkbox"
+                    {% else %}
+                      class="checkbox filter-checkbox"
+                    {% endif %}
+                    >
                     {% capture slug %}{{ subcat.name | downcase | replace:' ','-' | replace:"'","" }}{% endcapture %}
                     <label for="{{ slug }}">
                       <input type="checkbox"
@@ -33,16 +39,15 @@
                         checked
                         > {{ subcat.name }}
                     </label>
-                    {% for instrument in subcat.instruments %}
-                      {% capture slug %}{{ instrument.name | downcase | replace:' ','-' | replace:"'","" }}{% endcapture %}
-                      <div class="checkbox">
+                    {% for child in subcat.children %}
+                      {% capture slug %}{{ child.name | downcase | replace:' ','-' | replace:"'","" }}{% endcapture %}
+                      <div class="checkbox filter-checkbox">
                         <label for="{{ slug }}">
                           <input type="checkbox"
                             id="{{ slug }}"
                             name="{{ slug }}"
-                            class="filter-checkbox"
                             checked="false"
-                            > {{ instrument.name }}
+                            > {{ child.name }}
                         </label>
                       </div>
                     {% endfor %}

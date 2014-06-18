@@ -11,8 +11,8 @@ history:
   timeplaces:
   - ''
 instrumentation:
-  Perc:
-  - Perc
+  Percussion:
+  - Percussion
 instrumentation_name: Percussion Trio
 layout: composition
 n_instruments: 3

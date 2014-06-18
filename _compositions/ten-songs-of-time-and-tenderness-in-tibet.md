@@ -12,8 +12,8 @@ history:
   timeplaces:
   - ''
 instrumentation:
-  Perc:
-  - Perc
+  Percussion:
+  - Percussion
 instrumentation_name: Tenor, Tibetan Lute, Percussion
 layout: composition
 n_instruments: 3

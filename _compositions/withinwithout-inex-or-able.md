@@ -11,8 +11,8 @@ history:
   timeplaces:
   - ''
 instrumentation:
-  Perc:
-  - Perc
+  Percussion:
+  - Percussion
   Winds:
   - Winds
 instrumentation_name: Trumpet & Marimba, Arr. Alto Flute & Marimba

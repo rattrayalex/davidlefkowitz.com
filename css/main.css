@@ -114,6 +114,9 @@ body > .container > .row,
     height: 80%;
   }
 }
+.composition-item {
+  width: 100%;
+}
 a.list-group-item .list-group-item-heading {
   color: #428BCA;
   text-decoration: underline;

@@ -14,8 +14,8 @@ instrumentation:
   - Brass
   Keyboard:
   - Piano
-  Perc:
-  - Perc
+  Percussion:
+  - Percussion
   Winds:
   - Winds
 instrumentation_name: Flute, Oboe, Clarinet, Bassoon, Saxophone, Voice, Piano, 6 Percussionists,

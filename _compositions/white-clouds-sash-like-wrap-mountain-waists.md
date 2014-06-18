@@ -11,8 +11,8 @@ history:
   timeplaces:
   - ''
 instrumentation:
-  Perc:
-  - Perc
+  Percussion:
+  - Percussion
 instrumentation_name: Violin Solo, String Orchestra (54331), Optional Percussion (Vib./Mar./Glsp.)
 layout: composition
 n_instruments: 17

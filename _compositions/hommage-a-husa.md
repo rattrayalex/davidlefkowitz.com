@@ -13,8 +13,8 @@ history:
 instrumentation:
   Brass:
   - Brass
-  Perc:
-  - Perc
+  Percussion:
+  - Percussion
 instrumentation_name: Brass Quintet & Timpani
 layout: composition
 n_instruments: 6

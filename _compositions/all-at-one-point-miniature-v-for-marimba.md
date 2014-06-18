@@ -12,8 +12,8 @@ history:
   timeplaces:
   - ''
 instrumentation:
-  Perc:
-  - Perc
+  Percussion:
+  - Percussion
 instrumentation_name: Marimba Solo, Arr. Marimba Duo
 layout: composition
 n_instruments: 1

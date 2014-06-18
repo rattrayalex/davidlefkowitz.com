@@ -15,8 +15,8 @@ instrumentation:
   - Harp
   Keyboard:
   - Piano
-  Perc:
-  - Perc
+  Percussion:
+  - Percussion
 instrumentation_name: Harp, Piano, Vibraphone, & Percussion, Arr. 2 Pianos & 2 Percussion
 layout: composition
 n_instruments: 4

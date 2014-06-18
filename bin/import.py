@@ -85,7 +85,7 @@ def create_front_matter(row, old_front_matter=None, accept=False):
     'Brass',
     'Harp',
     'Guitar',
-    'Perc'
+    'Percussion'
   ]
 
   try:

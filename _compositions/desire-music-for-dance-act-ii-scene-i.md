@@ -12,8 +12,8 @@ history:
 instrumentation:
   Brass:
   - Brass
-  Perc:
-  - Perc
+  Percussion:
+  - Percussion
   Winds:
   - Winds
 instrumentation_name: Flute, Alto Flute, Oboe, English Horn, Clarinet, Bass Clarinet,

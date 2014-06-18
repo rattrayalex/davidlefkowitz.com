@@ -12,8 +12,8 @@ history:
 instrumentation:
   Brass:
   - Brass
-  Perc:
-  - Perc
+  Percussion:
+  - Percussion
 instrumentation_name: 'Brass Ensemble (6 Tpts, 4 Hns, 2 Tbns, B. Tbn., 2 Euph., 2
   Tub.) & Optional Percussion (Mar./Timp.) '
 layout: composition

@@ -7,14 +7,14 @@ categories:
   - name: Duos
   - name: Chamber
   - name: Large Ensemble
-    instruments:
+    children:
     - name: String Orchestra
     - name: Orchestra
     - name: Wind Ensemble
     - name: Band
   Instrumentation:
   - name: Vocal
-    instruments:
+    children:
     - name: Soprano
     - name: Mezzo Soprano
     - name: Tenor
@@ -26,12 +26,12 @@ categories:
     - name: Narrator
     - name: Voice
   - name: Keyboard
-    instruments:
+    children:
     - name: Piano
     - name: Organ
   - name: Harp
   - name: Strings
-    instruments:
+    children:
     - name: Violin
     - name: Viola
     - name: Violoncello
@@ -41,14 +41,14 @@ categories:
     - name: Tibetan Lute
     - name: Orchestra
   - name: Percussion
-    instruments:
+    children:
     - name: Handclap
     - name: Marimba
     - name: Timpani
     - name: Optional Percussion
     - name: Vibraphone
   - name: Winds
-    instruments:
+    children:
     - name: Flute
     - name: Alto Flute
     - name: Bass Flute
@@ -73,22 +73,24 @@ categories:
 
 <div id="compositions-container">
   {% for c in site.compositions %}
-    {% capture filter_classes %}
+    {% capture filter_instruments %}
       {% for cat in c.instrumentation %}
         {% for instrument in cat[1] %}
           {{ instrument | downcase | replace:' ','-' | replace:"'","" }}
         {% endfor %}
       {% endfor %}
     {% endcapture %}
-    <div class="list-group composition-item {{ filter_classes }}"
+    {% capture filter_genres %}
+      {% for genre in c.genre %}
+        {{ genre | downcase | replace:' ','-' | replace:"'",""  }}
+      {% endfor %}
+    {% endcapture %}
+    <div class="list-group composition-item"
       data-date='{{ c.date }}'
       data-duration-m='{{ c.duration.m }}'
       data-duration-s='{{ c.duration.s }}'
-      data-genres='{{ c.genre | append:" " }}'
-      data-instrumentation='{{ filter_classes }}'
-      data-genres='{{ c.genre | append:" " }}'
-      data-genres='{{ c.genre | append:" " }}'
-
+      data-genres='{{ filter_genres }}'
+      data-instrumentation='{{ filter_instruments }}'
       >
       <a href="{{ c.url }}" class="list-group-item thumbnail">
         <h3 class="list-group-item-heading">{{ c.title }}</h3>
