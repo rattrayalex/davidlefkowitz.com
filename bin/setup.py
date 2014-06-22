@@ -68,7 +68,9 @@ def main():
   # add _site to gitignore
   add_to_gitignore('_site')
   shell('rm -rf _site/')
-  shell('git clone git@github.com:rattrayalex/davidlefkowitz.com.git _site')
+
+  remote = shell('git remote -v').split()[1]
+  shell('git clone {} _site'.format(remote))
 
   # go to _site, which is an entirely different git checkout
   os.chdir('_site')
