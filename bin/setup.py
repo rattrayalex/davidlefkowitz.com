@@ -69,8 +69,16 @@ def main():
   add_to_gitignore('_site')
   shell('rm -rf _site/')
 
+  try:
+    shell('git branch gh-pages')  # errors if existed
+    # since it wasn't there already, push gh-pages
+    shell('git push -U origin gh-pages')
+  except:
+    puts('not a problem, just checkin')
+
   remote = shell('git remote -v').split()[1]
-  shell('git clone {} _site'.format(remote))
+  shell('git clone -b gh-pages --single-branch --depth 1 {remote} _site'
+    .format(remote=remote))
 
   # go to _site, which is an entirely different git checkout
   os.chdir('_site')
