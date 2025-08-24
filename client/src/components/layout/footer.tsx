@@ -1,12 +1,11 @@
 import React from "react";
 import { Link } from "wouter";
-import { Twitter, Linkedin, Mail } from "lucide-react";
 
 export default function Footer() {
     return (
         <footer className="bg-navy text-white py-16">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div className="grid md:grid-cols-3 gap-8">
+                <div className="grid md:grid-cols-2 gap-8">
                     <div>
                         <h3 className="text-2xl font-playfair font-semibold mb-4">
                             David S. Lefkowitz
@@ -45,45 +44,6 @@ export default function Footer() {
                                 </Link>
                             </li>
                         </ul>
-                    </div>
-                    
-                    <div>
-                        <h4 className="text-lg font-semibold mb-4">Connect</h4>
-                        <div className="flex space-x-4 mb-6">
-                            <a 
-                                href="#" 
-                                className="text-gray-300 hover:text-purple transition-colors duration-200"
-                                data-testid="social-link-twitter"
-                            >
-                                <Twitter className="h-5 w-5" />
-                            </a>
-                            <a 
-                                href="#" 
-                                className="text-gray-300 hover:text-purple transition-colors duration-200"
-                                data-testid="social-link-linkedin"
-                            >
-                                <Linkedin className="h-5 w-5" />
-                            </a>
-                            <a 
-                                href="mailto:dlefkowitz@ucla.edu" 
-                                className="text-gray-300 hover:text-purple transition-colors duration-200"
-                                data-testid="social-link-email"
-                            >
-                                <Mail className="h-5 w-5" />
-                            </a>
-                        </div>
-                        <div>
-                            <p className="text-gray-300 text-sm">
-                                UCLA Herb Alpert School of Music<br />
-                                <a 
-                                    href="mailto:dlefkowitz@ucla.edu" 
-                                    className="hover:text-purple transition-colors duration-200"
-                                    data-testid="contact-email"
-                                >
-                                    dlefkowitz@ucla.edu
-                                </a>
-                            </p>
-                        </div>
                     </div>
                 </div>
                 

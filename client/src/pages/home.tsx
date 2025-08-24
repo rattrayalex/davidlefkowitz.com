@@ -36,13 +36,13 @@ export default function Home() {
             <section className="relative overflow-hidden py-20" style={{backgroundColor: '#e5e5ff'}}>
                 {/* Twelve-pointed star background from production website */}
                 <div 
-                    className="absolute inset-0 opacity-30 pointer-events-none"
+                    className="absolute inset-0 opacity-20 pointer-events-none"
                     style={{
                         backgroundImage: `url(${twelvePointStarSvg})`,
-                        backgroundPosition: 'center center',
-                        backgroundSize: 'contain',
+                        backgroundPosition: 'center center', 
+                        backgroundSize: '800px 800px',
                         backgroundRepeat: 'no-repeat',
-                        zIndex: -1
+                        zIndex: 0
                     }}
                 ></div>
                 
