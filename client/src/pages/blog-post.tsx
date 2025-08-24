@@ -120,7 +120,7 @@ export default function BlogPostPage() {
                         </div>
 
                         {/* Content */}
-                        <div className="text-gray-700 leading-relaxed whitespace-pre-wrap" data-testid="post-content" style={{lineHeight: '1.6', tabSize: '2.5em', fontFamily: 'Times, "Times New Roman", Palatino, serif', textIndent: '2.5em'}}>
+                        <div className="text-gray-700 leading-relaxed whitespace-pre-wrap" data-testid="post-content" style={{lineHeight: '1.6', tabSize: '2.5em', fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
                             {post.content}
                         </div>
                     </div>
