@@ -87,7 +87,7 @@ export default function BlogPostPage() {
                     </h1>
 
                     {/* Tags */}
-                    {post.tags.length > 0 && (
+                    {post.tags && post.tags.length > 0 && (
                         <div className="mb-6">
                             <div className="flex flex-wrap gap-2">
                                 {post.tags.map((tag) => (
@@ -109,12 +109,10 @@ export default function BlogPostPage() {
             <section className="py-8">
                 <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="prose prose-lg max-w-none">
-                        {/* Comment Box */}
-                        {post.comment && (
-                            <div className="text-xl text-gray-700 leading-relaxed mb-8 p-6 border border-gray-300 rounded-xl border-l-4 border-purple" data-testid="post-comment" style={{backgroundColor: '#e5e5ff'}}>
-                                {post.comment}
-                            </div>
-                        )}
+                        {/* Excerpt */}
+                        <div className="text-xl text-gray-700 leading-relaxed mb-8 p-6 border border-gray-300 rounded-xl border-l-4 border-purple" data-testid="post-excerpt" style={{backgroundColor: '#e5e5ff'}}>
+                            {post.excerpt}
+                        </div>
 
                         {/* Content */}
                         <div className="text-gray-700 leading-relaxed whitespace-pre-wrap" data-testid="post-content">
