@@ -8,79 +8,22 @@ import * as fs from "fs";
 const schemaData = JSON.parse(fs.readFileSync("server/notion-schemas.json", "utf-8"));
 
 /**
- * Extract purple box text from a Notion page
- * Looks for text that contains "should appear in the purple box"
+ * Extract content and purple box text from a Notion page
+ * For June 20, 2025 post: uses last paragraph for purple box and excludes it from content
  */
-async function extractPurpleBoxText(pageId: string): Promise<string> {
+async function extractContentAndPurpleBox(pageId: string, isJune20Post: boolean): Promise<{content: string, purpleBoxText: string}> {
     if (!notion) {
         throw new Error("Notion client not available");
     }
 
     try {
-        const blocks = await notion.blocks.children.list({
-            block_id: pageId,
-            page_size: 100
-        });
-
-        for (const block of blocks.results) {
-            if (!('type' in block)) continue;
-
-            let blockText = "";
-            switch (block.type) {
-                case 'paragraph':
-                    blockText = block.paragraph?.rich_text?.map(t => t.plain_text).join('') || '';
-                    break;
-                case 'heading_1':
-                case 'heading_2':
-                case 'heading_3':
-                    const headingKey = `heading_${block.type.split('_')[1]}` as 'heading_1' | 'heading_2' | 'heading_3';
-                    blockText = block[headingKey]?.rich_text?.map(t => t.plain_text).join('') || '';
-                    break;
-                case 'quote':
-                    blockText = block.quote?.rich_text?.map(t => t.plain_text).join('') || '';
-                    break;
-                case 'callout':
-                    blockText = block.callout?.rich_text?.map(t => t.plain_text).join('') || '';
-                    break;
-                case 'toggle':
-                    blockText = block.toggle?.rich_text?.map(t => t.plain_text).join('') || '';
-                    break;
-                case 'bulleted_list_item':
-                    blockText = block.bulleted_list_item?.rich_text?.map(t => t.plain_text).join('') || '';
-                    break;
-                case 'numbered_list_item':
-                    blockText = block.numbered_list_item?.rich_text?.map(t => t.plain_text).join('') || '';
-                    break;
-            }
-            
-            if (blockText.toLowerCase().includes('should appear in the purple box')) {
-                return blockText.trim();
-            }
-        }
-
-        return "";
-    } catch (error) {
-        console.error(`Error extracting purple box text for page ${pageId}:`, error);
-        return "";
-    }
-}
-
-/**
- * Extract full text content from a Notion page
- */
-async function extractPageContent(pageId: string): Promise<string> {
-    if (!notion) {
-        throw new Error("Notion client not available");
-    }
-
-    try {
-        // Get all blocks from the page
         const blocks = await notion.blocks.children.list({
             block_id: pageId,
             page_size: 100
         });
 
         let content = "";
+        const contentBlocks = [];
 
         for (const block of blocks.results) {
             if (!('type' in block)) continue;
@@ -89,67 +32,78 @@ async function extractPageContent(pageId: string): Promise<string> {
                 case 'paragraph':
                     const paragraphText = block.paragraph?.rich_text?.map(t => t.plain_text).join('') || '';
                     if (paragraphText.trim()) {
-                        content += paragraphText + '\n\n';
+                        contentBlocks.push(paragraphText);
                     }
                     break;
                 
                 case 'heading_1':
                     const h1Text = block.heading_1?.rich_text?.map(t => t.plain_text).join('') || '';
                     if (h1Text.trim()) {
-                        content += '# ' + h1Text + '\n\n';
+                        contentBlocks.push('# ' + h1Text);
                     }
                     break;
                 
                 case 'heading_2':
                     const h2Text = block.heading_2?.rich_text?.map(t => t.plain_text).join('') || '';
                     if (h2Text.trim()) {
-                        content += '## ' + h2Text + '\n\n';
+                        contentBlocks.push('## ' + h2Text);
                     }
                     break;
                 
                 case 'heading_3':
                     const h3Text = block.heading_3?.rich_text?.map(t => t.plain_text).join('') || '';
                     if (h3Text.trim()) {
-                        content += '### ' + h3Text + '\n\n';
+                        contentBlocks.push('### ' + h3Text);
                     }
                     break;
                 
                 case 'bulleted_list_item':
                     const bulletText = block.bulleted_list_item?.rich_text?.map(t => t.plain_text).join('') || '';
                     if (bulletText.trim()) {
-                        content += '• ' + bulletText + '\n';
+                        contentBlocks.push('• ' + bulletText);
                     }
                     break;
                 
                 case 'numbered_list_item':
                     const numberText = block.numbered_list_item?.rich_text?.map(t => t.plain_text).join('') || '';
                     if (numberText.trim()) {
-                        content += '1. ' + numberText + '\n';
+                        contentBlocks.push('1. ' + numberText);
                     }
                     break;
 
                 case 'quote':
                     const quoteText = block.quote?.rich_text?.map(t => t.plain_text).join('') || '';
                     if (quoteText.trim()) {
-                        content += '> ' + quoteText + '\n\n';
+                        contentBlocks.push('> ' + quoteText);
                     }
                     break;
 
                 case 'code':
                     const codeText = block.code?.rich_text?.map(t => t.plain_text).join('') || '';
                     if (codeText.trim()) {
-                        content += '```\n' + codeText + '\n```\n\n';
+                        contentBlocks.push('```\n' + codeText + '\n```');
                     }
                     break;
             }
         }
 
-        return content.trim();
+        // For June 20 post: extract last paragraph for purple box
+        if (isJune20Post && contentBlocks.length > 0) {
+            const purpleBoxText = contentBlocks[contentBlocks.length - 1];
+            const contentWithoutLast = contentBlocks.slice(0, -1);
+            content = contentWithoutLast.join('\n\n');
+            return { content: content.trim(), purpleBoxText: purpleBoxText.trim() };
+        } else {
+            content = contentBlocks.join('\n\n');
+            return { content: content.trim(), purpleBoxText: "" };
+        }
+
     } catch (error) {
         console.error(`Error extracting content for page ${pageId}:`, error);
-        return "";
+        return { content: "", purpleBoxText: "" };
     }
 }
+
 
 /**
  * Calculate estimated reading time based on content
@@ -209,13 +163,15 @@ export async function syncBlogPosts() {
                 continue;
             }
 
-            // Extract full content from the page
+            // Check if this is the June 20, 2025 post
+            const isJune20Post = publishedDate === "2025-06-20";
+            
+            // Extract content and purple box text
             console.log(`Extracting content for: ${title}`);
-            const content = await extractPageContent(page.id);
+            const { content, purpleBoxText } = await extractContentAndPurpleBox(page.id, isJune20Post);
             const readTime = calculateReadingTime(content);
             
-            // Extract purple box text if it exists
-            const purpleBoxText = await extractPurpleBoxText(page.id);
+            // Use purple box text if available, otherwise fall back to comment property
             const comment = purpleBoxText || commentProperty?.rich_text?.map((part: any) => part.plain_text).join("") || "";
 
             // Create excerpt from first paragraph or first 150 chars
