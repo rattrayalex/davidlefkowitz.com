@@ -43,6 +43,7 @@ export const blogPostSchema = z.object({
   title: z.string().min(1),
   excerpt: z.string().min(1),
   content: z.string().min(1),
+  comment: z.string().optional(),
   published_date: z.string(),
   read_time: z.number().min(1),
   tags: z.array(z.string()),
@@ -64,6 +65,7 @@ export const blogPosts = pgTable("blog_posts", {
   title: text("title").notNull(),
   content: text("content").notNull().default(""),
   excerpt: text("excerpt").default(""),
+  comment: text("comment").default(""), // Comment from Notion DB
   published_date: timestamp("published_date").notNull(),
   published: boolean("published").notNull().default(false),
   tags: json("tags").$type<string[]>().default([]),

@@ -141,6 +141,9 @@ export async function syncBlogPosts() {
             }
             
 
+            const commentProperty = properties["Comment"] as any;
+            const comment = commentProperty?.rich_text?.[0]?.plain_text || "";
+            
             const publicationDateProperty = properties["Publication Date"] as any;
             const dateProperty = properties.Date as any;
             const publishedDate = publicationDateProperty?.date?.start || dateProperty?.date?.start;
@@ -165,6 +168,7 @@ export async function syncBlogPosts() {
                 title: title.trim(),
                 content: content,
                 excerpt: excerpt + (excerpt.length >= 150 ? "..." : ""),
+                comment: comment,
                 published_date: dateObj,
                 published: true,
                 tags: [], // No tags in current schema, but ready for future
