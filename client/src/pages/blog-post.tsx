@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useRoute, Link } from "wouter";
 import { Calendar, Clock, ArrowLeft } from "lucide-react";
@@ -13,6 +13,11 @@ export default function BlogPostPage() {
         queryKey: ["/api/blog-posts", postId],
         enabled: !!postId,
     });
+
+    // Scroll to top when component loads
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, [postId]);
 
     if (isLoading) {
         return (
@@ -115,7 +120,7 @@ export default function BlogPostPage() {
                         </div>
 
                         {/* Content */}
-                        <div className="text-gray-700 leading-relaxed whitespace-pre-wrap" data-testid="post-content" style={{lineHeight: '1.6'}}>
+                        <div className="text-gray-700 leading-relaxed whitespace-pre-wrap" data-testid="post-content" style={{lineHeight: '1.6', tabSize: '3.5em'}}>
                             {post.content}
                         </div>
                     </div>
