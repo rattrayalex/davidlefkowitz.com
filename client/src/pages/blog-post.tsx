@@ -106,7 +106,7 @@ export default function BlogPostPage() {
             </section>
 
             {/* Content */}
-            <section className="pt-6 pb-8">
+            <section className="pt-3 pb-8">
                 <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="prose prose-lg max-w-none">
                         {/* Excerpt */}
