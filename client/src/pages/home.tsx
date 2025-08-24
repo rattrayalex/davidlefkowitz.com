@@ -50,7 +50,7 @@ export default function Home() {
                     <div className="space-y-8">
                         {/* Main Title */}
                         <div>
-                            <h1 className="text-3xl lg:text-4xl font-playfair font-bold text-navy leading-tight mb-6" data-testid="hero-name" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
+                            <h1 className="text-4xl lg:text-5xl font-playfair font-bold text-navy leading-tight mb-6" data-testid="hero-name" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
                                 {profile?.name || "David S. Lefkowitz"}
                             </h1>
                             <p className="text-xl text-gray-700 font-medium mb-2" data-testid="hero-title" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
