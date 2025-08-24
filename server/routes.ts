@@ -8,12 +8,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
     // Get profile information
     app.get("/api/profile", async (req, res) => {
         try {
-            // Profile data from the existing website
+            // Profile data from the existing website - exact text only
             const profile = {
                 name: "David S. Lefkowitz",
                 title: "Composer, Professor of Music Composition & Theory",
                 institution: "UCLA Herb Alpert School of Music",
-                bio: "David S. Lefkowitz is a composer, theorist, and professor at UCLA. His work explores contemporary musical expression through innovative compositional techniques and advanced harmonic theory.",
+                bio: null, // No bio text on production site
                 bio_short: "Composer, Theorist, and Professor at UCLA",
                 photo_url: "https://www.davidlefkowitz.com/image/attachment%3A476b5447-bc36-47ab-a850-9b582c5e0782%3ADavidSLefkowitz_harp_vertical.jpg?table=block&id=22e3907b-2ee6-802d-b759-f91716caee9a&spaceId=e88500c6-581b-4ed6-abcb-6b83ce43de6d&width=2000&userId=&cache=v2",
                 email: "dlefkowitz@ucla.edu",

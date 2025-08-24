@@ -105,11 +105,8 @@ export default function Home() {
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="text-center mb-16">
                         <h2 className="text-4xl font-playfair font-bold text-navy mb-4" data-testid="featured-compositions-title">
-                            Featured Compositions
+                            Compositions
                         </h2>
-                        <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-                            Recent works that showcase innovative approaches to contemporary composition and harmonic exploration.
-                        </p>
                     </div>
                     
                     {compositionsLoading ? (
@@ -169,11 +166,8 @@ export default function Home() {
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="text-center mb-16">
                         <h2 className="text-4xl font-playfair font-bold text-navy mb-4" data-testid="recent-thoughts-title">
-                            Recent Thoughts
+                            Blog
                         </h2>
-                        <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-                            Insights on composition, music theory, and the contemporary classical music landscape.
-                        </p>
                     </div>
                     
                     {postsLoading ? (
@@ -233,45 +227,6 @@ export default function Home() {
                 </div>
             </section>
 
-            {/* Recognition */}
-            <section className="py-20 bg-white">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="text-center mb-16">
-                        <h2 className="text-4xl font-playfair font-bold text-navy mb-4" data-testid="recognition-title">
-                            Recognition & Impact
-                        </h2>
-                        <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-                            Acknowledgments from the international music community and academic institutions.
-                        </p>
-                    </div>
-                    
-                    <div className="grid md:grid-cols-3 gap-8">
-                        <div className="text-center p-8 bg-gradient-to-br from-purple-50 to-blue-50 rounded-xl" data-testid="recognition-grammy">
-                            <div className="inline-flex items-center justify-center w-16 h-16 bg-gold rounded-full mb-6">
-                                <Trophy className="text-white h-8 w-8" />
-                            </div>
-                            <h3 className="text-xl font-playfair font-semibold text-navy mb-2">Grammy Consideration</h3>
-                            <p className="text-gray-700">Works under consideration for Best Contemporary Classical Composition</p>
-                        </div>
-                        
-                        <div className="text-center p-8 bg-gradient-to-br from-purple-50 to-blue-50 rounded-xl" data-testid="recognition-teaching">
-                            <div className="inline-flex items-center justify-center w-16 h-16 bg-purple rounded-full mb-6">
-                                <GraduationCap className="text-white h-8 w-8" />
-                            </div>
-                            <h3 className="text-xl font-playfair font-semibold text-navy mb-2">UCLA Distinguished Teaching</h3>
-                            <p className="text-gray-700">Recognized for excellence in music composition and theory education</p>
-                        </div>
-                        
-                        <div className="text-center p-8 bg-gradient-to-br from-purple-50 to-blue-50 rounded-xl" data-testid="recognition-performances">
-                            <div className="inline-flex items-center justify-center w-16 h-16 bg-navy rounded-full mb-6">
-                                <Music className="text-white h-8 w-8" />
-                            </div>
-                            <h3 className="text-xl font-playfair font-semibold text-navy mb-2">International Performances</h3>
-                            <p className="text-gray-700">Works performed by leading orchestras and ensembles globally</p>
-                        </div>
-                    </div>
-                </div>
-            </section>
         </div>
     );
 }
