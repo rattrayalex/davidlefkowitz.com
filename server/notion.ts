@@ -1,8 +1,8 @@
 import { Client } from "@notionhq/client";
 
 // Initialize Notion client - only if credentials are available
-export const notion = process.env.NOTION_INTEGRATION_SECRET ? new Client({
-    auth: process.env.NOTION_INTEGRATION_SECRET,
+export const notion = process.env.NOTION_API_KEY ? new Client({
+    auth: process.env.NOTION_API_KEY,
 }) : null;
 
 // Extract the page ID from the Notion page URL
@@ -22,6 +22,9 @@ export const NOTION_PAGE_ID = process.env.NOTION_PAGE_URL ? extractPageIdFromUrl
  * @returns {Promise<Array<{id: string, title: string}>>} - Array of database objects with id and title
  */
 export async function getNotionDatabases() {
+    if (!notion || !NOTION_PAGE_ID) {
+        throw new Error("Notion client or page ID not available");
+    }
 
     // Array to store the child databases
     const childDatabases = [];
@@ -40,7 +43,7 @@ export async function getNotionDatabases() {
             // Process the results
             for (const block of response.results) {
                 // Check if the block is a child database
-                if (block.type === "child_database") {
+                if ('type' in block && block.type === "child_database") {
                     const databaseId = block.id;
 
                     // Retrieve the database title
@@ -74,7 +77,7 @@ export async function findDatabaseByTitle(title: string) {
     const databases = await getNotionDatabases();
 
     for (const db of databases) {
-        if (db.title && Array.isArray(db.title) && db.title.length > 0) {
+        if ('title' in db && db.title && Array.isArray(db.title) && db.title.length > 0) {
             const dbTitle = db.title[0]?.plain_text?.toLowerCase() || "";
             if (dbTitle === title.toLowerCase()) {
                 return db;
@@ -86,7 +89,11 @@ export async function findDatabaseByTitle(title: string) {
 }
 
 // Create a new database if one with a matching title does not exist
-export async function createDatabaseIfNotExists(title, properties) {
+export async function createDatabaseIfNotExists(title: string, properties: any) {
+    if (!notion || !NOTION_PAGE_ID) {
+        throw new Error("Notion client or page ID not available");
+    }
+    
     const existingDb = await findDatabaseByTitle(title);
     if (existingDb) {
         return existingDb;
@@ -109,38 +116,107 @@ export async function createDatabaseIfNotExists(title, properties) {
 }
 
 
-// Example function to Get all tasks from the Notion database
-export async function getTasks(tasksDatabaseId: string) {
+// Get all compositions from the Notion database
+export async function getCompositions(compositionsDatabaseId: string) {
+    if (!notion) {
+        throw new Error("Notion client not available");
+    }
+
     try {
         const response = await notion.databases.query({
-            database_id: tasksDatabaseId,
+            database_id: compositionsDatabaseId,
         });
 
         return response.results.map((page: any) => {
             const properties = page.properties;
 
-            const dueDate = properties.DueDate?.date?.start
-                ? new Date(properties.DueDate.date.start)
-                : null;
-
-            const completedAt = properties.CompletedAt?.date?.start
-                ? new Date(properties.CompletedAt.date.start)
-                : null;
-
             return {
-                notionId: page.id,
-                title: properties.Title?.title?.[0]?.plain_text || "Untitled Task",
+                id: page.id,
+                title: properties.Title?.title?.[0]?.plain_text || "Untitled Composition",
+                category: properties.Category?.select?.name || "Other",
+                year: properties.Year?.number || new Date().getFullYear(),
+                duration: properties.Duration?.rich_text?.[0]?.plain_text || "",
+                instrumentation: properties.Instrumentation?.rich_text?.[0]?.plain_text || "",
                 description: properties.Description?.rich_text?.[0]?.plain_text || "",
-                section: properties.Section?.select?.name || "Uncategorized",
-                isCompleted: properties.Completed?.checkbox || false,
-                dueDate,
-                completedAt,
-                priority: properties.Priority?.select?.name || null,
-                status: properties.Status?.status?.name || null,
+                premiere_info: properties.PremiereInfo?.rich_text?.[0]?.plain_text || "",
+                score_url: properties.ScoreURL?.url || "",
+                audio_url: properties.AudioURL?.url || "",
             };
         });
     } catch (error) {
-        console.error("Error fetching tasks from Notion:", error);
-        throw new Error("Failed to fetch tasks from Notion");
+        console.error("Error fetching compositions from Notion:", error);
+        throw new Error("Failed to fetch compositions from Notion");
+    }
+}
+
+// Get all blog posts from the Notion database
+export async function getBlogPosts(blogDatabaseId: string) {
+    if (!notion) {
+        throw new Error("Notion client not available");
+    }
+
+    try {
+        const response = await notion.databases.query({
+            database_id: blogDatabaseId,
+        });
+
+        return response.results.map((page: any) => {
+            const properties = page.properties;
+
+            return {
+                id: page.id,
+                title: properties.Title?.title?.[0]?.plain_text || "Untitled Post",
+                excerpt: properties.Excerpt?.rich_text?.[0]?.plain_text || "",
+                content: properties.Content?.rich_text?.[0]?.plain_text || "",
+                published_date: properties.PublishedDate?.date?.start 
+                    ? new Date(properties.PublishedDate.date.start) 
+                    : new Date(),
+                author: properties.Author?.rich_text?.[0]?.plain_text || "David S. Lefkowitz",
+                tags: properties.Tags?.multi_select?.map((tag: any) => tag.name) || [],
+                featured_image_url: properties.FeaturedImage?.files?.[0]?.external?.url || 
+                                   properties.FeaturedImage?.files?.[0]?.file?.url || "",
+            };
+        });
+    } catch (error) {
+        console.error("Error fetching blog posts from Notion:", error);
+        throw new Error("Failed to fetch blog posts from Notion");
+    }
+}
+
+// Get all recordings from the Notion database
+export async function getRecordings(recordingsDatabaseId: string) {
+    if (!notion) {
+        throw new Error("Notion client not available");
+    }
+
+    try {
+        const response = await notion.databases.query({
+            database_id: recordingsDatabaseId,
+        });
+
+        return response.results.map((page: any) => {
+            const properties = page.properties;
+
+            return {
+                id: page.id,
+                title: properties.Title?.title?.[0]?.plain_text || "Untitled Recording",
+                composer: properties.Composer?.rich_text?.[0]?.plain_text || "David S. Lefkowitz",
+                performers: properties.Performers?.rich_text?.[0]?.plain_text || "",
+                year: properties.Year?.number || new Date().getFullYear(),
+                duration: properties.Duration?.rich_text?.[0]?.plain_text || "",
+                description: properties.Description?.rich_text?.[0]?.plain_text || "",
+                audio_url: properties.AudioURL?.url || "",
+                album_cover_url: properties.AlbumCover?.files?.[0]?.external?.url || 
+                                properties.AlbumCover?.files?.[0]?.file?.url || "",
+                purchase_links: {
+                    spotify: properties.SpotifyURL?.url || "",
+                    apple_music: properties.AppleMusicURL?.url || "",
+                    bandcamp: properties.BandcampURL?.url || "",
+                }
+            };
+        });
+    } catch (error) {
+        console.error("Error fetching recordings from Notion:", error);
+        throw new Error("Failed to fetch recordings from Notion");
     }
 }
