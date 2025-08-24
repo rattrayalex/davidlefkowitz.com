@@ -72,7 +72,7 @@ export default {
         serif: ["var(--font-serif)"],
         mono: ["var(--font-mono)"],
         inter: ["Inter", "sans-serif"],
-        playfair: ["Playfair Display", "serif"],
+        playfair: ["Georgia", "serif"],
       },
       keyframes: {
         "accordion-down": {

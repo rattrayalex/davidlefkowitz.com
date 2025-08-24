@@ -32,7 +32,7 @@ export default function Home() {
     return (
         <div className="min-h-screen">
             {/* Hero Section */}
-            <section className="relative bg-white overflow-hidden py-20">
+            <section className="relative overflow-hidden py-20" style={{backgroundColor: '#e5e5ff'}}>
                 {/* Twelve-pointed star background matching production website */}
                 <div className="absolute inset-0 opacity-20">
                     <svg className="absolute top-0 left-0 w-full h-full" viewBox="0 0 1200 800" fill="none">
@@ -100,7 +100,7 @@ export default function Home() {
             </section>
 
             {/* Featured Works */}
-            <section className="py-20 bg-white">
+            <section className="py-20" style={{backgroundColor: '#e5e5ff'}}>
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="text-center mb-16">
                         <h2 className="text-4xl font-playfair font-bold text-navy mb-4" data-testid="featured-compositions-title">
@@ -161,7 +161,7 @@ export default function Home() {
             </section>
 
             {/* Recent Posts */}
-            <section className="py-20 bg-gray-50">
+            <section className="py-20" style={{backgroundColor: '#e5e5ff'}}>
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="text-center mb-16">
                         <h2 className="text-4xl font-playfair font-bold text-navy mb-4" data-testid="recent-thoughts-title">

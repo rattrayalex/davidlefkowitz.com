@@ -20,38 +20,28 @@ export default function Footer() {
                         <h4 className="text-lg font-semibold mb-4">Quick Links</h4>
                         <ul className="space-y-2 text-gray-300">
                             <li>
-                                <Link href="/about">
-                                    <a className="hover:text-purple transition-colors duration-200" data-testid="footer-link-about">
-                                        About
-                                    </a>
+                                <Link href="/about" className="hover:text-purple transition-colors duration-200" data-testid="footer-link-about">
+                                    About
                                 </Link>
                             </li>
                             <li>
-                                <Link href="/compositions">
-                                    <a className="hover:text-purple transition-colors duration-200" data-testid="footer-link-compositions">
-                                        Compositions
-                                    </a>
+                                <Link href="/compositions" className="hover:text-purple transition-colors duration-200" data-testid="footer-link-compositions">
+                                    Compositions
                                 </Link>
                             </li>
                             <li>
-                                <Link href="/recordings">
-                                    <a className="hover:text-purple transition-colors duration-200" data-testid="footer-link-recordings">
-                                        Recordings
-                                    </a>
+                                <Link href="/recordings" className="hover:text-purple transition-colors duration-200" data-testid="footer-link-recordings">
+                                    Recordings
                                 </Link>
                             </li>
                             <li>
-                                <Link href="/blog">
-                                    <a className="hover:text-purple transition-colors duration-200" data-testid="footer-link-blog">
-                                        Blog
-                                    </a>
+                                <Link href="/blog" className="hover:text-purple transition-colors duration-200" data-testid="footer-link-blog">
+                                    Blog
                                 </Link>
                             </li>
                             <li>
-                                <Link href="/contact">
-                                    <a className="hover:text-purple transition-colors duration-200" data-testid="footer-link-contact">
-                                        Contact
-                                    </a>
+                                <Link href="/contact" className="hover:text-purple transition-colors duration-200" data-testid="footer-link-contact">
+                                    Contact
                                 </Link>
                             </li>
                         </ul>
