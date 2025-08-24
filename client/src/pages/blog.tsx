@@ -44,15 +44,15 @@ export default function Blog() {
                             </p>
                         </div>
                     ) : (
-                        <div className="space-y-4">
+                        <div className="space-y-3">
                             {posts.map((post) => (
                                 <article 
                                     key={post.id}
-                                    className="border border-gray-300 rounded-lg p-4 hover:shadow-md transition-shadow duration-300" style={{backgroundColor: '#e5e5ff'}}
+                                    className="border border-gray-300 rounded-md p-3 hover:shadow-md transition-shadow duration-300" style={{backgroundColor: '#e5e5ff'}}
                                     data-testid={`blog-post-${post.id}`}
                                 >
                                     {/* Meta information */}
-                                    <div className="flex items-center text-xs text-gray-500 mb-2">
+                                    <div className="flex items-center text-xs text-gray-500 mb-1">
                                         <div className="flex items-center">
                                             <Calendar className="h-3 w-3 mr-1" />
                                             <time data-testid={`blog-post-date-${post.id}`}>
@@ -66,7 +66,7 @@ export default function Blog() {
                                     </div>
 
                                     {/* Title */}
-                                    <h2 className="text-xl font-playfair font-bold text-navy mb-2 hover:text-purple transition-colors duration-200">
+                                    <h2 className="text-lg font-playfair font-bold text-navy hover:text-purple transition-colors duration-200">
                                         <Link href={`/blog/${post.id}`} data-testid={`blog-post-title-${post.id}`}>
                                             {post.title}
                                         </Link>
@@ -74,8 +74,8 @@ export default function Blog() {
 
                                     {/* Tags */}
                                     {post.tags.length > 0 && (
-                                        <div className="mb-4">
-                                            <div className="flex flex-wrap gap-2">
+                                        <div className="mb-2">
+                                            <div className="flex flex-wrap gap-1">
                                                 {post.tags.map((tag) => (
                                                     <span 
                                                         key={tag}
@@ -88,14 +88,6 @@ export default function Blog() {
                                             </div>
                                         </div>
                                     )}
-
-                                    {/* Read More Link */}
-                                    <Link href={`/blog/${post.id}`}>
-                                        <span className="inline-flex items-center text-purple hover:text-purple-700 text-sm font-medium transition-colors duration-200" data-testid={`blog-post-read-more-${post.id}`}>
-                                            Read Post
-                                            <ArrowRight className="ml-1 h-3 w-3" />
-                                        </span>
-                                    </Link>
                                 </article>
                             ))}
                         </div>
