@@ -50,13 +50,13 @@ export default function Home() {
                     <div className="space-y-8">
                         {/* Main Title */}
                         <div>
-                            <h1 className="text-6xl lg:text-7xl font-playfair font-bold text-navy leading-tight mb-6" data-testid="hero-name">
+                            <h1 className="text-3xl lg:text-4xl font-playfair font-bold text-navy leading-tight mb-6" data-testid="hero-name" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
                                 {profile?.name || "David S. Lefkowitz"}
                             </h1>
-                            <p className="text-xl text-gray-700 font-medium mb-2" data-testid="hero-title">
+                            <p className="text-xl text-gray-700 font-medium mb-2" data-testid="hero-title" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
                                 {profile?.title || "Composer, Professor of Music Composition & Theory"}
                             </p>
-                            <p className="text-lg text-purple font-medium" data-testid="hero-institution">
+                            <p className="text-lg text-purple font-medium" data-testid="hero-institution" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
                                 {profile?.institution || "UCLA Herb Alpert School of Music"}
                             </p>
                         </div>
@@ -75,7 +75,7 @@ export default function Home() {
                         
                         {/* Subtitle */}
                         <div className="max-w-2xl mx-auto">
-                            <p className="text-xl text-gray-700 leading-relaxed" data-testid="hero-bio-short">
+                            <p className="text-xl text-gray-700 leading-relaxed" data-testid="hero-bio-short" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
                                 {profile?.bio_short || "Composer, Theorist, and Professor at UCLA"}
                             </p>
                         </div>

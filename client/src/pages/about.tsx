@@ -22,10 +22,10 @@ export default function About() {
             <section className="py-20" style={{backgroundColor: '#e5e5ff'}}>
                 <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="text-center">
-                        <h1 className="text-5xl lg:text-6xl font-playfair font-bold text-navy mb-6" data-testid="about-title">
+                        <h1 className="text-5xl lg:text-6xl font-playfair font-bold text-navy mb-6" data-testid="about-title" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
                             About
                         </h1>
-                        <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+                        <p className="text-xl text-gray-600 max-w-3xl mx-auto" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
                             Composer, educator, and scholar dedicated to advancing contemporary musical expression
                         </p>
                     </div>
@@ -49,13 +49,13 @@ export default function About() {
                         {/* Bio Content */}
                         <div className="md:col-span-2 space-y-6">
                             <div>
-                                <h2 className="text-3xl font-playfair font-bold text-navy mb-4" data-testid="profile-name">
+                                <h2 className="text-3xl font-playfair font-bold text-navy mb-4" data-testid="profile-name" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
                                     {profile?.name || "David S. Lefkowitz"}
                                 </h2>
-                                <p className="text-xl text-purple font-medium mb-2" data-testid="profile-title">
+                                <p className="text-xl text-purple font-medium mb-2" data-testid="profile-title" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
                                     {profile?.title || "Composer, Professor of Music Composition & Theory"}
                                 </p>
-                                <p className="text-lg text-gray-600" data-testid="profile-institution">
+                                <p className="text-lg text-gray-600" data-testid="profile-institution" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
                                     {profile?.institution || "UCLA Herb Alpert School of Music"}
                                 </p>
                             </div>

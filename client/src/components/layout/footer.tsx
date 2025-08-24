@@ -7,19 +7,19 @@ export default function Footer() {
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="grid md:grid-cols-2 gap-8">
                     <div>
-                        <h3 className="text-2xl font-playfair font-semibold mb-4">
+                        <h3 className="text-2xl font-playfair font-semibold mb-4" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
                             David S. Lefkowitz
                         </h3>
-                        <p className="text-gray-300 leading-relaxed">
+                        <p className="text-gray-300 leading-relaxed" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
                             Composer, Professor of Music Composition & Theory at UCLA Herb Alpert School of Music
                         </p>
                     </div>
                     
                     <div>
-                        <h4 className="text-lg font-semibold mb-4">Quick Links</h4>
+                        <h4 className="text-lg font-semibold mb-4" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>Quick Links</h4>
                         <ul className="space-y-2 text-gray-300">
                             <li>
-                                <Link href="/about" className="hover:text-purple transition-colors duration-200" data-testid="footer-link-about">
+                                <Link href="/about" className="hover:text-purple transition-colors duration-200" data-testid="footer-link-about" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
                                     About
                                 </Link>
                             </li>
@@ -48,7 +48,7 @@ export default function Footer() {
                 </div>
                 
                 <div className="border-t border-gray-700 mt-12 pt-8 text-center text-gray-400">
-                    <p>&copy; 2024 David S. Lefkowitz. All rights reserved.</p>
+                    <p style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>&copy; 2024 David S. Lefkowitz. All rights reserved.</p>
                 </div>
             </div>
         </footer>

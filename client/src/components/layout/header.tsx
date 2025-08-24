@@ -28,7 +28,7 @@ export default function Header() {
                     {/* Logo/Name */}
                     <div className="flex items-center">
                         <Link href="/">
-                            <h1 className="text-2xl font-playfair font-semibold text-navy cursor-pointer hover:text-purple transition-colors duration-200">
+                            <h1 className="text-2xl font-playfair font-semibold text-navy cursor-pointer hover:text-purple transition-colors duration-200" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
                                 David S. Lefkowitz
                             </h1>
                         </Link>
@@ -45,6 +45,7 @@ export default function Header() {
                                         ? "text-purple" 
                                         : "text-gray-700 hover:text-purple"
                                 }`}
+                                style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}
                                 data-testid={`nav-link-${item.name.toLowerCase()}`}
                             >
                                 {item.name}
@@ -82,6 +83,7 @@ export default function Header() {
                                             ? "text-purple" 
                                             : "text-gray-700 hover:text-purple"
                                     }`}
+                                    style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}
                                     data-testid={`mobile-nav-link-${item.name.toLowerCase()}`}
                                 >
                                     {item.name}
