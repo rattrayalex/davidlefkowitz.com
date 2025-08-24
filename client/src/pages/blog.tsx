@@ -21,21 +21,18 @@ export default function Blog() {
     return (
         <div className="min-h-screen" style={{backgroundColor: '#e5e5ff'}}>
             {/* Hero Section */}
-            <section className="py-20" style={{backgroundColor: '#e5e5ff'}}>
+            <section className="py-12" style={{backgroundColor: '#e5e5ff'}}>
                 <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="text-center">
-                        <h1 className="text-5xl lg:text-6xl font-playfair font-bold text-navy mb-6" data-testid="blog-title">
+                        <h1 className="text-5xl lg:text-6xl font-playfair font-bold text-navy mb-4" data-testid="blog-title">
                             Blog
                         </h1>
-                        <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-                            Thoughts on composition, music theory, teaching, and the contemporary classical music landscape
-                        </p>
                     </div>
                 </div>
             </section>
 
             {/* Blog Posts */}
-            <section className="py-20">
+            <section className="py-4">
                 <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
                     {posts.length === 0 ? (
                         <div className="text-center py-12">
@@ -56,7 +53,7 @@ export default function Blog() {
                                         <div className="flex items-center">
                                             <Calendar className="h-3 w-3 mr-1" />
                                             <time data-testid={`blog-post-date-${post.id}`}>
-                                                {new Date(post.published_date).toLocaleDateString('en-US', {
+                                                {new Date(post.published_date + 'T12:00:00').toLocaleDateString('en-US', {
                                                     year: 'numeric',
                                                     month: 'short',
                                                     day: 'numeric'

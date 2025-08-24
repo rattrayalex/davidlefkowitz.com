@@ -155,8 +155,9 @@ export async function syncBlogPosts() {
             // Create excerpt from first paragraph or first 150 chars
             const excerpt = content.split('\n\n')[0]?.substring(0, 150) || "";
 
-            // Parse date carefully to avoid timezone issues
-            const dateObj = new Date(publishedDate + 'T12:00:00'); // Add noon time to avoid timezone shifts
+            // Parse date carefully to avoid timezone issues - use local timezone
+            const [year, month, day] = publishedDate.split('-');
+            const dateObj = new Date(parseInt(year), parseInt(month) - 1, parseInt(day)); // Month is 0-indexed
 
             const blogPost: InsertBlogPost = {
                 title: title.trim(),
