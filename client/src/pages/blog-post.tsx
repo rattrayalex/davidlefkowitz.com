@@ -82,7 +82,7 @@ export default function BlogPostPage() {
                     </div>
 
                     {/* Title */}
-                    <h1 className="text-4xl lg:text-5xl font-playfair font-bold text-navy mb-3" data-testid="post-title">
+                    <h1 className="text-4xl lg:text-5xl font-playfair font-bold text-navy mb-1" data-testid="post-title">
                         {post.title}
                     </h1>
 
