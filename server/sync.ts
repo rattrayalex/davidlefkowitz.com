@@ -142,7 +142,8 @@ export async function syncBlogPosts() {
             
 
             const commentProperty = properties["Comment"] as any;
-            const comment = commentProperty?.rich_text?.[0]?.plain_text || "";
+            // Concatenate all rich text parts to get the full comment
+            const comment = commentProperty?.rich_text?.map((part: any) => part.plain_text).join("") || "";
             
             const publicationDateProperty = properties["Publication Date"] as any;
             const dateProperty = properties.Date as any;
