@@ -26,9 +26,9 @@ export default function Compositions() {
     }
 
     return (
-        <div className="min-h-screen bg-white">
+        <div className="min-h-screen" style={{backgroundColor: '#e5e5ff'}}>
             {/* Hero Section */}
-            <section className="bg-gradient-to-br from-purple-50 to-blue-50 py-20">
+            <section className="py-20" style={{backgroundColor: '#e5e5ff'}}>
                 <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="text-center">
                         <h1 className="text-5xl lg:text-6xl font-playfair font-bold text-navy mb-6" data-testid="compositions-title">
@@ -42,7 +42,7 @@ export default function Compositions() {
             </section>
 
             {/* Filter Section */}
-            <section className="py-8 border-b border-gray-200">
+            <section className="py-8 border-b border-gray-300" style={{backgroundColor: '#e5e5ff'}}>
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex flex-wrap gap-4 justify-center">
                         {categories.map((category) => (
@@ -52,7 +52,7 @@ export default function Compositions() {
                                 className={`px-6 py-2 rounded-full font-medium transition-all duration-200 ${
                                     selectedCategory === category
                                         ? "bg-purple text-white shadow-lg"
-                                        : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                                        : "border border-gray-300 text-gray-700 hover:border-gray-400"
                                 }`}
                                 data-testid={`filter-${category.toLowerCase().replace(' ', '-')}`}
                             >
@@ -78,7 +78,7 @@ export default function Compositions() {
                             {filteredCompositions.map((composition) => (
                                 <div 
                                     key={composition.id}
-                                    className="bg-white border border-gray-200 rounded-xl p-6 hover:shadow-lg transition-shadow duration-300"
+                                    className="border border-gray-300 rounded-xl p-6 hover:shadow-lg transition-shadow duration-300" style={{backgroundColor: '#e5e5ff'}}
                                     data-testid={`composition-${composition.id}`}
                                 >
                                     {/* Category Badge */}
@@ -125,7 +125,7 @@ export default function Compositions() {
 
                                     {/* Premiere Info */}
                                     {composition.premiere_info && (
-                                        <div className="mb-4 p-3 bg-gray-50 rounded-lg">
+                                        <div className="mb-4 p-3 border border-gray-300 rounded-lg" style={{backgroundColor: '#e5e5ff'}}>
                                             <p className="text-xs text-gray-500 uppercase tracking-wide font-medium mb-1">
                                                 Premiere
                                             </p>

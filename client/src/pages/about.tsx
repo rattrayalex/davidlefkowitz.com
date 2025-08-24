@@ -17,9 +17,9 @@ export default function About() {
     }
 
     return (
-        <div className="min-h-screen bg-white">
+        <div className="min-h-screen" style={{backgroundColor: '#e5e5ff'}}>
             {/* Hero Section */}
-            <section className="bg-gradient-to-br from-purple-50 to-blue-50 py-20">
+            <section className="py-20" style={{backgroundColor: '#e5e5ff'}}>
                 <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="text-center">
                         <h1 className="text-5xl lg:text-6xl font-playfair font-bold text-navy mb-6" data-testid="about-title">
@@ -71,7 +71,7 @@ export default function About() {
                             </div>
 
                             {/* Contact Info */}
-                            <div className="bg-gray-50 rounded-xl p-6">
+                            <div className="border border-gray-300 rounded-xl p-6" style={{backgroundColor: '#e5e5ff'}}>
                                 <h3 className="text-xl font-playfair font-semibold text-navy mb-4">Contact Information</h3>
                                 <div className="space-y-2">
                                     <p className="text-gray-700">
@@ -110,14 +110,14 @@ export default function About() {
             </section>
 
             {/* Research Interests */}
-            <section className="py-20 bg-gray-50">
+            <section className="py-20 border-t border-gray-300" style={{backgroundColor: '#e5e5ff'}}>
                 <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
                     <h2 className="text-3xl font-playfair font-bold text-navy mb-12 text-center" data-testid="research-interests-title">
                         Research & Teaching Interests
                     </h2>
                     
                     <div className="grid md:grid-cols-2 gap-8">
-                        <div className="bg-white rounded-xl p-8">
+                        <div className="border border-gray-300 rounded-xl p-8" style={{backgroundColor: '#e5e5ff'}}>
                             <h3 className="text-xl font-playfair font-semibold text-navy mb-4">Composition</h3>
                             <ul className="space-y-2 text-gray-700">
                                 <li>• Contemporary harmonic theory</li>
@@ -127,7 +127,7 @@ export default function About() {
                             </ul>
                         </div>
                         
-                        <div className="bg-white rounded-xl p-8">
+                        <div className="border border-gray-300 rounded-xl p-8" style={{backgroundColor: '#e5e5ff'}}>
                             <h3 className="text-xl font-playfair font-semibold text-navy mb-4">Music Theory</h3>
                             <ul className="space-y-2 text-gray-700">
                                 <li>• Advanced tonal analysis</li>
@@ -137,7 +137,7 @@ export default function About() {
                             </ul>
                         </div>
                         
-                        <div className="bg-white rounded-xl p-8">
+                        <div className="border border-gray-300 rounded-xl p-8" style={{backgroundColor: '#e5e5ff'}}>
                             <h3 className="text-xl font-playfair font-semibold text-navy mb-4">Teaching Philosophy</h3>
                             <ul className="space-y-2 text-gray-700">
                                 <li>• Student-centered learning approaches</li>
@@ -147,7 +147,7 @@ export default function About() {
                             </ul>
                         </div>
                         
-                        <div className="bg-white rounded-xl p-8">
+                        <div className="border border-gray-300 rounded-xl p-8" style={{backgroundColor: '#e5e5ff'}}>
                             <h3 className="text-xl font-playfair font-semibold text-navy mb-4">Current Projects</h3>
                             <ul className="space-y-2 text-gray-700">
                                 <li>• Grammy nomination preparation</li>

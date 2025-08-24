@@ -24,7 +24,7 @@ export default function BlogPostPage() {
 
     if (error || !post) {
         return (
-            <div className="min-h-screen bg-white">
+            <div className="min-h-screen" style={{backgroundColor: '#e5e5ff'}}>
                 <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
                     <div className="text-center">
                         <h1 className="text-3xl font-playfair font-bold text-navy mb-4" data-testid="post-not-found-title">
@@ -46,9 +46,9 @@ export default function BlogPostPage() {
     }
 
     return (
-        <div className="min-h-screen bg-white">
+        <div className="min-h-screen" style={{backgroundColor: '#e5e5ff'}}>
             {/* Header */}
-            <section className="bg-gradient-to-br from-purple-50 to-blue-50 py-12">
+            <section className="py-12" style={{backgroundColor: '#e5e5ff'}}>
                 <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
                     {/* Back to Blog Link */}
                     <div className="mb-8">
@@ -110,7 +110,7 @@ export default function BlogPostPage() {
                 <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="prose prose-lg max-w-none">
                         {/* Excerpt */}
-                        <div className="text-xl text-gray-700 leading-relaxed mb-8 p-6 bg-gray-50 rounded-xl border-l-4 border-purple" data-testid="post-excerpt">
+                        <div className="text-xl text-gray-700 leading-relaxed mb-8 p-6 border border-gray-300 rounded-xl border-l-4 border-purple" data-testid="post-excerpt" style={{backgroundColor: '#e5e5ff'}}>
                             {post.excerpt}
                         </div>
 
@@ -125,7 +125,7 @@ export default function BlogPostPage() {
                         <h3 className="text-2xl font-playfair font-bold text-navy mb-6" data-testid="comments-title">
                             Comments
                         </h3>
-                        <div className="bg-gray-50 rounded-xl p-8 text-center" data-testid="comments-placeholder">
+                        <div className="border border-gray-300 rounded-xl p-8 text-center" data-testid="comments-placeholder" style={{backgroundColor: '#e5e5ff'}}>
                             <p className="text-gray-600">
                                 Comments will be integrated with Disqus in a future update.
                             </p>

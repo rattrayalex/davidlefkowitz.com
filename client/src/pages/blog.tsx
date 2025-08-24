@@ -19,9 +19,9 @@ export default function Blog() {
     }
 
     return (
-        <div className="min-h-screen bg-white">
+        <div className="min-h-screen" style={{backgroundColor: '#e5e5ff'}}>
             {/* Hero Section */}
-            <section className="bg-gradient-to-br from-purple-50 to-blue-50 py-20">
+            <section className="py-20" style={{backgroundColor: '#e5e5ff'}}>
                 <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="text-center">
                         <h1 className="text-5xl lg:text-6xl font-playfair font-bold text-navy mb-6" data-testid="blog-title">
@@ -48,7 +48,7 @@ export default function Blog() {
                             {posts.map((post) => (
                                 <article 
                                     key={post.id}
-                                    className="bg-white border border-gray-200 rounded-xl p-8 hover:shadow-lg transition-shadow duration-300"
+                                    className="border border-gray-300 rounded-xl p-8 hover:shadow-lg transition-shadow duration-300" style={{backgroundColor: '#e5e5ff'}}
                                     data-testid={`blog-post-${post.id}`}
                                 >
                                     {/* Meta information */}

@@ -49,9 +49,9 @@ export default function Contact() {
     };
 
     return (
-        <div className="min-h-screen bg-white">
+        <div className="min-h-screen" style={{backgroundColor: '#e5e5ff'}}>
             {/* Hero Section */}
-            <section className="bg-gradient-to-br from-purple-50 to-blue-50 py-20">
+            <section className="py-20" style={{backgroundColor: '#e5e5ff'}}>
                 <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="text-center">
                         <h1 className="text-5xl lg:text-6xl font-playfair font-bold text-navy mb-6" data-testid="contact-title">
@@ -127,7 +127,7 @@ export default function Contact() {
                             </div>
 
                             {/* Response Time */}
-                            <div className="bg-gray-50 rounded-xl p-6">
+                            <div className="border border-gray-300 rounded-xl p-6" style={{backgroundColor: '#e5e5ff'}}>
                                 <h3 className="font-semibold text-navy mb-2">Response Time</h3>
                                 <p className="text-gray-700 text-sm">
                                     I typically respond to inquiries within 2-3 business days. For urgent matters, 
@@ -137,7 +137,7 @@ export default function Contact() {
                         </div>
 
                         {/* Contact Form */}
-                        <div className="bg-white border border-gray-200 rounded-xl p-8">
+                        <div className="border border-gray-300 rounded-xl p-8" style={{backgroundColor: '#e5e5ff'}}>
                             <h2 className="text-2xl font-playfair font-bold text-navy mb-6" data-testid="contact-form-title">
                                 Send a Message
                             </h2>
