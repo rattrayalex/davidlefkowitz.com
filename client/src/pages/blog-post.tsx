@@ -65,7 +65,7 @@ export default function BlogPostPage() {
                         <div className="flex items-center">
                             <Calendar className="h-4 w-4 mr-1" />
                             <time data-testid="post-date">
-                                {new Date(post.published_date).toLocaleDateString('en-US', {
+                                {new Date(post.published_date + 'T12:00:00').toLocaleDateString('en-US', {
                                     year: 'numeric',
                                     month: 'long',
                                     day: 'numeric'
@@ -111,9 +111,7 @@ export default function BlogPostPage() {
                     <div className="prose prose-lg max-w-none">
                         {/* Excerpt or Special Comment */}
                         <div className="text-xl text-gray-700 leading-relaxed mb-6 p-6 border border-gray-300 rounded-xl border-l-4 border-purple" data-testid="post-excerpt" style={{backgroundColor: '#e5e5ff'}}>
-                            {post.title === "My Two Books of Preludes and Fugues Have Been Released! (June 20, 2025)" ? 
-                                "Every once in a while a project comes by which seems so original that I am challenged to re-screw my ears on. Such was the case with David S. Lefkowitz's nearly three-hour long cycle of Preludes and Fugues for Piano." 
-                                : post.excerpt}
+                            {post.comment && post.comment.trim() ? post.comment : post.excerpt}
                         </div>
 
                         {/* Content */}
