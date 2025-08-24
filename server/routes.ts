@@ -1,7 +1,10 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { notion } from "./notion";
-import { contactFormSchema } from "@shared/schema";
+import { contactFormSchema, blogPosts, compositions, recordings, contacts, type BlogPost, type Composition, type Recording } from "@shared/schema";
+import { db } from "./db";
+import { eq, desc } from "drizzle-orm";
+import { syncBlogPosts, syncCompositions, syncRecordings } from "./sync";
 import { z } from "zod";
 import * as fs from "fs";
 
@@ -30,147 +33,118 @@ export async function registerRoutes(app: Express): Promise<Server> {
         }
     });
 
-    // Get all compositions
+    // Get all compositions from local database
     app.get("/api/compositions", async (req, res) => {
         try {
-            if (!notion) {
-                return res.json([]);
-            }
+            const compositionsData = await db
+                .select()
+                .from(compositions)
+                .where(eq(compositions.published, true))
+                .orderBy(desc(compositions.year));
 
-            const response = await notion.databases.query({
-                database_id: schemaData.databases.compositions.id,
-                filter: {
-                    property: "Published",
-                    checkbox: {
-                        equals: true
-                    }
-                }
-            });
+            const formattedCompositions = compositionsData.map((comp: Composition) => ({
+                id: comp.id,
+                title: comp.title,
+                instrumentation: Array.isArray(comp.instrumentation) ? comp.instrumentation.join(", ") : "",
+                ensemble: Array.isArray(comp.ensemble) ? comp.ensemble.join(", ") : "",
+                year: comp.year,
+                category: Array.isArray(comp.ensemble) && comp.ensemble.length > 0 ? comp.ensemble[0] : "Other",
+                duration: comp.duration || "",
+                premiere_info: comp.premiere_info || "",
+                publisher: Array.isArray(comp.publisher) ? comp.publisher.join(", ") : "",
+                recording: comp.recording || "",
+            }));
 
-            const compositions = response.results.map((page: any) => {
-                const properties = page.properties;
-                return {
-                    id: page.id,
-                    title: properties.Name?.title?.[0]?.plain_text || "Untitled",
-                    instrumentation: properties.Instrumentation?.multi_select?.map((item: any) => item.name).join(", ") || "",
-                    ensemble: properties.Ensemble?.multi_select?.map((item: any) => item.name).join(", ") || "",
-                    year: properties["Year ©"]?.number || new Date().getFullYear(),
-                    category: properties.Ensemble?.multi_select?.[0]?.name || "Other",
-                    duration: properties.Duration?.rich_text?.[0]?.plain_text || "",
-                    premiere_info: properties["Date of premier"]?.date?.start || "",
-                    publisher: properties.Publisher?.multi_select?.map((item: any) => item.name).join(", ") || "",
-                    recording: properties.Recording?.rich_text?.[0]?.plain_text || "",
-                };
-            });
-
-            // Sort by year descending
-            compositions.sort((a, b) => b.year - a.year);
-            res.json(compositions);
+            res.json(formattedCompositions);
         } catch (error) {
             console.error("Error fetching compositions:", error);
             res.status(500).json({ error: "Failed to fetch compositions" });
         }
     });
 
-    // Get all recordings
+    // Get all recordings from local database
     app.get("/api/recordings", async (req, res) => {
         try {
-            if (!notion) {
-                return res.json([]);
-            }
+            const recordingsData = await db
+                .select()
+                .from(recordings)
+                .orderBy(desc(recordings.year));
 
-            const response = await notion.databases.query({
-                database_id: schemaData.databases.recordings.id,
-            });
+            const formattedRecordings = recordingsData.map((rec: Recording) => ({
+                id: rec.id,
+                title: rec.title,
+                composer: rec.composer,
+                performers: Array.isArray(rec.performers) ? rec.performers.join(", ") : "",
+                ensemble: Array.isArray(rec.ensemble) ? rec.ensemble.join(", ") : "",
+                instrumentation: Array.isArray(rec.instrumentation) ? rec.instrumentation.join(", ") : "",
+                year: rec.year,
+                duration: rec.duration || "",
+                label: Array.isArray(rec.label) ? rec.label.join(", ") : "",
+                links: rec.links || "",
+            }));
 
-            const recordings = response.results.map((page: any) => {
-                const properties = page.properties;
-                return {
-                    id: page.id,
-                    title: properties["Name of Album"]?.title?.[0]?.plain_text || "Untitled",
-                    composer: properties.Composition?.rich_text?.[0]?.plain_text || "",
-                    performers: properties.Performers?.multi_select?.map((item: any) => item.name).join(", ") || "",
-                    ensemble: properties.Ensemble?.multi_select?.map((item: any) => item.name).join(", ") || "",
-                    instrumentation: properties.Instrumentation?.multi_select?.map((item: any) => item.name).join(", ") || "",
-                    year: properties["Year ©"]?.number || new Date().getFullYear(),
-                    duration: properties.Duration?.rich_text?.[0]?.plain_text || "",
-                    label: properties.Label?.multi_select?.map((item: any) => item.name).join(", ") || "",
-                    links: properties.Links?.rich_text?.[0]?.plain_text || "",
-                };
-            });
-
-            // Sort by year descending
-            recordings.sort((a, b) => b.year - a.year);
-            res.json(recordings);
+            res.json(formattedRecordings);
         } catch (error) {
             console.error("Error fetching recordings:", error);
             res.status(500).json({ error: "Failed to fetch recordings" });
         }
     });
 
-    // Get all blog posts  
+    // Get all blog posts from local database
     app.get("/api/blog-posts", async (req, res) => {
         try {
-            if (!notion) {
-                return res.json([]);
-            }
+            const blogPostsData = await db
+                .select()
+                .from(blogPosts)
+                .where(eq(blogPosts.published, true))
+                .orderBy(desc(blogPosts.published_date));
 
-            const response = await notion.databases.query({
-                database_id: schemaData.databases.blog.id,
-                filter: {
-                    property: "Status",
-                    status: {
-                        equals: "Published"
-                    }
-                }
-            });
+            const formattedPosts = blogPostsData.map((post: BlogPost) => ({
+                id: post.id,
+                title: post.title,
+                excerpt: post.excerpt || "",
+                content: post.content,
+                published_date: post.published_date.toISOString().split('T')[0], // Format as YYYY-MM-DD
+                read_time: post.read_time || 5,
+                tags: Array.isArray(post.tags) ? post.tags : [],
+                published: post.published,
+            }));
 
-            const posts = response.results.map((page: any) => {
-                const properties = page.properties;
-                return {
-                    id: page.id,
-                    title: properties["Post Title"]?.title?.[0]?.plain_text || "Untitled",
-                    excerpt: "", // Remove placeholder text
-                    content: "", // Since no content field in schema
-                    published_date: properties["Publication Date"]?.date?.start || properties.Date?.date?.start || "",
-                    read_time: 5, // Default since no read time field
-                    tags: [], // No tags field in current schema
-                    published: true, // Filtered by Published status above
-                };
-            });
-
-            // Sort by published date descending
-            posts.sort((a, b) => new Date(b.published_date).getTime() - new Date(a.published_date).getTime());
-            res.json(posts);
+            res.json(formattedPosts);
         } catch (error) {
             console.error("Error fetching blog posts:", error);
             res.status(500).json({ error: "Failed to fetch blog posts" });
         }
     });
 
-    // Get single blog post
+    // Get single blog post from local database
     app.get("/api/blog-posts/:id", async (req, res) => {
         try {
-            if (!notion) {
-                return res.status(404).json({ error: "Post not found" });
-            }
             const { id } = req.params;
             
-            const page = await notion.pages.retrieve({ page_id: id });
-            const properties = (page as any).properties;
+            const blogPostData = await db
+                .select()
+                .from(blogPosts)
+                .where(eq(blogPosts.id, id))
+                .limit(1);
 
-            const post = {
-                id: page.id,
-                title: properties["Post Title"]?.title?.[0]?.plain_text || "Untitled",
-                excerpt: "Click to read the full post in Notion",
-                content: "This post is managed in Notion. Click the link above to read the full content.",
-                published_date: properties["Publication Date"]?.date?.start || properties.Date?.date?.start || "",
-                read_time: 5,
-                tags: [],
-                published: true,
+            if (blogPostData.length === 0) {
+                return res.status(404).json({ error: "Post not found" });
+            }
+
+            const post = blogPostData[0];
+            const formattedPost = {
+                id: post.id,
+                title: post.title,
+                excerpt: post.excerpt || "",
+                content: post.content,
+                published_date: post.published_date.toISOString().split('T')[0], // Format as YYYY-MM-DD
+                read_time: post.read_time || 5,
+                tags: Array.isArray(post.tags) ? post.tags : [],
+                published: post.published,
             };
 
-            res.json(post);
+            res.json(formattedPost);
         } catch (error) {
             console.error("Error fetching blog post:", error);
             res.status(500).json({ error: "Failed to fetch blog post" });
@@ -182,14 +156,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
         try {
             const validatedData = contactFormSchema.parse(req.body);
 
-            // Here you would typically send an email or save to a database
-            // For now, we'll just log the contact form submission
-            console.log("Contact form submission:", validatedData);
-
-            // In a real implementation, you might:
-            // 1. Send an email using a service like SendGrid or Nodemailer
-            // 2. Save the message to a Notion database
-            // 3. Send a notification to the website owner
+            // Save contact form to database
+            await db.insert(contacts).values(validatedData);
 
             res.json({ success: true, message: "Thank you for your message. I will get back to you soon!" });
         } catch (error) {
@@ -201,6 +169,48 @@ export async function registerRoutes(app: Express): Promise<Server> {
             }
             console.error("Error processing contact form:", error);
             res.status(500).json({ error: "Failed to send message" });
+        }
+    });
+
+    // Webhook endpoints for Notion synchronization
+    app.post("/api/webhook/notion", async (req, res) => {
+        try {
+            console.log("Received Notion webhook:", req.body);
+            
+            // Basic webhook security - you might want to verify the request signature in production
+            const { type, page_id, database_id } = req.body;
+
+            if (type === "page_update" || type === "page_create") {
+                // Determine which database was updated and sync accordingly
+                if (database_id === schemaData.databases.blog.id) {
+                    await syncBlogPosts();
+                    console.log("Blog posts synchronized via webhook");
+                } else if (database_id === schemaData.databases.compositions.id) {
+                    await syncCompositions();
+                    console.log("Compositions synchronized via webhook");
+                } else if (database_id === schemaData.databases.recordings.id) {
+                    await syncRecordings();
+                    console.log("Recordings synchronized via webhook");
+                }
+            }
+
+            res.json({ success: true, message: "Webhook processed" });
+        } catch (error) {
+            console.error("Error processing Notion webhook:", error);
+            res.status(500).json({ error: "Failed to process webhook" });
+        }
+    });
+
+    // Manual sync endpoint (for development)
+    app.post("/api/sync", async (req, res) => {
+        try {
+            await syncBlogPosts();
+            await syncCompositions();
+            await syncRecordings();
+            res.json({ success: true, message: "Manual sync completed" });
+        } catch (error) {
+            console.error("Error during manual sync:", error);
+            res.status(500).json({ error: "Failed to sync data" });
         }
     });
 
