@@ -40,15 +40,14 @@ export default function Header() {
                             <Link
                                 key={item.name}
                                 href={item.href}
-                                data-testid={`nav-link-${item.name.toLowerCase()}`}
-                            >
-                                <a className={`font-medium transition-colors duration-200 ${
+                                className={`font-medium transition-colors duration-200 ${
                                     isActive(item.href) 
                                         ? "text-purple" 
                                         : "text-gray-700 hover:text-purple"
-                                }`}>
-                                    {item.name}
-                                </a>
+                                }`}
+                                data-testid={`nav-link-${item.name.toLowerCase()}`}
+                            >
+                                {item.name}
                             </Link>
                         ))}
                     </div>
@@ -78,15 +77,14 @@ export default function Header() {
                                     key={item.name}
                                     href={item.href}
                                     onClick={() => setIsMobileMenuOpen(false)}
-                                    data-testid={`mobile-nav-link-${item.name.toLowerCase()}`}
-                                >
-                                    <a className={`font-medium py-2 transition-colors duration-200 block ${
+                                    className={`font-medium py-2 transition-colors duration-200 block ${
                                         isActive(item.href) 
                                             ? "text-purple" 
                                             : "text-gray-700 hover:text-purple"
-                                    }`}>
-                                        {item.name}
-                                    </a>
+                                    }`}
+                                    data-testid={`mobile-nav-link-${item.name.toLowerCase()}`}
+                                >
+                                    {item.name}
                                 </Link>
                             ))}
                         </div>
