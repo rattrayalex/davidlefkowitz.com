@@ -175,28 +175,14 @@ export async function syncBlogPosts() {
             // Insert or update the blog post
             await db
                 .insert(blogPosts)
-                .values({ 
-                    id: page.id,
-                    title: blogPost.title,
-                    content: blogPost.content,
-                    excerpt: blogPost.excerpt,
-                    published_date: blogPost.published_date,
-                    published: blogPost.published,
-                    tags: blogPost.tags,
-                    read_time: blogPost.read_time,
-                    notion_url: blogPost.notion_url
+                .values({
+                    ...blogPost,
+                    id: page.id
                 })
                 .onConflictDoUpdate({
                     target: blogPosts.id,
                     set: {
-                        title: blogPost.title,
-                        content: blogPost.content,
-                        excerpt: blogPost.excerpt,
-                        published_date: blogPost.published_date,
-                        published: blogPost.published,
-                        tags: blogPost.tags,
-                        read_time: blogPost.read_time,
-                        notion_url: blogPost.notion_url,
+                        ...blogPost,
                         updated_at: new Date(),
                         last_synced: new Date()
                     }
@@ -251,11 +237,11 @@ export async function syncCompositions() {
 
             const composition: InsertComposition = {
                 title: nameProperty?.title?.[0]?.plain_text || "Untitled",
-                instrumentation: instrumentationProperty?.multi_select?.map((item: any) => item.name) || [],
-                ensemble: ensembleProperty?.multi_select?.map((item: any) => item.name) || [],
+                instrumentation: instrumentationProperty?.multi_select?.map((item: any) => item.name) as string[] || [],
+                ensemble: ensembleProperty?.multi_select?.map((item: any) => item.name) as string[] || [],
                 year: yearProperty?.number || new Date().getFullYear(),
                 duration: durationProperty?.rich_text?.[0]?.plain_text || "",
-                publisher: publisherProperty?.multi_select?.map((item: any) => item.name) || [],
+                publisher: publisherProperty?.multi_select?.map((item: any) => item.name) as string[] || [],
                 premiere_info: premiereProperty?.date?.start || "",
                 recording: recordingProperty?.rich_text?.[0]?.plain_text || "",
                 published: true
@@ -264,30 +250,14 @@ export async function syncCompositions() {
             // Insert or update the composition
             await db
                 .insert(compositions)
-                .values({ 
-                    id: page.id,
-                    title: composition.title,
-                    instrumentation: composition.instrumentation,
-                    ensemble: composition.ensemble,
-                    year: composition.year,
-                    duration: composition.duration,
-                    publisher: composition.publisher,
-                    premiere_info: composition.premiere_info,
-                    recording: composition.recording,
-                    published: composition.published
+                .values({
+                    ...composition,
+                    id: page.id
                 })
                 .onConflictDoUpdate({
                     target: compositions.id,
                     set: {
-                        title: composition.title,
-                        instrumentation: composition.instrumentation,
-                        ensemble: composition.ensemble,
-                        year: composition.year,
-                        duration: composition.duration,
-                        publisher: composition.publisher,
-                        premiere_info: composition.premiere_info,
-                        recording: composition.recording,
-                        published: composition.published,
+                        ...composition,
                         updated_at: new Date(),
                         last_synced: new Date()
                     }
@@ -337,42 +307,26 @@ export async function syncRecordings() {
             const recording: InsertRecording = {
                 title: nameOfAlbumProperty?.title?.[0]?.plain_text || "Untitled",
                 composer: "David S. Lefkowitz",
-                performers: performersProperty?.multi_select?.map((item: any) => item.name) || [],
-                ensemble: ensembleProperty?.multi_select?.map((item: any) => item.name) || [],
-                instrumentation: instrumentationProperty?.multi_select?.map((item: any) => item.name) || [],
+                performers: performersProperty?.multi_select?.map((item: any) => item.name) as string[] || [],
+                ensemble: ensembleProperty?.multi_select?.map((item: any) => item.name) as string[] || [],
+                instrumentation: instrumentationProperty?.multi_select?.map((item: any) => item.name) as string[] || [],
                 year: yearProperty?.number || new Date().getFullYear(),
                 duration: durationProperty?.rich_text?.[0]?.plain_text || "",
-                label: labelProperty?.multi_select?.map((item: any) => item.name) || [],
+                label: labelProperty?.multi_select?.map((item: any) => item.name) as string[] || [],
                 links: linksProperty?.rich_text?.[0]?.plain_text || ""
             };
 
             // Insert or update the recording
             await db
                 .insert(recordings)
-                .values({ 
-                    id: page.id,
-                    title: recording.title,
-                    composer: recording.composer,
-                    performers: recording.performers,
-                    ensemble: recording.ensemble,
-                    instrumentation: recording.instrumentation,
-                    year: recording.year,
-                    duration: recording.duration,
-                    label: recording.label,
-                    links: recording.links
+                .values({
+                    ...recording,
+                    id: page.id
                 })
                 .onConflictDoUpdate({
                     target: recordings.id,
                     set: {
-                        title: recording.title,
-                        composer: recording.composer,
-                        performers: recording.performers,
-                        ensemble: recording.ensemble,
-                        instrumentation: recording.instrumentation,
-                        year: recording.year,
-                        duration: recording.duration,
-                        label: recording.label,
-                        links: recording.links,
+                        ...recording,
                         updated_at: new Date(),
                         last_synced: new Date()
                     }
