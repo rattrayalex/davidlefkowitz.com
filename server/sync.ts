@@ -155,11 +155,14 @@ export async function syncBlogPosts() {
             // Create excerpt from first paragraph or first 150 chars
             const excerpt = content.split('\n\n')[0]?.substring(0, 150) || "";
 
+            // Parse date carefully to avoid timezone issues
+            const dateObj = new Date(publishedDate + 'T12:00:00'); // Add noon time to avoid timezone shifts
+
             const blogPost: InsertBlogPost = {
                 title: title.trim(),
                 content: content,
                 excerpt: excerpt + (excerpt.length >= 150 ? "..." : ""),
-                published_date: new Date(publishedDate),
+                published_date: dateObj,
                 published: true,
                 tags: [], // No tags in current schema, but ready for future
                 read_time: readTime,
