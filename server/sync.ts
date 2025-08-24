@@ -8,6 +8,64 @@ import * as fs from "fs";
 const schemaData = JSON.parse(fs.readFileSync("server/notion-schemas.json", "utf-8"));
 
 /**
+ * Extract purple box text from a Notion page
+ * Looks for text that contains "should appear in the purple box"
+ */
+async function extractPurpleBoxText(pageId: string): Promise<string> {
+    if (!notion) {
+        throw new Error("Notion client not available");
+    }
+
+    try {
+        const blocks = await notion.blocks.children.list({
+            block_id: pageId,
+            page_size: 100
+        });
+
+        for (const block of blocks.results) {
+            if (!('type' in block)) continue;
+
+            let blockText = "";
+            switch (block.type) {
+                case 'paragraph':
+                    blockText = block.paragraph?.rich_text?.map(t => t.plain_text).join('') || '';
+                    break;
+                case 'heading_1':
+                case 'heading_2':
+                case 'heading_3':
+                    const headingKey = `heading_${block.type.split('_')[1]}` as 'heading_1' | 'heading_2' | 'heading_3';
+                    blockText = block[headingKey]?.rich_text?.map(t => t.plain_text).join('') || '';
+                    break;
+                case 'quote':
+                    blockText = block.quote?.rich_text?.map(t => t.plain_text).join('') || '';
+                    break;
+                case 'callout':
+                    blockText = block.callout?.rich_text?.map(t => t.plain_text).join('') || '';
+                    break;
+                case 'toggle':
+                    blockText = block.toggle?.rich_text?.map(t => t.plain_text).join('') || '';
+                    break;
+                case 'bulleted_list_item':
+                    blockText = block.bulleted_list_item?.rich_text?.map(t => t.plain_text).join('') || '';
+                    break;
+                case 'numbered_list_item':
+                    blockText = block.numbered_list_item?.rich_text?.map(t => t.plain_text).join('') || '';
+                    break;
+            }
+            
+            if (blockText.toLowerCase().includes('should appear in the purple box')) {
+                return blockText.trim();
+            }
+        }
+
+        return "";
+    } catch (error) {
+        console.error(`Error extracting purple box text for page ${pageId}:`, error);
+        return "";
+    }
+}
+
+/**
  * Extract full text content from a Notion page
  */
 async function extractPageContent(pageId: string): Promise<string> {
@@ -142,8 +200,6 @@ export async function syncBlogPosts() {
             
 
             const commentProperty = properties["Comment"] as any;
-            // Concatenate all rich text parts to get the full comment
-            const comment = commentProperty?.rich_text?.map((part: any) => part.plain_text).join("") || "";
             
             const publicationDateProperty = properties["Publication Date"] as any;
             const dateProperty = properties.Date as any;
@@ -157,6 +213,10 @@ export async function syncBlogPosts() {
             console.log(`Extracting content for: ${title}`);
             const content = await extractPageContent(page.id);
             const readTime = calculateReadingTime(content);
+            
+            // Extract purple box text if it exists
+            const purpleBoxText = await extractPurpleBoxText(page.id);
+            const comment = purpleBoxText || commentProperty?.rich_text?.map((part: any) => part.plain_text).join("") || "";
 
             // Create excerpt from first paragraph or first 150 chars
             const excerpt = content.split('\n\n')[0]?.substring(0, 150) || "";
