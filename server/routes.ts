@@ -130,8 +130,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
                 return {
                     id: page.id,
                     title: properties["Post Title"]?.title?.[0]?.plain_text || "Untitled",
-                    excerpt: "Click to read more...", // Since no excerpt field in schema
-                    content: "Full content available in Notion", // Since no content field in schema
+                    excerpt: "", // Remove placeholder text
+                    content: "", // Since no content field in schema
                     published_date: properties["Publication Date"]?.date?.start || properties.Date?.date?.start || "",
                     read_time: 5, // Default since no read time field
                     tags: [], // No tags field in current schema

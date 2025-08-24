@@ -44,40 +44,31 @@ export default function Blog() {
                             </p>
                         </div>
                     ) : (
-                        <div className="space-y-12">
+                        <div className="space-y-4">
                             {posts.map((post) => (
                                 <article 
                                     key={post.id}
-                                    className="border border-gray-300 rounded-xl p-8 hover:shadow-lg transition-shadow duration-300" style={{backgroundColor: '#e5e5ff'}}
+                                    className="border border-gray-300 rounded-lg p-4 hover:shadow-md transition-shadow duration-300" style={{backgroundColor: '#e5e5ff'}}
                                     data-testid={`blog-post-${post.id}`}
                                 >
                                     {/* Meta information */}
-                                    <div className="flex items-center text-sm text-gray-500 mb-4">
+                                    <div className="flex items-center text-xs text-gray-500 mb-2">
                                         <div className="flex items-center">
-                                            <Calendar className="h-4 w-4 mr-1" />
+                                            <Calendar className="h-3 w-3 mr-1" />
                                             <time data-testid={`blog-post-date-${post.id}`}>
                                                 {new Date(post.published_date).toLocaleDateString('en-US', {
                                                     year: 'numeric',
-                                                    month: 'long',
+                                                    month: 'short',
                                                     day: 'numeric'
                                                 })}
                                             </time>
                                         </div>
-                                        <span className="mx-2">•</span>
-                                        <div className="flex items-center">
-                                            <Clock className="h-4 w-4 mr-1" />
-                                            <span data-testid={`blog-post-read-time-${post.id}`}>
-                                                {post.read_time} min read
-                                            </span>
-                                        </div>
                                     </div>
 
                                     {/* Title */}
-                                    <h2 className="text-3xl font-playfair font-bold text-navy mb-4 hover:text-purple transition-colors duration-200">
-                                        <Link href={`/blog/${post.id}`}>
-                                            <a data-testid={`blog-post-title-${post.id}`}>
-                                                {post.title}
-                                            </a>
+                                    <h2 className="text-xl font-playfair font-bold text-navy mb-2 hover:text-purple transition-colors duration-200">
+                                        <Link href={`/blog/${post.id}`} data-testid={`blog-post-title-${post.id}`}>
+                                            {post.title}
                                         </Link>
                                     </h2>
 
@@ -98,17 +89,12 @@ export default function Blog() {
                                         </div>
                                     )}
 
-                                    {/* Excerpt */}
-                                    <p className="text-gray-700 leading-relaxed mb-6 text-lg" data-testid={`blog-post-excerpt-${post.id}`}>
-                                        {post.excerpt}
-                                    </p>
-
                                     {/* Read More Link */}
                                     <Link href={`/blog/${post.id}`}>
-                                        <a className="inline-flex items-center text-purple hover:text-purple-700 font-medium transition-colors duration-200" data-testid={`blog-post-read-more-${post.id}`}>
-                                            Read Full Post
-                                            <ArrowRight className="ml-2 h-4 w-4" />
-                                        </a>
+                                        <span className="inline-flex items-center text-purple hover:text-purple-700 text-sm font-medium transition-colors duration-200" data-testid={`blog-post-read-more-${post.id}`}>
+                                            Read Post
+                                            <ArrowRight className="ml-1 h-3 w-3" />
+                                        </span>
                                     </Link>
                                 </article>
                             ))}
