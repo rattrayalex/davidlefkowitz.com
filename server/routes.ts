@@ -177,6 +177,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
         try {
             console.log("Received Notion webhook:", req.body);
             
+            // Handle Notion verification challenge
+            if (req.body.verification_token) {
+                return res.status(200).send(req.body.verification_token);
+            }
+
             // Basic webhook security - you might want to verify the request signature in production
             const { type, page_id, database_id } = req.body;
 
