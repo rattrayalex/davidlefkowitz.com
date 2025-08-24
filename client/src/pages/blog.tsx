@@ -63,7 +63,7 @@ export default function Blog() {
                                     </div>
 
                                     {/* Title */}
-                                    <h2 className="text-lg font-playfair font-bold text-navy hover:text-purple transition-colors duration-200">
+                                    <h2 className={`text-lg font-playfair font-bold text-navy hover:text-purple transition-colors duration-200 ${post.title.toLowerCase().includes('an explainer') ? 'italic' : ''}`} style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
                                         <Link href={`/blog/${post.id}`} data-testid={`blog-post-title-${post.id}`}>
                                             {post.title}
                                         </Link>

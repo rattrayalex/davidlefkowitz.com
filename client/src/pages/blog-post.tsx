@@ -87,7 +87,7 @@ export default function BlogPostPage() {
                     </div>
 
                     {/* Title */}
-                    <h1 className="text-4xl lg:text-5xl font-playfair font-bold text-navy" data-testid="post-title">
+                    <h1 className={`text-4xl lg:text-5xl font-playfair font-bold text-navy ${post.title.toLowerCase().includes('an explainer') ? 'italic' : ''}`} data-testid="post-title" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
                         {post.title}
                     </h1>
 
@@ -115,12 +115,12 @@ export default function BlogPostPage() {
                 <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="prose prose-lg max-w-none">
                         {/* Excerpt or Special Comment */}
-                        <div className="text-xl text-gray-700 leading-relaxed mb-6 p-6 border border-gray-300 rounded-xl border-l-4 border-purple" data-testid="post-excerpt" style={{backgroundColor: '#e5e5ff'}}>
+                        <div className="text-xl text-gray-700 leading-relaxed mb-6 p-6 border border-gray-300 rounded-xl border-l-4 border-purple" data-testid="post-excerpt" style={{backgroundColor: '#e5e5ff', fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
                             {post.comment && post.comment.trim() ? post.comment : post.excerpt}
                         </div>
 
                         {/* Content */}
-                        <div className="text-gray-700 leading-relaxed whitespace-pre-wrap" data-testid="post-content" style={{lineHeight: '1.6', tabSize: '2.75em'}}>
+                        <div className="text-gray-700 leading-relaxed whitespace-pre-wrap" data-testid="post-content" style={{lineHeight: '1.6', tabSize: '2.5em', fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
                             {post.content}
                         </div>
                     </div>
