@@ -100,7 +100,8 @@ async function extractContentAndPurpleBox(pageId: string, extractLastParagraph: 
                 // Add tab indent to ALL paragraphs (including first)
                 const indentedContent = contentWithoutLast.map(block => {
                     // Only add tab to regular paragraphs (not headings, lists, quotes, code)
-                    if (!block.startsWith('#') && !block.startsWith('•') && !block.startsWith('1.') && !block.startsWith('>') && !block.startsWith('```')) {
+                    // And only if it doesn't already start with a tab
+                    if (!block.startsWith('#') && !block.startsWith('•') && !block.startsWith('1.') && !block.startsWith('>') && !block.startsWith('```') && !block.startsWith('\t')) {
                         return '\t' + block;
                     }
                     return block;
