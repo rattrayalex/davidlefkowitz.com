@@ -1,8 +1,12 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
-import { notion, NOTION_PAGE_ID, findDatabaseByTitle } from "./notion";
+import { notion } from "./notion";
 import { contactFormSchema } from "@shared/schema";
 import { z } from "zod";
+import * as fs from "fs";
+
+// Load database schemas
+const schemaData = JSON.parse(fs.readFileSync("server/notion-schemas.json", "utf-8"));
 
 export async function registerRoutes(app: Express): Promise<Server> {
     // Get profile information
@@ -32,28 +36,30 @@ export async function registerRoutes(app: Express): Promise<Server> {
             if (!notion) {
                 return res.json([]);
             }
-            const compositionsDb = await findDatabaseByTitle("Compositions");
-            if (!compositionsDb) {
-                return res.json([]);
-            }
 
             const response = await notion.databases.query({
-                database_id: compositionsDb.id,
+                database_id: schemaData.databases.compositions.id,
+                filter: {
+                    property: "Published",
+                    checkbox: {
+                        equals: true
+                    }
+                }
             });
 
             const compositions = response.results.map((page: any) => {
                 const properties = page.properties;
                 return {
                     id: page.id,
-                    title: properties.Title?.title?.[0]?.plain_text || "Untitled",
-                    instrumentation: properties.Instrumentation?.rich_text?.[0]?.plain_text || "",
-                    description: properties.Description?.rich_text?.[0]?.plain_text || "",
-                    year: properties.Year?.number || new Date().getFullYear(),
-                    category: properties.Category?.select?.name || "Other",
+                    title: properties.Name?.title?.[0]?.plain_text || "Untitled",
+                    instrumentation: properties.Instrumentation?.multi_select?.map((item: any) => item.name).join(", ") || "",
+                    ensemble: properties.Ensemble?.multi_select?.map((item: any) => item.name).join(", ") || "",
+                    year: properties["Year ©"]?.number || new Date().getFullYear(),
+                    category: properties.Ensemble?.multi_select?.[0]?.name || "Other",
                     duration: properties.Duration?.rich_text?.[0]?.plain_text || "",
-                    premiere_info: properties.PremiereInfo?.rich_text?.[0]?.plain_text || "",
-                    score_url: properties.ScoreURL?.url || "",
-                    audio_url: properties.AudioURL?.url || "",
+                    premiere_info: properties["Date of premier"]?.date?.start || "",
+                    publisher: properties.Publisher?.multi_select?.map((item: any) => item.name).join(", ") || "",
+                    recording: properties.Recording?.rich_text?.[0]?.plain_text || "",
                 };
             });
 
@@ -72,32 +78,29 @@ export async function registerRoutes(app: Express): Promise<Server> {
             if (!notion) {
                 return res.json([]);
             }
-            const recordingsDb = await findDatabaseByTitle("Recordings");
-            if (!recordingsDb) {
-                return res.json([]);
-            }
 
             const response = await notion.databases.query({
-                database_id: recordingsDb.id,
+                database_id: schemaData.databases.recordings.id,
             });
 
             const recordings = response.results.map((page: any) => {
                 const properties = page.properties;
                 return {
                     id: page.id,
-                    title: properties.Title?.title?.[0]?.plain_text || "Untitled",
-                    performer: properties.Performer?.rich_text?.[0]?.plain_text || "",
-                    description: properties.Description?.rich_text?.[0]?.plain_text || "",
-                    release_date: properties.ReleaseDate?.date?.start || "",
-                    audio_url: properties.AudioURL?.url || "",
-                    video_url: properties.VideoURL?.url || "",
-                    album_cover: properties.AlbumCover?.url || "",
+                    title: properties["Name of Album"]?.title?.[0]?.plain_text || "Untitled",
+                    composer: properties.Composition?.rich_text?.[0]?.plain_text || "",
+                    performers: properties.Performers?.multi_select?.map((item: any) => item.name).join(", ") || "",
+                    ensemble: properties.Ensemble?.multi_select?.map((item: any) => item.name).join(", ") || "",
+                    instrumentation: properties.Instrumentation?.multi_select?.map((item: any) => item.name).join(", ") || "",
+                    year: properties["Year ©"]?.number || new Date().getFullYear(),
                     duration: properties.Duration?.rich_text?.[0]?.plain_text || "",
+                    label: properties.Label?.multi_select?.map((item: any) => item.name).join(", ") || "",
+                    links: properties.Links?.rich_text?.[0]?.plain_text || "",
                 };
             });
 
-            // Sort by release date descending
-            recordings.sort((a, b) => new Date(b.release_date).getTime() - new Date(a.release_date).getTime());
+            // Sort by year descending
+            recordings.sort((a, b) => b.year - a.year);
             res.json(recordings);
         } catch (error) {
             console.error("Error fetching recordings:", error);
@@ -105,23 +108,19 @@ export async function registerRoutes(app: Express): Promise<Server> {
         }
     });
 
-    // Get all blog posts
+    // Get all blog posts  
     app.get("/api/blog-posts", async (req, res) => {
         try {
             if (!notion) {
                 return res.json([]);
             }
-            const blogDb = await findDatabaseByTitle("BlogPosts");
-            if (!blogDb) {
-                return res.json([]);
-            }
 
             const response = await notion.databases.query({
-                database_id: blogDb.id,
+                database_id: schemaData.databases.blog.id,
                 filter: {
-                    property: "Published",
-                    checkbox: {
-                        equals: true
+                    property: "Status",
+                    status: {
+                        equals: "Published"
                     }
                 }
             });
@@ -130,13 +129,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
                 const properties = page.properties;
                 return {
                     id: page.id,
-                    title: properties.Title?.title?.[0]?.plain_text || "Untitled",
-                    excerpt: properties.Excerpt?.rich_text?.[0]?.plain_text || "",
-                    content: properties.Content?.rich_text?.[0]?.plain_text || "",
-                    published_date: properties.PublishedDate?.date?.start || "",
-                    read_time: properties.ReadTime?.number || 5,
-                    tags: properties.Tags?.multi_select?.map((tag: any) => tag.name) || [],
-                    published: properties.Published?.checkbox || false,
+                    title: properties["Post Title"]?.title?.[0]?.plain_text || "Untitled",
+                    excerpt: "Click to read more...", // Since no excerpt field in schema
+                    content: "Full content available in Notion", // Since no content field in schema
+                    published_date: properties["Publication Date"]?.date?.start || properties.Date?.date?.start || "",
+                    read_time: 5, // Default since no read time field
+                    tags: [], // No tags field in current schema
+                    published: true, // Filtered by Published status above
                 };
             });
 
@@ -162,13 +161,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
             const post = {
                 id: page.id,
-                title: properties.Title?.title?.[0]?.plain_text || "Untitled",
-                excerpt: properties.Excerpt?.rich_text?.[0]?.plain_text || "",
-                content: properties.Content?.rich_text?.[0]?.plain_text || "",
-                published_date: properties.PublishedDate?.date?.start || "",
-                read_time: properties.ReadTime?.number || 5,
-                tags: properties.Tags?.multi_select?.map((tag: any) => tag.name) || [],
-                published: properties.Published?.checkbox || false,
+                title: properties["Post Title"]?.title?.[0]?.plain_text || "Untitled",
+                excerpt: "Click to read the full post in Notion",
+                content: "This post is managed in Notion. Click the link above to read the full content.",
+                published_date: properties["Publication Date"]?.date?.start || properties.Date?.date?.start || "",
+                read_time: 5,
+                tags: [],
+                published: true,
             };
 
             res.json(post);

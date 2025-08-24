@@ -1,0 +1,59 @@
+{
+  "databases": {
+    "blog": {
+      "id": "22e3907b-2ee6-8004-9fce-c567fa70ad12",
+      "title": "Blog",
+      "properties": {
+        "Publication Date": "date",
+        "Date": "date", 
+        "Status": "status",
+        "Composition": "relation",
+        "Post Title": "title"
+      }
+    },
+    "compositions": {
+      "id": "22e3907b-2ee6-808b-872a-fa16f680147d", 
+      "title": "Compositions",
+      "properties": {
+        "Date of premier": "date",
+        "Duration": "rich_text",
+        "Ensemble": "multi_select",
+        "Published": "checkbox",
+        "Recording": "rich_text", 
+        "Blog": "relation",
+        "Year ©": "number",
+        "Publisher": "multi_select",
+        "Instrumentation": "multi_select",
+        "Name": "title"
+      },
+      "ensemble_options": ["Choral", "Solos", "Piano Quintet", "Voice and Keyboard", "String Quartet", "Mixed Chamber Ensemble", "Pierrot Ensemble", "Piano Solo", "Piano Duo", "Solo Instrument & Piano", "String Duo", "Klezmer Ensemble", "Choir and Ensemble", "Orchestra", "Saxophone Quartet", "Flute Quartet", "Pierrot Ensemble plus Percussion", "String Orchestra", "Choir and Orchestra", "Voice and Pierrot Ensemble", "Children's Choir", "Harp Quartet", "Debussy Trio", "Brass Ensemble", "Chamber Orchestra", "Percussion Ensemble", "Marimba Duo"]
+    },
+    "recordings": {
+      "id": "2363907b-2ee6-80be-9a86-d05c16db60d0",
+      "title": "Recordings", 
+      "properties": {
+        "Duration": "rich_text",
+        "Ensemble": "multi_select",
+        "Composition": "rich_text",
+        "Blog": "relation",
+        "Year ©": "number",
+        "Label": "multi_select",
+        "Instrumentation": "multi_select",
+        "Links": "rich_text",
+        "Performers": "multi_select", 
+        "Name of Album": "title"
+      }
+    },
+    "contact": {
+      "id": "23e3907b-2ee6-805f-a20f-e677ba005f33",
+      "title": "Contact",
+      "properties": {
+        "Publication Date": "date",
+        "Date": "date",
+        "Status": "status", 
+        "Composition": "relation",
+        "Post Title": "title"
+      }
+    }
+  }
+}
