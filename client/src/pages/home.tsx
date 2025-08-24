@@ -4,6 +4,7 @@ import { Link } from "wouter";
 import { ArrowRight, Trophy, GraduationCap, Music } from "lucide-react";
 import LoadingSpinner from "@/components/ui/loading-spinner";
 import { Composition, Recording, BlogPost, Profile } from "@shared/schema";
+import twelvePointStarSvg from "@/assets/12_point_curved.svg";
 
 export default function Home() {
     const { data: profile, isLoading: profileLoading } = useQuery<Profile>({
@@ -37,7 +38,7 @@ export default function Home() {
                 <div 
                     className="absolute inset-0 opacity-30 pointer-events-none"
                     style={{
-                        backgroundImage: 'url(https://www.davidlefkowitz.com/r2-assets/12_point_curved.svg)',
+                        backgroundImage: `url(${twelvePointStarSvg})`,
                         backgroundPosition: 'center center',
                         backgroundSize: 'contain',
                         backgroundRepeat: 'no-repeat',
