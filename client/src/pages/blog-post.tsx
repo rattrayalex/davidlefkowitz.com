@@ -115,7 +115,7 @@ export default function BlogPostPage() {
                         </div>
 
                         {/* Content */}
-                        <div className="text-gray-700 leading-relaxed whitespace-pre-wrap" data-testid="post-content">
+                        <div className="text-gray-700 leading-relaxed whitespace-pre-wrap space-y-3" data-testid="post-content" style={{lineHeight: '1.6'}}>
                             {post.content}
                         </div>
                     </div>

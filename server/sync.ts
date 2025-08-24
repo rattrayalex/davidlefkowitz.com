@@ -9,9 +9,9 @@ const schemaData = JSON.parse(fs.readFileSync("server/notion-schemas.json", "utf
 
 /**
  * Extract content and purple box text from a Notion page
- * For June 20, 2025 post: uses last paragraph for purple box and excludes it from content
+ * Uses last paragraph for purple box and excludes it from content for all posts
  */
-async function extractContentAndPurpleBox(pageId: string, isJune20Post: boolean): Promise<{content: string, purpleBoxText: string}> {
+async function extractContentAndPurpleBox(pageId: string, extractLastParagraph: boolean): Promise<{content: string, purpleBoxText: string}> {
     if (!notion) {
         throw new Error("Notion client not available");
     }
@@ -87,15 +87,24 @@ async function extractContentAndPurpleBox(pageId: string, isJune20Post: boolean)
             }
         }
 
-        // For June 20 post: extract last paragraph for purple box
-        if (isJune20Post && contentBlocks.length > 0) {
+        // For all posts: extract last paragraph for purple box if content exists
+        if (contentBlocks.length > 0) {
             const purpleBoxText = contentBlocks[contentBlocks.length - 1];
             const contentWithoutLast = contentBlocks.slice(0, -1);
-            content = contentWithoutLast.join('\n\n');
+            
+            // Add tab indent to each paragraph
+            const indentedContent = contentWithoutLast.map(block => {
+                // Only add tab to paragraphs (not headings, lists, etc.)
+                if (!block.startsWith('#') && !block.startsWith('•') && !block.startsWith('1.') && !block.startsWith('>') && !block.startsWith('```')) {
+                    return '\t' + block;
+                }
+                return block;
+            });
+            
+            content = indentedContent.join('\n\n');
             return { content: content.trim(), purpleBoxText: purpleBoxText.trim() };
         } else {
-            content = contentBlocks.join('\n\n');
-            return { content: content.trim(), purpleBoxText: "" };
+            return { content: "", purpleBoxText: "" };
         }
 
     } catch (error) {
@@ -163,12 +172,9 @@ export async function syncBlogPosts() {
                 continue;
             }
 
-            // Check if this is the June 20, 2025 post
-            const isJune20Post = publishedDate === "2025-06-20";
-            
             // Extract content and purple box text
             console.log(`Extracting content for: ${title}`);
-            const { content, purpleBoxText } = await extractContentAndPurpleBox(page.id, isJune20Post);
+            const { content, purpleBoxText } = await extractContentAndPurpleBox(page.id, true);
             const readTime = calculateReadingTime(content);
             
             // Use purple box text if available, otherwise fall back to comment property
