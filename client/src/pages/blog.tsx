@@ -1,0 +1,121 @@
+import React from "react";
+import { useQuery } from "@tanstack/react-query";
+import { Link } from "wouter";
+import { Calendar, Clock, ArrowRight } from "lucide-react";
+import LoadingSpinner from "@/components/ui/loading-spinner";
+import { BlogPost } from "@shared/schema";
+
+export default function Blog() {
+    const { data: posts = [], isLoading } = useQuery<BlogPost[]>({
+        queryKey: ["/api/blog-posts"],
+    });
+
+    if (isLoading) {
+        return (
+            <div className="min-h-screen flex items-center justify-center">
+                <LoadingSpinner size="lg" />
+            </div>
+        );
+    }
+
+    return (
+        <div className="min-h-screen bg-white">
+            {/* Hero Section */}
+            <section className="bg-gradient-to-br from-purple-50 to-blue-50 py-20">
+                <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div className="text-center">
+                        <h1 className="text-5xl lg:text-6xl font-playfair font-bold text-navy mb-6" data-testid="blog-title">
+                            Blog
+                        </h1>
+                        <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+                            Thoughts on composition, music theory, teaching, and the contemporary classical music landscape
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            {/* Blog Posts */}
+            <section className="py-20">
+                <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+                    {posts.length === 0 ? (
+                        <div className="text-center py-12">
+                            <p className="text-gray-600 text-lg" data-testid="no-blog-posts">
+                                No blog posts available at the moment.
+                            </p>
+                        </div>
+                    ) : (
+                        <div className="space-y-12">
+                            {posts.map((post) => (
+                                <article 
+                                    key={post.id}
+                                    className="bg-white border border-gray-200 rounded-xl p-8 hover:shadow-lg transition-shadow duration-300"
+                                    data-testid={`blog-post-${post.id}`}
+                                >
+                                    {/* Meta information */}
+                                    <div className="flex items-center text-sm text-gray-500 mb-4">
+                                        <div className="flex items-center">
+                                            <Calendar className="h-4 w-4 mr-1" />
+                                            <time data-testid={`blog-post-date-${post.id}`}>
+                                                {new Date(post.published_date).toLocaleDateString('en-US', {
+                                                    year: 'numeric',
+                                                    month: 'long',
+                                                    day: 'numeric'
+                                                })}
+                                            </time>
+                                        </div>
+                                        <span className="mx-2">•</span>
+                                        <div className="flex items-center">
+                                            <Clock className="h-4 w-4 mr-1" />
+                                            <span data-testid={`blog-post-read-time-${post.id}`}>
+                                                {post.read_time} min read
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                    {/* Title */}
+                                    <h2 className="text-3xl font-playfair font-bold text-navy mb-4 hover:text-purple transition-colors duration-200">
+                                        <Link href={`/blog/${post.id}`}>
+                                            <a data-testid={`blog-post-title-${post.id}`}>
+                                                {post.title}
+                                            </a>
+                                        </Link>
+                                    </h2>
+
+                                    {/* Tags */}
+                                    {post.tags.length > 0 && (
+                                        <div className="mb-4">
+                                            <div className="flex flex-wrap gap-2">
+                                                {post.tags.map((tag) => (
+                                                    <span 
+                                                        key={tag}
+                                                        className="inline-block bg-purple-100 text-purple-700 text-xs px-2 py-1 rounded-full"
+                                                        data-testid={`blog-post-tag-${post.id}-${tag.toLowerCase()}`}
+                                                    >
+                                                        {tag}
+                                                    </span>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    )}
+
+                                    {/* Excerpt */}
+                                    <p className="text-gray-700 leading-relaxed mb-6 text-lg" data-testid={`blog-post-excerpt-${post.id}`}>
+                                        {post.excerpt}
+                                    </p>
+
+                                    {/* Read More Link */}
+                                    <Link href={`/blog/${post.id}`}>
+                                        <a className="inline-flex items-center text-purple hover:text-purple-700 font-medium transition-colors duration-200" data-testid={`blog-post-read-more-${post.id}`}>
+                                            Read Full Post
+                                            <ArrowRight className="ml-2 h-4 w-4" />
+                                        </a>
+                                    </Link>
+                                </article>
+                            ))}
+                        </div>
+                    )}
+                </div>
+            </section>
+        </div>
+    );
+}
