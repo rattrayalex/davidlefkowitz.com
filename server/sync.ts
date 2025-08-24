@@ -101,7 +101,7 @@ async function extractContentAndPurpleBox(pageId: string, extractLastParagraph: 
                 return block;
             });
             
-            content = indentedContent.join('\n\n');
+            content = indentedContent.join('\n');
             return { content: content.trim(), purpleBoxText: purpleBoxText.trim() };
         } else {
             return { content: "", purpleBoxText: "" };
