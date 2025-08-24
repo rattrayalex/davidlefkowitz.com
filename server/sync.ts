@@ -131,13 +131,15 @@ export async function syncBlogPosts() {
             
             const properties = page.properties;
             const titleProperty = properties["Post Title"] as any;
-            const title = titleProperty?.title?.[0]?.plain_text || "Untitled";
+            // Concatenate all rich text parts to get the full title
+            const title = titleProperty?.title?.map((part: any) => part.plain_text).join("") || "Untitled";
             
             // Skip posts with missing or invalid titles
             if (!title || title.trim() === "" || title.trim().length < 2) {
                 console.log(`Skipping post ${page.id} with invalid title: "${title}"`);
                 continue;
             }
+            
 
             const publicationDateProperty = properties["Publication Date"] as any;
             const dateProperty = properties.Date as any;
