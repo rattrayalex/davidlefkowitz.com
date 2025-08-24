@@ -89,23 +89,29 @@ async function extractContentAndPurpleBox(pageId: string, extractLastParagraph: 
 
         // For all posts: extract last paragraph for purple box if content exists
         if (contentBlocks.length > 0) {
-            const purpleBoxText = contentBlocks[contentBlocks.length - 1];
-            const contentWithoutLast = contentBlocks.slice(0, -1);
+            // Filter out any empty blocks first
+            const nonEmptyBlocks = contentBlocks.filter(block => block.trim().length > 0);
             
-            // Add tab indent to each paragraph
-            const indentedContent = contentWithoutLast.map(block => {
-                // Only add tab to paragraphs (not headings, lists, etc.)
-                if (!block.startsWith('#') && !block.startsWith('•') && !block.startsWith('1.') && !block.startsWith('>') && !block.startsWith('```')) {
-                    return '\t' + block;
-                }
-                return block;
-            });
-            
-            content = indentedContent.join('\n');
-            return { content: content.trim(), purpleBoxText: purpleBoxText.trim() };
-        } else {
-            return { content: "", purpleBoxText: "" };
+            if (nonEmptyBlocks.length > 0) {
+                // Take the very last non-empty block for purple box
+                const purpleBoxText = nonEmptyBlocks[nonEmptyBlocks.length - 1];
+                const contentWithoutLast = nonEmptyBlocks.slice(0, -1);
+                
+                // Add tab indent to ALL paragraphs (including first)
+                const indentedContent = contentWithoutLast.map(block => {
+                    // Only add tab to regular paragraphs (not headings, lists, quotes, code)
+                    if (!block.startsWith('#') && !block.startsWith('•') && !block.startsWith('1.') && !block.startsWith('>') && !block.startsWith('```')) {
+                        return '\t' + block;
+                    }
+                    return block;
+                });
+                
+                content = indentedContent.join('\n');
+                return { content: content.trim(), purpleBoxText: purpleBoxText.trim() };
+            }
         }
+        
+        return { content: "", purpleBoxText: "" };
 
     } catch (error) {
         console.error(`Error extracting content for page ${pageId}:`, error);
