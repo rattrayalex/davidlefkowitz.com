@@ -33,34 +33,17 @@ export default function Home() {
         <div className="min-h-screen">
             {/* Hero Section */}
             <section className="relative overflow-hidden py-20" style={{backgroundColor: '#e5e5ff'}}>
-                {/* Twelve-pointed star background matching production website */}
-                <div className="absolute inset-0 opacity-20">
-                    <svg className="absolute top-0 left-0 w-full h-full" viewBox="0 0 1200 800" fill="none">
-                        {/* Twelve-pointed stars */}
-                        <g stroke="#c7b8ea" strokeWidth="1" fill="none">
-                            {/* Large twelve-pointed star - top left */}
-                            <path d="M200,200 L220,180 L240,200 L260,180 L280,200 L300,180 L320,200 L340,220 L320,240 L340,260 L320,280 L340,300 L320,320 L300,340 L280,320 L260,340 L240,320 L220,340 L200,320 L180,340 L160,320 L140,340 L120,320 L100,300 L120,280 L100,260 L120,240 L100,220 L120,200 L140,180 L160,200 L180,180 Z"/>
-                            
-                            {/* Medium twelve-pointed star - top right */}
-                            <path d="M900,150 L915,135 L930,150 L945,135 L960,150 L975,135 L990,150 L1005,165 L990,180 L1005,195 L990,210 L1005,225 L990,240 L975,255 L960,240 L945,255 L930,240 L915,255 L900,240 L885,255 L870,240 L855,255 L840,240 L825,225 L840,210 L825,195 L840,180 L825,165 L840,150 L855,135 L870,150 L885,135 Z"/>
-                            
-                            {/* Small twelve-pointed star - center */}
-                            <path d="M600,350 L610,340 L620,350 L630,340 L640,350 L650,340 L660,350 L670,360 L660,370 L670,380 L660,390 L670,400 L660,410 L650,420 L640,410 L630,420 L620,410 L610,420 L600,410 L590,420 L580,410 L570,420 L560,410 L550,400 L560,390 L550,380 L560,370 L550,360 L560,350 L570,340 L580,350 L590,340 Z"/>
-                            
-                            {/* Large twelve-pointed star - bottom right */}
-                            <path d="M950,550 L970,530 L990,550 L1010,530 L1030,550 L1050,530 L1070,550 L1090,570 L1070,590 L1090,610 L1070,630 L1090,650 L1070,670 L1050,690 L1030,670 L1010,690 L990,670 L970,690 L950,670 L930,690 L910,670 L890,690 L870,670 L850,650 L870,630 L850,610 L870,590 L850,570 L870,550 L890,530 L910,550 L930,530 Z"/>
-                            
-                            {/* Small twelve-pointed star - left side */}
-                            <path d="M150,500 L160,490 L170,500 L180,490 L190,500 L200,490 L210,500 L220,510 L210,520 L220,530 L210,540 L220,550 L210,560 L200,570 L190,560 L180,570 L170,560 L160,570 L150,560 L140,570 L130,560 L120,570 L110,560 L100,550 L110,540 L100,530 L110,520 L100,510 L110,500 L120,490 L130,500 L140,490 Z"/>
-                            
-                            {/* Connecting lines between stars */}
-                            <line x1="320" y1="200" x2="840" y2="150" stroke="#c7b8ea" strokeWidth="0.5"/>
-                            <line x1="600" y1="350" x2="200" y2="200" stroke="#c7b8ea" strokeWidth="0.5"/>
-                            <line x1="950" y1="550" x2="600" y2="350" stroke="#c7b8ea" strokeWidth="0.5"/>
-                            <line x1="150" y1="500" x2="900" y2="150" stroke="#c7b8ea" strokeWidth="0.5"/>
-                        </g>
-                    </svg>
-                </div>
+                {/* Twelve-pointed star background from production website */}
+                <div 
+                    className="absolute inset-0 opacity-30 pointer-events-none"
+                    style={{
+                        backgroundImage: 'url(https://www.davidlefkowitz.com/r2-assets/12_point_curved.svg)',
+                        backgroundPosition: 'center center',
+                        backgroundSize: 'contain',
+                        backgroundRepeat: 'no-repeat',
+                        zIndex: -1
+                    }}
+                ></div>
                 
                 <div className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
                     <div className="space-y-8">
