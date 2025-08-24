@@ -106,11 +106,11 @@ export default function BlogPostPage() {
             </section>
 
             {/* Content */}
-            <section className="py-8">
+            <section className="pt-6 pb-8">
                 <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="prose prose-lg max-w-none">
                         {/* Excerpt */}
-                        <div className="text-xl text-gray-700 leading-relaxed mb-8 p-6 border border-gray-300 rounded-xl border-l-4 border-purple" data-testid="post-excerpt" style={{backgroundColor: '#e5e5ff'}}>
+                        <div className="text-xl text-gray-700 leading-relaxed mb-6 p-6 border border-gray-300 rounded-xl border-l-4 border-purple" data-testid="post-excerpt" style={{backgroundColor: '#e5e5ff'}}>
                             {post.excerpt}
                         </div>
 
