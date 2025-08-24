@@ -32,7 +32,7 @@ export default function Home() {
     return (
         <div className="min-h-screen">
             {/* Hero Section */}
-            <section className="relative bg-white overflow-hidden min-h-screen flex items-center">
+            <section className="relative bg-white overflow-hidden py-20">
                 {/* Geometric Background Elements - matching the original design */}
                 <div className="absolute inset-0 opacity-30">
                     <svg className="absolute top-0 left-0 w-full h-full" viewBox="0 0 1200 800" fill="none">
@@ -84,7 +84,7 @@ export default function Home() {
                                 <img 
                                     src={profile?.photo_url || "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=600"}
                                     alt={profile?.name || "David S. Lefkowitz"}
-                                    className="rounded-2xl shadow-2xl w-96 h-96 object-cover mx-auto"
+                                    className="rounded-2xl shadow-2xl w-80 h-80 object-cover mx-auto"
                                     data-testid="hero-photo"
                                 />
                             </div>
