@@ -104,7 +104,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
                 title: post.title,
                 excerpt: post.excerpt || "",
                 content: post.content,
-                published_date: post.published_date.toISOString().split('T')[0], // Format as YYYY-MM-DD
+                published_date: post.published_date.toLocaleDateString('en-CA'), // Format as YYYY-MM-DD without timezone conversion
                 read_time: post.read_time || 5,
                 tags: Array.isArray(post.tags) ? post.tags : [],
                 published: post.published,
@@ -138,7 +138,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
                 title: post.title,
                 excerpt: post.excerpt || "",
                 content: post.content,
-                published_date: post.published_date.toISOString().split('T')[0], // Format as YYYY-MM-DD
+                published_date: post.published_date.toLocaleDateString('en-CA'), // Format as YYYY-MM-DD without timezone conversion
                 read_time: post.read_time || 5,
                 tags: Array.isArray(post.tags) ? post.tags : [],
                 published: post.published,
