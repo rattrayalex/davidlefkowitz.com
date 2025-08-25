@@ -6,7 +6,7 @@ export default function Contact() {
     return (
         <div className="min-h-screen" style={{backgroundColor: '#e5e5ff'}}>
             {/* Hero Section */}
-            <section className="py-20" style={{backgroundColor: '#e5e5ff'}}>
+            <section className="py-8" style={{backgroundColor: '#e5e5ff'}}>
                 <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="text-center">
                         <h1 className="text-5xl lg:text-6xl font-playfair font-bold text-navy mb-6" data-testid="contact-title" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
@@ -20,7 +20,7 @@ export default function Contact() {
             </section>
 
             {/* Contact Content */}
-            <section className="py-20">
+            <section className="py-8">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="grid lg:grid-cols-2 gap-16">
                         {/* Contact Information */}
