@@ -66,7 +66,7 @@ export default function BlogPostPage() {
                     </div>
 
                     {/* Post Meta */}
-                    <div className="flex items-center text-sm text-gray-600 mb-6">
+                    <div className="flex items-center text-sm text-gray-800 font-medium mb-6">
                         <div className="flex items-center">
                             <Calendar className="h-4 w-4 mr-1" />
                             <time data-testid="post-date">
