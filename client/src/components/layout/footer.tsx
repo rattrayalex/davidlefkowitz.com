@@ -47,8 +47,8 @@ export default function Footer() {
                     </div>
                 </div>
                 
-                <div className="mt-12 pt-8 text-center text-gray-600">
-                    <p style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>&copy; 2024 David S. Lefkowitz. All rights reserved.</p>
+                <div className="mt-12 pt-4 text-center text-gray-600">
+                    <p style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>&copy; 2025 David S. Lefkowitz. All rights reserved.</p>
                 </div>
             </div>
         </footer>
