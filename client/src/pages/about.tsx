@@ -74,11 +74,11 @@ export default function About() {
                                     <p className="text-gray-700">
                                         <span className="font-medium">Email:</span>{" "}
                                         <a 
-                                            href={`mailto:${profile?.email || "dlefkowitz@ucla.edu"}`}
+                                            href={`mailto:${profile?.email || "lefko@ucla.edu"}`}
                                             className="text-purple hover:text-purple-700 transition-colors duration-200"
                                             data-testid="contact-email"
                                         >
-                                            {profile?.email || "dlefkowitz@ucla.edu"}
+                                            {profile?.email || "lefko at ucla.edu"}
                                         </a>
                                     </p>
                                     <p className="text-gray-700">

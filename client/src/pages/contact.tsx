@@ -45,12 +45,12 @@ export default function Contact() {
                                     <div>
                                         <h3 className="font-semibold text-navy mb-1" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>Email</h3>
                                         <a 
-                                            href="mailto:dlefkowitz@ucla.edu"
+                                            href="mailto:lefko@ucla.edu"
                                             className="text-purple hover:text-purple-700 transition-colors duration-200"
                                             style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}
                                             data-testid="contact-email"
                                         >
-                                            dlefkowitz@ucla.edu
+                                            lefko at ucla.edu
                                         </a>
                                     </div>
                                 </div>

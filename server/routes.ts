@@ -23,7 +23,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
                 bio: null, // No bio text on production site
                 bio_short: "Composer, Theorist, and Professor at UCLA",
                 photo_url: "https://www.davidlefkowitz.com/image/attachment%3A476b5447-bc36-47ab-a850-9b582c5e0782%3ADavidSLefkowitz_harp_vertical.jpg?table=block&id=22e3907b-2ee6-802d-b759-f91716caee9a&spaceId=e88500c6-581b-4ed6-abcb-6b83ce43de6d&width=2000&userId=&cache=v2",
-                email: "dlefkowitz@ucla.edu",
+                email: "lefko at ucla.edu",
                 cv_url: null
             };
             res.json(profile);
