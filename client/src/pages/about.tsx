@@ -49,9 +49,6 @@ export default function About() {
                                 <h2 className="text-3xl font-playfair font-bold text-navy mb-4" data-testid="profile-name" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
                                     {profile?.name || "David S. Lefkowitz"}
                                 </h2>
-                                <p className="text-xl text-purple font-medium mb-2" data-testid="profile-title" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
-                                    {profile?.title || "Composer, Professor of Music Composition & Theory"}
-                                </p>
                                 <p className="text-lg text-gray-600" data-testid="profile-institution" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
                                     {profile?.institution || "UCLA Herb Alpert School of Music"}
                                 </p>
