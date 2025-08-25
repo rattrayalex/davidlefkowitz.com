@@ -73,12 +73,6 @@ export default function Home() {
                             </div>
                         </div>
                         
-                        {/* Subtitle */}
-                        <div className="max-w-2xl mx-auto">
-                            <p className="text-xl text-gray-700 leading-relaxed" data-testid="hero-bio-short" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
-                                {profile?.bio_short || "Composer, Theorist, and Professor at UCLA"}
-                            </p>
-                        </div>
                     </div>
                 </div>
             </section>
