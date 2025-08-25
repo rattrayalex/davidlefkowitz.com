@@ -126,7 +126,11 @@ export default function BlogPostPage() {
                                 return paragraphs.map((paragraph, index) => (
                                     <div 
                                         key={index} 
-                                        className={index === 0 ? "font-medium mb-4" : "mb-4"}
+                                        className={
+                                            index === 0 ? "font-medium mb-4" : 
+                                            index === 2 ? "font-semibold mb-4" : 
+                                            "mb-4"
+                                        }
                                         style={{
                                             fontFamily: 'Times, "Times New Roman", Palatino, serif',
                                             whiteSpace: 'pre-wrap',
