@@ -25,9 +25,6 @@ export default function About() {
                         <h1 className="text-5xl lg:text-6xl font-playfair font-bold text-navy mb-6" data-testid="about-title" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
                             About
                         </h1>
-                        <p className="text-xl text-gray-600 max-w-3xl mx-auto" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
-                            Composer, educator, and scholar dedicated to advancing contemporary musical expression
-                        </p>
                     </div>
                 </div>
             </section>
@@ -61,7 +58,7 @@ export default function About() {
                             </div>
 
                             <div className="prose prose-lg max-w-none">
-                                <p className="text-gray-700 leading-relaxed" data-testid="profile-bio">
+                                <p className="text-gray-700 leading-relaxed" data-testid="profile-bio" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
                                     {profile?.bio || `David S. Lefkowitz is an internationally recognized composer and scholar whose works have been performed by leading ensembles worldwide. His research focuses on advanced harmonic theory and contemporary compositional techniques, bridging traditional practices with innovative approaches to musical expression.
 
                                     As a Professor of Music Composition & Theory at UCLA's Herb Alpert School of Music, he has mentored countless students and contributed significantly to the development of contemporary classical music pedagogy. His compositions range from intimate chamber works to large-scale orchestral pieces, each exploring the boundaries of harmonic language and structural innovation.
