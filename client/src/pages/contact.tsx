@@ -85,7 +85,7 @@ export default function Contact() {
                             {/* Response Time */}
                             <div className="border border-gray-300 rounded-xl p-6" style={{backgroundColor: '#e5e5ff'}}>
                                 <h3 className="text-xl font-semibold text-navy mb-2" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>Response Time</h3>
-                                <p className="text-gray-700 text-sm" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
+                                <p className="text-gray-700 text-lg" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
                                     I typically respond to inquiries within 2-3 business days. For urgent matters, 
                                     please mention "URGENT" in your subject line.
                                 </p>
