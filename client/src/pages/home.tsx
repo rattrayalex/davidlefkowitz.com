@@ -33,7 +33,7 @@ export default function Home() {
     return (
         <div className="min-h-screen">
             {/* Hero Section */}
-            <section className="relative overflow-hidden py-20" style={{backgroundColor: '#e5e5ff'}}>
+            <section className="relative overflow-hidden py-16" style={{backgroundColor: '#e5e5ff'}}>
                 {/* Twelve-pointed star background from production website */}
                 <div 
                     className="absolute inset-0 opacity-20 pointer-events-none"
