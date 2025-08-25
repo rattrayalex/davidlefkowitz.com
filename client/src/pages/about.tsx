@@ -2,6 +2,7 @@ import React from "react";
 import { useQuery } from "@tanstack/react-query";
 import LoadingSpinner from "@/components/ui/loading-spinner";
 import { Profile } from "@shared/schema";
+import twelvePointStarSvg from "@/assets/12_point_curved.svg";
 
 export default function About() {
     const { data: profile, isLoading } = useQuery<Profile>({
@@ -30,8 +31,22 @@ export default function About() {
             </section>
 
             {/* Main Content */}
-            <section className="py-4">
-                <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <section className="py-4 relative">
+                {/* 12-pointed star decoration */}
+                <div 
+                    className="absolute top-0 right-4 opacity-20 pointer-events-none hidden md:block"
+                    style={{
+                        backgroundImage: `url(${twelvePointStarSvg})`,
+                        backgroundPosition: 'center center', 
+                        backgroundSize: '300px 300px',
+                        backgroundRepeat: 'no-repeat',
+                        width: '300px',
+                        height: '300px',
+                        zIndex: 0
+                    }}
+                ></div>
+                
+                <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
                     <div className="grid md:grid-cols-3 gap-12 items-start">
                         {/* Photo */}
                         <div className="md:col-span-1">
