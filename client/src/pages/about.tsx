@@ -43,7 +43,7 @@ export default function About() {
                         width: '300px',
                         height: '300px',
                         zIndex: 0,
-                        filter: 'saturate(125%)'
+                        filter: 'saturate(200%)'
                     }}
                 ></div>
                 
