@@ -14,9 +14,10 @@ export default function Compositions() {
 
     const categories = ["All", ...Array.from(new Set(compositions.map(c => c.category)))];
     
-    const filteredCompositions = selectedCategory === "All" 
+    const filteredCompositions = (selectedCategory === "All" 
         ? compositions 
-        : compositions.filter(c => c.category === selectedCategory);
+        : compositions.filter(c => c.category === selectedCategory))
+        .sort((a, b) => b.year - a.year); // Sort by year in reverse chronological order (newest first)
 
     if (isLoading) {
         return (

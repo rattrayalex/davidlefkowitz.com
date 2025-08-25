@@ -270,17 +270,10 @@ export async function syncCompositions() {
             const premiereProperty = properties["Date of premier"] as any;
             const recordingProperty = properties.Recording as any;
 
-            // Debug year property parsing
+            // Parse year with improved handling
             let year = new Date().getFullYear(); // default to current year
             
             if (yearProperty) {
-                console.log(`Debug - Year property for "${nameProperty?.title?.[0]?.plain_text}":`, {
-                    type: yearProperty.type,
-                    number: yearProperty.number,
-                    rich_text: yearProperty.rich_text?.[0]?.plain_text,
-                    rawValue: yearProperty
-                });
-                
                 // Try multiple ways to parse the year
                 if (yearProperty.number) {
                     year = yearProperty.number;
