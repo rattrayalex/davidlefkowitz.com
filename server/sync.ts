@@ -245,16 +245,11 @@ export async function syncCompositions() {
 
     try {
         const response = await notion.databases.query({
-            database_id: schemaData.databases.compositions.id,
-            filter: {
-                property: "Published",
-                checkbox: {
-                    equals: true
-                }
-            }
+            database_id: schemaData.databases.compositions.id
+            // Removed Published filter to get all compositions, not just published ones
         });
 
-        console.log(`Found ${response.results.length} published compositions`);
+        console.log(`Found ${response.results.length} total compositions in Notion database`);
 
         for (const page of response.results) {
             if (!('properties' in page)) continue;
@@ -270,10 +265,22 @@ export async function syncCompositions() {
             const premiereProperty = properties["Date of premier"] as any;
             const recordingProperty = properties.Recording as any;
 
-            // Parse year with improved handling
+            // Parse year with improved handling and debugging
             let year = new Date().getFullYear(); // default to current year
+            const title = nameProperty?.title?.[0]?.plain_text || "Untitled";
             
             if (yearProperty) {
+                // Debug logging for "A New Song" specifically
+                if (title === "A New Song") {
+                    console.log(`DEBUG - "A New Song" year property:`, {
+                        type: yearProperty.type,
+                        number: yearProperty.number,
+                        rich_text: yearProperty.rich_text,
+                        formula: yearProperty.formula,
+                        rawProperty: yearProperty
+                    });
+                }
+                
                 // Try multiple ways to parse the year
                 if (yearProperty.number) {
                     year = yearProperty.number;
@@ -286,6 +293,10 @@ export async function syncCompositions() {
                     }
                 } else if (yearProperty.formula?.number) {
                     year = yearProperty.formula.number;
+                }
+            } else {
+                if (title === "A New Song") {
+                    console.log(`DEBUG - "A New Song" has NO year property at all`);
                 }
             }
 
