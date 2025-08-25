@@ -20,21 +20,10 @@ export default function About() {
     return (
         <div className="min-h-screen" style={{backgroundColor: '#e5e5ff'}}>
             {/* Hero Section */}
-            <section className="pt-16 pb-12" style={{backgroundColor: '#e5e5ff'}}>
-                <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="text-center">
-                        <h1 className="text-5xl lg:text-6xl font-playfair font-bold text-navy mb-6" data-testid="about-title" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
-                            About
-                        </h1>
-                    </div>
-                </div>
-            </section>
-
-            {/* Main Content */}
-            <section className="py-4 relative">
+            <section className="py-20 relative" style={{backgroundColor: '#e5e5ff'}}>
                 {/* 12-pointed star decoration */}
                 <div 
-                    className="absolute -top-48 right-4 opacity-100 pointer-events-none hidden md:block"
+                    className="absolute -top-0 right-4 opacity-100 pointer-events-none hidden md:block"
                     style={{
                         backgroundImage: `url(${twelvePointStarSvg})`,
                         backgroundPosition: 'center center', 
@@ -46,6 +35,18 @@ export default function About() {
                         filter: 'saturate(200%)'
                     }}
                 ></div>
+                
+                <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+                    <div className="text-center">
+                        <h1 className="text-5xl lg:text-6xl font-playfair font-bold text-navy mb-6" data-testid="about-title" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
+                            About
+                        </h1>
+                    </div>
+                </div>
+            </section>
+
+            {/* Main Content */}
+            <section className="py-4">
                 
                 <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
                     <div className="grid md:grid-cols-3 gap-12 items-start">
