@@ -1,5 +1,5 @@
 import React from "react";
-import { Mail, MapPin, Phone } from "lucide-react";
+import { Mail, MapPin, Calendar } from "lucide-react";
 
 export default function Contact() {
 
@@ -70,7 +70,7 @@ export default function Contact() {
 
                                 <div className="flex items-start space-x-4">
                                     <div className="flex-shrink-0 w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
-                                        <Phone className="h-6 w-6 text-purple" />
+                                        <Calendar className="h-6 w-6 text-purple" />
                                     </div>
                                     <div>
                                         <h3 className="text-xl font-semibold text-navy mb-1" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>Office Hours</h3>
