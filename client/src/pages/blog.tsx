@@ -25,7 +25,7 @@ export default function Blog() {
             <section className="py-12 relative" style={{backgroundColor: '#e5e5ff'}}>
                 {/* 12-pointed star decoration */}
                 <div 
-                    className="absolute -top-48 right-4 opacity-100 pointer-events-none hidden md:block"
+                    className="absolute -top-0 right-4 opacity-100 pointer-events-none hidden md:block"
                     style={{
                         backgroundImage: `url(${twelvePointStarSvg})`,
                         backgroundPosition: 'center center', 
