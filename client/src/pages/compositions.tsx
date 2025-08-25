@@ -59,18 +59,20 @@ export default function Compositions() {
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex flex-wrap gap-4 justify-center">
                         {categories.map((category) => (
-                            <button
-                                key={category}
-                                onClick={() => setSelectedCategory(category)}
-                                className={`px-6 py-2 rounded-full font-medium transition-all duration-200 ${
-                                    selectedCategory === category
-                                        ? "bg-purple text-white shadow-lg"
-                                        : "border border-gray-300 text-gray-700 hover:border-gray-400"
-                                }`}
-                                data-testid={`filter-${category.toLowerCase().replace(' ', '-')}`}
-                            >
-                                {category}
-                            </button>
+                            <React.Fragment key={category}>
+                                {category === "Mixed Chamber Ensemble" && <div className="w-full"></div>}
+                                <button
+                                    onClick={() => setSelectedCategory(category)}
+                                    className={`px-6 py-2 rounded-full font-medium transition-all duration-200 ${
+                                        selectedCategory === category
+                                            ? "bg-purple text-white shadow-lg"
+                                            : "border border-gray-300 text-gray-700 hover:border-gray-400"
+                                    }`}
+                                    data-testid={`filter-${category.toLowerCase().replace(' ', '-')}`}
+                                >
+                                    {category}
+                                </button>
+                            </React.Fragment>
                         ))}
                     </div>
                 </div>
