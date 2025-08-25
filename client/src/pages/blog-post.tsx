@@ -135,7 +135,7 @@ export default function BlogPostPage() {
                                             fontFamily: 'Times, "Times New Roman", Palatino, serif',
                                             whiteSpace: 'pre-wrap',
                                             tabSize: '2.5em',
-                                            fontWeight: index === 2 ? '550' : undefined
+                                            fontWeight: index === 2 ? '575' : undefined
                                         }}
                                     >
                                         {paragraph}
