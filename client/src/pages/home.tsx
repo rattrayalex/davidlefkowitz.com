@@ -47,7 +47,7 @@ export default function Home() {
                 ></div>
                 
                 <div className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-                    <div className="space-y-8">
+                    <div className="space-y-8 mt-3">
                         {/* Main Title */}
                         <div>
                             <h1 className="text-4xl lg:text-5xl font-playfair font-bold text-navy leading-tight mb-6" data-testid="hero-name" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
