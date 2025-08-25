@@ -1,7 +1,24 @@
 import React from "react";
-import { Link } from "wouter";
+import { Link, useLocation } from "wouter";
 
 export default function Footer() {
+    const [location] = useLocation();
+    
+    const navigationItems = [
+        { name: "About", href: "/about" },
+        { name: "Compositions", href: "/compositions" },
+        { name: "Recordings", href: "/recordings" },
+        { name: "Blog", href: "/blog" },
+        { name: "Contact", href: "/contact" },
+    ];
+
+    // Filter out the current page from the Quick Links
+    const filteredItems = navigationItems.filter(item => {
+        if (item.href === "/" && location === "/") return false;
+        if (item.href !== "/" && location.startsWith(item.href)) return false;
+        return true;
+    });
+
     return (
         <footer className="text-navy py-16" style={{backgroundColor: '#e5e5ff'}}>
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -18,31 +35,18 @@ export default function Footer() {
                     <div>
                         <h4 className="text-lg font-semibold mb-4 text-navy" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>Quick Links</h4>
                         <ul className="space-y-2 text-gray-700">
-                            <li>
-                                <Link href="/about" className="hover:text-purple transition-colors duration-200" data-testid="footer-link-about" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
-                                    About
-                                </Link>
-                            </li>
-                            <li>
-                                <Link href="/compositions" className="hover:text-purple transition-colors duration-200" data-testid="footer-link-compositions" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
-                                    Compositions
-                                </Link>
-                            </li>
-                            <li>
-                                <Link href="/recordings" className="hover:text-purple transition-colors duration-200" data-testid="footer-link-recordings" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
-                                    Recordings
-                                </Link>
-                            </li>
-                            <li>
-                                <Link href="/blog" className="hover:text-purple transition-colors duration-200" data-testid="footer-link-blog" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
-                                    Blog
-                                </Link>
-                            </li>
-                            <li>
-                                <Link href="/contact" className="hover:text-purple transition-colors duration-200" data-testid="footer-link-contact" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
-                                    Contact
-                                </Link>
-                            </li>
+                            {filteredItems.map((item) => (
+                                <li key={item.name}>
+                                    <Link 
+                                        href={item.href} 
+                                        className="hover:text-purple transition-colors duration-200" 
+                                        data-testid={`footer-link-${item.name.toLowerCase()}`}
+                                        style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}
+                                    >
+                                        {item.name}
+                                    </Link>
+                                </li>
+                            ))}
                         </ul>
                     </div>
                 </div>
