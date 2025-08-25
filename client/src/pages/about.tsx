@@ -34,7 +34,7 @@ export default function About() {
             <section className="py-4 relative">
                 {/* 12-pointed star decoration */}
                 <div 
-                    className="absolute -top-48 right-4 opacity-80 pointer-events-none hidden md:block"
+                    className="absolute -top-48 right-4 opacity-90 pointer-events-none hidden md:block"
                     style={{
                         backgroundImage: `url(${twelvePointStarSvg})`,
                         backgroundPosition: 'center center', 
