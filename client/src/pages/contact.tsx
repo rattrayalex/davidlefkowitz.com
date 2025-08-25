@@ -1,52 +1,7 @@
 import React from "react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation } from "@tanstack/react-query";
-import { Mail, MapPin, Phone, Send } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { useToast } from "@/hooks/use-toast";
-import { apiRequest } from "@/lib/queryClient";
-import { ContactForm, contactFormSchema } from "@shared/schema";
+import { Mail, MapPin, Phone } from "lucide-react";
 
 export default function Contact() {
-    const { toast } = useToast();
-    
-    const form = useForm<ContactForm>({
-        resolver: zodResolver(contactFormSchema),
-        defaultValues: {
-            name: "",
-            email: "",
-            subject: "",
-            message: "",
-        },
-    });
-
-    const contactMutation = useMutation({
-        mutationFn: async (data: ContactForm) => {
-            return apiRequest("POST", "/api/contact", data);
-        },
-        onSuccess: () => {
-            toast({
-                title: "Message sent successfully!",
-                description: "Thank you for your message. I will get back to you soon.",
-            });
-            form.reset();
-        },
-        onError: (error) => {
-            toast({
-                title: "Error sending message",
-                description: "Please try again later or contact me directly via email.",
-                variant: "destructive",
-            });
-        },
-    });
-
-    const onSubmit = (data: ContactForm) => {
-        contactMutation.mutate(data);
-    };
 
     return (
         <div className="min-h-screen" style={{backgroundColor: '#e5e5ff'}}>
@@ -54,10 +9,10 @@ export default function Contact() {
             <section className="py-20" style={{backgroundColor: '#e5e5ff'}}>
                 <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="text-center">
-                        <h1 className="text-5xl lg:text-6xl font-playfair font-bold text-navy mb-6" data-testid="contact-title">
+                        <h1 className="text-5xl lg:text-6xl font-playfair font-bold text-navy mb-6" data-testid="contact-title" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
                             Contact
                         </h1>
-                        <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+                        <p className="text-xl text-gray-600 max-w-3xl mx-auto" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
                             Get in touch for collaboration opportunities, commission inquiries, or academic discussions
                         </p>
                     </div>
@@ -71,10 +26,10 @@ export default function Contact() {
                         {/* Contact Information */}
                         <div className="space-y-8">
                             <div>
-                                <h2 className="text-3xl font-playfair font-bold text-navy mb-6" data-testid="contact-info-title">
+                                <h2 className="text-3xl font-playfair font-bold text-navy mb-6" data-testid="contact-info-title" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
                                     Get in Touch
                                 </h2>
-                                <p className="text-gray-700 leading-relaxed mb-8">
+                                <p className="text-gray-700 leading-relaxed mb-8" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
                                     I welcome inquiries about collaborations, commissions, academic opportunities, 
                                     and discussions about music theory and composition. Please feel free to reach out 
                                     using the form or contact information below.
@@ -88,10 +43,11 @@ export default function Contact() {
                                         <Mail className="h-6 w-6 text-purple" />
                                     </div>
                                     <div>
-                                        <h3 className="font-semibold text-navy mb-1">Email</h3>
+                                        <h3 className="font-semibold text-navy mb-1" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>Email</h3>
                                         <a 
                                             href="mailto:dlefkowitz@ucla.edu"
                                             className="text-purple hover:text-purple-700 transition-colors duration-200"
+                                            style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}
                                             data-testid="contact-email"
                                         >
                                             dlefkowitz@ucla.edu
@@ -104,8 +60,8 @@ export default function Contact() {
                                         <MapPin className="h-6 w-6 text-purple" />
                                     </div>
                                     <div>
-                                        <h3 className="font-semibold text-navy mb-1">Office Location</h3>
-                                        <p className="text-gray-700" data-testid="contact-address">
+                                        <h3 className="font-semibold text-navy mb-1" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>Office Location</h3>
+                                        <p className="text-gray-700" data-testid="contact-address" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
                                             UCLA Herb Alpert School of Music<br />
                                             Los Angeles, CA
                                         </p>
@@ -117,8 +73,8 @@ export default function Contact() {
                                         <Phone className="h-6 w-6 text-purple" />
                                     </div>
                                     <div>
-                                        <h3 className="font-semibold text-navy mb-1">Office Hours</h3>
-                                        <p className="text-gray-700" data-testid="contact-hours">
+                                        <h3 className="font-semibold text-navy mb-1" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>Office Hours</h3>
+                                        <p className="text-gray-700" data-testid="contact-hours" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
                                             By appointment<br />
                                             Please email to schedule
                                         </p>
@@ -128,114 +84,14 @@ export default function Contact() {
 
                             {/* Response Time */}
                             <div className="border border-gray-300 rounded-xl p-6" style={{backgroundColor: '#e5e5ff'}}>
-                                <h3 className="font-semibold text-navy mb-2">Response Time</h3>
-                                <p className="text-gray-700 text-sm">
+                                <h3 className="font-semibold text-navy mb-2" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>Response Time</h3>
+                                <p className="text-gray-700 text-sm" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
                                     I typically respond to inquiries within 2-3 business days. For urgent matters, 
                                     please mention "URGENT" in your subject line.
                                 </p>
                             </div>
                         </div>
 
-                        {/* Contact Form */}
-                        <div className="border border-gray-300 rounded-xl p-8" style={{backgroundColor: '#e5e5ff'}}>
-                            <h2 className="text-2xl font-playfair font-bold text-navy mb-6" data-testid="contact-form-title">
-                                Send a Message
-                            </h2>
-                            
-                            <Form {...form}>
-                                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-                                    <FormField
-                                        control={form.control}
-                                        name="name"
-                                        render={({ field }) => (
-                                            <FormItem>
-                                                <FormLabel>Name</FormLabel>
-                                                <FormControl>
-                                                    <Input 
-                                                        placeholder="Your full name"
-                                                        data-testid="contact-form-name"
-                                                        {...field}
-                                                    />
-                                                </FormControl>
-                                                <FormMessage />
-                                            </FormItem>
-                                        )}
-                                    />
-
-                                    <FormField
-                                        control={form.control}
-                                        name="email"
-                                        render={({ field }) => (
-                                            <FormItem>
-                                                <FormLabel>Email</FormLabel>
-                                                <FormControl>
-                                                    <Input 
-                                                        type="email"
-                                                        placeholder="your.email@example.com"
-                                                        data-testid="contact-form-email"
-                                                        {...field}
-                                                    />
-                                                </FormControl>
-                                                <FormMessage />
-                                            </FormItem>
-                                        )}
-                                    />
-
-                                    <FormField
-                                        control={form.control}
-                                        name="subject"
-                                        render={({ field }) => (
-                                            <FormItem>
-                                                <FormLabel>Subject</FormLabel>
-                                                <FormControl>
-                                                    <Input 
-                                                        placeholder="Brief description of your inquiry"
-                                                        data-testid="contact-form-subject"
-                                                        {...field}
-                                                    />
-                                                </FormControl>
-                                                <FormMessage />
-                                            </FormItem>
-                                        )}
-                                    />
-
-                                    <FormField
-                                        control={form.control}
-                                        name="message"
-                                        render={({ field }) => (
-                                            <FormItem>
-                                                <FormLabel>Message</FormLabel>
-                                                <FormControl>
-                                                    <Textarea 
-                                                        placeholder="Please share details about your inquiry, collaboration idea, or question..."
-                                                        className="min-h-[120px]"
-                                                        data-testid="contact-form-message"
-                                                        {...field}
-                                                    />
-                                                </FormControl>
-                                                <FormMessage />
-                                            </FormItem>
-                                        )}
-                                    />
-
-                                    <Button
-                                        type="submit"
-                                        className="w-full bg-purple hover:bg-purple-700 text-white"
-                                        disabled={contactMutation.isPending}
-                                        data-testid="contact-form-submit"
-                                    >
-                                        {contactMutation.isPending ? (
-                                            "Sending..."
-                                        ) : (
-                                            <>
-                                                <Send className="h-4 w-4 mr-2" />
-                                                Send Message
-                                            </>
-                                        )}
-                                    </Button>
-                                </form>
-                            </Form>
-                        </div>
                     </div>
                 </div>
             </section>
