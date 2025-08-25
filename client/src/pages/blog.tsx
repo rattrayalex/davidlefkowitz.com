@@ -49,7 +49,7 @@ export default function Blog() {
                                     data-testid={`blog-post-${post.id}`}
                                 >
                                     {/* Meta information */}
-                                    <div className="flex items-center text-xs text-gray-700 font-medium mb-1">
+                                    <div className="flex items-center text-sm text-gray-700 font-medium mb-1">
                                         <div className="flex items-center">
                                             <Calendar className="h-3 w-3 mr-1" />
                                             <time data-testid={`blog-post-date-${post.id}`}>
