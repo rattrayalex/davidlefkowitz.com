@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { ExternalLink, Music, Calendar } from "lucide-react";
 import LoadingSpinner from "@/components/ui/loading-spinner";
 import { Composition } from "@shared/schema";
+import twelvePointStarSvg from "@/assets/12_point_curved.svg";
 
 export default function Compositions() {
     const [selectedCategory, setSelectedCategory] = useState<string>("All");
@@ -28,15 +29,27 @@ export default function Compositions() {
     return (
         <div className="min-h-screen" style={{backgroundColor: '#e5e5ff'}}>
             {/* Hero Section */}
-            <section className="py-20" style={{backgroundColor: '#e5e5ff'}}>
-                <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <section className="py-20 relative" style={{backgroundColor: '#e5e5ff'}}>
+                {/* 12-pointed star decoration */}
+                <div 
+                    className="absolute -top-0 right-4 opacity-100 pointer-events-none hidden md:block"
+                    style={{
+                        backgroundImage: `url(${twelvePointStarSvg})`,
+                        backgroundPosition: 'center center', 
+                        backgroundSize: '300px 300px',
+                        backgroundRepeat: 'no-repeat',
+                        width: '300px',
+                        height: '300px',
+                        zIndex: 0,
+                        filter: 'saturate(200%)'
+                    }}
+                ></div>
+                
+                <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
                     <div className="text-center">
                         <h1 className="text-5xl lg:text-6xl font-playfair font-bold text-navy mb-6" data-testid="compositions-title">
                             Compositions
                         </h1>
-                        <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-                            A comprehensive catalog of works spanning multiple genres and instrumental combinations
-                        </p>
                     </div>
                 </div>
             </section>
