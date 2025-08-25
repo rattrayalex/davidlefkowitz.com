@@ -270,11 +270,37 @@ export async function syncCompositions() {
             const premiereProperty = properties["Date of premier"] as any;
             const recordingProperty = properties.Recording as any;
 
+            // Debug year property parsing
+            let year = new Date().getFullYear(); // default to current year
+            
+            if (yearProperty) {
+                console.log(`Debug - Year property for "${nameProperty?.title?.[0]?.plain_text}":`, {
+                    type: yearProperty.type,
+                    number: yearProperty.number,
+                    rich_text: yearProperty.rich_text?.[0]?.plain_text,
+                    rawValue: yearProperty
+                });
+                
+                // Try multiple ways to parse the year
+                if (yearProperty.number) {
+                    year = yearProperty.number;
+                } else if (yearProperty.rich_text?.[0]?.plain_text) {
+                    // Try to parse year from text
+                    const textValue = yearProperty.rich_text[0].plain_text.trim();
+                    const parsedYear = parseInt(textValue, 10);
+                    if (!isNaN(parsedYear) && parsedYear > 1900 && parsedYear <= new Date().getFullYear()) {
+                        year = parsedYear;
+                    }
+                } else if (yearProperty.formula?.number) {
+                    year = yearProperty.formula.number;
+                }
+            }
+
             const composition: InsertComposition = {
                 title: nameProperty?.title?.[0]?.plain_text || "Untitled",
                 instrumentation: instrumentationProperty?.multi_select?.map((item: any) => item.name) as string[] || [],
                 ensemble: ensembleProperty?.multi_select?.map((item: any) => item.name) as string[] || [],
-                year: yearProperty?.number || new Date().getFullYear(),
+                year: year,
                 duration: durationProperty?.rich_text?.[0]?.plain_text || "",
                 publisher: publisherProperty?.multi_select?.map((item: any) => item.name) as string[] || [],
                 premiere_info: premiereProperty?.date?.start || "",
