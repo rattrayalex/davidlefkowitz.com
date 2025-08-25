@@ -24,22 +24,22 @@ export default function Footer() {
                                 </Link>
                             </li>
                             <li>
-                                <Link href="/compositions" className="hover:text-purple transition-colors duration-200" data-testid="footer-link-compositions">
+                                <Link href="/compositions" className="hover:text-purple transition-colors duration-200" data-testid="footer-link-compositions" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
                                     Compositions
                                 </Link>
                             </li>
                             <li>
-                                <Link href="/recordings" className="hover:text-purple transition-colors duration-200" data-testid="footer-link-recordings">
+                                <Link href="/recordings" className="hover:text-purple transition-colors duration-200" data-testid="footer-link-recordings" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
                                     Recordings
                                 </Link>
                             </li>
                             <li>
-                                <Link href="/blog" className="hover:text-purple transition-colors duration-200" data-testid="footer-link-blog">
+                                <Link href="/blog" className="hover:text-purple transition-colors duration-200" data-testid="footer-link-blog" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
                                     Blog
                                 </Link>
                             </li>
                             <li>
-                                <Link href="/contact" className="hover:text-purple transition-colors duration-200" data-testid="footer-link-contact">
+                                <Link href="/contact" className="hover:text-purple transition-colors duration-200" data-testid="footer-link-contact" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
                                     Contact
                                 </Link>
                             </li>
