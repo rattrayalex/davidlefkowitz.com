@@ -120,8 +120,23 @@ export default function BlogPostPage() {
                         </div>
 
                         {/* Content */}
-                        <div className="text-gray-700 leading-relaxed whitespace-pre-wrap" data-testid="post-content" style={{lineHeight: '1.6', tabSize: '2.5em', fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
-                            {post.content}
+                        <div className="text-gray-700 leading-relaxed" data-testid="post-content" style={{lineHeight: '1.6', tabSize: '2.5em', fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
+                            {(() => {
+                                const paragraphs = post.content.split('\n').filter(p => p.trim());
+                                return paragraphs.map((paragraph, index) => (
+                                    <div 
+                                        key={index} 
+                                        className={index === 0 ? "font-medium mb-4" : "mb-4"}
+                                        style={{
+                                            fontFamily: 'Times, "Times New Roman", Palatino, serif',
+                                            whiteSpace: 'pre-wrap',
+                                            tabSize: '2.5em'
+                                        }}
+                                    >
+                                        {paragraph}
+                                    </div>
+                                ));
+                            })()}
                         </div>
                     </div>
 
