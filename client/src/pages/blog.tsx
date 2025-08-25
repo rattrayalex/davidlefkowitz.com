@@ -24,7 +24,7 @@ export default function Blog() {
             <section className="py-12" style={{backgroundColor: '#e5e5ff'}}>
                 <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="text-center">
-                        <h1 className="text-5xl lg:text-6xl font-playfair font-bold text-navy mb-4" data-testid="blog-title">
+                        <h1 className="text-5xl lg:text-6xl font-playfair font-bold text-navy mb-4" data-testid="blog-title" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
                             Blog
                         </h1>
                     </div>
@@ -36,7 +36,7 @@ export default function Blog() {
                 <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
                     {posts.length === 0 ? (
                         <div className="text-center py-12">
-                            <p className="text-gray-600 text-lg" data-testid="no-blog-posts">
+                            <p className="text-gray-600 text-lg" data-testid="no-blog-posts" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
                                 No blog posts available at the moment.
                             </p>
                         </div>
@@ -49,7 +49,7 @@ export default function Blog() {
                                     data-testid={`blog-post-${post.id}`}
                                 >
                                     {/* Meta information */}
-                                    <div className="flex items-center text-sm text-gray-700 font-medium mb-1">
+                                    <div className="flex items-center text-sm text-gray-700 font-medium mb-1" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
                                         <div className="flex items-center">
                                             <Calendar className="h-3 w-3 mr-1" />
                                             <time data-testid={`blog-post-date-${post.id}`}>
@@ -77,6 +77,7 @@ export default function Blog() {
                                                     <span 
                                                         key={tag}
                                                         className="inline-block bg-purple-100 text-purple-700 text-xs px-2 py-1 rounded-full"
+                                                        style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}
                                                         data-testid={`blog-post-tag-${post.id}-${tag.toLowerCase()}`}
                                                     >
                                                         {tag}
