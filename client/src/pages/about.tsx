@@ -20,7 +20,7 @@ export default function About() {
     return (
         <div className="min-h-screen" style={{backgroundColor: '#e5e5ff'}}>
             {/* Hero Section */}
-            <section className="py-20 relative" style={{backgroundColor: '#e5e5ff'}}>
+            <section className="pt-20 pb-16 relative" style={{backgroundColor: '#e5e5ff'}}>
                 {/* 12-pointed star decoration */}
                 <div 
                     className="absolute -top-0 right-4 opacity-100 pointer-events-none hidden md:block"
