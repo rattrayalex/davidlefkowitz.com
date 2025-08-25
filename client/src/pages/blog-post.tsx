@@ -126,16 +126,12 @@ export default function BlogPostPage() {
                                 return paragraphs.map((paragraph, index) => (
                                     <div 
                                         key={index} 
-                                        className={
-                                            index === 0 ? "font-medium mb-4" : 
-                                            index === 2 ? "mb-4" : 
-                                            "mb-4"
-                                        }
+                                        className="mb-4"
                                         style={{
                                             fontFamily: 'Times, "Times New Roman", Palatino, serif',
                                             whiteSpace: 'pre-wrap',
                                             tabSize: '2.5em',
-                                            fontWeight: index === 2 ? '575' : undefined
+                                            fontWeight: '580'
                                         }}
                                     >
                                         {paragraph}
