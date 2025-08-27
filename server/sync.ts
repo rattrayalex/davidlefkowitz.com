@@ -231,7 +231,7 @@ export async function syncBlogPosts() {
             const title =
                 titleProperty?.title
                     ?.map((part: any) => part.plain_text)
-                    .join("") || "Untitled";
+                    .join("") || "";
 
             // Skip posts with missing or invalid titles
             if (!title || title.trim() === "" || title.trim().length < 2) {
@@ -373,7 +373,7 @@ export async function syncCompositions() {
         const recordingProperty = properties.Recording as any;
 
         // Parse year with improved handling
-        let year = new Date().getFullYear(); // default to current year
+        let year: number | null = null; // no default fallback
 
         if (yearProperty) {
             // Try multiple ways to parse the year
@@ -386,7 +386,7 @@ export async function syncCompositions() {
                 if (
                     !isNaN(parsedYear) &&
                     parsedYear > 1900 &&
-                    parsedYear <= new Date().getFullYear()
+                    parsedYear <= 2030
                 ) {
                     year = parsedYear;
                 }
@@ -396,7 +396,7 @@ export async function syncCompositions() {
         }
 
         const composition: InsertComposition = {
-            title: nameProperty?.title?.[0]?.plain_text || "Untitled",
+            title: nameProperty?.title?.[0]?.plain_text || "",
             instrumentation:
                 (instrumentationProperty?.multi_select?.map(
                     (item: any) => item.name,
@@ -471,7 +471,7 @@ export async function syncRecordings() {
 
             const recording: InsertRecording = {
                 title:
-                    nameOfAlbumProperty?.title?.[0]?.plain_text || "Untitled",
+                    nameOfAlbumProperty?.title?.[0]?.plain_text || "",
                 composer: "David S. Lefkowitz",
                 performers:
                     (performersProperty?.multi_select?.map(
@@ -485,7 +485,7 @@ export async function syncRecordings() {
                     (instrumentationProperty?.multi_select?.map(
                         (item: any) => item.name,
                     ) as string[]) || [],
-                year: yearProperty?.number || new Date().getFullYear(),
+                year: yearProperty?.number || null,
                 duration: durationProperty?.rich_text?.[0]?.plain_text || "",
                 label:
                     (labelProperty?.multi_select?.map(

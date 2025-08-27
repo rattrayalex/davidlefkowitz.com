@@ -48,7 +48,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
                 instrumentation: Array.isArray(comp.instrumentation) ? comp.instrumentation.join(", ") : "",
                 ensemble: Array.isArray(comp.ensemble) ? comp.ensemble.join(", ") : "",
                 year: comp.year,
-                category: Array.isArray(comp.ensemble) && comp.ensemble.length > 0 ? comp.ensemble[0] : "Other",
+                category: Array.isArray(comp.ensemble) && comp.ensemble.length > 0 ? comp.ensemble[0] : "",
                 duration: comp.duration || "",
                 premiere_info: comp.premiere_info || "",
                 publisher: Array.isArray(comp.publisher) ? comp.publisher.join(", ") : "",

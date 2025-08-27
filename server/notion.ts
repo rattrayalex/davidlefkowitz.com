@@ -177,7 +177,7 @@ export async function getBlogPosts(blogDatabaseId: string) {
             return {
                 id: page.id,
                 title:
-                    properties.Title?.title?.[0]?.plain_text || "Untitled Post",
+                    properties.Title?.title?.[0]?.plain_text || "",
                 excerpt: properties.Excerpt?.rich_text?.[0]?.plain_text || "",
                 content: properties.Content?.rich_text?.[0]?.plain_text || "",
                 published_date: properties.PublishedDate?.date?.start
@@ -219,14 +219,13 @@ export async function getRecordings(recordingsDatabaseId: string) {
             return {
                 id: page.id,
                 title:
-                    properties.Title?.title?.[0]?.plain_text ||
-                    "Untitled Recording",
+                    properties.Title?.title?.[0]?.plain_text || "",
                 composer:
                     properties.Composer?.rich_text?.[0]?.plain_text ||
                     "David S. Lefkowitz",
                 performers:
                     properties.Performers?.rich_text?.[0]?.plain_text || "",
-                year: properties.Year?.number || new Date().getFullYear(),
+                year: properties.Year?.number || null,
                 duration: properties.Duration?.rich_text?.[0]?.plain_text || "",
                 description:
                     properties.Description?.rich_text?.[0]?.plain_text || "",
