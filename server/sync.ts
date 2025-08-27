@@ -190,19 +190,39 @@ export async function syncBlogPosts() {
     console.log("Syncing blog posts from Notion...");
 
     try {
-        const response = await notion.databases.query({
-            database_id: schemaData.databases.blog.id,
-            filter: {
-                property: "Status",
-                status: {
-                    equals: "Published",
+        // Implement proper pagination to get ALL published blog posts
+        let allResults: any[] = [];
+        let hasMore = true;
+        let nextCursor: string | null = null;
+
+        while (hasMore) {
+            const requestBody: any = {
+                database_id: schemaData.databases.blog.id,
+                page_size: 100, // Use maximum page size
+                filter: {
+                    property: "Status",
+                    status: {
+                        equals: "Published",
+                    },
                 },
-            },
-        });
+            };
+            
+            if (nextCursor) {
+                requestBody.start_cursor = nextCursor;
+            }
 
-        console.log(`Found ${response.results.length} published blog posts`);
+            const response = await notion.databases.query(requestBody);
+            
+            allResults = allResults.concat(response.results);
+            hasMore = response.has_more;
+            nextCursor = response.next_cursor;
+            
+            console.log(`Retrieved ${response.results.length} blog posts, has_more: ${hasMore}`);
+        }
 
-        for (const page of response.results) {
+        console.log(`Found ${allResults.length} published blog posts`);
+
+        for (const page of allResults) {
             if (!("properties" in page)) continue;
 
             const properties = page.properties;
@@ -310,16 +330,35 @@ export async function syncCompositions() {
 
     console.log("Syncing compositions from Notion...");
 
-    const response = await notion.databases.query({
-        database_id: schemaData.databases.compositions.id,
-        // Removed Published filter to get all compositions, not just published ones
-    });
+    // Implement proper pagination to get ALL compositions
+    let allResults: any[] = [];
+    let hasMore = true;
+    let nextCursor: string | null = null;
+
+    while (hasMore) {
+        const requestBody: any = {
+            database_id: schemaData.databases.compositions.id,
+            page_size: 100, // Use maximum page size
+        };
+        
+        if (nextCursor) {
+            requestBody.start_cursor = nextCursor;
+        }
+
+        const response = await notion.databases.query(requestBody);
+        
+        allResults = allResults.concat(response.results);
+        hasMore = response.has_more;
+        nextCursor = response.next_cursor;
+        
+        console.log(`Retrieved ${response.results.length} compositions, has_more: ${hasMore}`);
+    }
 
     console.log(
-        `Found ${response.results.length} total compositions in Notion database`,
+        `Found ${allResults.length} total compositions in Notion database`,
     );
 
-    for (const page of response.results) {
+    for (const page of allResults) {
         if (!("properties" in page)) continue;
 
         const properties = page.properties;

@@ -99,11 +99,29 @@ export async function getCompositions(compositionsDatabaseId: string) {
         throw new Error("Notion client not available");
     }
 
-    const response = await notion.databases.query({
-        database_id: compositionsDatabaseId,
-    });
+    // Implement proper pagination to get ALL compositions
+    let allResults: any[] = [];
+    let hasMore = true;
+    let nextCursor: string | null = null;
 
-    return response.results.map((page: any) => {
+    while (hasMore) {
+        const requestBody: any = {
+            database_id: compositionsDatabaseId,
+            page_size: 100, // Use maximum page size
+        };
+        
+        if (nextCursor) {
+            requestBody.start_cursor = nextCursor;
+        }
+
+        const response = await notion.databases.query(requestBody);
+        
+        allResults = allResults.concat(response.results);
+        hasMore = response.has_more;
+        nextCursor = response.next_cursor;
+    }
+
+    return allResults.map((page: any) => {
         const properties = page.properties;
 
         return {
@@ -133,11 +151,29 @@ export async function getBlogPosts(blogDatabaseId: string) {
     }
 
     try {
-        const response = await notion.databases.query({
-            database_id: blogDatabaseId,
-        });
+        // Implement proper pagination to get ALL blog posts
+        let allResults: any[] = [];
+        let hasMore = true;
+        let nextCursor: string | null = null;
 
-        return response.results.map((page: any) => {
+        while (hasMore) {
+            const requestBody: any = {
+                database_id: blogDatabaseId,
+                page_size: 100, // Use maximum page size
+            };
+            
+            if (nextCursor) {
+                requestBody.start_cursor = nextCursor;
+            }
+
+            const response = await notion.databases.query(requestBody);
+            
+            allResults = allResults.concat(response.results);
+            hasMore = response.has_more;
+            nextCursor = response.next_cursor;
+        }
+
+        return allResults.map((page: any) => {
             const properties = page.properties;
 
             return {
