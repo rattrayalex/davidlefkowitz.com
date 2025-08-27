@@ -56,7 +56,7 @@ export default function Home() {
                         </div>
                         
                         {/* Professional Photo - Centered and Prominent */}
-                        <div className="relative inline-block" style={{marginTop: '160px'}}>
+                        <div className="relative inline-block" style={{marginTop: '80px'}}>
                             <div className="relative z-10">
                                 <img 
                                     src={profile?.photo_url || "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=600"}
