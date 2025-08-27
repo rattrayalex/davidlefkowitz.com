@@ -49,7 +49,7 @@ export default function Home() {
                 <div className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
                     <div className="space-y-8 mt-6">
                         {/* Main Title */}
-                        <div style={{marginTop: '40px'}}>
+                        <div style={{marginTop: '80px'}}>
                             <h1 className="text-4xl lg:text-5xl font-playfair font-bold text-navy leading-tight mb-6" data-testid="hero-name" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
                                 {profile?.name || "David S. Lefkowitz"}
                             </h1>
