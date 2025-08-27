@@ -48,8 +48,15 @@ export default function Home() {
                 
                 <div className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
                     <div className="space-y-8 mt-6">
-                        {/* Professional Photo - Centered and Prominent */}
-                        <div className="relative inline-block">
+                        {/* Main Title - Above Photo */}
+                        <div>
+                            <h1 className="text-4xl lg:text-5xl font-playfair font-bold text-navy leading-tight" data-testid="hero-name" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
+                                {profile?.name || "David S. Lefkowitz"}
+                            </h1>
+                        </div>
+
+                        {/* Professional Photo - Closer to Name */}
+                        <div className="relative inline-block -mt-4">
                             <div className="relative z-10">
                                 <img 
                                     src={profile?.photo_url || "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=600"}
@@ -68,13 +75,6 @@ export default function Home() {
                             <p className="text-lg text-purple" data-testid="hero-institution" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif', fontWeight: '590'}}>
                                 {profile?.institution || "UCLA Herb Alpert School of Music"}
                             </p>
-                        </div>
-
-                        {/* Main Title - Moved Below */}
-                        <div>
-                            <h1 className="text-4xl lg:text-5xl font-playfair font-bold text-navy leading-tight" data-testid="hero-name" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
-                                {profile?.name || "David S. Lefkowitz"}
-                            </h1>
                         </div>
                         
                     </div>
