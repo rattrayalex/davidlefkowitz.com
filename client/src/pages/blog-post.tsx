@@ -125,8 +125,7 @@ export default function BlogPostPage() {
                                 const paragraphs = post.content.split('\n').filter(p => p.trim());
                                 return paragraphs.map((paragraph, index) => (
                                     <div 
-                                        key={index} 
-                                        className="mb-4"
+                                        key={index}
                                         style={{
                                             fontFamily: 'Times, "Times New Roman", Palatino, serif',
                                             whiteSpace: 'pre-wrap',
