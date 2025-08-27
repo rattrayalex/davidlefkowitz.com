@@ -17,6 +17,37 @@ const schemaData = JSON.parse(
 );
 
 /**
+ * Convert Notion rich text to HTML, preserving links
+ */
+function richTextToHtml(richTextArray: any[]): string {
+    if (!richTextArray || !Array.isArray(richTextArray)) return "";
+    
+    return richTextArray.map(textBlock => {
+        let text = textBlock.plain_text || "";
+        
+        // Handle hyperlinks
+        if (textBlock.href) {
+            text = `<a href="${textBlock.href}" target="_blank" rel="noopener noreferrer" class="text-purple hover:text-purple-700 underline">${text}</a>`;
+        }
+        
+        // Handle formatting
+        if (textBlock.annotations) {
+            if (textBlock.annotations.bold) {
+                text = `<strong>${text}</strong>`;
+            }
+            if (textBlock.annotations.italic) {
+                text = `<em>${text}</em>`;
+            }
+            if (textBlock.annotations.code) {
+                text = `<code class="bg-gray-100 px-1 py-0.5 rounded text-sm">${text}</code>`;
+            }
+        }
+        
+        return text;
+    }).join("");
+}
+
+/**
  * Extract content and purple box text from a Notion page
  * Uses last paragraph for purple box and excludes it from content for all posts
  */
@@ -42,82 +73,58 @@ async function extractContentAndPurpleBox(
 
             switch (block.type) {
                 case "paragraph":
-                    const paragraphText =
-                        block.paragraph?.rich_text
-                            ?.map((t) => t.plain_text)
-                            .join("") || "";
+                    const paragraphText = richTextToHtml(block.paragraph?.rich_text || []);
                     if (paragraphText.trim()) {
                         contentBlocks.push(paragraphText);
                     }
                     break;
 
                 case "heading_1":
-                    const h1Text =
-                        block.heading_1?.rich_text
-                            ?.map((t) => t.plain_text)
-                            .join("") || "";
+                    const h1Text = richTextToHtml(block.heading_1?.rich_text || []);
                     if (h1Text.trim()) {
-                        contentBlocks.push("# " + h1Text);
+                        contentBlocks.push(`<h1 class="text-3xl font-bold mt-8 mb-4">${h1Text}</h1>`);
                     }
                     break;
 
                 case "heading_2":
-                    const h2Text =
-                        block.heading_2?.rich_text
-                            ?.map((t) => t.plain_text)
-                            .join("") || "";
+                    const h2Text = richTextToHtml(block.heading_2?.rich_text || []);
                     if (h2Text.trim()) {
-                        contentBlocks.push("## " + h2Text);
+                        contentBlocks.push(`<h2 class="text-2xl font-bold mt-6 mb-3">${h2Text}</h2>`);
                     }
                     break;
 
                 case "heading_3":
-                    const h3Text =
-                        block.heading_3?.rich_text
-                            ?.map((t) => t.plain_text)
-                            .join("") || "";
+                    const h3Text = richTextToHtml(block.heading_3?.rich_text || []);
                     if (h3Text.trim()) {
-                        contentBlocks.push("### " + h3Text);
+                        contentBlocks.push(`<h3 class="text-xl font-bold mt-4 mb-2">${h3Text}</h3>`);
                     }
                     break;
 
                 case "bulleted_list_item":
-                    const bulletText =
-                        block.bulleted_list_item?.rich_text
-                            ?.map((t) => t.plain_text)
-                            .join("") || "";
+                    const bulletText = richTextToHtml(block.bulleted_list_item?.rich_text || []);
                     if (bulletText.trim()) {
-                        contentBlocks.push("• " + bulletText);
+                        contentBlocks.push(`<li class="ml-4 mb-1">• ${bulletText}</li>`);
                     }
                     break;
 
                 case "numbered_list_item":
-                    const numberText =
-                        block.numbered_list_item?.rich_text
-                            ?.map((t) => t.plain_text)
-                            .join("") || "";
+                    const numberText = richTextToHtml(block.numbered_list_item?.rich_text || []);
                     if (numberText.trim()) {
-                        contentBlocks.push("1. " + numberText);
+                        contentBlocks.push(`<li class="ml-4 mb-1">1. ${numberText}</li>`);
                     }
                     break;
 
                 case "quote":
-                    const quoteText =
-                        block.quote?.rich_text
-                            ?.map((t) => t.plain_text)
-                            .join("") || "";
+                    const quoteText = richTextToHtml(block.quote?.rich_text || []);
                     if (quoteText.trim()) {
-                        contentBlocks.push("> " + quoteText);
+                        contentBlocks.push(`<blockquote class="border-l-4 border-gray-300 pl-4 italic text-gray-600">${quoteText}</blockquote>`);
                     }
                     break;
 
                 case "code":
-                    const codeText =
-                        block.code?.rich_text
-                            ?.map((t) => t.plain_text)
-                            .join("") || "";
+                    const codeText = richTextToHtml(block.code?.rich_text || []);
                     if (codeText.trim()) {
-                        contentBlocks.push("```\n" + codeText + "\n```");
+                        contentBlocks.push(`<pre class="bg-gray-100 p-4 rounded overflow-x-auto"><code>${codeText}</code></pre>`);
                     }
                     break;
             }
