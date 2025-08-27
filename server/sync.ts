@@ -446,6 +446,17 @@ export async function syncCompositions() {
         console.log(`✓ Synced composition: ${composition.title}`);
     }
 
+    // Delete compositions that no longer exist in Notion
+    const notionIds = allResults.map(page => page.id);
+    const localCompositions = await db.select({ id: compositions.id }).from(compositions);
+    
+    for (const localComp of localCompositions) {
+        if (!notionIds.includes(localComp.id)) {
+            await db.delete(compositions).where(eq(compositions.id, localComp.id));
+            console.log(`✗ Deleted composition: ${localComp.id} (no longer in Notion)`);
+        }
+    }
+
     console.log("Compositions sync completed");
 }
 
