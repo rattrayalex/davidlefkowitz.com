@@ -4,6 +4,7 @@ import { useRoute, Link } from "wouter";
 import { Calendar, Clock, ArrowLeft } from "lucide-react";
 import LoadingSpinner from "@/components/ui/loading-spinner";
 import { BlogPost } from "@shared/schema";
+import twelvePointStarSvg from "@/assets/12_point_curved.svg";
 
 export default function BlogPostPage() {
     const [match, params] = useRoute("/blog/:id");
@@ -53,8 +54,23 @@ export default function BlogPostPage() {
     return (
         <div className="min-h-screen" style={{backgroundColor: '#e5e5ff'}}>
             {/* Header */}
-            <section className="py-12" style={{backgroundColor: '#e5e5ff'}}>
-                <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <section className="py-12 relative" style={{backgroundColor: '#e5e5ff'}}>
+                {/* 12-pointed star decoration */}
+                <div 
+                    className="absolute -top-0 right-4 opacity-100 pointer-events-none hidden md:block"
+                    style={{
+                        backgroundImage: `url(${twelvePointStarSvg})`,
+                        backgroundPosition: 'center center', 
+                        backgroundSize: '300px 300px',
+                        backgroundRepeat: 'no-repeat',
+                        width: '300px',
+                        height: '300px',
+                        zIndex: 0,
+                        filter: 'saturate(200%)'
+                    }}
+                ></div>
+                
+                <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
                     {/* Back to Blog Link */}
                     <div className="mb-8">
                         <Link href="/blog">
@@ -87,7 +103,7 @@ export default function BlogPostPage() {
                     </div>
 
                     {/* Title */}
-                    <h1 className={`text-4xl lg:text-5xl font-playfair font-bold text-navy ${post.title.toLowerCase().includes('an explainer') ? 'italic' : ''}`} data-testid="post-title" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
+                    <h1 className={`text-4xl lg:text-5xl font-playfair font-bold text-navy pr-80 ${post.title.toLowerCase().includes('an explainer') ? 'italic' : ''}`} data-testid="post-title" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
                         {post.title}
                     </h1>
 
