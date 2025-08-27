@@ -131,6 +131,14 @@
     color: var(--purple);
   }
   
+  .text-purple-700 {
+    color: hsl(262.1, 83.3%, 47.8%);
+  }
+  
+  .hover\:text-purple-700:hover {
+    color: hsl(262.1, 83.3%, 47.8%);
+  }
+  
   .text-gold {
     color: var(--gold);
   }
