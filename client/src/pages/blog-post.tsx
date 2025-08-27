@@ -103,7 +103,7 @@ export default function BlogPostPage() {
                     </div>
 
                     {/* Title */}
-                    <h1 className={`text-4xl lg:text-5xl font-playfair font-bold text-navy pr-70 ${post.title.toLowerCase().includes('an explainer') ? 'italic' : ''}`} data-testid="post-title" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
+                    <h1 className={`text-4xl lg:text-5xl font-playfair font-bold text-navy pr-75 ${post.title.toLowerCase().includes('an explainer') ? 'italic' : ''}`} data-testid="post-title" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
                         {post.title}
                     </h1>
 
