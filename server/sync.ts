@@ -372,28 +372,8 @@ export async function syncCompositions() {
         const premiereProperty = properties["Date of premier"] as any;
         const recordingProperty = properties.Recording as any;
 
-        // Parse year with improved handling
-        let year: number | null = null; // no default fallback
-
-        if (yearProperty) {
-            // Try multiple ways to parse the year
-            if (yearProperty.number) {
-                year = yearProperty.number;
-            } else if (yearProperty.rich_text?.[0]?.plain_text) {
-                // Try to parse year from text
-                const textValue = yearProperty.rich_text[0].plain_text.trim();
-                const parsedYear = parseInt(textValue, 10);
-                if (
-                    !isNaN(parsedYear) &&
-                    parsedYear > 1900 &&
-                    parsedYear <= 2030
-                ) {
-                    year = parsedYear;
-                }
-            } else if (yearProperty.formula?.number) {
-                year = yearProperty.formula.number;
-            }
-        }
+        // Parse year - trust Notion to provide a number
+        const year = yearProperty?.number || null;
 
         const composition: InsertComposition = {
             title: nameProperty?.title?.[0]?.plain_text || "",
