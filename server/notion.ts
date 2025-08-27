@@ -109,13 +109,13 @@ export async function getCompositions(compositionsDatabaseId: string) {
             database_id: compositionsDatabaseId,
             page_size: 100, // Use maximum page size
         };
-        
+
         if (nextCursor) {
             requestBody.start_cursor = nextCursor;
         }
 
         const response = await notion.databases.query(requestBody);
-        
+
         allResults = allResults.concat(response.results);
         hasMore = response.has_more;
         nextCursor = response.next_cursor;
@@ -126,11 +126,9 @@ export async function getCompositions(compositionsDatabaseId: string) {
 
         return {
             id: page.id,
-            title:
-                properties.Title?.title?.[0]?.plain_text ||
-                "Untitled Composition",
-            category: properties.Category?.select?.name || "Other",
-            year: properties.Year?.number || new Date().getFullYear(),
+            title: properties.Title?.title?.[0]?.plain_text,
+            category: properties.Category?.select?.name,
+            year: properties.Year?.number,
             duration: properties.Duration?.rich_text?.[0]?.plain_text || "",
             instrumentation:
                 properties.Instrumentation?.rich_text?.[0]?.plain_text || "",
@@ -161,13 +159,13 @@ export async function getBlogPosts(blogDatabaseId: string) {
                 database_id: blogDatabaseId,
                 page_size: 100, // Use maximum page size
             };
-            
+
             if (nextCursor) {
                 requestBody.start_cursor = nextCursor;
             }
 
             const response = await notion.databases.query(requestBody);
-            
+
             allResults = allResults.concat(response.results);
             hasMore = response.has_more;
             nextCursor = response.next_cursor;
