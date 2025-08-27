@@ -138,9 +138,33 @@ async function extractContentAndPurpleBox(
             );
 
             if (nonEmptyBlocks.length > 0) {
-                // Take the very last non-empty block for purple box
-                const purpleBoxText = nonEmptyBlocks[nonEmptyBlocks.length - 1];
-                const contentWithoutLast = nonEmptyBlocks.slice(0, -1);
+                // Look for incomplete final paragraphs that need to be combined
+                let purpleBoxText = "";
+                let contentWithoutLast = [...nonEmptyBlocks];
+                
+                // Take the last block
+                const lastBlock = nonEmptyBlocks[nonEmptyBlocks.length - 1];
+                
+                // Check if we need to combine fragments for a complete sentence
+                if (nonEmptyBlocks.length >= 2) {
+                    const secondToLast = nonEmptyBlocks[nonEmptyBlocks.length - 2];
+                    
+                    // If the second-to-last block ends with incomplete text (ellipsis, comma, or doesn't end with punctuation)
+                    // and the last block looks like a continuation, combine them
+                    if ((secondToLast.endsWith('…') || secondToLast.endsWith(',') || 
+                         !secondToLast.match(/[.!?]$/)) && 
+                        (lastBlock.startsWith(',') || lastBlock.length < 100)) {
+                        
+                        purpleBoxText = secondToLast + " " + lastBlock;
+                        contentWithoutLast = nonEmptyBlocks.slice(0, -2);
+                    } else {
+                        purpleBoxText = lastBlock;
+                        contentWithoutLast = nonEmptyBlocks.slice(0, -1);
+                    }
+                } else {
+                    purpleBoxText = lastBlock;
+                    contentWithoutLast = nonEmptyBlocks.slice(0, -1);
+                }
 
                 // Add tab indent to ALL paragraphs (including first)
                 const indentedContent = contentWithoutLast.map((block) => {
