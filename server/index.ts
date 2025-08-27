@@ -1,6 +1,8 @@
 import express, { type Request, Response, NextFunction } from "express";
 import { registerRoutes } from "./routes";
 import { setupVite, serveStatic, log } from "./vite";
+import cron from "node-cron";
+import { syncBlogPosts, syncCompositions, syncRecordings } from "./sync";
 
 const app = express();
 app.use(express.json());
@@ -67,5 +69,24 @@ app.use((req, res, next) => {
     reusePort: true,
   }, () => {
     log(`serving on port ${port}`);
+    
+    // Set up cron job to sync from Notion every hour during PST working hours (9 AM - 5 PM PST)
+    // PST working hours: 9 AM PST = 17:00 UTC, 5 PM PST = 01:00 UTC next day
+    // Cron runs at: 17:00, 18:00, 19:00, 20:00, 21:00, 22:00, 23:00, 00:00, 01:00 UTC
+    cron.schedule('0 17-23,0 * * *', async () => {
+      try {
+        log('Starting scheduled Notion sync...');
+        await syncBlogPosts();
+        await syncCompositions();
+        await syncRecordings();
+        log('Scheduled Notion sync completed');
+      } catch (error) {
+        console.error('Scheduled sync failed:', error);
+      }
+    }, {
+      timezone: 'UTC'
+    });
+    
+    log('Notion sync cron job scheduled for PST working hours');
   });
 })();
