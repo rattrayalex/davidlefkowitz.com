@@ -61,7 +61,7 @@ export default function Blog() {
                             {posts.map((post) => (
                                 <article 
                                     key={post.id}
-                                    className="border border-gray-300 rounded-md p-3 hover:shadow-md transition-shadow duration-300 w-1/5" style={{backgroundColor: '#e5e5ff'}}
+                                    className="border border-gray-300 rounded-md p-3 hover:shadow-md transition-shadow duration-300 w-4/5" style={{backgroundColor: '#e5e5ff'}}
                                     data-testid={`blog-post-${post.id}`}
                                 >
                                     {/* Meta information */}
