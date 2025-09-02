@@ -141,6 +141,16 @@ export default function About() {
                         </div>
                         
                         <div className="border border-gray-300 rounded-xl p-8" style={{backgroundColor: '#e5e5ff'}}>
+                            <h3 className="text-xl font-playfair font-semibold text-navy mb-4">Current Projects</h3>
+                            <ul className="space-y-2 text-gray-700" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
+                                <li style={{textIndent: '-13px', paddingLeft: '13px'}}>• Large-scale string quartet</li>
+                                <li style={{textIndent: '-13px', paddingLeft: '13px'}}>• Two volume set of preludes and fugues for piano, prepared piano, and piano duo</li>
+                                <li style={{textIndent: '-13px', paddingLeft: '13px'}}>• Music for harp</li>
+                                <li style={{textIndent: '-13px', paddingLeft: '13px'}}>• Music for voice and chamber ensemble</li>
+                            </ul>
+                        </div>
+                        
+                        <div className="border border-gray-300 rounded-xl p-8" style={{backgroundColor: '#e5e5ff'}}>
                             <h3 className="text-xl font-playfair font-semibold text-navy mb-4">Music Theory</h3>
                             <ul className="space-y-2 text-gray-700" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
                                 <li style={{textIndent: '-13px', paddingLeft: '13px'}}>• Contemporary set theory and advanced set theory extensions</li>
@@ -155,18 +165,8 @@ export default function About() {
                             <ul className="space-y-2 text-gray-700" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
                                 <li style={{textIndent: '-13px', paddingLeft: '13px'}}>• Critical thinking through music theory</li>
                                 <li style={{textIndent: '-13px', paddingLeft: '13px'}}>• Questioning assumptions and approaches, to yield new approaches</li>
-                                <li style={{textIndent: '-13px', paddingLeft: '13px'}}>• Retrospective meta-discussions about what music theory is</li>
+                                <li style={{textIndent: '-13px', paddingLeft: '13px'}}>• Retrospective meta-discussions about music theory</li>
                                 <li style={{textIndent: '-13px', paddingLeft: '13px'}}>• One-on-one music composition instruction focused on student's style while questioning assumptions to expand compositional horizons</li>
-                            </ul>
-                        </div>
-                        
-                        <div className="border border-gray-300 rounded-xl p-8" style={{backgroundColor: '#e5e5ff'}}>
-                            <h3 className="text-xl font-playfair font-semibold text-navy mb-4">Current Projects</h3>
-                            <ul className="space-y-2 text-gray-700" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
-                                <li style={{textIndent: '-13px', paddingLeft: '13px'}}>• Large-scale string quartet</li>
-                                <li style={{textIndent: '-13px', paddingLeft: '13px'}}>• Two volume set of preludes and fugues for piano, prepared piano, and piano duo</li>
-                                <li style={{textIndent: '-13px', paddingLeft: '13px'}}>• Music for harp</li>
-                                <li style={{textIndent: '-13px', paddingLeft: '13px'}}>• Music for voice and chamber ensemble</li>
                             </ul>
                         </div>
                     </div>
