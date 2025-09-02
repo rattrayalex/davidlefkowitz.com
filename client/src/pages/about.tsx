@@ -163,10 +163,11 @@ export default function About() {
                         <div className="border border-gray-300 rounded-xl p-8" style={{backgroundColor: '#e5e5ff'}}>
                             <h3 className="text-xl font-playfair font-semibold text-navy mb-4">Current Projects</h3>
                             <ul className="space-y-2 text-gray-700" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
-                                <li style={{textIndent: '-13px', paddingLeft: '13px'}}>• Grammy nomination preparation</li>
-                                <li style={{textIndent: '-13px', paddingLeft: '13px'}}>• New orchestral commission</li>
-                                <li style={{textIndent: '-13px', paddingLeft: '13px'}}>• Pedagogical research publication</li>
-                                <li style={{textIndent: '-13px', paddingLeft: '13px'}}>• International collaboration initiatives</li>
+                                <li style={{textIndent: '-13px', paddingLeft: '13px'}}>• Large-scale string quartet</li>
+                                <li style={{textIndent: '-13px', paddingLeft: '13px'}}>• Two volume set of preludes and fugues for piano, prepared piano, and piano duo</li>
+                                <li style={{textIndent: '-13px', paddingLeft: '13px'}}>• Intimate chamber music</li>
+                                <li style={{textIndent: '-13px', paddingLeft: '13px'}}>• Music for harp</li>
+                                <li style={{textIndent: '-13px', paddingLeft: '13px'}}>• Music for voice and chamber ensemble</li>
                             </ul>
                         </div>
                     </div>
