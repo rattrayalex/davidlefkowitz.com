@@ -133,10 +133,10 @@ export default function About() {
                         <div className="border border-gray-300 rounded-xl p-8" style={{backgroundColor: '#e5e5ff'}}>
                             <h3 className="text-xl font-playfair font-semibold text-navy mb-4">Composition</h3>
                             <ul className="space-y-2 text-gray-700" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
-                                <li style={{textIndent: '-18px', paddingLeft: '18px'}}>• Old and new modes, including non-octave repeating and arithmetic scales and modes</li>
-                                <li style={{textIndent: '-18px', paddingLeft: '18px'}}>• Exploration of new approaches to form</li>
-                                <li style={{textIndent: '-18px', paddingLeft: '18px'}}>• Questioning of basic musical assumptions</li>
-                                <li style={{textIndent: '-18px', paddingLeft: '18px'}}>• Genre-crossing and culture-crossing music</li>
+                                <li style={{textIndent: '-13px', paddingLeft: '13px'}}>• Old and new modes, including non-octave repeating and arithmetic scales and modes</li>
+                                <li style={{textIndent: '-13px', paddingLeft: '13px'}}>• Exploration of new approaches to form</li>
+                                <li style={{textIndent: '-13px', paddingLeft: '13px'}}>• Questioning of basic musical assumptions</li>
+                                <li style={{textIndent: '-13px', paddingLeft: '13px'}}>• Genre-crossing and culture-crossing music</li>
                             </ul>
                         </div>
                         
