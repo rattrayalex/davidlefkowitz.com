@@ -153,20 +153,20 @@ export default function About() {
                         <div className="border border-gray-300 rounded-xl p-8" style={{backgroundColor: '#e5e5ff'}}>
                             <h3 className="text-xl font-playfair font-semibold text-navy mb-4">Teaching Philosophy</h3>
                             <ul className="space-y-2 text-gray-700" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
-                                <li>• Student-centered learning approaches</li>
-                                <li>• Technology in music education</li>
-                                <li>• Creative pedagogical methods</li>
-                                <li>• Mentorship and professional development</li>
+                                <li style={{textIndent: '-13px', paddingLeft: '13px'}}>• Student-centered learning approaches</li>
+                                <li style={{textIndent: '-13px', paddingLeft: '13px'}}>• Technology in music education</li>
+                                <li style={{textIndent: '-13px', paddingLeft: '13px'}}>• Creative pedagogical methods</li>
+                                <li style={{textIndent: '-13px', paddingLeft: '13px'}}>• Mentorship and professional development</li>
                             </ul>
                         </div>
                         
                         <div className="border border-gray-300 rounded-xl p-8" style={{backgroundColor: '#e5e5ff'}}>
                             <h3 className="text-xl font-playfair font-semibold text-navy mb-4">Current Projects</h3>
                             <ul className="space-y-2 text-gray-700" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
-                                <li>• Grammy nomination preparation</li>
-                                <li>• New orchestral commission</li>
-                                <li>• Pedagogical research publication</li>
-                                <li>• International collaboration initiatives</li>
+                                <li style={{textIndent: '-13px', paddingLeft: '13px'}}>• Grammy nomination preparation</li>
+                                <li style={{textIndent: '-13px', paddingLeft: '13px'}}>• New orchestral commission</li>
+                                <li style={{textIndent: '-13px', paddingLeft: '13px'}}>• Pedagogical research publication</li>
+                                <li style={{textIndent: '-13px', paddingLeft: '13px'}}>• International collaboration initiatives</li>
                             </ul>
                         </div>
                     </div>
