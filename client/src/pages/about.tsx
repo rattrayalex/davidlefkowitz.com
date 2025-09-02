@@ -143,10 +143,10 @@ export default function About() {
                         <div className="border border-gray-300 rounded-xl p-8" style={{backgroundColor: '#e5e5ff'}}>
                             <h3 className="text-xl font-playfair font-semibold text-navy mb-4">Music Theory</h3>
                             <ul className="space-y-2 text-gray-700" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
-                                <li>• Advanced tonal analysis</li>
-                                <li>• Post-tonal theoretical frameworks</li>
-                                <li>• Counterpoint and voice leading</li>
-                                <li>• Contemporary analytical methods</li>
+                                <li style={{textIndent: '-13px', paddingLeft: '13px'}}>• Contemporary set theory and advanced set theory extensions</li>
+                                <li style={{textIndent: '-13px', paddingLeft: '13px'}}>• Analysis of timbre, and other multi-dimensional parameters</li>
+                                <li style={{textIndent: '-13px', paddingLeft: '13px'}}>• Use of mathematical approaches to better allow for integration of subjective evaluation into music theory</li>
+                                <li style={{textIndent: '-13px', paddingLeft: '13px'}}>• Post-tonal theoretic frameworks</li>
                             </ul>
                         </div>
                         
