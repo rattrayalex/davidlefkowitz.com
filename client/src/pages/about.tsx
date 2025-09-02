@@ -81,42 +81,6 @@ export default function About() {
                                 </p>
                             </div>
 
-                            {/* Contact Info */}
-                            <div className="border border-gray-300 rounded-xl p-6" style={{backgroundColor: '#e5e5ff'}}>
-                                <h3 className="text-xl font-playfair font-semibold text-navy mb-4">Contact Information</h3>
-                                <div className="space-y-2">
-                                    <p className="text-gray-700" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
-                                        <span className="font-medium">Email:</span>{" "}
-                                        <a 
-                                            href={`mailto:${profile?.email || "lefko@ucla.edu"}`}
-                                            className="text-purple hover:text-purple-700 transition-colors duration-200"
-                                            data-testid="contact-email"
-                                            style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}
-                                        >
-                                            {profile?.email || <>lefko<br />at ucla.edu</>}
-                                        </a>
-                                    </p>
-                                    <p className="text-gray-700" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
-                                        <span className="font-medium">Institution:</span>{" "}
-                                        {profile?.institution || "UCLA Herb Alpert School of Music"}
-                                    </p>
-                                    {profile?.cv_url && (
-                                        <p className="text-gray-700" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
-                                            <span className="font-medium">CV:</span>{" "}
-                                            <a 
-                                                href={profile.cv_url}
-                                                target="_blank"
-                                                rel="noopener noreferrer"
-                                                className="text-purple hover:text-purple-700 transition-colors duration-200"
-                                                data-testid="cv-link"
-                                                style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}
-                                            >
-                                                Download CV
-                                            </a>
-                                        </p>
-                                    )}
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </div>
