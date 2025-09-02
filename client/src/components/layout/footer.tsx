@@ -28,7 +28,7 @@ export default function Footer() {
                             David S. Lefkowitz
                         </h3>
                         <p className="text-gray-700 leading-relaxed" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
-                            Composer, Professor of Music Composition & Theory at UCLA Herb Alpert School of Music
+                            Composer, Professor of Music Composition & Theory<br />at UCLA Herb Alpert School of Music
                         </p>
                     </div>
                     
