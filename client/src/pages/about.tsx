@@ -145,7 +145,7 @@ export default function About() {
                             <ul className="space-y-2 text-gray-700" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
                                 <li style={{textIndent: '-13px', paddingLeft: '13px'}}>• Contemporary set theory and advanced set theory extensions</li>
                                 <li style={{textIndent: '-13px', paddingLeft: '13px'}}>• Analysis of timbre, and other multi-dimensional parameters</li>
-                                <li style={{textIndent: '-13px', paddingLeft: '13px'}}>• Use of mathematical approaches to better allow for integration of subjective evaluation into music theory</li>
+                                <li style={{textIndent: '-13px', paddingLeft: '13px'}}>• Use of mathematical approaches to better allow for integration of subjective evaluation</li>
                                 <li style={{textIndent: '-13px', paddingLeft: '13px'}}>• Post-tonal theoretic frameworks</li>
                             </ul>
                         </div>
@@ -165,7 +165,6 @@ export default function About() {
                             <ul className="space-y-2 text-gray-700" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
                                 <li style={{textIndent: '-13px', paddingLeft: '13px'}}>• Large-scale string quartet</li>
                                 <li style={{textIndent: '-13px', paddingLeft: '13px'}}>• Two volume set of preludes and fugues for piano, prepared piano, and piano duo</li>
-                                <li style={{textIndent: '-13px', paddingLeft: '13px'}}>• Intimate chamber music</li>
                                 <li style={{textIndent: '-13px', paddingLeft: '13px'}}>• Music for harp</li>
                                 <li style={{textIndent: '-13px', paddingLeft: '13px'}}>• Music for voice and chamber ensemble</li>
                             </ul>
