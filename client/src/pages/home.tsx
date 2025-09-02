@@ -73,7 +73,7 @@ export default function Home() {
                             <p className="text-xl text-gray-700 mb-2" data-testid="hero-title" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif', fontWeight: '595'}}>
                                 {profile?.title || "Composer, Professor of Music Composition & Theory"}
                             </p>
-                            <p className="text-lg text-purple" data-testid="hero-institution" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif', fontWeight: '595'}}>
+                            <p className="text-purple" data-testid="hero-institution" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif', fontWeight: '595', fontSize: '21px'}}>
                                 {profile?.institution || "UCLA Herb Alpert School of Music"}
                             </p>
                         </div>
