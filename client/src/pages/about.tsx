@@ -87,7 +87,7 @@ export default function About() {
             </section>
 
             {/* Research Interests */}
-            <section className="py-20 border-t border-gray-300" style={{backgroundColor: '#e5e5ff'}}>
+            <section className="py-12 border-t border-gray-300" style={{backgroundColor: '#e5e5ff'}}>
                 <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
                     <h2 className="text-3xl font-playfair font-bold text-navy mb-12 text-center" data-testid="research-interests-title">
                         Research & Teaching Interests
