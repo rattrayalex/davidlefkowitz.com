@@ -42,7 +42,8 @@ export default function Home() {
                         backgroundPosition: 'center center', 
                         backgroundSize: '800px 800px',
                         backgroundRepeat: 'no-repeat',
-                        zIndex: 0
+                        zIndex: 0,
+                        filter: 'saturate(300%)'
                     }}
                 ></div>
                 
