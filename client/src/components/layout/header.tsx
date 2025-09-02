@@ -45,7 +45,7 @@ export default function Header() {
                                         ? "text-purple" 
                                         : "text-gray-700 hover:text-purple"
                                 }`}
-                                style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}
+                                style={{fontFamily: 'Times, "Times New Roman", Palatino, serif', fontSize: '21px'}}
                                 data-testid={`nav-link-${item.name.toLowerCase()}`}
                             >
                                 {item.name}
@@ -83,7 +83,7 @@ export default function Header() {
                                             ? "text-purple" 
                                             : "text-gray-700 hover:text-purple"
                                     }`}
-                                    style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}
+                                    style={{fontFamily: 'Times, "Times New Roman", Palatino, serif', fontSize: '21px'}}
                                     data-testid={`mobile-nav-link-${item.name.toLowerCase()}`}
                                 >
                                     {item.name}
