@@ -66,7 +66,7 @@ export default function BlogPostPage() {
                         width: '300px',
                         height: '300px',
                         zIndex: 0,
-                        filter: 'saturate(200%)'
+                        filter: 'saturate(400%)'
                     }}
                 ></div>
                 
