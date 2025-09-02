@@ -133,10 +133,10 @@ export default function About() {
                         <div className="border border-gray-300 rounded-xl p-8" style={{backgroundColor: '#e5e5ff'}}>
                             <h3 className="text-xl font-playfair font-semibold text-navy mb-4">Composition</h3>
                             <ul className="space-y-2 text-gray-700" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
-                                <li>• Contemporary harmonic theory</li>
-                                <li>• Electronic and acoustic integration</li>
-                                <li>• Large-scale structural innovation</li>
-                                <li>• Collaborative composition practices</li>
+                                <li>• Old and new modes, including non-octave repeating and arithmetic scales and modes</li>
+                                <li>• Exploration of new approaches to form</li>
+                                <li>• Questioning of basic musical assumptions</li>
+                                <li>• Genre-crossing and culture-crossing music</li>
                             </ul>
                         </div>
                         
