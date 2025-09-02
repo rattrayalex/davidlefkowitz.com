@@ -93,7 +93,7 @@ export default function About() {
                                             data-testid="contact-email"
                                             style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}
                                         >
-                                            {profile?.email || "lefko at ucla.edu"}
+                                            {profile?.email || <>lefko<br />at ucla.edu</>}
                                         </a>
                                     </p>
                                     <p className="text-gray-700" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>

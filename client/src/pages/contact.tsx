@@ -63,7 +63,7 @@ export default function Contact() {
                                             style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}
                                             data-testid="contact-email"
                                         >
-                                            lefko at ucla.edu
+                                            lefko<br />at ucla.edu
                                         </a>
                                     </div>
                                 </div>
