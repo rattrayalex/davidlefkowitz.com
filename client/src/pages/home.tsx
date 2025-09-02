@@ -70,10 +70,10 @@ export default function Home() {
 
                         {/* Title and Institution - Below Photo */}
                         <div>
-                            <p className="text-xl text-gray-700 mb-2" data-testid="hero-title" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif', fontWeight: '590'}}>
+                            <p className="text-xl text-gray-700 mb-2" data-testid="hero-title" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif', fontWeight: '600'}}>
                                 {profile?.title || "Composer, Professor of Music Composition & Theory"}
                             </p>
-                            <p className="text-lg text-purple" data-testid="hero-institution" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif', fontWeight: '590'}}>
+                            <p className="text-lg text-purple" data-testid="hero-institution" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif', fontWeight: '600'}}>
                                 {profile?.institution || "UCLA Herb Alpert School of Music"}
                             </p>
                         </div>
