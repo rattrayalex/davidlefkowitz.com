@@ -165,7 +165,7 @@ export default function About() {
                             <ul className="space-y-2 text-gray-700" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
                                 <li style={{textIndent: '-13px', paddingLeft: '13px'}}>• Critical thinking through music theory</li>
                                 <li style={{textIndent: '-13px', paddingLeft: '13px'}}>• Questioning assumptions and approaches, to yield new approaches</li>
-                                <li style={{textIndent: '-13px', paddingLeft: '13px'}}>• Retrospective meta-discussions about music theory</li>
+                                <li style={{textIndent: '-13px', paddingLeft: '13px'}}>• Retrospective meta-discussions of music theory</li>
                                 <li style={{textIndent: '-13px', paddingLeft: '13px'}}>• One-on-one music composition instruction focused on student's style while questioning assumptions to expand compositional horizons</li>
                             </ul>
                         </div>
