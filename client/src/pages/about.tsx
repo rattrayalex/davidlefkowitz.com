@@ -85,22 +85,23 @@ export default function About() {
                             <div className="border border-gray-300 rounded-xl p-6" style={{backgroundColor: '#e5e5ff'}}>
                                 <h3 className="text-xl font-playfair font-semibold text-navy mb-4">Contact Information</h3>
                                 <div className="space-y-2">
-                                    <p className="text-gray-700">
+                                    <p className="text-gray-700" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
                                         <span className="font-medium">Email:</span>{" "}
                                         <a 
                                             href={`mailto:${profile?.email || "lefko@ucla.edu"}`}
                                             className="text-purple hover:text-purple-700 transition-colors duration-200"
                                             data-testid="contact-email"
+                                            style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}
                                         >
                                             {profile?.email || "lefko at ucla.edu"}
                                         </a>
                                     </p>
-                                    <p className="text-gray-700">
+                                    <p className="text-gray-700" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
                                         <span className="font-medium">Institution:</span>{" "}
                                         {profile?.institution || "UCLA Herb Alpert School of Music"}
                                     </p>
                                     {profile?.cv_url && (
-                                        <p className="text-gray-700">
+                                        <p className="text-gray-700" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
                                             <span className="font-medium">CV:</span>{" "}
                                             <a 
                                                 href={profile.cv_url}
@@ -108,6 +109,7 @@ export default function About() {
                                                 rel="noopener noreferrer"
                                                 className="text-purple hover:text-purple-700 transition-colors duration-200"
                                                 data-testid="cv-link"
+                                                style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}
                                             >
                                                 Download CV
                                             </a>
@@ -130,7 +132,7 @@ export default function About() {
                     <div className="grid md:grid-cols-2 gap-8">
                         <div className="border border-gray-300 rounded-xl p-8" style={{backgroundColor: '#e5e5ff'}}>
                             <h3 className="text-xl font-playfair font-semibold text-navy mb-4">Composition</h3>
-                            <ul className="space-y-2 text-gray-700">
+                            <ul className="space-y-2 text-gray-700" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
                                 <li>• Contemporary harmonic theory</li>
                                 <li>• Electronic and acoustic integration</li>
                                 <li>• Large-scale structural innovation</li>
@@ -140,7 +142,7 @@ export default function About() {
                         
                         <div className="border border-gray-300 rounded-xl p-8" style={{backgroundColor: '#e5e5ff'}}>
                             <h3 className="text-xl font-playfair font-semibold text-navy mb-4">Music Theory</h3>
-                            <ul className="space-y-2 text-gray-700">
+                            <ul className="space-y-2 text-gray-700" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
                                 <li>• Advanced tonal analysis</li>
                                 <li>• Post-tonal theoretical frameworks</li>
                                 <li>• Counterpoint and voice leading</li>
@@ -150,7 +152,7 @@ export default function About() {
                         
                         <div className="border border-gray-300 rounded-xl p-8" style={{backgroundColor: '#e5e5ff'}}>
                             <h3 className="text-xl font-playfair font-semibold text-navy mb-4">Teaching Philosophy</h3>
-                            <ul className="space-y-2 text-gray-700">
+                            <ul className="space-y-2 text-gray-700" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
                                 <li>• Student-centered learning approaches</li>
                                 <li>• Technology in music education</li>
                                 <li>• Creative pedagogical methods</li>
@@ -160,7 +162,7 @@ export default function About() {
                         
                         <div className="border border-gray-300 rounded-xl p-8" style={{backgroundColor: '#e5e5ff'}}>
                             <h3 className="text-xl font-playfair font-semibold text-navy mb-4">Current Projects</h3>
-                            <ul className="space-y-2 text-gray-700">
+                            <ul className="space-y-2 text-gray-700" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
                                 <li>• Grammy nomination preparation</li>
                                 <li>• New orchestral commission</li>
                                 <li>• Pedagogical research publication</li>
