@@ -197,26 +197,11 @@ export default function MediaPage() {
                             >
                                 <div className="max-w-4xl mx-auto text-center">
                                     <img
-                                        src={item.image_url.startsWith('http') ? item.image_url : `/public-objects/media/${item.image_url.split('/').pop()}`}
+                                        src={`/public-objects/media/${item.image_url.split('/').pop()}`}
                                         alt={item.alt_text || item.title}
                                         className="max-h-[80vh] max-w-full object-contain mx-auto rounded-lg shadow-lg"
                                         data-testid={`media-image-${index}`}
                                     />
-                                    {item.title && (
-                                        <h3 className="text-xl font-playfair font-semibold text-navy mt-6 mb-2">
-                                            {item.title}
-                                        </h3>
-                                    )}
-                                    {item.description && (
-                                        <p className="text-gray-700 max-w-2xl mx-auto">
-                                            {item.description}
-                                        </p>
-                                    )}
-                                    {item.date_taken && (
-                                        <p className="text-gray-500 text-sm mt-2">
-                                            {new Date(item.date_taken).toLocaleDateString()}
-                                        </p>
-                                    )}
                                 </div>
                             </div>
                         ))
