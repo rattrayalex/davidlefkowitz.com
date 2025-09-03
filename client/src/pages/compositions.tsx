@@ -227,77 +227,72 @@ export default function Compositions() {
                             </p>
                         </div>
                     ) : (
-                        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                        <div className="space-y-3">
                             {filteredCompositions.map((composition) => (
                                 <div 
                                     key={composition.id}
-                                    className="border border-gray-300 rounded-xl p-6 hover:shadow-lg transition-shadow duration-300" style={{backgroundColor: '#e5e5ff'}}
+                                    className="border border-gray-300 rounded-lg p-4 hover:shadow-lg transition-shadow duration-300 flex items-center gap-4 flex-wrap" 
+                                    style={{backgroundColor: '#e5e5ff'}}
                                     data-testid={`composition-${composition.id}`}
                                 >
-                                    {/* Category Badge */}
-                                    <div className="mb-4">
-                                        <span className={`inline-block text-white text-sm px-3 py-1 rounded-full font-medium ${
-                                            (typeof composition.ensemble === 'string' && composition.ensemble.includes('String Quartet')) ? 'bg-purple' :
-                                            (typeof composition.ensemble === 'string' && composition.ensemble.includes('Orchestra')) ? 'bg-gold' :
-                                            (typeof composition.ensemble === 'string' && composition.ensemble.includes('Piano Solo')) ? 'bg-blue-500' :
-                                            (typeof composition.ensemble === 'string' && composition.ensemble.includes('Choral')) ? 'bg-green-500' :
-                                            (typeof composition.ensemble === 'string' && composition.ensemble.includes('Solos')) ? 'bg-red-500' :
-                                            'bg-gray-500'
-                                        }`} data-testid={`composition-category-${composition.id}`}>
-                                            {typeof composition.ensemble === 'string' ? composition.ensemble : "Uncategorized"}
-                                        </span>
-                                    </div>
+                                    {/* 1. Category Badge */}
+                                    <span className={`inline-block text-white text-sm px-3 py-1 rounded-full font-medium flex-shrink-0 ${
+                                        (typeof composition.ensemble === 'string' && composition.ensemble.includes('String Quartet')) ? 'bg-purple' :
+                                        (typeof composition.ensemble === 'string' && composition.ensemble.includes('Orchestra')) ? 'bg-gold' :
+                                        (typeof composition.ensemble === 'string' && composition.ensemble.includes('Piano Solo')) ? 'bg-blue-500' :
+                                        (typeof composition.ensemble === 'string' && composition.ensemble.includes('Choral')) ? 'bg-green-500' :
+                                        (typeof composition.ensemble === 'string' && composition.ensemble.includes('Solos')) ? 'bg-red-500' :
+                                        'bg-gray-500'
+                                    }`} data-testid={`composition-category-${composition.id}`}>
+                                        {typeof composition.ensemble === 'string' ? composition.ensemble : "Uncategorized"}
+                                    </span>
 
-                                    {/* Title and Year */}
-                                    <div className="mb-4">
-                                        <h3 className="text-xl font-playfair font-semibold text-navy mb-2" data-testid={`composition-title-${composition.id}`}>
-                                            {composition.title}
-                                        </h3>
-                                        <div className="flex items-center text-gray-500 text-sm">
-                                            <Calendar className="h-4 w-4 mr-1" />
-                                            <span data-testid={`composition-year-${composition.id}`}>{composition.year}</span>
-                                        </div>
-                                    </div>
+                                    {/* 2. Title */}
+                                    <h3 className="font-playfair font-semibold text-navy flex-shrink-0" data-testid={`composition-title-${composition.id}`}>
+                                        {composition.title}
+                                    </h3>
 
-                                    {/* Instrumentation */}
-                                    <p className="text-purple font-medium mb-3" data-testid={`composition-instrumentation-${composition.id}`}>
+                                    {/* 3. Composition Date */}
+                                    <span className="text-gray-600 flex-shrink-0" data-testid={`composition-year-${composition.id}`}>
+                                        ({composition.year})
+                                    </span>
+
+                                    {/* 4. Instruments */}
+                                    <span className="text-purple font-medium" data-testid={`composition-instrumentation-${composition.id}`}>
                                         {composition.instrumentation}
-                                    </p>
+                                    </span>
 
-                                    {/* Duration */}
+                                    {/* 5. Duration */}
                                     {composition.duration && (
-                                        <p className="text-gray-600 text-sm mb-3" data-testid={`composition-duration-${composition.id}`}>
-                                            Duration: {composition.duration}
-                                        </p>
+                                        <span className="text-gray-600 flex-shrink-0" data-testid={`composition-duration-${composition.id}`}>
+                                            {composition.duration}
+                                        </span>
                                     )}
 
-                                    {/* Publisher */}
+                                    {/* 6. Publisher */}
                                     {composition.publisher && (
-                                        <p className="text-gray-700 text-sm leading-relaxed mb-4" data-testid={`composition-publisher-${composition.id}`}>
-                                            Publisher: {composition.publisher}
-                                        </p>
+                                        <span className="text-gray-700" data-testid={`composition-publisher-${composition.id}`}>
+                                            {composition.publisher}
+                                        </span>
                                     )}
 
-                                    {/* Premiere Info */}
-                                    {composition.premiere_info && (
-                                        <div className="mb-4 p-3 border border-gray-300 rounded-lg" style={{backgroundColor: '#e5e5ff'}}>
-                                            <p className="text-xs text-gray-500 uppercase tracking-wide font-medium mb-1">
-                                                Premiere
-                                            </p>
-                                            <p className="text-sm text-gray-700" data-testid={`composition-premiere-${composition.id}`}>
-                                                {composition.premiere_info}
-                                            </p>
-                                        </div>
-                                    )}
-
-                                    {/* Recording Info */}
+                                    {/* 7. Recording Link */}
                                     {composition.recording && (
-                                        <div className="pt-4 border-t border-gray-200">
-                                            <p className="text-purple text-sm font-medium" data-testid={`composition-recording-${composition.id}`}>
-                                                <Music className="h-4 w-4 inline mr-1" />
-                                                {composition.recording}
-                                            </p>
-                                        </div>
+                                        <span className="text-purple font-medium flex items-center flex-shrink-0" data-testid={`composition-recording-${composition.id}`}>
+                                            <Music className="h-4 w-4 mr-1" />
+                                            {composition.recording.includes('http') ? (
+                                                <a 
+                                                    href={composition.recording} 
+                                                    target="_blank" 
+                                                    rel="noopener noreferrer"
+                                                    className="hover:underline flex items-center"
+                                                >
+                                                    Recording <ExternalLink className="h-3 w-3 ml-1" />
+                                                </a>
+                                            ) : (
+                                                composition.recording
+                                            )}
+                                        </span>
                                     )}
                                 </div>
                             ))}
