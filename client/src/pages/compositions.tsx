@@ -43,7 +43,7 @@ const categoryStructure = {
         "Voice and Pierrot Ensemble",
         "Voice and Mixed Chamber Ensemble"
     ],
-    "Orchestra / Large Ensemble": [
+    "Orchestra\nLarge Ensemble": [
         "Orchestra",
         "String Orchestra",
         "Choir and Orchestra",
@@ -104,7 +104,7 @@ export default function Compositions() {
             {/* Filter Section */}
             <section className="py-8 border-b border-gray-300" style={{backgroundColor: '#e5e5ff'}}>
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="flex flex-wrap gap-4 justify-center items-center">
+                    <div className="flex flex-wrap gap-4 justify-start items-center">
                         {/* All Button */}
                         <button
                             onClick={() => setSelectedCategory("All")}
@@ -121,7 +121,7 @@ export default function Compositions() {
                         {/* Category Dropdowns */}
                         {Object.entries(categoryStructure).map(([mainCategory, subcategories]) => (
                             <DropdownMenu key={mainCategory}>
-                                <DropdownMenuTrigger className="flex items-center gap-2 px-6 py-2 rounded-full font-medium transition-all duration-200 border border-gray-300 text-gray-700 hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-purple focus:ring-opacity-50">
+                                <DropdownMenuTrigger className="flex items-center gap-2 px-6 py-2 rounded-full font-medium transition-all duration-200 border border-gray-300 text-gray-700 hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-purple focus:ring-opacity-50 whitespace-pre-line text-center">
                                     {mainCategory}
                                     <ChevronDown className="h-4 w-4" />
                                 </DropdownMenuTrigger>
