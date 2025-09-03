@@ -88,9 +88,11 @@ export default function Compositions() {
             const titleMatch = titleSearch === "" || 
                 c.title.toLowerCase().includes(titleSearch.toLowerCase());
             
-            // Instrument search filter - search in instrumentation string
+            // Instrument search filter - search in instrumentation string but exclude Orchestra/Large Ensemble pieces
+            const orchestraCategories = ["Orchestra", "String Orchestra", "Choir and Orchestra", "Brass Ensemble", "Percussion Ensemble", "Wind Ensemble"];
+            const isOrchestraCategory = c.ensemble && orchestraCategories.some(cat => c.ensemble.includes(cat));
             const instrumentMatch = instrumentSearch === "" || 
-                (c.instrumentation && typeof c.instrumentation === 'string' && c.instrumentation.toLowerCase().includes(instrumentSearch.toLowerCase()));
+                (!isOrchestraCategory && c.instrumentation && typeof c.instrumentation === 'string' && c.instrumentation.toLowerCase().includes(instrumentSearch.toLowerCase()));
             
             return categoryMatch && titleMatch && instrumentMatch;
         })
