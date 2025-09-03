@@ -59,7 +59,11 @@ export default function MediaPage() {
 
     const scrollToReviews = () => {
         setActiveSection('reviews');
-        reviewsRef.current?.scrollIntoView({ behavior: 'smooth' });
+        // Scroll to the reviews section at the bottom
+        reviewsRef.current?.scrollIntoView({ 
+            behavior: 'smooth',
+            block: 'start'
+        });
     };
 
     const handleUploadComplete = (result: { url: string; fileName: string }) => {

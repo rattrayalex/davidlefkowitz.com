@@ -249,34 +249,49 @@ export async function getRecordings(recordingsDatabaseId: string) {
 
 // Get review content from the Notion Media page
 export async function getMediaPageReviews() {
+    console.log("=== Starting getMediaPageReviews ===");
+    console.log("Notion client exists:", !!notion);
+    console.log("NOTION_PAGE_ID:", NOTION_PAGE_ID);
+    
     if (!notion || !NOTION_PAGE_ID) {
+        console.log("Missing notion client or page ID");
         throw new Error("Notion client or page ID not available");
     }
 
     try {
+        console.log("Fetching blocks from Notion page...");
         // Get all blocks from the media page
         const blocks = await notion.blocks.children.list({
             block_id: NOTION_PAGE_ID,
             page_size: 100,
         });
+        
+        console.log("Successfully fetched blocks from Notion");
 
         const reviewParagraphs = [];
+
+        console.log(`Found ${blocks.results.length} blocks in media page`);
 
         for (const block of blocks.results) {
             if (!("type" in block)) continue;
 
+            // Debug: log all block types found
+            console.log(`Block type: ${block.type}`);
+
             // Look for paragraph blocks that contain review text
             if (block.type === "paragraph" && block.paragraph?.rich_text?.length > 0) {
-                const text = block.paragraph.rich_text.map((t: any) => t.plain_text).join("");
+                const text = block.paragraph.rich_text.map((t: any) => t.plain_text).join("").trim();
                 
-                // Check if this looks like review content (starts with "David Lefkowitz" or contains quotes)
-                if (text.includes("David Lefkowitz") && text.includes("unique voice") || 
-                    text.includes('"') || text.includes("—") || text.includes("–")) {
+                console.log(`Found paragraph text (${text.length} chars): ${text.substring(0, 100)}...`);
+                
+                // For now, just add any paragraph with decent length to see what we get
+                if (text.length > 30) {
                     reviewParagraphs.push(text);
                 }
             }
         }
 
+        console.log(`Found ${reviewParagraphs.length} review paragraphs`);
         return reviewParagraphs;
     } catch (error) {
         console.error("Error fetching media page reviews from Notion:", error);
