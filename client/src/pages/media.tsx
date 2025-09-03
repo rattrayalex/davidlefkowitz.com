@@ -124,17 +124,24 @@ export default function MediaPage() {
     };
 
     const updateTitle = async (itemId: string, newTitle: string) => {
+        if (newTitle.trim() === '') return;
+        
         try {
             const response = await fetch(`/api/media/${itemId}/title`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ title: newTitle })
+                body: JSON.stringify({ title: newTitle.trim() })
             });
             
             if (response.ok) {
-                queryClient.invalidateQueries({ queryKey: ["/api/media"] });
+                // Force cache refresh and UI update
+                await queryClient.invalidateQueries({ queryKey: ["/api/media"] });
+                await queryClient.refetchQueries({ queryKey: ["/api/media"] });
                 setEditingTitle(null);
                 setEditTitleValue('');
+                console.log('Title updated successfully to:', newTitle.trim());
+            } else {
+                console.error('Failed to update title, status:', response.status);
             }
         } catch (error) {
             console.error('Error updating title:', error);
@@ -148,8 +155,18 @@ export default function MediaPage() {
 
     const handleTitleKeyPress = (e: React.KeyboardEvent, itemId: string) => {
         if (e.key === 'Enter') {
+            e.preventDefault();
             updateTitle(itemId, editTitleValue);
         } else if (e.key === 'Escape') {
+            setEditingTitle(null);
+            setEditTitleValue('');
+        }
+    };
+
+    const handleTitleBlur = (itemId: string) => {
+        if (editTitleValue.trim() !== '') {
+            updateTitle(itemId, editTitleValue);
+        } else {
             setEditingTitle(null);
             setEditTitleValue('');
         }
@@ -337,10 +354,11 @@ export default function MediaPage() {
                                                 type="text"
                                                 value={editTitleValue}
                                                 onChange={(e) => setEditTitleValue(e.target.value)}
-                                                onKeyPress={(e) => handleTitleKeyPress(e, item.id)}
-                                                onBlur={() => updateTitle(item.id, editTitleValue)}
-                                                className="text-lg font-medium text-center bg-white border-2 border-blue-400 rounded px-2 py-1 w-full max-w-sm mx-auto"
+                                                onKeyDown={(e) => handleTitleKeyPress(e, item.id)}
+                                                onBlur={() => handleTitleBlur(item.id)}
+                                                className="text-lg font-medium text-center bg-white border-2 border-blue-400 rounded px-2 py-1 w-full max-w-sm mx-auto focus:outline-none focus:border-blue-600"
                                                 autoFocus
+                                                placeholder="Enter title..."
                                                 data-testid={`title-input-${index}`}
                                             />
                                         ) : (
