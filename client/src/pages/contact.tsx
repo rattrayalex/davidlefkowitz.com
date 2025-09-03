@@ -25,7 +25,7 @@ export default function Contact() {
                 
                 <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
                     <div className="text-center">
-                        <h1 className="text-5xl lg:text-6xl font-playfair font-bold text-navy mb-6" data-testid="contact-title" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
+                        <h1 className="text-5xl lg:text-6xl font-playfair font-bold text-navy mb-2" data-testid="contact-title" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
                             Contact
                         </h1>
                     </div>
