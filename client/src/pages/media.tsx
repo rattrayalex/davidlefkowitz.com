@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { ChevronUp, ChevronDown, Upload } from "lucide-react";
+import { Upload } from "lucide-react";
 import LoadingSpinner from "@/components/ui/loading-spinner";
 import { Media } from "@shared/schema";
 import { ObjectUploader } from "@/components/ObjectUploader";
@@ -21,8 +21,6 @@ interface MediaResponse {
 
 export default function MediaPage() {
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
-    const [showUpChevron, setShowUpChevron] = useState(false);
-    const [showDownChevron, setShowDownChevron] = useState(true);
     const containerRef = useRef<HTMLDivElement>(null);
     const imageRefs = useRef<(HTMLDivElement | null)[]>([]);
     const queryClient = useQueryClient();
@@ -215,8 +213,6 @@ export default function MediaPage() {
             });
 
             setCurrentImageIndex(visibleIndex);
-            setShowUpChevron(visibleIndex > 0);
-            setShowDownChevron(visibleIndex < mediaItems.length - 1);
         };
 
         const container = containerRef.current;
@@ -226,24 +222,6 @@ export default function MediaPage() {
         }
     }, [mediaItems.length]);
 
-    const scrollToImage = (index: number) => {
-        const targetRef = imageRefs.current[index];
-        if (targetRef && containerRef.current) {
-            targetRef.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        }
-    };
-
-    const scrollUp = () => {
-        if (currentImageIndex > 0) {
-            scrollToImage(currentImageIndex - 1);
-        }
-    };
-
-    const scrollDown = () => {
-        if (currentImageIndex < mediaItems.length - 1) {
-            scrollToImage(currentImageIndex + 1);
-        }
-    };
 
     if (isLoading) {
         return (
@@ -300,31 +278,6 @@ export default function MediaPage() {
 
             {/* Media Gallery with Snap Scroll */}
             <section className="relative">
-                {/* Up Chevron */}
-                {showUpChevron && (
-                    <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-20 z-20">
-                        <button
-                            onClick={scrollUp}
-                            className="bg-white bg-opacity-80 hover:bg-opacity-100 rounded-full p-3 shadow-lg transition-all duration-200"
-                            data-testid="scroll-up-button"
-                        >
-                            <ChevronUp className="h-6 w-6 text-gray-700" />
-                        </button>
-                    </div>
-                )}
-
-                {/* Down Chevron */}
-                {showDownChevron && (
-                    <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 translate-y-16 z-20">
-                        <button
-                            onClick={scrollDown}
-                            className="bg-white bg-opacity-80 hover:bg-opacity-100 rounded-full p-3 shadow-lg transition-all duration-200"
-                            data-testid="scroll-down-button"
-                        >
-                            <ChevronDown className="h-6 w-6 text-gray-700" />
-                        </button>
-                    </div>
-                )}
 
                 {/* Scrollable Image Container */}
                 <div 
