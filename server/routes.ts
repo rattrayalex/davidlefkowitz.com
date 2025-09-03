@@ -392,6 +392,30 @@ export async function registerRoutes(app: Express): Promise<Server> {
         }
     });
 
+    // Update media item title
+    app.put("/api/media/:id/title", async (req, res) => {
+        try {
+            const { id } = req.params;
+            const { title } = req.body;
+            
+            if (!title || title.trim().length === 0) {
+                return res.status(400).json({ error: "Title is required" });
+            }
+
+            await db.update(media)
+                .set({ 
+                    title: title.trim(),
+                    updated_at: new Date()
+                })
+                .where(eq(media.id, id));
+
+            res.json({ success: true });
+        } catch (error) {
+            console.error("Error updating media title:", error);
+            res.status(500).json({ error: "Failed to update media title" });
+        }
+    });
+
     // Serve public images from object storage
     app.get("/public-objects/:filePath(*)", async (req, res) => {
         const filePath = req.params.filePath;
