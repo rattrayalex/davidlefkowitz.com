@@ -398,16 +398,34 @@ export async function registerRoutes(app: Express): Promise<Server> {
             const { id } = req.params;
             const { title } = req.body;
             
+            console.log(`Attempting to update title for ID ${id} to: "${title}"`);
+            
             if (!title || title.trim().length === 0) {
                 return res.status(400).json({ error: "Title is required" });
             }
 
-            await db.update(media)
+            // Check if item exists first
+            const [existingItem] = await db.select().from(media).where(eq(media.id, id));
+            if (!existingItem) {
+                console.log(`No media item found with ID: ${id}`);
+                return res.status(404).json({ error: "Media item not found" });
+            }
+            
+            console.log(`Found existing item with title: "${existingItem.title}"`);
+
+            const result = await db.update(media)
                 .set({ 
                     title: title.trim(),
                     updated_at: new Date()
                 })
-                .where(eq(media.id, id));
+                .where(eq(media.id, id))
+                .returning();
+
+            console.log(`Database update result:`, result);
+            
+            // Verify the update worked
+            const [updatedItem] = await db.select().from(media).where(eq(media.id, id));
+            console.log(`Verified updated title: "${updatedItem.title}"`);
 
             res.json({ success: true });
         } catch (error) {
