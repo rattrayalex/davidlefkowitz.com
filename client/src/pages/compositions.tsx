@@ -167,9 +167,9 @@ export default function Compositions() {
             {/* Filter Section */}
             <section className="py-8 border-b border-gray-300" style={{backgroundColor: '#e5e5ff'}}>
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="flex flex-wrap gap-4 justify-between items-center">
+                    <div className="flex flex-wrap gap-4 justify-start items-center">
                         {/* Quick Search Label */}
-                        <div className="text-lg font-medium text-navy">
+                        <div className="text-lg font-medium text-navy mr-16">
                             Quick Search:
                         </div>
                         
