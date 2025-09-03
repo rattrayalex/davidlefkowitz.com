@@ -23,7 +23,7 @@ const categoryStructure = {
         "Piano Quintet",
         "Debussy Trio",
         "Harp Quartet",
-        "Voice and Pierrot Ensemble",
+        "Voice and Ensemble",
         "Voice and Mixed Chamber Ensemble"
     ],
     "Solo or Duo": [
@@ -40,7 +40,7 @@ const categoryStructure = {
         "Choir and Orchestra",
         "Children's Choir",
         "Voice and Keyboard",
-        "Voice and Pierrot Ensemble",
+        "Voice and Ensemble",
         "Voice and Mixed Chamber Ensemble"
     ],
     "Orchestra\nLarge Ensemble": [
