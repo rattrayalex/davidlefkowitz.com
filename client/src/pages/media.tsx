@@ -128,20 +128,6 @@ export default function MediaPage() {
         
         const trimmedTitle = newTitle.trim();
         
-        // Optimistic update - update UI immediately
-        queryClient.setQueryData(["/api/media"], (oldData: MediaResponse[] | undefined) => {
-            if (!oldData) return oldData;
-            return oldData.map(item => 
-                item.id === itemId 
-                    ? { ...item, title: trimmedTitle }
-                    : item
-            );
-        });
-        
-        // Clear editing state immediately
-        setEditingTitle(null);
-        setEditTitleValue('');
-        
         try {
             const response = await fetch(`/api/media/${itemId}/title`, {
                 method: 'PUT',
@@ -150,18 +136,20 @@ export default function MediaPage() {
             });
             
             if (response.ok) {
-                // Refresh from server to ensure consistency
-                queryClient.invalidateQueries({ queryKey: ["/api/media"] });
+                // Clear editing state first
+                setEditingTitle(null);
+                setEditTitleValue('');
+                
+                // Force fresh data from server
+                await queryClient.refetchQueries({ queryKey: ["/api/media"] });
                 console.log('Title updated successfully to:', trimmedTitle);
             } else {
-                // Revert on error
-                queryClient.invalidateQueries({ queryKey: ["/api/media"] });
                 console.error('Failed to update title, status:', response.status);
+                alert('Failed to update title. Please try again.');
             }
         } catch (error) {
-            // Revert on error
-            queryClient.invalidateQueries({ queryKey: ["/api/media"] });
             console.error('Error updating title:', error);
+            alert('Error updating title. Please try again.');
         }
     };
 
