@@ -33,7 +33,7 @@ export default function Contact() {
             </section>
 
             {/* Contact Content */}
-            <section className="py-8">
+            <section className="pt-2 pb-8">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="grid lg:grid-cols-2 gap-16">
                         {/* Contact Information */}
