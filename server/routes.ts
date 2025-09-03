@@ -9,6 +9,8 @@ import { getMediaPageReviews } from "./notion";
 import { ObjectStorageService } from "./objectStorage";
 import { z } from "zod";
 import * as fs from "fs";
+import { promises as fsPromises } from 'fs';
+import * as path from 'path';
 
 // Load database schemas
 const schemaData = JSON.parse(fs.readFileSync("server/notion-schemas.json", "utf-8"));
@@ -155,31 +157,55 @@ export async function registerRoutes(app: Express): Promise<Server> {
         }
     });
 
-    // Get all media from local database
+    // Get all media items from photos folder
     app.get("/api/media", async (req, res) => {
         try {
-            const mediaData = await db
-                .select()
-                .from(media)
-                .where(eq(media.published, true))
-                .orderBy(media.display_order, media.created_at);
-
-            const formattedMedia = mediaData.map((item: Media) => ({
-                id: item.id,
-                title: item.title,
-                description: item.description || "",
-                image_url: item.image_url,
-                alt_text: item.alt_text || "",
-                category: item.category || "",
-                date_taken: item.date_taken ? item.date_taken.toLocaleDateString('en-CA') : "",
-                photo_credits: item.photo_credits || "",
-                display_order: item.display_order,
+            const photosDir = path.join(process.cwd(), 'photos');
+            const files = await fsPromises.readdir(photosDir);
+            
+            // Filter for image files and create media objects
+            const imageFiles = files.filter(file => 
+                /\.(jpg|jpeg|png|gif|webp)$/i.test(file)
+            );
+            
+            // Custom order matching the previous database order
+            const customOrder = [
+                "Lefkowitz 1370.jpg",
+                "Lefkowitz 1312.jpg", 
+                "Lefkowitz 1351.jpg",
+                "Lefkowitz-17.jpg",
+                "Lefkowitz-30.jpg",
+                "Lefkowitz-31.jpg",
+                "David Lefkowitz Summer 2013.jpg",
+                "DavidSLefkowitz Hi-Res.jpg"
+            ];
+            
+            // Sort files according to custom order
+            const sortedFiles = [...imageFiles].sort((a, b) => {
+                const indexA = customOrder.indexOf(a);
+                const indexB = customOrder.indexOf(b);
+                if (indexA === -1 && indexB === -1) return a.localeCompare(b);
+                if (indexA === -1) return 1;
+                if (indexB === -1) return -1;
+                return indexA - indexB;
+            });
+            
+            const mediaItems = sortedFiles.map((file, index) => ({
+                id: file.replace(/\.[^/.]+$/, ""), // Remove file extension for ID
+                title: file.replace(/\.[^/.]+$/, ""), // Remove file extension for title
+                description: "",
+                image_url: `/photos/${file}`,
+                alt_text: file.replace(/\.[^/.]+$/, ""),
+                category: "photo",
+                date_taken: "",
+                photo_credits: index === 0 ? "Photo credits: 1-3, 8: Laura R. Lefkowitz; 4-6: Rob H. Baker; 7: David S. Lefkowitz" : "",
+                display_order: index
             }));
-
-            res.json(formattedMedia);
+            
+            res.json(mediaItems);
         } catch (error) {
-            console.error("Error fetching media:", error);
-            res.status(500).json({ error: "Failed to fetch media" });
+            console.error("Error reading photos folder:", error);
+            res.status(500).json({ error: "Failed to fetch photos" });
         }
     });
 
@@ -327,7 +353,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
                     display_order: media.display_order
                 })
                 .from(media)
-                .orderBy(media.display_order, media.created_at);
+                .orderBy(media.display_order);
                 
             res.json(mediaData);
         } catch (error) {
@@ -446,20 +472,22 @@ export async function registerRoutes(app: Express): Promise<Server> {
         }
     });
 
-    // Serve public images from object storage
-    app.get("/public-objects/:filePath(*)", async (req, res) => {
-        const filePath = req.params.filePath;
-        const objectStorageService = new ObjectStorageService();
-        try {
-            const file = await objectStorageService.searchPublicObject(filePath);
-            if (!file) {
-                return res.status(404).json({ error: "File not found" });
-            }
-            objectStorageService.downloadObject(file, res);
-        } catch (error) {
-            console.error("Error searching for public object:", error);
-            return res.status(500).json({ error: "Internal server error" });
+    // Serve photos directly from photos folder
+    app.get("/photos/:filename", (req, res) => {
+        const filename = req.params.filename;
+        const filePath = path.join(process.cwd(), 'photos', filename);
+        
+        // Security check - ensure filename doesn't contain path traversal
+        if (filename.includes('..') || filename.includes('/')) {
+            return res.status(400).json({ error: "Invalid filename" });
         }
+        
+        res.sendFile(filePath, (err) => {
+            if (err) {
+                console.error("Error serving photo:", err);
+                res.status(404).json({ error: "Photo not found" });
+            }
+        });
     });
 
     // Contact form submission

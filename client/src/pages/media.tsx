@@ -394,7 +394,7 @@ export default function MediaPage() {
                                     )}
 
                                     <img
-                                        src={`/public-objects/media/${item.image_url.split('/').pop()}`}
+                                        src={item.image_url}
                                         alt={item.alt_text || item.title}
                                         className="max-w-full object-contain mx-auto rounded-lg shadow-lg pointer-events-none"
                                         style={{ 
