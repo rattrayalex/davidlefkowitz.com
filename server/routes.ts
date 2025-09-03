@@ -244,6 +244,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
             await syncBlogPosts();
             await syncCompositions();
             await syncRecordings();
+            await syncMedia();
             res.json({ success: true, message: "Manual sync completed" });
         } catch (error) {
             console.error("Error during manual sync:", error);
