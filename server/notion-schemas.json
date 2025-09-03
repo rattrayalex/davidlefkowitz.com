@@ -65,6 +65,7 @@
         "Alt Text": "rich_text",
         "Category": "select",
         "Date Taken": "date",
+        "Photo Credits": "rich_text",
         "Published": "checkbox"
       }
     }

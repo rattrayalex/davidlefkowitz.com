@@ -572,6 +572,7 @@ export async function syncMedia() {
             const altTextProperty = properties["Alt Text"] as any;
             const categoryProperty = properties.Category as any;
             const dateTakenProperty = properties["Date Taken"] as any;
+            const photoCreditsProperty = properties["Photo Credits"] as any;
             const publishedProperty = properties.Published as any;
 
             // Extract image URL from files property
@@ -598,6 +599,7 @@ export async function syncMedia() {
                 alt_text: altTextProperty?.rich_text?.[0]?.plain_text || "",
                 category: categoryProperty?.select?.name || "",
                 date_taken: dateTakenProperty?.date?.start ? new Date(dateTakenProperty.date.start) : null,
+                photo_credits: photoCreditsProperty?.rich_text?.[0]?.plain_text || "",
                 published: publishedProperty?.checkbox || false,
             };
 

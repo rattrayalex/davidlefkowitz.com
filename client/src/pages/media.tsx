@@ -14,6 +14,7 @@ interface MediaResponse {
     alt_text: string;
     category: string;
     date_taken: string;
+    photo_credits: string;
 }
 
 export default function MediaPage() {
@@ -26,6 +27,9 @@ export default function MediaPage() {
     const { data: mediaItems = [], isLoading } = useQuery<MediaResponse[]>({
         queryKey: ["/api/media"],
     });
+
+    // Get unique photo credits text from all media items
+    const photoCredits = mediaItems.length > 0 ? mediaItems.find(item => item.photo_credits)?.photo_credits || "" : "";
 
     useEffect(() => {
         const handleScroll = () => {
@@ -198,6 +202,17 @@ export default function MediaPage() {
                         ))
                     )}
                 </div>
+
+                {/* Photo Credits Section */}
+                {photoCredits && (
+                    <div className="bg-white py-8 px-4">
+                        <div className="max-w-4xl mx-auto text-center">
+                            <p className="text-gray-600 text-sm" data-testid="photo-credits">
+                                {photoCredits}
+                            </p>
+                        </div>
+                    </div>
+                )}
             </section>
         </div>
     );

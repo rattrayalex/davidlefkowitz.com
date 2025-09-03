@@ -170,6 +170,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
                 alt_text: item.alt_text || "",
                 category: item.category || "",
                 date_taken: item.date_taken ? item.date_taken.toLocaleDateString('en-CA') : "",
+                photo_credits: item.photo_credits || "",
             }));
 
             res.json(formattedMedia);

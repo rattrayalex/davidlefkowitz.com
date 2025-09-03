@@ -116,6 +116,7 @@ export const media = pgTable("media", {
   alt_text: text("alt_text").default(""),
   category: text("category").default(""),
   date_taken: timestamp("date_taken"),
+  photo_credits: text("photo_credits").default(""),
   published: boolean("published").notNull().default(false),
   last_synced: timestamp("last_synced").defaultNow(),
   created_at: timestamp("created_at").defaultNow(),
