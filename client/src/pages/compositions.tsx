@@ -58,7 +58,7 @@ const categoryStructure = {
         "Voice and Ensemble",
         "Voice and Mixed Chamber Ensemble"
     ],
-    "Orchestra\nLarge Ensemble": [
+    "Large Ensemble": [
         "Orchestra",
         "String Orchestra",
         "Choir and Orchestra",
