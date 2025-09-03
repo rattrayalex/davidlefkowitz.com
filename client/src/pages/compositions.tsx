@@ -1,8 +1,22 @@
 import React, { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { ExternalLink, Music, Calendar, ChevronDown } from "lucide-react";
+import { ExternalLink, Music, Calendar, ChevronDown, Search } from "lucide-react";
 import LoadingSpinner from "@/components/ui/loading-spinner";
 import { Composition } from "@shared/schema";
+
+// Define the API response type that matches what the server returns
+interface CompositionResponse {
+    id: string;
+    title: string;
+    instrumentation: string; // Transformed from array to comma-separated string
+    ensemble: string; // Transformed from array to comma-separated string
+    year: number;
+    category: string; // Derived from first element of ensemble array
+    duration: string;
+    premiere_info: string;
+    publisher: string; // Transformed from array to comma-separated string
+    recording: string;
+}
 import twelvePointStarSvg from "@/assets/12_point_curved.svg";
 import {
     DropdownMenu,
@@ -10,6 +24,7 @@ import {
     DropdownMenuItem,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { Input } from "@/components/ui/input";
 
 // Define the category structure
 const categoryStructure = {
@@ -55,15 +70,31 @@ const categoryStructure = {
 
 export default function Compositions() {
     const [selectedCategory, setSelectedCategory] = useState<string>("All");
+    const [titleSearch, setTitleSearch] = useState<string>("");
+    const [instrumentSearch, setInstrumentSearch] = useState<string>("");
     
-    const { data: compositions = [], isLoading } = useQuery<Composition[]>({
+    const { data: compositions = [], isLoading } = useQuery<CompositionResponse[]>({
         queryKey: ["/api/compositions"],
     });
     
-    const filteredCompositions = (selectedCategory === "All" 
-        ? compositions 
-        : compositions.filter(c => c.category === selectedCategory))
-        .sort((a, b) => b.year - a.year); // Sort by year in reverse chronological order (newest first)
+    // Updated filtering logic combining category, title, and instrument search
+    const filteredCompositions = compositions
+        .filter(c => {
+            // Category filter - check if selected category exists in ensemble string
+            const categoryMatch = selectedCategory === "All" || 
+                (c.ensemble && c.ensemble.includes(selectedCategory));
+            
+            // Title search filter
+            const titleMatch = titleSearch === "" || 
+                c.title.toLowerCase().includes(titleSearch.toLowerCase());
+            
+            // Instrument search filter - search in instrumentation string
+            const instrumentMatch = instrumentSearch === "" || 
+                (c.instrumentation && typeof c.instrumentation === 'string' && c.instrumentation.toLowerCase().includes(instrumentSearch.toLowerCase()));
+            
+            return categoryMatch && titleMatch && instrumentMatch;
+        })
+        .sort((a, b) => (b.year || 0) - (a.year || 0)); // Sort by year in reverse chronological order (newest first)
 
     if (isLoading) {
         return (
@@ -143,6 +174,36 @@ export default function Compositions() {
                 </div>
             </section>
 
+            {/* Search Section */}
+            <section className="py-6" style={{backgroundColor: '#e5e5ff'}}>
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div className="flex flex-wrap gap-4 justify-start items-center">
+                        <div className="relative">
+                            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+                            <Input
+                                type="text"
+                                placeholder="Search by title..."
+                                value={titleSearch}
+                                onChange={(e) => setTitleSearch(e.target.value)}
+                                className="pl-10 w-64 border-gray-300 focus:border-purple focus:ring-purple"
+                                data-testid="search-title"
+                            />
+                        </div>
+                        <div className="relative">
+                            <Music className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+                            <Input
+                                type="text"
+                                placeholder="Search by instrument..."
+                                value={instrumentSearch}
+                                onChange={(e) => setInstrumentSearch(e.target.value)}
+                                className="pl-10 w-64 border-gray-300 focus:border-purple focus:ring-purple"
+                                data-testid="search-instrument"
+                            />
+                        </div>
+                    </div>
+                </div>
+            </section>
+
             {/* Compositions Grid */}
             <section className="py-20">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -164,14 +225,14 @@ export default function Compositions() {
                                     {/* Category Badge */}
                                     <div className="mb-4">
                                         <span className={`inline-block text-white text-sm px-3 py-1 rounded-full font-medium ${
-                                            composition.category === 'Chamber Music' ? 'bg-purple' :
-                                            composition.category === 'Orchestral' ? 'bg-gold' :
-                                            composition.category === 'Solo' ? 'bg-blue-500' :
-                                            composition.category === 'Electronic' ? 'bg-green-500' :
-                                            composition.category === 'Vocal' ? 'bg-red-500' :
+                                            (typeof composition.ensemble === 'string' && composition.ensemble.includes('String Quartet')) ? 'bg-purple' :
+                                            (typeof composition.ensemble === 'string' && composition.ensemble.includes('Orchestra')) ? 'bg-gold' :
+                                            (typeof composition.ensemble === 'string' && composition.ensemble.includes('Piano Solo')) ? 'bg-blue-500' :
+                                            (typeof composition.ensemble === 'string' && composition.ensemble.includes('Choral')) ? 'bg-green-500' :
+                                            (typeof composition.ensemble === 'string' && composition.ensemble.includes('Solos')) ? 'bg-red-500' :
                                             'bg-gray-500'
                                         }`} data-testid={`composition-category-${composition.id}`}>
-                                            {composition.category}
+                                            {typeof composition.ensemble === 'string' ? composition.ensemble : "Uncategorized"}
                                         </span>
                                     </div>
 
@@ -198,10 +259,12 @@ export default function Compositions() {
                                         </p>
                                     )}
 
-                                    {/* Description */}
-                                    <p className="text-gray-700 text-sm leading-relaxed mb-4" data-testid={`composition-description-${composition.id}`}>
-                                        {composition.description}
-                                    </p>
+                                    {/* Publisher */}
+                                    {composition.publisher && (
+                                        <p className="text-gray-700 text-sm leading-relaxed mb-4" data-testid={`composition-publisher-${composition.id}`}>
+                                            Publisher: {composition.publisher}
+                                        </p>
+                                    )}
 
                                     {/* Premiere Info */}
                                     {composition.premiere_info && (
@@ -215,33 +278,15 @@ export default function Compositions() {
                                         </div>
                                     )}
 
-                                    {/* Links */}
-                                    <div className="flex space-x-3 pt-4 border-t border-gray-200">
-                                        {composition.score_url && (
-                                            <a
-                                                href={composition.score_url}
-                                                target="_blank"
-                                                rel="noopener noreferrer"
-                                                className="flex items-center text-purple hover:text-purple-700 text-sm font-medium transition-colors duration-200"
-                                                data-testid={`composition-score-link-${composition.id}`}
-                                            >
-                                                <ExternalLink className="h-4 w-4 mr-1" />
-                                                Score
-                                            </a>
-                                        )}
-                                        {composition.audio_url && (
-                                            <a
-                                                href={composition.audio_url}
-                                                target="_blank"
-                                                rel="noopener noreferrer"
-                                                className="flex items-center text-purple hover:text-purple-700 text-sm font-medium transition-colors duration-200"
-                                                data-testid={`composition-audio-link-${composition.id}`}
-                                            >
-                                                <Music className="h-4 w-4 mr-1" />
-                                                Audio
-                                            </a>
-                                        )}
-                                    </div>
+                                    {/* Recording Info */}
+                                    {composition.recording && (
+                                        <div className="pt-4 border-t border-gray-200">
+                                            <p className="text-purple text-sm font-medium" data-testid={`composition-recording-${composition.id}`}>
+                                                <Music className="h-4 w-4 inline mr-1" />
+                                                {composition.recording}
+                                            </p>
+                                        </div>
+                                    )}
                                 </div>
                             ))}
                         </div>
