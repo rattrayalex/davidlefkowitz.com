@@ -364,6 +364,34 @@ export async function registerRoutes(app: Express): Promise<Server> {
         }
     });
 
+    // Move specific media item to top
+    app.put("/api/media/move-to-top", async (req, res) => {
+        try {
+            const { title } = req.body;
+            
+            if (!title) {
+                return res.status(400).json({ error: "Title is required" });
+            }
+
+            // Find the media item with matching title
+            const [targetItem] = await db.select().from(media).where(eq(media.title, title));
+            
+            if (!targetItem) {
+                return res.status(404).json({ error: "Media item not found" });
+            }
+
+            // Set this item's display_order to 0 (making it first)
+            await db.update(media)
+                .set({ display_order: 0 })
+                .where(eq(media.id, targetItem.id));
+
+            res.json({ success: true });
+        } catch (error) {
+            console.error("Error moving media to top:", error);
+            res.status(500).json({ error: "Failed to move media to top" });
+        }
+    });
+
     // Serve public images from object storage
     app.get("/public-objects/:filePath(*)", async (req, res) => {
         const filePath = req.params.filePath;
