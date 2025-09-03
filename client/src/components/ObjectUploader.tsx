@@ -19,7 +19,7 @@ interface ObjectUploaderProps {
  * file management with metadata entry.
  */
 export function ObjectUploader({
-  maxFileSize = 10485760, // 10MB default
+  maxFileSize = 13631488, // 13MB default
   onComplete,
   buttonClassName,
   children,
