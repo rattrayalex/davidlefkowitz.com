@@ -134,6 +134,36 @@ export default function Compositions() {
                 </div>
             </section>
 
+            {/* Search Section */}
+            <section className="py-6" style={{backgroundColor: '#e5e5ff'}}>
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div className="flex flex-wrap gap-4 justify-start items-center">
+                        <div className="relative">
+                            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+                            <Input
+                                type="text"
+                                placeholder="Search by title..."
+                                value={titleSearch}
+                                onChange={(e) => setTitleSearch(e.target.value)}
+                                className="pl-10 w-64 border-gray-300 focus:border-purple focus:ring-purple"
+                                data-testid="search-title"
+                            />
+                        </div>
+                        <div className="relative">
+                            <Music className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+                            <Input
+                                type="text"
+                                placeholder="Search by instrument..."
+                                value={instrumentSearch}
+                                onChange={(e) => setInstrumentSearch(e.target.value)}
+                                className="pl-10 w-64 border-gray-300 focus:border-purple focus:ring-purple"
+                                data-testid="search-instrument"
+                            />
+                        </div>
+                    </div>
+                </div>
+            </section>
+
             {/* Filter Section */}
             <section className="py-8 border-b border-gray-300" style={{backgroundColor: '#e5e5ff'}}>
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -172,36 +202,6 @@ export default function Compositions() {
                                 </DropdownMenuContent>
                             </DropdownMenu>
                         ))}
-                    </div>
-                </div>
-            </section>
-
-            {/* Search Section */}
-            <section className="py-6" style={{backgroundColor: '#e5e5ff'}}>
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="flex flex-wrap gap-4 justify-start items-center">
-                        <div className="relative">
-                            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
-                            <Input
-                                type="text"
-                                placeholder="Search by title..."
-                                value={titleSearch}
-                                onChange={(e) => setTitleSearch(e.target.value)}
-                                className="pl-10 w-64 border-gray-300 focus:border-purple focus:ring-purple"
-                                data-testid="search-title"
-                            />
-                        </div>
-                        <div className="relative">
-                            <Music className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
-                            <Input
-                                type="text"
-                                placeholder="Search by instrument..."
-                                value={instrumentSearch}
-                                onChange={(e) => setInstrumentSearch(e.target.value)}
-                                className="pl-10 w-64 border-gray-300 focus:border-purple focus:ring-purple"
-                                data-testid="search-instrument"
-                            />
-                        </div>
                     </div>
                 </div>
             </section>
