@@ -33,6 +33,10 @@ export default function MediaPage() {
 
     const { data: mediaItems = [], isLoading } = useQuery<MediaResponse[]>({
         queryKey: ["/api/media"],
+        select: (data: MediaResponse[]) => {
+            // Sort by title in ascending order
+            return [...data].sort((a, b) => a.title.localeCompare(b.title));
+        }
     });
 
     const handleUploadComplete = (result: { url: string; fileName: string }) => {
