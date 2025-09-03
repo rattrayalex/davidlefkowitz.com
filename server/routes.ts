@@ -161,7 +161,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
                 .select()
                 .from(media)
                 .where(eq(media.published, true))
-                .orderBy(desc(media.date_taken));
+                .orderBy(media.display_order, media.created_at);
 
             const formattedMedia = mediaData.map((item: Media) => ({
                 id: item.id,
@@ -172,6 +172,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
                 category: item.category || "",
                 date_taken: item.date_taken ? item.date_taken.toLocaleDateString('en-CA') : "",
                 photo_credits: item.photo_credits || "",
+                display_order: item.display_order,
             }));
 
             res.json(formattedMedia);
@@ -201,6 +202,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
                 return res.status(400).json({ error: "Title and image URL are required" });
             }
 
+            // Get the next display order
+            const maxOrderResult = await db
+                .select({ maxOrder: sql<number>`COALESCE(MAX(${media.display_order}), 0)` })
+                .from(media);
+            const nextOrder = (maxOrderResult[0]?.maxOrder || 0) + 1;
+
             const [newMedia] = await db.insert(media).values({
                 title,
                 description: description || "",
@@ -213,12 +220,87 @@ export async function registerRoutes(app: Express): Promise<Server> {
                 content_type,
                 published: true,
                 date_taken: new Date(),
+                display_order: nextOrder,
             }).returning();
 
             res.json(newMedia);
         } catch (error) {
             console.error("Error saving media metadata:", error);
             res.status(500).json({ error: "Failed to save media metadata" });
+        }
+    });
+
+    // Move media item up in order
+    app.put("/api/media/:id/move-up", async (req, res) => {
+        try {
+            const { id } = req.params;
+            
+            // Get current item
+            const [currentItem] = await db.select().from(media).where(eq(media.id, id));
+            if (!currentItem) {
+                return res.status(404).json({ error: "Media item not found" });
+            }
+
+            // Get the item above it
+            const [itemAbove] = await db
+                .select()
+                .from(media)
+                .where(lt(media.display_order, currentItem.display_order))
+                .orderBy(desc(media.display_order))
+                .limit(1);
+
+            if (itemAbove) {
+                // Swap display orders
+                await db.update(media)
+                    .set({ display_order: itemAbove.display_order })
+                    .where(eq(media.id, currentItem.id));
+                    
+                await db.update(media)
+                    .set({ display_order: currentItem.display_order })
+                    .where(eq(media.id, itemAbove.id));
+            }
+
+            res.json({ success: true });
+        } catch (error) {
+            console.error("Error moving media up:", error);
+            res.status(500).json({ error: "Failed to move media up" });
+        }
+    });
+
+    // Move media item down in order
+    app.put("/api/media/:id/move-down", async (req, res) => {
+        try {
+            const { id } = req.params;
+            
+            // Get current item
+            const [currentItem] = await db.select().from(media).where(eq(media.id, id));
+            if (!currentItem) {
+                return res.status(404).json({ error: "Media item not found" });
+            }
+
+            // Get the item below it
+            const [itemBelow] = await db
+                .select()
+                .from(media)
+                .where(gt(media.display_order, currentItem.display_order))
+                .orderBy(media.display_order)
+                .limit(1);
+
+            if (itemBelow) {
+                // Swap display orders
+                await db.update(media)
+                    .set({ display_order: itemBelow.display_order })
+                    .where(eq(media.id, currentItem.id));
+                    
+                await db.update(media)
+                    .set({ display_order: currentItem.display_order })
+                    .where(eq(media.id, itemBelow.id));
+            }
+
+            res.json({ success: true });
+        } catch (error) {
+            console.error("Error moving media down:", error);
+            res.status(500).json({ error: "Failed to move media down" });
         }
     });
 

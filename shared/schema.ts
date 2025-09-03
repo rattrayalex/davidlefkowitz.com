@@ -117,6 +117,7 @@ export const media = pgTable("media", {
   category: text("category").default(""),
   date_taken: timestamp("date_taken"),
   photo_credits: text("photo_credits").default(""),
+  display_order: integer("display_order").default(0), // For ordering photos
   published: boolean("published").notNull().default(true), // Default to published for uploads
   file_name: text("file_name"), // Original file name
   file_size: integer("file_size"), // File size in bytes

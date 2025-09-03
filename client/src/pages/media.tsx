@@ -16,6 +16,7 @@ interface MediaResponse {
     category: string;
     date_taken: string;
     photo_credits: string;
+    display_order: number;
 }
 
 export default function MediaPage() {
@@ -25,6 +26,7 @@ export default function MediaPage() {
     const containerRef = useRef<HTMLDivElement>(null);
     const imageRefs = useRef<(HTMLDivElement | null)[]>([]);
     const queryClient = useQueryClient();
+    const [isReordering, setIsReordering] = useState(false);
 
     const { data: mediaItems = [], isLoading } = useQuery<MediaResponse[]>({
         queryKey: ["/api/media"],
@@ -34,6 +36,32 @@ export default function MediaPage() {
         console.log('Upload completed:', result);
         // Refresh the media list
         queryClient.invalidateQueries({ queryKey: ["/api/media"] });
+    };
+
+    const moveItemUp = async (itemId: string) => {
+        try {
+            const response = await fetch(`/api/media/${itemId}/move-up`, {
+                method: 'PUT',
+            });
+            if (response.ok) {
+                queryClient.invalidateQueries({ queryKey: ["/api/media"] });
+            }
+        } catch (error) {
+            console.error('Error moving item up:', error);
+        }
+    };
+
+    const moveItemDown = async (itemId: string) => {
+        try {
+            const response = await fetch(`/api/media/${itemId}/move-down`, {
+                method: 'PUT',
+            });
+            if (response.ok) {
+                queryClient.invalidateQueries({ queryKey: ["/api/media"] });
+            }
+        } catch (error) {
+            console.error('Error moving item down:', error);
+        }
     };
 
     // Get unique photo credits text from all media items
@@ -126,8 +154,8 @@ export default function MediaPage() {
                             Media
                         </h1>
                         
-                        {/* Upload Button */}
-                        <div className="mt-8">
+                        {/* Upload and Reorder Buttons */}
+                        <div className="mt-8 flex justify-center gap-4">
                             <ObjectUploader
                                 onComplete={handleUploadComplete}
                                 buttonClassName="bg-navy hover:bg-navy-dark text-white px-6 py-3 rounded-lg font-medium transition-colors"
@@ -135,6 +163,20 @@ export default function MediaPage() {
                                 <Upload className="w-4 h-4 mr-2" />
                                 Upload Image
                             </ObjectUploader>
+                            
+                            {mediaItems.length > 1 && (
+                                <button
+                                    onClick={() => setIsReordering(!isReordering)}
+                                    className={`px-6 py-3 rounded-lg font-medium transition-colors duration-200 ${
+                                        isReordering 
+                                        ? 'bg-red-600 hover:bg-red-700 text-white' 
+                                        : 'bg-gray-600 hover:bg-gray-700 text-white'
+                                    }`}
+                                    data-testid="toggle-reorder"
+                                >
+                                    {isReordering ? 'Done Reordering' : 'Reorder Photos'}
+                                </button>
+                            )}
                         </div>
                     </div>
                 </div>
@@ -192,38 +234,61 @@ export default function MediaPage() {
                             <div 
                                 key={item.id}
                                 ref={(el) => imageRefs.current[index] = el}
-                                className="snap-center px-4 py-6"
+                                className="snap-center px-4 py-6 relative"
                                 style={{ minHeight: '100vh' }}
                                 data-testid={`media-item-${index}`}
                             >
                                 <div className="max-w-6xl mx-auto text-center flex flex-col justify-center min-h-full">
+                                    {/* Up chevron */}
+                                    {isReordering && index > 0 && (
+                                        <button
+                                            onClick={() => moveItemUp(item.id)}
+                                            className="absolute top-8 left-1/2 transform -translate-x-1/2 bg-black bg-opacity-50 text-white p-2 rounded-full hover:bg-opacity-70 transition-opacity z-10"
+                                            data-testid={`move-up-${index}`}
+                                        >
+                                            <ChevronUp className="w-6 h-6" />
+                                        </button>
+                                    )}
+                                    
                                     <img
                                         src={`/public-objects/media/${item.image_url.split('/').pop()}`}
                                         alt={item.alt_text || item.title}
                                         className="max-w-full object-contain mx-auto rounded-lg shadow-lg"
                                         style={{ 
-                                            maxHeight: 'calc(100vh - 48px)',
+                                            maxHeight: 'calc(100vh - 96px)',
                                             marginTop: '24px',
-                                            marginBottom: '24px'
+                                            marginBottom: '8px'
                                         }}
                                         data-testid={`media-image-${index}`}
                                     />
+                                    
+                                    {/* Photo credits */}
+                                    {item.photo_credits && (
+                                        <p 
+                                            className="text-gray-600 mt-2 mb-4"
+                                            style={{ fontSize: '14px' }}
+                                            data-testid={`photo-credits-${index}`}
+                                        >
+                                            {item.photo_credits}
+                                        </p>
+                                    )}
+
+                                    {/* Down chevron */}
+                                    {isReordering && index < mediaItems.length - 1 && (
+                                        <button
+                                            onClick={() => moveItemDown(item.id)}
+                                            className="absolute bottom-8 left-1/2 transform -translate-x-1/2 bg-black bg-opacity-50 text-white p-2 rounded-full hover:bg-opacity-70 transition-opacity z-10"
+                                            data-testid={`move-down-${index}`}
+                                        >
+                                            <ChevronDown className="w-6 h-6" />
+                                        </button>
+                                    )}
                                 </div>
                             </div>
                         ))
                     )}
                 </div>
 
-                {/* Photo Credits Section */}
-                {photoCredits && (
-                    <div className="bg-white py-8 px-4">
-                        <div className="max-w-4xl mx-auto text-center">
-                            <p className="text-gray-600 text-sm" data-testid="photo-credits">
-                                {photoCredits}
-                            </p>
-                        </div>
-                    </div>
-                )}
             </section>
         </div>
     );
