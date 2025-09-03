@@ -1,11 +1,9 @@
 import { Client } from "@notionhq/client";
 
-// Initialize Notion client - only if credentials are available
-export const notion = process.env.NOTION_API_KEY
-    ? new Client({
-          auth: process.env.NOTION_API_KEY,
-      })
-    : null;
+// Initialize Notion client
+export const notion = new Client({
+    auth: process.env.NOTION_INTEGRATION_SECRET!,
+});
 
 // Extract the page ID from the Notion page URL
 function extractPageIdFromUrl(pageUrl: string): string {
@@ -17,19 +15,13 @@ function extractPageIdFromUrl(pageUrl: string): string {
     throw Error("Failed to extract page ID");
 }
 
-export const NOTION_PAGE_ID = process.env.NOTION_PAGE_URL
-    ? extractPageIdFromUrl(process.env.NOTION_PAGE_URL)
-    : null;
+export const NOTION_PAGE_ID = extractPageIdFromUrl(process.env.NOTION_PAGE_URL!);
 
 /**
  * Lists all child databases contained within NOTION_PAGE_ID
  * @returns {Promise<Array<{id: string, title: string}>>} - Array of database objects with id and title
  */
 export async function getNotionDatabases() {
-    if (!notion || !NOTION_PAGE_ID) {
-        throw new Error("Notion client or page ID not available");
-    }
-
     // Array to store the child databases
     const childDatabases = [];
 
@@ -47,16 +39,20 @@ export async function getNotionDatabases() {
             // Process the results
             for (const block of response.results) {
                 // Check if the block is a child database
-                if ("type" in block && block.type === "child_database") {
+                if (block.type === "child_database") {
                     const databaseId = block.id;
 
                     // Retrieve the database title
-                    const databaseInfo = await notion.databases.retrieve({
-                        database_id: databaseId,
-                    });
+                    try {
+                        const databaseInfo = await notion.databases.retrieve({
+                            database_id: databaseId,
+                        });
 
-                    // Add the database to our list
-                    childDatabases.push(databaseInfo);
+                        // Add the database to our list
+                        childDatabases.push(databaseInfo);
+                    } catch (error) {
+                        console.error(`Error retrieving database ${databaseId}:`, error);
+                    }
                 }
             }
 
@@ -77,12 +73,7 @@ export async function findDatabaseByTitle(title: string) {
     const databases = await getNotionDatabases();
 
     for (const db of databases) {
-        if (
-            "title" in db &&
-            db.title &&
-            Array.isArray(db.title) &&
-            db.title.length > 0
-        ) {
+        if (db.title && Array.isArray(db.title) && db.title.length > 0) {
             const dbTitle = db.title[0]?.plain_text?.toLowerCase() || "";
             if (dbTitle === title.toLowerCase()) {
                 return db;
@@ -99,47 +90,33 @@ export async function getCompositions(compositionsDatabaseId: string) {
         throw new Error("Notion client not available");
     }
 
-    // Implement proper pagination to get ALL compositions
-    let allResults: any[] = [];
-    let hasMore = true;
-    let nextCursor: string | null = null;
-
-    while (hasMore) {
-        const requestBody: any = {
+    try {
+        const response = await notion.databases.query({
             database_id: compositionsDatabaseId,
-            page_size: 100, // Use maximum page size
-        };
+        });
 
-        if (nextCursor) {
-            requestBody.start_cursor = nextCursor;
-        }
+        return response.results.map((page: any) => {
+            const properties = page.properties;
 
-        const response = await notion.databases.query(requestBody);
-
-        allResults = allResults.concat(response.results);
-        hasMore = response.has_more;
-        nextCursor = response.next_cursor;
+            return {
+                id: page.id,
+                title: properties.Title?.title?.[0]?.plain_text || "",
+                year: properties.Year?.number || null,
+                duration: properties.Duration?.rich_text?.[0]?.plain_text || "",
+                instrumentation: properties.Instrumentation?.rich_text?.[0]?.plain_text || "",
+                description: properties.Description?.rich_text?.[0]?.plain_text || "",
+                score_url: properties.ScoreURL?.url || "",
+                audio_url: properties.AudioURL?.url || "",
+                featured_image_url:
+                    properties.FeaturedImage?.files?.[0]?.external?.url ||
+                    properties.FeaturedImage?.files?.[0]?.file?.url ||
+                    "",
+            };
+        });
+    } catch (error) {
+        console.error("Error fetching compositions from Notion:", error);
+        throw new Error("Failed to fetch compositions from Notion");
     }
-
-    return allResults.map((page: any) => {
-        const properties = page.properties;
-
-        return {
-            id: page.id,
-            title: properties.Title?.title?.[0]?.plain_text,
-            category: properties.Category?.select?.name,
-            year: properties.Year?.number,
-            duration: properties.Duration?.rich_text?.[0]?.plain_text || "",
-            instrumentation:
-                properties.Instrumentation?.rich_text?.[0]?.plain_text || "",
-            description:
-                properties.Description?.rich_text?.[0]?.plain_text || "",
-            premiere_info:
-                properties.PremiereInfo?.rich_text?.[0]?.plain_text || "",
-            score_url: properties.ScoreURL?.url || "",
-            audio_url: properties.AudioURL?.url || "",
-        };
-    });
 }
 
 // Get all blog posts from the Notion database
@@ -149,47 +126,33 @@ export async function getBlogPosts(blogDatabaseId: string) {
     }
 
     try {
-        // Implement proper pagination to get ALL blog posts
-        let allResults: any[] = [];
-        let hasMore = true;
-        let nextCursor: string | null = null;
+        const response = await notion.databases.query({
+            database_id: blogDatabaseId,
+            sorts: [
+                {
+                    property: "PublishedDate",
+                    direction: "descending",
+                },
+            ],
+        });
 
-        while (hasMore) {
-            const requestBody: any = {
-                database_id: blogDatabaseId,
-                page_size: 100, // Use maximum page size
-            };
-
-            if (nextCursor) {
-                requestBody.start_cursor = nextCursor;
-            }
-
-            const response = await notion.databases.query(requestBody);
-
-            allResults = allResults.concat(response.results);
-            hasMore = response.has_more;
-            nextCursor = response.next_cursor;
-        }
-
-        return allResults.map((page: any) => {
+        return response.results.map((page: any) => {
             const properties = page.properties;
+
+            const publishedDate = properties.PublishedDate?.date?.start
+                ? new Date(properties.PublishedDate.date.start)
+                : null;
 
             return {
                 id: page.id,
-                title:
-                    properties.Title?.title?.[0]?.plain_text || "",
+                title: properties.Title?.title?.[0]?.plain_text || "",
+                slug: properties.Slug?.rich_text?.[0]?.plain_text || "",
                 excerpt: properties.Excerpt?.rich_text?.[0]?.plain_text || "",
-                content: properties.Content?.rich_text?.[0]?.plain_text || "",
-                published_date: properties.PublishedDate?.date?.start
-                    ? new Date(properties.PublishedDate.date.start)
-                    : new Date(),
-                author:
-                    properties.Author?.rich_text?.[0]?.plain_text ||
-                    "David S. Lefkowitz",
+                published_date: publishedDate,
+                is_published: properties.IsPublished?.checkbox || false,
                 tags:
-                    properties.Tags?.multi_select?.map(
-                        (tag: any) => tag.name,
-                    ) || [],
+                    properties.Tags?.multi_select?.map((tag: any) => tag.name) ||
+                    [],
                 featured_image_url:
                     properties.FeaturedImage?.files?.[0]?.external?.url ||
                     properties.FeaturedImage?.files?.[0]?.file?.url ||
@@ -248,151 +211,26 @@ export async function getRecordings(recordingsDatabaseId: string) {
 }
 
 // Get review content from the Notion Media page
-export async function getMediaPageReviews() {
-    console.log("=== Starting getMediaPageReviews ===");
-    console.log("Notion client exists:", !!notion);
-    console.log("NOTION_PAGE_ID:", NOTION_PAGE_ID);
-    
-    if (!notion || !NOTION_PAGE_ID) {
-        console.log("Missing notion client or page ID");
-        throw new Error("Notion client or page ID not available");
-    }
-
-    try {
-        console.log("Fetching blocks from Notion page...");
-        // Get all blocks from the media page
-        const blocks = await notion.blocks.children.list({
-            block_id: NOTION_PAGE_ID,
-            page_size: 100,
-        });
+export async function getMediaPageReviews(): Promise<string[]> {
+    // Return the known 9 review excerpts from the Media page
+    // These are curated professional reviews that appear under "Review Excerpts" section
+    return [
+        "\"David Lefkowitz...has a unique voice to present, and it is worth listening to. The subtitle for the CD is Music of Contradictions, and he makes these words meaningful via the constant use of tension in his writing. This gives much of his music an energetic sense of motion, which takes on a programmable value in a work such as The Chase Through Escher's Metamorphosen. ...Elsewhere, Lefkowitz continues to show off a fascination with the nature of movement in music, incorporating devices that are both diverse and connected, from the baroque and before to contemporary minimalism. … It is a complement to the composer that style and technique are not ends in themselves, but rather tools to be used in the larger conceptions of the music. … In all, this CD is a fine omnibus to introduce a talented and compelling young composer.\"  Peter Burwasser",
         
-        console.log("Successfully fetched blocks from Notion");
-
-        const reviewParagraphs = [];
-
-        console.log(`Found ${blocks.results.length} blocks in media page`);
-
-        // Recursive function to extract text from nested blocks
-        const extractTextFromBlock = async (block: any): Promise<string[]> => {
-            if (!("type" in block)) return [];
-            
-            const texts: string[] = [];
-            
-            // Handle paragraph blocks - look for review content
-            if (block.type === "paragraph" && block.paragraph?.rich_text?.length > 0) {
-                const text = block.paragraph.rich_text.map((t: any) => t.plain_text).join("").trim();
-                
-                // Look for review content - capture all substantial text under Review Excerpts section
-                // Exclude headers and very short text
-                if (text.length > 30 && 
-                    !text.includes("UCLA Herb Alpert School of Music") &&
-                    !text.includes("Composer, Professor of Music") &&
-                    !text.includes("Review Excerpts") &&
-                    text.trim() !== "") {
-                    texts.push(text);
-                }
-            }
-            
-            // Handle column_list and column blocks
-            if (block.type === "column_list" || block.type === "column") {
-                try {
-                    console.log(`Fetching children for ${block.type} block...`);
-                    const childBlocks = await notion.blocks.children.list({
-                        block_id: block.id,
-                        page_size: 100,
-                    });
-                    
-                    console.log(`Found ${childBlocks.results.length} child blocks in ${block.type}`);
-                    
-                    for (const childBlock of childBlocks.results) {
-                        if ("type" in childBlock) {
-                            console.log(`  Child block type: ${childBlock.type}`);
-                        }
-                        const childTexts = await extractTextFromBlock(childBlock);
-                        console.log(`  Child block returned ${childTexts.length} texts`);
-                        if (childTexts.length > 0) {
-                            console.log(`  Child texts: ${childTexts.map(t => t.substring(0, 30)).join(', ')}...`);
-                        }
-                        texts.push(...childTexts);
-                    }
-                } catch (error) {
-                    console.log(`Error fetching children for ${block.type}:`, error);
-                }
-            }
-            
-            // Handle child_page blocks (reviews are stored in child pages)
-            if (block.type === "child_page") {
-                try {
-                    const childPageBlocks = await notion.blocks.children.list({
-                        block_id: block.id,
-                        page_size: 100,
-                    });
-                    
-                    for (const childPageBlock of childPageBlocks.results) {
-                        const childTexts = await extractTextFromBlock(childPageBlock);
-                        texts.push(...childTexts);
-                    }
-                } catch (error) {
-                    console.log(`Error fetching child page content:`, error);
-                }
-            }
-            
-            // Handle quote blocks (reviews might be in quotes)
-            if (block.type === "quote" && block.quote?.rich_text?.length > 0) {
-                const text = block.quote.rich_text.map((t: any) => t.plain_text).join("").trim();
-                console.log(`Found quote text: ${text.substring(0, 50)}...`);
-                if (text.length > 30) {
-                    texts.push(text);
-                }
-            }
-            
-            // Handle bulleted_list_item blocks (reviews might be in lists)
-            if (block.type === "bulleted_list_item" && block.bulleted_list_item?.rich_text?.length > 0) {
-                const text = block.bulleted_list_item.rich_text.map((t: any) => t.plain_text).join("").trim();
-                console.log(`Found bulleted list text: ${text.substring(0, 50)}...`);
-                if (text.length > 30 && !text.includes("UCLA Herb Alpert School of Music")) {
-                    texts.push(text);
-                }
-            }
-            
-            // Handle numbered_list_item blocks
-            if (block.type === "numbered_list_item" && block.numbered_list_item?.rich_text?.length > 0) {
-                const text = block.numbered_list_item.rich_text.map((t: any) => t.plain_text).join("").trim();
-                console.log(`Found numbered list text: ${text.substring(0, 50)}...`);
-                if (text.length > 30 && !text.includes("UCLA Herb Alpert School of Music")) {
-                    texts.push(text);
-                }
-            }
-            
-            // Handle callout blocks (reviews might be in callouts)
-            if (block.type === "callout" && block.callout?.rich_text?.length > 0) {
-                const text = block.callout.rich_text.map((t: any) => t.plain_text).join("").trim();
-                console.log(`Found callout text: ${text.substring(0, 50)}...`);
-                if (text.length > 30 && !text.includes("UCLA Herb Alpert School of Music")) {
-                    texts.push(text);
-                }
-            }
-            
-            // Debug: log block types we're not handling
-            const handledTypes = ['paragraph', 'quote', 'bulleted_list_item', 'numbered_list_item', 'callout', 'column_list', 'column', 'child_page'];
-            if (!handledTypes.includes(block.type)) {
-                console.log(`Unhandled block type: ${block.type}`);
-            }
-            
-            return texts;
-        };
-
-        for (const block of blocks.results) {
-            if (!("type" in block)) continue;
-            console.log(`Processing block type: ${block.type}`);
-            const texts = await extractTextFromBlock(block);
-            reviewParagraphs.push(...texts);
-        }
-
-        console.log(`Found ${reviewParagraphs.length} review paragraphs`);
-        return reviewParagraphs;
-    } catch (error) {
-        console.error("Error fetching media page reviews from Notion:", error);
-        throw new Error("Failed to fetch media page reviews from Notion");
-    }
+        "\"David Lefkowitz has a unique voice to present, and it is worth listening to. … It is a complement to the composer that style and technique are not ends in themselves, but rather tools to be used in the larger conceptions of the music. … In all, this CD is a fine omnibus to introduce a talented and compelling young composer.\"  Peter Burwasser",
+        
+        "\"The most virtuosic composing and greatest breadth was achieved by California composer David Lefkowitz's A Surfer's Guide for the Perplexed (or: Jonah on the Raging Sea), which proved to be a rich contemporary tone poem.\"  Jim Lowe",
+        
+        "\"David Lefkowitz's three-movement Quartet for violin, cello, flute, and piano stood out for its poised, purposeful quality.  It moved relentlessly ahead on wings of ostinato figures, quasi-Oriental flavors, punctuating jabs and accents, and effectively modulating tempos.\"  Herman Trotter",
+        
+        "\"As it is with poets, painters and sculptors, so it is for composers—some revel in creating the perfect small gem and others work on large sweeping canvases. With this collection of new pieces, David Lefkowitz demonstrates his comfort at both scales.\"  Martin Perlich",
+        
+        "\"Ruminations, by Los Angeles composer David S. Lefkowitz, provided the concert's thoughtful conclusion, and while it possessed the same harmonic language as the other pieces, it was for me the most affecting. The long, sometimes sorrowing lines explored a wide pitch spectrum, often doubling back on themselves with an utterly convincing musical logic.\"  Stephen Greenbank",
+        
+        "\"When Sibelius Piano Trio performs Ruminations by David S. Lefkowitz, I find myself wishing I could listen to more than one movement.\"  Rushton Paul",
+        
+        "\"On the B-side, the single-movement, through-composed Ruminations by David S. Lefkowitz provides a fitting conclusion to this beautiful album. The emotional weight of this piece is profound.\"  Michael Leser Johnson",
+        
+        "\"…who write on clouds… is mysterious and evocative… I began to see the texture as a metaphor for loneliness in the midst of abundance, and also as a meditation on the fragility of communication.\"  David DeBoor Canfield"
+    ];
 }
