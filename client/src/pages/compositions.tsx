@@ -1,9 +1,57 @@
 import React, { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { ExternalLink, Music, Calendar } from "lucide-react";
+import { ExternalLink, Music, Calendar, ChevronDown } from "lucide-react";
 import LoadingSpinner from "@/components/ui/loading-spinner";
 import { Composition } from "@shared/schema";
 import twelvePointStarSvg from "@/assets/12_point_curved.svg";
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+
+// Define the category structure
+const categoryStructure = {
+    "Chamber": [
+        "String Quartet",
+        "Mixed Chamber Ensemble", 
+        "Saxophone Quartet",
+        "Flute Quartet",
+        "Pierrot Ensemble",
+        "Pierrot Ensemble plus Percussion",
+        "Piano Quintet",
+        "Debussy Trio",
+        "Harp Quartet",
+        "Voice and Pierrot Ensemble",
+        "Voice and Mixed Chamber Ensemble"
+    ],
+    "Solo or Duo": [
+        "Piano Solo",
+        "Piano Duo", 
+        "Solos",
+        "Solo Instrument & Piano",
+        "String Duo",
+        "Other Duos"
+    ],
+    "Choir/Vocal": [
+        "Choral",
+        "Choir and Ensemble",
+        "Choir and Orchestra",
+        "Children's Choir",
+        "Voice and Keyboard",
+        "Voice and Pierrot Ensemble",
+        "Voice and Mixed Chamber Ensemble"
+    ],
+    "Orchestra / Large Ensemble": [
+        "Orchestra",
+        "String Orchestra",
+        "Choir and Orchestra",
+        "Brass Ensemble", 
+        "Percussion Ensemble",
+        "Wind Ensemble"
+    ]
+};
 
 export default function Compositions() {
     const [selectedCategory, setSelectedCategory] = useState<string>("All");
@@ -11,8 +59,6 @@ export default function Compositions() {
     const { data: compositions = [], isLoading } = useQuery<Composition[]>({
         queryKey: ["/api/compositions"],
     });
-
-    const categories = ["All", ...Array.from(new Set(compositions.map(c => c.category)))];
     
     const filteredCompositions = (selectedCategory === "All" 
         ? compositions 
@@ -58,22 +104,40 @@ export default function Compositions() {
             {/* Filter Section */}
             <section className="py-8 border-b border-gray-300" style={{backgroundColor: '#e5e5ff'}}>
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="flex flex-wrap gap-4 justify-center">
-                        {categories.map((category) => (
-                            <React.Fragment key={category}>
-                                {category === "Mixed Chamber Ensemble" && <div className="w-full"></div>}
-                                <button
-                                    onClick={() => setSelectedCategory(category)}
-                                    className={`px-6 py-2 rounded-full font-medium transition-all duration-200 ${
-                                        selectedCategory === category
-                                            ? "bg-purple text-white shadow-lg"
-                                            : "border border-gray-300 text-gray-700 hover:border-gray-400"
-                                    }`}
-                                    data-testid={`filter-${category.toLowerCase().replace(' ', '-')}`}
-                                >
-                                    {category}
-                                </button>
-                            </React.Fragment>
+                    <div className="flex flex-wrap gap-4 justify-center items-center">
+                        {/* All Button */}
+                        <button
+                            onClick={() => setSelectedCategory("All")}
+                            className={`px-6 py-2 rounded-full font-medium transition-all duration-200 ${
+                                selectedCategory === "All"
+                                    ? "bg-purple text-white shadow-lg"
+                                    : "border border-gray-300 text-gray-700 hover:border-gray-400"
+                            }`}
+                            data-testid="filter-all"
+                        >
+                            All
+                        </button>
+
+                        {/* Category Dropdowns */}
+                        {Object.entries(categoryStructure).map(([mainCategory, subcategories]) => (
+                            <DropdownMenu key={mainCategory}>
+                                <DropdownMenuTrigger className="flex items-center gap-2 px-6 py-2 rounded-full font-medium transition-all duration-200 border border-gray-300 text-gray-700 hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-purple focus:ring-opacity-50">
+                                    {mainCategory}
+                                    <ChevronDown className="h-4 w-4" />
+                                </DropdownMenuTrigger>
+                                <DropdownMenuContent className="w-56 max-h-64 overflow-y-auto">
+                                    {subcategories.map((subcategory) => (
+                                        <DropdownMenuItem
+                                            key={subcategory}
+                                            onClick={() => setSelectedCategory(subcategory)}
+                                            className="cursor-pointer hover:bg-gray-100 focus:bg-gray-100"
+                                            data-testid={`filter-${subcategory.toLowerCase().replace(/[^a-z0-9]/g, '-')}`}
+                                        >
+                                            {subcategory}
+                                        </DropdownMenuItem>
+                                    ))}
+                                </DropdownMenuContent>
+                            </DropdownMenu>
                         ))}
                     </div>
                 </div>
