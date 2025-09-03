@@ -135,7 +135,7 @@ export default function Compositions() {
             </section>
 
             {/* Search Section */}
-            <section className="py-6" style={{backgroundColor: '#e5e5ff'}}>
+            <section className="pb-0 pt-6" style={{backgroundColor: '#e5e5ff'}}>
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex flex-wrap gap-4 justify-start items-center">
                         <div className="relative">
@@ -217,7 +217,7 @@ export default function Compositions() {
             </section>
 
             {/* Compositions Grid */}
-            <section className="py-20">
+            <section className="py-8">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     {filteredCompositions.length === 0 ? (
                         <div className="text-center py-12">
