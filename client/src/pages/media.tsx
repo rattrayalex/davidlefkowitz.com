@@ -126,24 +126,41 @@ export default function MediaPage() {
     const updateTitle = async (itemId: string, newTitle: string) => {
         if (newTitle.trim() === '') return;
         
+        const trimmedTitle = newTitle.trim();
+        
+        // Optimistic update - update UI immediately
+        queryClient.setQueryData(["/api/media"], (oldData: MediaResponse[] | undefined) => {
+            if (!oldData) return oldData;
+            return oldData.map(item => 
+                item.id === itemId 
+                    ? { ...item, title: trimmedTitle }
+                    : item
+            );
+        });
+        
+        // Clear editing state immediately
+        setEditingTitle(null);
+        setEditTitleValue('');
+        
         try {
             const response = await fetch(`/api/media/${itemId}/title`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ title: newTitle.trim() })
+                body: JSON.stringify({ title: trimmedTitle })
             });
             
             if (response.ok) {
-                // Force cache refresh and UI update
-                await queryClient.invalidateQueries({ queryKey: ["/api/media"] });
-                await queryClient.refetchQueries({ queryKey: ["/api/media"] });
-                setEditingTitle(null);
-                setEditTitleValue('');
-                console.log('Title updated successfully to:', newTitle.trim());
+                // Refresh from server to ensure consistency
+                queryClient.invalidateQueries({ queryKey: ["/api/media"] });
+                console.log('Title updated successfully to:', trimmedTitle);
             } else {
+                // Revert on error
+                queryClient.invalidateQueries({ queryKey: ["/api/media"] });
                 console.error('Failed to update title, status:', response.status);
             }
         } catch (error) {
+            // Revert on error
+            queryClient.invalidateQueries({ queryKey: ["/api/media"] });
             console.error('Error updating title:', error);
         }
     };
