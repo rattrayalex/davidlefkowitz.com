@@ -192,14 +192,20 @@ export default function MediaPage() {
                             <div 
                                 key={item.id}
                                 ref={(el) => imageRefs.current[index] = el}
-                                className="h-screen flex items-center justify-center snap-center px-4"
+                                className="snap-center px-4 py-6"
+                                style={{ minHeight: '100vh' }}
                                 data-testid={`media-item-${index}`}
                             >
-                                <div className="max-w-4xl mx-auto text-center">
+                                <div className="max-w-6xl mx-auto text-center flex flex-col justify-center min-h-full">
                                     <img
                                         src={`/public-objects/media/${item.image_url.split('/').pop()}`}
                                         alt={item.alt_text || item.title}
-                                        className="max-h-[80vh] max-w-full object-contain mx-auto rounded-lg shadow-lg"
+                                        className="max-w-full object-contain mx-auto rounded-lg shadow-lg"
+                                        style={{ 
+                                            maxHeight: 'calc(100vh - 48px)',
+                                            marginTop: '24px',
+                                            marginBottom: '24px'
+                                        }}
                                         data-testid={`media-image-${index}`}
                                     />
                                 </div>
