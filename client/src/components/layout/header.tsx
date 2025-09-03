@@ -12,6 +12,7 @@ export default function Header() {
         { name: "Compositions", href: "/compositions" },
         { name: "Recordings", href: "/recordings" },
         { name: "Blog", href: "/blog" },
+        { name: "Media", href: "/media" },
         { name: "Contact", href: "/contact" },
     ];
 

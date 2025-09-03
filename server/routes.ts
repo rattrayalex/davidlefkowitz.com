@@ -1,10 +1,10 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { notion } from "./notion";
-import { contactFormSchema, blogPosts, compositions, recordings, contacts, type BlogPost, type Composition, type Recording } from "@shared/schema";
+import { contactFormSchema, blogPosts, compositions, recordings, media, contacts, type BlogPost, type Composition, type Recording, type Media } from "@shared/schema";
 import { db } from "./db";
 import { eq, desc } from "drizzle-orm";
-import { syncBlogPosts, syncCompositions, syncRecordings } from "./sync";
+import { syncBlogPosts, syncCompositions, syncRecordings, syncMedia } from "./sync";
 import { z } from "zod";
 import * as fs from "fs";
 
@@ -153,6 +153,32 @@ export async function registerRoutes(app: Express): Promise<Server> {
         }
     });
 
+    // Get all media from local database
+    app.get("/api/media", async (req, res) => {
+        try {
+            const mediaData = await db
+                .select()
+                .from(media)
+                .where(eq(media.published, true))
+                .orderBy(desc(media.date_taken));
+
+            const formattedMedia = mediaData.map((item: Media) => ({
+                id: item.id,
+                title: item.title,
+                description: item.description || "",
+                image_url: item.image_url,
+                alt_text: item.alt_text || "",
+                category: item.category || "",
+                date_taken: item.date_taken ? item.date_taken.toLocaleDateString('en-CA') : "",
+            }));
+
+            res.json(formattedMedia);
+        } catch (error) {
+            console.error("Error fetching media:", error);
+            res.status(500).json({ error: "Failed to fetch media" });
+        }
+    });
+
     // Contact form submission
     app.post("/api/contact", async (req, res) => {
         try {
@@ -198,6 +224,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
                 } else if (database_id === schemaData.databases.recordings.id) {
                     await syncRecordings();
                     console.log("Recordings synchronized via webhook");
+                } else if (database_id === schemaData.databases.media.id) {
+                    await syncMedia();
+                    console.log("Media synchronized via webhook");
                 }
             }
 

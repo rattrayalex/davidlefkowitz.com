@@ -1,0 +1,204 @@
+import React, { useState, useEffect, useRef } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { ChevronUp, ChevronDown } from "lucide-react";
+import LoadingSpinner from "@/components/ui/loading-spinner";
+import { Media } from "@shared/schema";
+import twelvePointStarSvg from "@/assets/12_point_curved.svg";
+
+// Define the API response type for media
+interface MediaResponse {
+    id: string;
+    title: string;
+    description: string;
+    image_url: string;
+    alt_text: string;
+    category: string;
+    date_taken: string;
+}
+
+export default function MediaPage() {
+    const [currentImageIndex, setCurrentImageIndex] = useState(0);
+    const [showUpChevron, setShowUpChevron] = useState(false);
+    const [showDownChevron, setShowDownChevron] = useState(true);
+    const containerRef = useRef<HTMLDivElement>(null);
+    const imageRefs = useRef<(HTMLDivElement | null)[]>([]);
+
+    const { data: mediaItems = [], isLoading } = useQuery<MediaResponse[]>({
+        queryKey: ["/api/media"],
+    });
+
+    useEffect(() => {
+        const handleScroll = () => {
+            if (!containerRef.current || mediaItems.length === 0) return;
+
+            const container = containerRef.current;
+            const scrollTop = container.scrollTop;
+            const containerHeight = container.clientHeight;
+
+            // Find the currently visible image
+            let visibleIndex = 0;
+            imageRefs.current.forEach((ref, index) => {
+                if (ref) {
+                    const rect = ref.getBoundingClientRect();
+                    const containerRect = container.getBoundingClientRect();
+                    
+                    // Check if image is in the center of the viewport
+                    if (rect.top <= containerRect.top + containerHeight / 2 && 
+                        rect.bottom >= containerRect.top + containerHeight / 2) {
+                        visibleIndex = index;
+                    }
+                }
+            });
+
+            setCurrentImageIndex(visibleIndex);
+            setShowUpChevron(visibleIndex > 0);
+            setShowDownChevron(visibleIndex < mediaItems.length - 1);
+        };
+
+        const container = containerRef.current;
+        if (container) {
+            container.addEventListener('scroll', handleScroll);
+            return () => container.removeEventListener('scroll', handleScroll);
+        }
+    }, [mediaItems.length]);
+
+    const scrollToImage = (index: number) => {
+        const targetRef = imageRefs.current[index];
+        if (targetRef && containerRef.current) {
+            targetRef.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+    };
+
+    const scrollUp = () => {
+        if (currentImageIndex > 0) {
+            scrollToImage(currentImageIndex - 1);
+        }
+    };
+
+    const scrollDown = () => {
+        if (currentImageIndex < mediaItems.length - 1) {
+            scrollToImage(currentImageIndex + 1);
+        }
+    };
+
+    if (isLoading) {
+        return (
+            <div className="min-h-screen flex items-center justify-center">
+                <LoadingSpinner size="lg" />
+            </div>
+        );
+    }
+
+    return (
+        <div className="min-h-screen" style={{backgroundColor: '#e5e5ff'}}>
+            {/* Hero Section */}
+            <section className="py-20 relative" style={{backgroundColor: '#e5e5ff'}}>
+                {/* 12-pointed star decoration */}
+                <div 
+                    className="absolute -top-0 right-4 opacity-100 pointer-events-none hidden md:block"
+                    style={{
+                        backgroundImage: `url(${twelvePointStarSvg})`,
+                        backgroundPosition: 'center center', 
+                        backgroundSize: '300px 300px',
+                        backgroundRepeat: 'no-repeat',
+                        width: '300px',
+                        height: '300px',
+                        zIndex: 0,
+                        filter: 'saturate(400%)'
+                    }}
+                ></div>
+                
+                <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+                    <div className="text-center">
+                        <h1 className="text-5xl lg:text-6xl font-playfair font-bold text-navy mb-6" data-testid="media-title">
+                            Media
+                        </h1>
+                    </div>
+                </div>
+            </section>
+
+            {/* Media Gallery with Snap Scroll */}
+            <section className="relative">
+                {/* Up Chevron */}
+                {showUpChevron && (
+                    <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-20 z-20">
+                        <button
+                            onClick={scrollUp}
+                            className="bg-white bg-opacity-80 hover:bg-opacity-100 rounded-full p-3 shadow-lg transition-all duration-200"
+                            data-testid="scroll-up-button"
+                        >
+                            <ChevronUp className="h-6 w-6 text-gray-700" />
+                        </button>
+                    </div>
+                )}
+
+                {/* Down Chevron */}
+                {showDownChevron && (
+                    <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 translate-y-16 z-20">
+                        <button
+                            onClick={scrollDown}
+                            className="bg-white bg-opacity-80 hover:bg-opacity-100 rounded-full p-3 shadow-lg transition-all duration-200"
+                            data-testid="scroll-down-button"
+                        >
+                            <ChevronDown className="h-6 w-6 text-gray-700" />
+                        </button>
+                    </div>
+                )}
+
+                {/* Scrollable Image Container */}
+                <div 
+                    ref={containerRef}
+                    className="h-screen overflow-y-auto snap-y snap-mandatory"
+                    style={{scrollbarWidth: 'none', msOverflowStyle: 'none'}}
+                >
+                    <style>{`
+                        .h-screen::-webkit-scrollbar {
+                            display: none;
+                        }
+                    `}</style>
+                    
+                    {mediaItems.length === 0 ? (
+                        <div className="h-screen flex items-center justify-center">
+                            <p className="text-gray-600 text-lg" data-testid="no-media">
+                                No media available.
+                            </p>
+                        </div>
+                    ) : (
+                        mediaItems.map((item, index) => (
+                            <div 
+                                key={item.id}
+                                ref={(el) => imageRefs.current[index] = el}
+                                className="h-screen flex items-center justify-center snap-center px-4"
+                                data-testid={`media-item-${index}`}
+                            >
+                                <div className="max-w-4xl mx-auto text-center">
+                                    <img
+                                        src={item.image_url}
+                                        alt={item.alt_text || item.title}
+                                        className="max-h-[80vh] max-w-full object-contain mx-auto rounded-lg shadow-lg"
+                                        data-testid={`media-image-${index}`}
+                                    />
+                                    {item.title && (
+                                        <h3 className="text-xl font-playfair font-semibold text-navy mt-6 mb-2">
+                                            {item.title}
+                                        </h3>
+                                    )}
+                                    {item.description && (
+                                        <p className="text-gray-700 max-w-2xl mx-auto">
+                                            {item.description}
+                                        </p>
+                                    )}
+                                    {item.date_taken && (
+                                        <p className="text-gray-500 text-sm mt-2">
+                                            {new Date(item.date_taken).toLocaleDateString()}
+                                        </p>
+                                    )}
+                                </div>
+                            </div>
+                        ))
+                    )}
+                </div>
+            </section>
+        </div>
+    );
+}

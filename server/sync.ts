@@ -4,9 +4,11 @@ import {
     blogPosts,
     compositions,
     recordings,
+    media,
     type InsertBlogPost,
     type InsertComposition,
     type InsertRecording,
+    type InsertMedia,
 } from "@shared/schema";
 import { eq } from "drizzle-orm";
 
@@ -543,6 +545,89 @@ export async function syncRecordings() {
 }
 
 /**
+ * Sync media from Notion to local database
+ */
+export async function syncMedia() {
+    if (!notion) {
+        throw new Error("Notion client not available");
+    }
+
+    console.log("Syncing media from Notion...");
+
+    try {
+        const response = await notion.databases.query({
+            database_id: schemaData.databases.media.id,
+        });
+
+        console.log(`Found ${response.results.length} media items`);
+
+        for (const page of response.results) {
+            if (!("properties" in page)) continue;
+
+            const properties = page.properties;
+
+            const titleProperty = properties.Title as any;
+            const descriptionProperty = properties.Description as any;
+            const imageProperty = properties.Image as any;
+            const altTextProperty = properties["Alt Text"] as any;
+            const categoryProperty = properties.Category as any;
+            const dateTakenProperty = properties["Date Taken"] as any;
+            const publishedProperty = properties.Published as any;
+
+            // Extract image URL from files property
+            let imageUrl = "";
+            if (imageProperty?.files && Array.isArray(imageProperty.files) && imageProperty.files.length > 0) {
+                const file = imageProperty.files[0];
+                if (file.type === "file") {
+                    imageUrl = file.file?.url || "";
+                } else if (file.type === "external") {
+                    imageUrl = file.external?.url || "";
+                }
+            }
+
+            // Skip if no image URL
+            if (!imageUrl) {
+                console.log(`Skipping media item without image: ${titleProperty?.title?.[0]?.plain_text || "Untitled"}`);
+                continue;
+            }
+
+            const mediaItem: InsertMedia = {
+                title: titleProperty?.title?.[0]?.plain_text || "",
+                description: descriptionProperty?.rich_text?.[0]?.plain_text || "",
+                image_url: imageUrl,
+                alt_text: altTextProperty?.rich_text?.[0]?.plain_text || "",
+                category: categoryProperty?.select?.name || "",
+                date_taken: dateTakenProperty?.date?.start ? new Date(dateTakenProperty.date.start) : null,
+                published: publishedProperty?.checkbox || false,
+            };
+
+            // Insert or update the media item
+            await db
+                .insert(media)
+                .values({
+                    ...mediaItem,
+                    id: page.id,
+                })
+                .onConflictDoUpdate({
+                    target: media.id,
+                    set: {
+                        ...mediaItem,
+                        updated_at: new Date(),
+                        last_synced: new Date(),
+                    },
+                });
+
+            console.log(`✓ Synced media: ${mediaItem.title}`);
+        }
+
+        console.log("Media sync completed");
+    } catch (error) {
+        console.error("Error syncing media:", error);
+        throw error;
+    }
+}
+
+/**
  * Sync all data from Notion to local database
  */
 export async function syncAllData() {
@@ -551,6 +636,7 @@ export async function syncAllData() {
     await syncBlogPosts();
     await syncCompositions();
     await syncRecordings();
+    await syncMedia();
 
     console.log("Full data sync completed");
 }

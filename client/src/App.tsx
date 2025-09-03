@@ -11,6 +11,7 @@ import Compositions from "@/pages/compositions";
 import Recordings from "@/pages/recordings";
 import Blog from "@/pages/blog";
 import BlogPost from "@/pages/blog-post";
+import Media from "@/pages/media";
 import Contact from "@/pages/contact";
 import NotFound from "@/pages/not-found";
 
@@ -26,6 +27,7 @@ function Router() {
           <Route path="/recordings" component={Recordings} />
           <Route path="/blog" component={Blog} />
           <Route path="/blog/:id" component={BlogPost} />
+          <Route path="/media" component={Media} />
           <Route path="/contact" component={Contact} />
           <Route component={NotFound} />
         </Switch>

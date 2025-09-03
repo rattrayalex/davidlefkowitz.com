@@ -54,6 +54,19 @@
         "Composition": "relation",
         "Post Title": "title"
       }
+    },
+    "media": {
+      "id": "24e3907b-2ee6-8012-b3f4-e777ca006g44",
+      "title": "Media",
+      "properties": {
+        "Title": "title",
+        "Description": "rich_text",
+        "Image": "files",
+        "Alt Text": "rich_text",
+        "Category": "select",
+        "Date Taken": "date",
+        "Published": "checkbox"
+      }
     }
   }
 }
