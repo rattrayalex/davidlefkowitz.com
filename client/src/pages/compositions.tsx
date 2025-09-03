@@ -227,11 +227,11 @@ export default function Compositions() {
                             </p>
                         </div>
                     ) : (
-                        <div className="space-y-3">
+                        <div className="space-y-2">
                             {filteredCompositions.map((composition) => (
                                 <div 
                                     key={composition.id}
-                                    className="border border-gray-300 rounded-lg p-4 hover:shadow-lg transition-shadow duration-300 flex items-center gap-4 flex-wrap" 
+                                    className="border border-gray-300 rounded-lg p-2 hover:shadow-lg transition-shadow duration-300 flex items-center gap-4 flex-wrap" 
                                     style={{backgroundColor: '#e5e5ff'}}
                                     data-testid={`composition-${composition.id}`}
                                 >
