@@ -95,7 +95,7 @@ export default function MediaPage() {
     };
 
     const setCustomOrder = async () => {
-        const orderedFilenames = [
+        const orderedTitles = [
             "Lefkowitz 1370",
             "Lefkowitz 1312", 
             "Lefkowitz 1351",
@@ -110,7 +110,7 @@ export default function MediaPage() {
             const response = await fetch('/api/media/set-order', {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ filenames: orderedFilenames })
+                body: JSON.stringify({ titles: orderedTitles })
             });
             
             if (response.ok) {
