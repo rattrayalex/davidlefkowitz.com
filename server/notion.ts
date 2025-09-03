@@ -212,7 +212,7 @@ export async function getRecordings(recordingsDatabaseId: string) {
 
 // Get review content from the Notion Media page
 export async function getMediaPageReviews(): Promise<string[]> {
-    // Return the known 9 review excerpts from the Media page
+    // Return the known 8 review excerpts from the Media page
     // These are curated professional reviews that appear under "Review Excerpts" section
     return [
         "\"David Lefkowitz...has a unique voice to present, and it is worth listening to. The subtitle for the CD is Music of Contradictions, and he makes these words meaningful via the constant use of tension in his writing. This gives much of his music an energetic sense of motion, which takes on a programmable value in a work such as The Chase Through Escher's Metamorphosen. ...Elsewhere, Lefkowitz continues to show off a fascination with the nature of movement in music, incorporating devices that are both diverse and connected, from the baroque and before to contemporary minimalism. … It is a complement to the composer that style and technique are not ends in themselves, but rather tools to be used in the larger conceptions of the music. … In all, this CD is a fine omnibus to introduce a talented and compelling young composer.\"  Peter Burwasser",

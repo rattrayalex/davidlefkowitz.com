@@ -423,17 +423,13 @@ export default function MediaPage() {
 
             </section>
 
-            {/* Reviews Section */}
-            <section ref={reviewsRef} className="py-20" style={{backgroundColor: '#e5e5ff'}}>
-                <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <h2 className="text-4xl lg:text-5xl font-playfair font-bold text-navy mb-12 text-center">
-                        Reviews
-                    </h2>
-                    
+            {/* Reviews Section - integrated into main scroll */}
+            <div ref={reviewsRef} className="px-4 py-12" style={{backgroundColor: '#e5e5ff'}}>
+                <div className="max-w-4xl mx-auto">
                     {reviewsData?.reviews ? (
                         <div className="space-y-8">
                             {reviewsData.reviews.map((review: string, index: number) => (
-                                <div key={index} className="bg-white p-8 rounded-lg shadow-lg">
+                                <div key={index} className="bg-purple-100 border border-purple-200 p-8 rounded-lg shadow-lg">
                                     <p className="text-lg leading-relaxed text-gray-800" style={{ fontFamily: 'Times, "Times New Roman", Palatino, serif' }}>
                                         {review}
                                     </p>
@@ -446,7 +442,7 @@ export default function MediaPage() {
                         </div>
                     )}
                 </div>
-            </section>
+            </div>
         </div>
     );
 }
