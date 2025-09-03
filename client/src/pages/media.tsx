@@ -26,7 +26,8 @@ export default function MediaPage() {
     const containerRef = useRef<HTMLDivElement>(null);
     const imageRefs = useRef<(HTMLDivElement | null)[]>([]);
     const queryClient = useQueryClient();
-    const [isReordering, setIsReordering] = useState(false);
+    const [draggedItem, setDraggedItem] = useState<string | null>(null);
+    const [draggedOver, setDraggedOver] = useState<string | null>(null);
 
     const { data: mediaItems = [], isLoading } = useQuery<MediaResponse[]>({
         queryKey: ["/api/media"],
@@ -38,30 +39,59 @@ export default function MediaPage() {
         queryClient.invalidateQueries({ queryKey: ["/api/media"] });
     };
 
-    const moveItemUp = async (itemId: string) => {
-        try {
-            const response = await fetch(`/api/media/${itemId}/move-up`, {
-                method: 'PUT',
-            });
-            if (response.ok) {
-                queryClient.invalidateQueries({ queryKey: ["/api/media"] });
-            }
-        } catch (error) {
-            console.error('Error moving item up:', error);
-        }
+    const handleDragStart = (e: React.DragEvent, itemId: string) => {
+        setDraggedItem(itemId);
+        e.dataTransfer.effectAllowed = 'move';
+        e.dataTransfer.setData('text/html', itemId);
     };
 
-    const moveItemDown = async (itemId: string) => {
-        try {
-            const response = await fetch(`/api/media/${itemId}/move-down`, {
-                method: 'PUT',
-            });
-            if (response.ok) {
-                queryClient.invalidateQueries({ queryKey: ["/api/media"] });
-            }
-        } catch (error) {
-            console.error('Error moving item down:', error);
+    const handleDragOver = (e: React.DragEvent, itemId: string) => {
+        e.preventDefault();
+        e.dataTransfer.dropEffect = 'move';
+        setDraggedOver(itemId);
+    };
+
+    const handleDragLeave = (e: React.DragEvent) => {
+        e.preventDefault();
+        setDraggedOver(null);
+    };
+
+    const handleDrop = async (e: React.DragEvent, targetId: string) => {
+        e.preventDefault();
+        
+        if (!draggedItem || draggedItem === targetId) {
+            setDraggedItem(null);
+            setDraggedOver(null);
+            return;
         }
+
+        // Find the indices of the dragged and target items
+        const draggedIndex = mediaItems.findIndex(item => item.id === draggedItem);
+        const targetIndex = mediaItems.findIndex(item => item.id === targetId);
+
+        if (draggedIndex === -1 || targetIndex === -1) return;
+
+        // Determine if we need to move up or down
+        if (draggedIndex < targetIndex) {
+            // Moving down - call move-down multiple times
+            for (let i = draggedIndex; i < targetIndex; i++) {
+                await fetch(`/api/media/${draggedItem}/move-down`, { method: 'PUT' });
+            }
+        } else {
+            // Moving up - call move-up multiple times  
+            for (let i = draggedIndex; i > targetIndex; i--) {
+                await fetch(`/api/media/${draggedItem}/move-up`, { method: 'PUT' });
+            }
+        }
+
+        queryClient.invalidateQueries({ queryKey: ["/api/media"] });
+        setDraggedItem(null);
+        setDraggedOver(null);
+    };
+
+    const handleDragEnd = () => {
+        setDraggedItem(null);
+        setDraggedOver(null);
     };
 
     // Get unique photo credits text from all media items
@@ -154,8 +184,8 @@ export default function MediaPage() {
                             Media
                         </h1>
                         
-                        {/* Upload and Reorder Buttons */}
-                        <div className="mt-8 flex justify-center gap-4">
+                        {/* Upload Button */}
+                        <div className="mt-8 flex justify-center">
                             <ObjectUploader
                                 onComplete={handleUploadComplete}
                                 buttonClassName="bg-navy hover:bg-navy-dark text-white px-6 py-3 rounded-lg font-medium transition-colors"
@@ -163,21 +193,11 @@ export default function MediaPage() {
                                 <Upload className="w-4 h-4 mr-2" />
                                 Upload Image
                             </ObjectUploader>
-                            
-                            {mediaItems.length > 1 && (
-                                <button
-                                    onClick={() => setIsReordering(!isReordering)}
-                                    className={`px-6 py-3 rounded-lg font-medium transition-colors duration-200 ${
-                                        isReordering 
-                                        ? 'bg-red-600 hover:bg-red-700 text-white' 
-                                        : 'bg-gray-600 hover:bg-gray-700 text-white'
-                                    }`}
-                                    data-testid="toggle-reorder"
-                                >
-                                    {isReordering ? 'Done Reordering' : 'Reorder Photos'}
-                                </button>
-                            )}
                         </div>
+                        
+                        {mediaItems.length > 1 && (
+                            <p className="mt-4 text-gray-600 text-sm">Drag photos to reorder</p>
+                        )}
                     </div>
                 </div>
             </section>
@@ -234,51 +254,37 @@ export default function MediaPage() {
                             <div 
                                 key={item.id}
                                 ref={(el) => imageRefs.current[index] = el}
-                                className="snap-center px-4 py-6 relative"
+                                className={`snap-center px-4 py-6 relative cursor-move transition-all duration-200 ${
+                                    draggedItem === item.id ? 'opacity-50' : ''
+                                } ${
+                                    draggedOver === item.id ? 'bg-blue-50' : ''
+                                }`}
                                 style={{ minHeight: '100vh' }}
                                 data-testid={`media-item-${index}`}
+                                draggable={mediaItems.length > 1}
+                                onDragStart={(e) => handleDragStart(e, item.id)}
+                                onDragOver={(e) => handleDragOver(e, item.id)}
+                                onDragLeave={handleDragLeave}
+                                onDrop={(e) => handleDrop(e, item.id)}
+                                onDragEnd={handleDragEnd}
                             >
                                 <div className="max-w-6xl mx-auto text-center flex flex-col justify-center min-h-full">
-                                    <div className="relative">
-                                        <img
-                                            src={`/public-objects/media/${item.image_url.split('/').pop()}`}
-                                            alt={item.alt_text || item.title}
-                                            className="max-w-full object-contain mx-auto rounded-lg shadow-lg"
-                                            style={{ 
-                                                maxHeight: 'calc(100vh - 96px)',
-                                                marginTop: '24px',
-                                                marginBottom: '8px'
-                                            }}
-                                            data-testid={`media-image-${index}`}
-                                        />
-                                        
-                                        {/* Up chevron - positioned over the image */}
-                                        {isReordering && index > 0 && (
-                                            <button
-                                                onClick={() => moveItemUp(item.id)}
-                                                className="absolute top-4 left-4 bg-black bg-opacity-70 text-white p-2 rounded-full hover:bg-opacity-90 transition-opacity z-20"
-                                                data-testid={`move-up-${index}`}
-                                            >
-                                                <ChevronUp className="w-5 h-5" />
-                                            </button>
-                                        )}
-
-                                        {/* Down chevron - positioned over the image */}
-                                        {isReordering && index < mediaItems.length - 1 && (
-                                            <button
-                                                onClick={() => moveItemDown(item.id)}
-                                                className="absolute bottom-4 left-4 bg-black bg-opacity-70 text-white p-2 rounded-full hover:bg-opacity-90 transition-opacity z-20"
-                                                data-testid={`move-down-${index}`}
-                                            >
-                                                <ChevronDown className="w-5 h-5" />
-                                            </button>
-                                        )}
-                                    </div>
+                                    <img
+                                        src={`/public-objects/media/${item.image_url.split('/').pop()}`}
+                                        alt={item.alt_text || item.title}
+                                        className="max-w-full object-contain mx-auto rounded-lg shadow-lg pointer-events-none"
+                                        style={{ 
+                                            maxHeight: 'calc(100vh - 96px)',
+                                            marginTop: '24px',
+                                            marginBottom: '8px'
+                                        }}
+                                        data-testid={`media-image-${index}`}
+                                    />
                                     
                                     {/* Photo credits */}
                                     {item.photo_credits && (
                                         <p 
-                                            className="text-gray-600 mt-2 mb-4"
+                                            className="text-gray-600 mt-2 mb-4 pointer-events-none"
                                             style={{ fontSize: '14px' }}
                                             data-testid={`photo-credits-${index}`}
                                         >
