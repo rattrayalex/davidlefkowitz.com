@@ -3,7 +3,7 @@ import { createServer, type Server } from "http";
 import { notion } from "./notion";
 import { contactFormSchema, blogPosts, compositions, recordings, media, contacts, type BlogPost, type Composition, type Recording, type Media } from "@shared/schema";
 import { db } from "./db";
-import { eq, desc } from "drizzle-orm";
+import { eq, desc, sql, lt, gt } from "drizzle-orm";
 import { syncBlogPosts, syncCompositions, syncRecordings, syncMedia } from "./sync";
 import { ObjectStorageService } from "./objectStorage";
 import { z } from "zod";

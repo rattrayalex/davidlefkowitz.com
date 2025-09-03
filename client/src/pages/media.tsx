@@ -239,28 +239,41 @@ export default function MediaPage() {
                                 data-testid={`media-item-${index}`}
                             >
                                 <div className="max-w-6xl mx-auto text-center flex flex-col justify-center min-h-full">
-                                    {/* Up chevron */}
-                                    {isReordering && index > 0 && (
-                                        <button
-                                            onClick={() => moveItemUp(item.id)}
-                                            className="absolute top-8 left-1/2 transform -translate-x-1/2 bg-black bg-opacity-50 text-white p-2 rounded-full hover:bg-opacity-70 transition-opacity z-10"
-                                            data-testid={`move-up-${index}`}
-                                        >
-                                            <ChevronUp className="w-6 h-6" />
-                                        </button>
-                                    )}
-                                    
-                                    <img
-                                        src={`/public-objects/media/${item.image_url.split('/').pop()}`}
-                                        alt={item.alt_text || item.title}
-                                        className="max-w-full object-contain mx-auto rounded-lg shadow-lg"
-                                        style={{ 
-                                            maxHeight: 'calc(100vh - 96px)',
-                                            marginTop: '24px',
-                                            marginBottom: '8px'
-                                        }}
-                                        data-testid={`media-image-${index}`}
-                                    />
+                                    <div className="relative">
+                                        <img
+                                            src={`/public-objects/media/${item.image_url.split('/').pop()}`}
+                                            alt={item.alt_text || item.title}
+                                            className="max-w-full object-contain mx-auto rounded-lg shadow-lg"
+                                            style={{ 
+                                                maxHeight: 'calc(100vh - 96px)',
+                                                marginTop: '24px',
+                                                marginBottom: '8px'
+                                            }}
+                                            data-testid={`media-image-${index}`}
+                                        />
+                                        
+                                        {/* Up chevron - positioned over the image */}
+                                        {isReordering && index > 0 && (
+                                            <button
+                                                onClick={() => moveItemUp(item.id)}
+                                                className="absolute top-4 left-4 bg-black bg-opacity-70 text-white p-2 rounded-full hover:bg-opacity-90 transition-opacity z-20"
+                                                data-testid={`move-up-${index}`}
+                                            >
+                                                <ChevronUp className="w-5 h-5" />
+                                            </button>
+                                        )}
+
+                                        {/* Down chevron - positioned over the image */}
+                                        {isReordering && index < mediaItems.length - 1 && (
+                                            <button
+                                                onClick={() => moveItemDown(item.id)}
+                                                className="absolute bottom-4 left-4 bg-black bg-opacity-70 text-white p-2 rounded-full hover:bg-opacity-90 transition-opacity z-20"
+                                                data-testid={`move-down-${index}`}
+                                            >
+                                                <ChevronDown className="w-5 h-5" />
+                                            </button>
+                                        )}
+                                    </div>
                                     
                                     {/* Photo credits */}
                                     {item.photo_credits && (
@@ -271,17 +284,6 @@ export default function MediaPage() {
                                         >
                                             {item.photo_credits}
                                         </p>
-                                    )}
-
-                                    {/* Down chevron */}
-                                    {isReordering && index < mediaItems.length - 1 && (
-                                        <button
-                                            onClick={() => moveItemDown(item.id)}
-                                            className="absolute bottom-8 left-1/2 transform -translate-x-1/2 bg-black bg-opacity-50 text-white p-2 rounded-full hover:bg-opacity-70 transition-opacity z-10"
-                                            data-testid={`move-down-${index}`}
-                                        >
-                                            <ChevronDown className="w-6 h-6" />
-                                        </button>
                                     )}
                                 </div>
                             </div>
