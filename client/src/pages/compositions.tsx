@@ -145,7 +145,8 @@ export default function Compositions() {
                                 placeholder="Search by Title..."
                                 value={titleSearch}
                                 onChange={(e) => setTitleSearch(e.target.value)}
-                                className="pl-10 w-64 border-gray-300 focus:border-purple focus:ring-purple text-lg"
+                                className="pl-10 w-64 border-gray-300 focus:border-purple focus:ring-purple !text-lg"
+                                style={{ fontSize: '18px' }}
                                 data-testid="search-title"
                             />
                         </div>
@@ -156,7 +157,8 @@ export default function Compositions() {
                                 placeholder="Search by Instrument..."
                                 value={instrumentSearch}
                                 onChange={(e) => setInstrumentSearch(e.target.value)}
-                                className="pl-10 w-64 border-gray-300 focus:border-purple focus:ring-purple text-lg"
+                                className="pl-10 w-64 border-gray-300 focus:border-purple focus:ring-purple !text-lg"
+                                style={{ fontSize: '18px' }}
                                 data-testid="search-instrument"
                             />
                         </div>
