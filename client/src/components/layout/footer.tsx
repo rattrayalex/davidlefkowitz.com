@@ -35,20 +35,36 @@ export default function Footer() {
                     
                     <div>
                         <h4 className="text-lg font-semibold mb-4 text-navy" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>Quick Links</h4>
-                        <ul className="space-y-2 text-gray-700">
-                            {filteredItems.map((item) => (
-                                <li key={item.name}>
-                                    <Link 
-                                        href={item.href} 
-                                        className="hover:text-purple transition-colors duration-200" 
-                                        data-testid={`footer-link-${item.name.toLowerCase()}`}
-                                        style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}
-                                    >
-                                        {item.name}
-                                    </Link>
-                                </li>
-                            ))}
-                        </ul>
+                        <div className="grid grid-cols-2 gap-4">
+                            <ul className="space-y-2 text-gray-700">
+                                {filteredItems.slice(0, Math.ceil(filteredItems.length / 2)).map((item) => (
+                                    <li key={item.name}>
+                                        <Link 
+                                            href={item.href} 
+                                            className="hover:text-purple transition-colors duration-200" 
+                                            data-testid={`footer-link-${item.name.toLowerCase()}`}
+                                            style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}
+                                        >
+                                            {item.name}
+                                        </Link>
+                                    </li>
+                                ))}
+                            </ul>
+                            <ul className="space-y-2 text-gray-700">
+                                {filteredItems.slice(Math.ceil(filteredItems.length / 2)).map((item) => (
+                                    <li key={item.name}>
+                                        <Link 
+                                            href={item.href} 
+                                            className="hover:text-purple transition-colors duration-200" 
+                                            data-testid={`footer-link-${item.name.toLowerCase()}`}
+                                            style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}
+                                        >
+                                            {item.name}
+                                        </Link>
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
                     </div>
                 </div>
                 
