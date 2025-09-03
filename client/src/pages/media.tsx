@@ -30,6 +30,13 @@ export default function MediaPage() {
     const [draggedOver, setDraggedOver] = useState<string | null>(null);
     const [editingTitle, setEditingTitle] = useState<string | null>(null);
     const [editTitleValue, setEditTitleValue] = useState('');
+    
+    // Check if we're in Replit development mode
+    const isReplitDev = import.meta.env.DEV && (
+        window.location.hostname.includes('.replit.dev') || 
+        window.location.hostname.includes('localhost') ||
+        window.location.hostname.includes('127.0.0.1')
+    );
 
     const { data: mediaItems = [], isLoading } = useQuery<MediaResponse[]>({
         queryKey: ["/api/media"],
@@ -271,18 +278,20 @@ export default function MediaPage() {
                             Media
                         </h1>
                         
-                        {/* Upload Button */}
-                        <div className="mt-8 flex justify-center">
-                            <ObjectUploader
-                                onComplete={handleUploadComplete}
-                                buttonClassName="bg-navy hover:bg-navy-dark text-white px-6 py-3 rounded-lg font-medium transition-colors"
-                            >
-                                <Upload className="w-4 h-4 mr-2" />
-                                Upload Image
-                            </ObjectUploader>
-                        </div>
+                        {/* Upload Button - Only show in Replit dev mode */}
+                        {isReplitDev && (
+                            <div className="mt-8 flex justify-center">
+                                <ObjectUploader
+                                    onComplete={handleUploadComplete}
+                                    buttonClassName="bg-navy hover:bg-navy-dark text-white px-6 py-3 rounded-lg font-medium transition-colors"
+                                >
+                                    <Upload className="w-4 h-4 mr-2" />
+                                    Upload Image
+                                </ObjectUploader>
+                            </div>
+                        )}
                         
-                        {mediaItems.length > 1 && (
+                        {isReplitDev && mediaItems.length > 1 && (
                             <p className="mt-4 text-gray-600 text-sm">Click photo titles to edit them • Drag photos to reorder</p>
                         )}
                     </div>
@@ -356,30 +365,32 @@ export default function MediaPage() {
                                 onDragEnd={handleDragEnd}
                             >
                                 <div className="max-w-6xl mx-auto text-center flex flex-col justify-center min-h-full">
-                                    {/* Photo Title - Editable */}
-                                    <div className="mb-2">
-                                        {editingTitle === item.id ? (
-                                            <input
-                                                type="text"
-                                                value={editTitleValue}
-                                                onChange={(e) => setEditTitleValue(e.target.value)}
-                                                onKeyDown={(e) => handleTitleKeyPress(e, item.id)}
-                                                onBlur={() => handleTitleBlur(item.id)}
-                                                className="text-lg font-medium text-center bg-white border-2 border-blue-400 rounded px-2 py-1 w-full max-w-sm mx-auto focus:outline-none focus:border-blue-600"
-                                                autoFocus
-                                                placeholder="Enter title..."
-                                                data-testid={`title-input-${index}`}
-                                            />
-                                        ) : (
-                                            <button
-                                                onClick={() => startEditingTitle(item.id, item.title)}
-                                                className="text-lg font-medium text-gray-800 hover:text-blue-600 hover:bg-gray-50 px-2 py-1 rounded transition-colors cursor-pointer"
-                                                data-testid={`title-display-${index}`}
-                                            >
-                                                {item.title}
-                                            </button>
-                                        )}
-                                    </div>
+                                    {/* Photo Title - Only show in Replit dev mode */}
+                                    {isReplitDev && (
+                                        <div className="mb-2">
+                                            {editingTitle === item.id ? (
+                                                <input
+                                                    type="text"
+                                                    value={editTitleValue}
+                                                    onChange={(e) => setEditTitleValue(e.target.value)}
+                                                    onKeyDown={(e) => handleTitleKeyPress(e, item.id)}
+                                                    onBlur={() => handleTitleBlur(item.id)}
+                                                    className="text-lg font-medium text-center bg-white border-2 border-blue-400 rounded px-2 py-1 w-full max-w-sm mx-auto focus:outline-none focus:border-blue-600"
+                                                    autoFocus
+                                                    placeholder="Enter title..."
+                                                    data-testid={`title-input-${index}`}
+                                                />
+                                            ) : (
+                                                <button
+                                                    onClick={() => startEditingTitle(item.id, item.title)}
+                                                    className="text-lg font-medium text-gray-800 hover:text-blue-600 hover:bg-gray-50 px-2 py-1 rounded transition-colors cursor-pointer"
+                                                    data-testid={`title-display-${index}`}
+                                                >
+                                                    {item.title}
+                                                </button>
+                                            )}
+                                        </div>
+                                    )}
 
                                     <img
                                         src={`/public-objects/media/${item.image_url.split('/').pop()}`}
