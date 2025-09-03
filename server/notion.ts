@@ -278,11 +278,14 @@ export async function getMediaPageReviews() {
             
             const texts: string[] = [];
             
-            // Handle paragraph blocks - temporarily collect ALL text to see what's available
+            // Handle paragraph blocks - look for review content
             if (block.type === "paragraph" && block.paragraph?.rich_text?.length > 0) {
                 const text = block.paragraph.rich_text.map((t: any) => t.plain_text).join("").trim();
-                console.log(`Found paragraph: "${text}"`);
-                if (text.length > 10) {  // Very low threshold to see everything
+                
+                // Look for review content starting with "David Lefkowitz" and containing "unique voice"
+                if ((text.includes("David Lefkowitz") && text.includes("unique voice")) ||
+                    (text.includes("David Lefkowitz") && text.length > 50) ||
+                    (text.includes('"') && text.length > 50)) {
                     texts.push(text);
                 }
             }
@@ -311,6 +314,23 @@ export async function getMediaPageReviews() {
                     }
                 } catch (error) {
                     console.log(`Error fetching children for ${block.type}:`, error);
+                }
+            }
+            
+            // Handle child_page blocks (reviews are stored in child pages)
+            if (block.type === "child_page") {
+                try {
+                    const childPageBlocks = await notion.blocks.children.list({
+                        block_id: block.id,
+                        page_size: 100,
+                    });
+                    
+                    for (const childPageBlock of childPageBlocks.results) {
+                        const childTexts = await extractTextFromBlock(childPageBlock);
+                        texts.push(...childTexts);
+                    }
+                } catch (error) {
+                    console.log(`Error fetching child page content:`, error);
                 }
             }
             
@@ -351,7 +371,7 @@ export async function getMediaPageReviews() {
             }
             
             // Debug: log block types we're not handling
-            const handledTypes = ['paragraph', 'quote', 'bulleted_list_item', 'numbered_list_item', 'callout', 'column_list', 'column'];
+            const handledTypes = ['paragraph', 'quote', 'bulleted_list_item', 'numbered_list_item', 'callout', 'column_list', 'column', 'child_page'];
             if (!handledTypes.includes(block.type)) {
                 console.log(`Unhandled block type: ${block.type}`);
             }

@@ -186,12 +186,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
     // Get review content from Notion Media page
     app.get("/api/media/reviews", async (req, res) => {
         try {
-            console.log("=== /api/media/reviews route called ===");
             const reviews = await getMediaPageReviews();
-            console.log("Reviews retrieved:", reviews);
             res.json({ reviews });
         } catch (error) {
-            console.error("Error in /api/media/reviews route:", error);
+            console.error("Error fetching media reviews:", error);
             res.status(500).json({ error: "Failed to fetch reviews" });
         }
     });
