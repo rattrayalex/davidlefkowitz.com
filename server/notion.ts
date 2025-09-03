@@ -282,10 +282,13 @@ export async function getMediaPageReviews() {
             if (block.type === "paragraph" && block.paragraph?.rich_text?.length > 0) {
                 const text = block.paragraph.rich_text.map((t: any) => t.plain_text).join("").trim();
                 
-                // Look for review content starting with "David Lefkowitz" and containing "unique voice"
-                if ((text.includes("David Lefkowitz") && text.includes("unique voice")) ||
-                    (text.includes("David Lefkowitz") && text.length > 50) ||
-                    (text.includes('"') && text.length > 50)) {
+                // Look for review content - capture all substantial text under Review Excerpts section
+                // Exclude headers and very short text
+                if (text.length > 30 && 
+                    !text.includes("UCLA Herb Alpert School of Music") &&
+                    !text.includes("Composer, Professor of Music") &&
+                    !text.includes("Review Excerpts") &&
+                    text.trim() !== "") {
                     texts.push(text);
                 }
             }
