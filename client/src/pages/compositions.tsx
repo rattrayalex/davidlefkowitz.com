@@ -231,7 +231,7 @@ export default function Compositions() {
                             {filteredCompositions.map((composition) => (
                                 <div 
                                     key={composition.id}
-                                    className="border border-gray-300 rounded-lg p-2 hover:shadow-lg transition-shadow duration-300 flex items-center gap-4 flex-wrap" 
+                                    className="border-2 border-purple rounded-lg p-2 hover:shadow-lg transition-shadow duration-300 flex items-center gap-4 flex-wrap" 
                                     style={{backgroundColor: '#e5e5ff'}}
                                     data-testid={`composition-${composition.id}`}
                                 >
