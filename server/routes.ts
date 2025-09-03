@@ -5,6 +5,7 @@ import { contactFormSchema, blogPosts, compositions, recordings, media, contacts
 import { db } from "./db";
 import { eq, desc, sql, lt, gt } from "drizzle-orm";
 import { syncBlogPosts, syncCompositions, syncRecordings, syncMedia } from "./sync";
+import { getMediaPageReviews } from "./notion";
 import { ObjectStorageService } from "./objectStorage";
 import { z } from "zod";
 import * as fs from "fs";
@@ -179,6 +180,17 @@ export async function registerRoutes(app: Express): Promise<Server> {
         } catch (error) {
             console.error("Error fetching media:", error);
             res.status(500).json({ error: "Failed to fetch media" });
+        }
+    });
+
+    // Get review content from Notion Media page
+    app.get("/api/media/reviews", async (req, res) => {
+        try {
+            const reviews = await getMediaPageReviews();
+            res.json({ reviews });
+        } catch (error) {
+            console.error("Error fetching media reviews:", error);
+            res.status(500).json({ error: "Failed to fetch reviews" });
         }
     });
 

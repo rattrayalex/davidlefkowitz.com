@@ -28,6 +28,7 @@ export default function MediaPage() {
     const [draggedOver, setDraggedOver] = useState<string | null>(null);
     const [editingTitle, setEditingTitle] = useState<string | null>(null);
     const [editTitleValue, setEditTitleValue] = useState('');
+    const [activeSection, setActiveSection] = useState<'photos' | 'reviews'>('photos');
     
     // Check if we're in Replit development mode
     const isReplitDev = import.meta.env.DEV && (
@@ -43,6 +44,23 @@ export default function MediaPage() {
             return [...data].sort((a, b) => a.title.localeCompare(b.title));
         }
     });
+
+    const { data: reviewsData } = useQuery<{ reviews: string[] }>({
+        queryKey: ["/api/media/reviews"],
+    });
+
+    const photosRef = useRef<HTMLDivElement>(null);
+    const reviewsRef = useRef<HTMLDivElement>(null);
+
+    const scrollToPhotos = () => {
+        setActiveSection('photos');
+        photosRef.current?.scrollIntoView({ behavior: 'smooth' });
+    };
+
+    const scrollToReviews = () => {
+        setActiveSection('reviews');
+        reviewsRef.current?.scrollIntoView({ behavior: 'smooth' });
+    };
 
     const handleUploadComplete = (result: { url: string; fileName: string }) => {
         console.log('Upload completed:', result);
@@ -255,10 +273,36 @@ export default function MediaPage() {
                         <h1 className="text-5xl lg:text-6xl font-playfair font-bold text-navy mb-6" data-testid="media-title">
                             Media
                         </h1>
+
+                        {/* Navigation Buttons */}
+                        <div className="flex justify-center gap-4 mb-8">
+                            <button
+                                onClick={scrollToPhotos}
+                                className={`px-6 py-2 rounded-lg font-medium transition-colors ${
+                                    activeSection === 'photos' 
+                                        ? 'bg-navy text-white' 
+                                        : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                                }`}
+                                data-testid="photos-button"
+                            >
+                                Photos
+                            </button>
+                            <button
+                                onClick={scrollToReviews}
+                                className={`px-6 py-2 rounded-lg font-medium transition-colors ${
+                                    activeSection === 'reviews' 
+                                        ? 'bg-navy text-white' 
+                                        : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                                }`}
+                                data-testid="reviews-button"
+                            >
+                                Reviews
+                            </button>
+                        </div>
                         
                         {/* Upload Button - Only show in Replit dev mode */}
                         {isReplitDev && (
-                            <div className="mt-8 flex justify-center">
+                            <div className="flex justify-center">
                                 <ObjectUploader
                                     onComplete={handleUploadComplete}
                                     buttonClassName="bg-navy hover:bg-navy-dark text-white px-6 py-3 rounded-lg font-medium transition-colors"
@@ -277,7 +321,7 @@ export default function MediaPage() {
             </section>
 
             {/* Media Gallery with Snap Scroll */}
-            <section className="relative">
+            <section className="relative" ref={photosRef}>
 
                 {/* Scrollable Image Container */}
                 <div 
@@ -373,6 +417,31 @@ export default function MediaPage() {
                     )}
                 </div>
 
+            </section>
+
+            {/* Reviews Section */}
+            <section ref={reviewsRef} className="py-20" style={{backgroundColor: '#e5e5ff'}}>
+                <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <h2 className="text-4xl lg:text-5xl font-playfair font-bold text-navy mb-12 text-center">
+                        Reviews
+                    </h2>
+                    
+                    {reviewsData?.reviews ? (
+                        <div className="space-y-8">
+                            {reviewsData.reviews.map((review: string, index: number) => (
+                                <div key={index} className="bg-white p-8 rounded-lg shadow-lg">
+                                    <p className="text-lg leading-relaxed text-gray-800" style={{ fontFamily: 'Times, "Times New Roman", Palatino, serif' }}>
+                                        {review}
+                                    </p>
+                                </div>
+                            ))}
+                        </div>
+                    ) : (
+                        <div className="text-center">
+                            <p className="text-gray-600 text-lg">Loading reviews...</p>
+                        </div>
+                    )}
+                </div>
             </section>
         </div>
     );

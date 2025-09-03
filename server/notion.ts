@@ -246,3 +246,40 @@ export async function getRecordings(recordingsDatabaseId: string) {
         throw new Error("Failed to fetch recordings from Notion");
     }
 }
+
+// Get review content from the Notion Media page
+export async function getMediaPageReviews() {
+    if (!notion || !NOTION_PAGE_ID) {
+        throw new Error("Notion client or page ID not available");
+    }
+
+    try {
+        // Get all blocks from the media page
+        const blocks = await notion.blocks.children.list({
+            block_id: NOTION_PAGE_ID,
+            page_size: 100,
+        });
+
+        const reviewParagraphs = [];
+
+        for (const block of blocks.results) {
+            if (!("type" in block)) continue;
+
+            // Look for paragraph blocks that contain review text
+            if (block.type === "paragraph" && block.paragraph?.rich_text?.length > 0) {
+                const text = block.paragraph.rich_text.map((t: any) => t.plain_text).join("");
+                
+                // Check if this looks like review content (starts with "David Lefkowitz" or contains quotes)
+                if (text.includes("David Lefkowitz") && text.includes("unique voice") || 
+                    text.includes('"') || text.includes("—") || text.includes("–")) {
+                    reviewParagraphs.push(text);
+                }
+            }
+        }
+
+        return reviewParagraphs;
+    } catch (error) {
+        console.error("Error fetching media page reviews from Notion:", error);
+        throw new Error("Failed to fetch media page reviews from Notion");
+    }
+}
