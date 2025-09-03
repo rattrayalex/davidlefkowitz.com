@@ -304,6 +304,26 @@ export async function registerRoutes(app: Express): Promise<Server> {
         }
     });
 
+    // Debug endpoint to see current media
+    app.get("/api/media/debug", async (req, res) => {
+        try {
+            const mediaData = await db
+                .select({
+                    id: media.id,
+                    title: media.title,
+                    file_name: media.file_name,
+                    display_order: media.display_order
+                })
+                .from(media)
+                .orderBy(media.display_order, media.created_at);
+                
+            res.json(mediaData);
+        } catch (error) {
+            console.error("Error fetching media debug info:", error);
+            res.status(500).json({ error: "Failed to fetch media debug info" });
+        }
+    });
+
     // Set custom order for media items
     app.put("/api/media/set-order", async (req, res) => {
         try {
@@ -313,11 +333,28 @@ export async function registerRoutes(app: Express): Promise<Server> {
                 return res.status(400).json({ error: "Filenames must be an array" });
             }
 
+            // Get all media items first
+            const allMedia = await db.select().from(media);
+            console.log("All media items:", allMedia.map(m => ({ id: m.id, file_name: m.file_name })));
+
             // Update display_order for each filename
             for (let i = 0; i < filenames.length; i++) {
-                await db.update(media)
-                    .set({ display_order: i + 1 })
-                    .where(sql`${media.file_name} ILIKE ${`%${filenames[i]}%`}`);
+                const targetFilename = filenames[i];
+                console.log(`Looking for filename: ${targetFilename}`);
+                
+                // Find media item with matching filename (case-insensitive partial match)
+                const matchingMedia = allMedia.find(m => 
+                    m.file_name && m.file_name.toLowerCase().includes(targetFilename.toLowerCase())
+                );
+                
+                if (matchingMedia) {
+                    console.log(`Found match: ${matchingMedia.file_name} -> order ${i + 1}`);
+                    await db.update(media)
+                        .set({ display_order: i + 1 })
+                        .where(eq(media.id, matchingMedia.id));
+                } else {
+                    console.log(`No match found for: ${targetFilename}`);
+                }
             }
 
             res.json({ success: true });
