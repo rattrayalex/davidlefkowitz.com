@@ -5,6 +5,7 @@ import { contactFormSchema, blogPosts, compositions, recordings, media, contacts
 import { db } from "./db";
 import { eq, desc } from "drizzle-orm";
 import { syncBlogPosts, syncCompositions, syncRecordings, syncMedia } from "./sync";
+import { ObjectStorageService } from "./objectStorage";
 import { z } from "zod";
 import * as fs from "fs";
 
@@ -177,6 +178,63 @@ export async function registerRoutes(app: Express): Promise<Server> {
         } catch (error) {
             console.error("Error fetching media:", error);
             res.status(500).json({ error: "Failed to fetch media" });
+        }
+    });
+
+    // Media upload endpoints
+    app.post("/api/media/upload-url", async (req, res) => {
+        try {
+            const objectStorageService = new ObjectStorageService();
+            const uploadURL = await objectStorageService.getMediaUploadURL();
+            res.json({ uploadURL });
+        } catch (error) {
+            console.error("Error getting upload URL:", error);
+            res.status(500).json({ error: "Failed to get upload URL" });
+        }
+    });
+
+    app.post("/api/media", async (req, res) => {
+        try {
+            const { title, description, alt_text, photo_credits, category, image_url, file_name, file_size, content_type } = req.body;
+            
+            if (!title || !image_url) {
+                return res.status(400).json({ error: "Title and image URL are required" });
+            }
+
+            const [newMedia] = await db.insert(media).values({
+                title,
+                description: description || "",
+                alt_text: alt_text || "",
+                photo_credits: photo_credits || "",
+                category: category || "",
+                image_url,
+                file_name,
+                file_size,
+                content_type,
+                published: true,
+                date_taken: new Date(),
+            }).returning();
+
+            res.json(newMedia);
+        } catch (error) {
+            console.error("Error saving media metadata:", error);
+            res.status(500).json({ error: "Failed to save media metadata" });
+        }
+    });
+
+    // Serve public images from object storage
+    app.get("/public-objects/:filePath(*)", async (req, res) => {
+        const filePath = req.params.filePath;
+        const objectStorageService = new ObjectStorageService();
+        try {
+            const file = await objectStorageService.searchPublicObject(filePath);
+            if (!file) {
+                return res.status(404).json({ error: "File not found" });
+            }
+            objectStorageService.downloadObject(file, res);
+        } catch (error) {
+            console.error("Error searching for public object:", error);
+            return res.status(500).json({ error: "Internal server error" });
         }
     });
 

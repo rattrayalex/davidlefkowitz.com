@@ -109,16 +109,18 @@ export const recordings = pgTable("recordings", {
 });
 
 export const media = pgTable("media", {
-  id: varchar("id").primaryKey(), // Use Notion page ID
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`), // Use UUID for local uploads
   title: text("title").notNull(),
   description: text("description").default(""),
-  image_url: text("image_url").notNull(),
+  image_url: text("image_url").notNull(), // Will store object storage path
   alt_text: text("alt_text").default(""),
   category: text("category").default(""),
   date_taken: timestamp("date_taken"),
   photo_credits: text("photo_credits").default(""),
-  published: boolean("published").notNull().default(false),
-  last_synced: timestamp("last_synced").defaultNow(),
+  published: boolean("published").notNull().default(true), // Default to published for uploads
+  file_name: text("file_name"), // Original file name
+  file_size: integer("file_size"), // File size in bytes
+  content_type: text("content_type"), // MIME type
   created_at: timestamp("created_at").defaultNow(),
   updated_at: timestamp("updated_at").defaultNow(),
 });

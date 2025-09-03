@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useRef } from "react";
-import { useQuery } from "@tanstack/react-query";
-import { ChevronUp, ChevronDown } from "lucide-react";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { ChevronUp, ChevronDown, Upload } from "lucide-react";
 import LoadingSpinner from "@/components/ui/loading-spinner";
 import { Media } from "@shared/schema";
+import { ObjectUploader } from "@/components/ObjectUploader";
 import twelvePointStarSvg from "@/assets/12_point_curved.svg";
 
 // Define the API response type for media
@@ -23,10 +24,17 @@ export default function MediaPage() {
     const [showDownChevron, setShowDownChevron] = useState(true);
     const containerRef = useRef<HTMLDivElement>(null);
     const imageRefs = useRef<(HTMLDivElement | null)[]>([]);
+    const queryClient = useQueryClient();
 
     const { data: mediaItems = [], isLoading } = useQuery<MediaResponse[]>({
         queryKey: ["/api/media"],
     });
+
+    const handleUploadComplete = (result: { url: string; fileName: string }) => {
+        console.log('Upload completed:', result);
+        // Refresh the media list
+        queryClient.invalidateQueries({ queryKey: ["/api/media"] });
+    };
 
     // Get unique photo credits text from all media items
     const photoCredits = mediaItems.length > 0 ? mediaItems.find(item => item.photo_credits)?.photo_credits || "" : "";
@@ -117,6 +125,17 @@ export default function MediaPage() {
                         <h1 className="text-5xl lg:text-6xl font-playfair font-bold text-navy mb-6" data-testid="media-title">
                             Media
                         </h1>
+                        
+                        {/* Upload Button */}
+                        <div className="mt-8">
+                            <ObjectUploader
+                                onComplete={handleUploadComplete}
+                                buttonClassName="bg-navy hover:bg-navy-dark text-white px-6 py-3 rounded-lg font-medium transition-colors"
+                            >
+                                <Upload className="w-4 h-4 mr-2" />
+                                Upload Image
+                            </ObjectUploader>
+                        </div>
                     </div>
                 </div>
             </section>
@@ -163,9 +182,10 @@ export default function MediaPage() {
                     
                     {mediaItems.length === 0 ? (
                         <div className="h-screen flex items-center justify-center">
-                            <p className="text-gray-600 text-lg" data-testid="no-media">
-                                No media available.
-                            </p>
+                            <div className="text-center">
+                                <p className="text-gray-600 text-lg mb-4" data-testid="no-media">No media available yet.</p>
+                                <p className="text-gray-500">Upload your first image using the button above!</p>
+                            </div>
                         </div>
                     ) : (
                         mediaItems.map((item, index) => (
@@ -177,7 +197,7 @@ export default function MediaPage() {
                             >
                                 <div className="max-w-4xl mx-auto text-center">
                                     <img
-                                        src={item.image_url}
+                                        src={item.image_url.startsWith('http') ? item.image_url : `/public-objects/media/${item.image_url.split('/').pop()}`}
                                         alt={item.alt_text || item.title}
                                         className="max-h-[80vh] max-w-full object-contain mx-auto rounded-lg shadow-lg"
                                         data-testid={`media-image-${index}`}
