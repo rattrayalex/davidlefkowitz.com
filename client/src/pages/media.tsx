@@ -94,6 +94,33 @@ export default function MediaPage() {
         setDraggedOver(null);
     };
 
+    const setCustomOrder = async () => {
+        const orderedFilenames = [
+            "Lefkowitz 1370",
+            "Lefkowitz 1312", 
+            "Lefkowitz 1351",
+            "Lefkowitz-17",
+            "Lefkowitz-30",
+            "Lefkowitz-31",
+            "David Lefkowitz Summer 2013",
+            "David S Lefkowitz Hi-Res"
+        ];
+
+        try {
+            const response = await fetch('/api/media/set-order', {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ filenames: orderedFilenames })
+            });
+            
+            if (response.ok) {
+                queryClient.invalidateQueries({ queryKey: ["/api/media"] });
+            }
+        } catch (error) {
+            console.error('Error setting custom order:', error);
+        }
+    };
+
     // Get unique photo credits text from all media items
     const photoCredits = mediaItems.length > 0 ? mediaItems.find(item => item.photo_credits)?.photo_credits || "" : "";
 
@@ -185,7 +212,7 @@ export default function MediaPage() {
                         </h1>
                         
                         {/* Upload Button */}
-                        <div className="mt-8 flex justify-center">
+                        <div className="mt-8 flex justify-center gap-4">
                             <ObjectUploader
                                 onComplete={handleUploadComplete}
                                 buttonClassName="bg-navy hover:bg-navy-dark text-white px-6 py-3 rounded-lg font-medium transition-colors"
@@ -193,10 +220,17 @@ export default function MediaPage() {
                                 <Upload className="w-4 h-4 mr-2" />
                                 Upload Image
                             </ObjectUploader>
+                            
+                            <button
+                                onClick={setCustomOrder}
+                                className="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg font-medium transition-colors"
+                            >
+                                Set Correct Order
+                            </button>
                         </div>
                         
                         {mediaItems.length > 1 && (
-                            <p className="mt-4 text-gray-600 text-sm">Drag photos to reorder</p>
+                            <p className="mt-4 text-gray-600 text-sm">Drag photos to reorder or click "Set Correct Order"</p>
                         )}
                     </div>
                 </div>

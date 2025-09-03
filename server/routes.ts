@@ -304,6 +304,29 @@ export async function registerRoutes(app: Express): Promise<Server> {
         }
     });
 
+    // Set custom order for media items
+    app.put("/api/media/set-order", async (req, res) => {
+        try {
+            const { filenames } = req.body;
+            
+            if (!Array.isArray(filenames)) {
+                return res.status(400).json({ error: "Filenames must be an array" });
+            }
+
+            // Update display_order for each filename
+            for (let i = 0; i < filenames.length; i++) {
+                await db.update(media)
+                    .set({ display_order: i + 1 })
+                    .where(sql`${media.file_name} ILIKE ${`%${filenames[i]}%`}`);
+            }
+
+            res.json({ success: true });
+        } catch (error) {
+            console.error("Error setting media order:", error);
+            res.status(500).json({ error: "Failed to set media order" });
+        }
+    });
+
     // Serve public images from object storage
     app.get("/public-objects/:filePath(*)", async (req, res) => {
         const filePath = req.params.filePath;
