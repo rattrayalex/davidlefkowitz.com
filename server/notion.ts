@@ -272,23 +272,98 @@ export async function getMediaPageReviews() {
 
         console.log(`Found ${blocks.results.length} blocks in media page`);
 
-        for (const block of blocks.results) {
-            if (!("type" in block)) continue;
-
-            // Debug: log all block types found
-            console.log(`Block type: ${block.type}`);
-
-            // Look for paragraph blocks that contain review text
+        // Recursive function to extract text from nested blocks
+        const extractTextFromBlock = async (block: any): Promise<string[]> => {
+            if (!("type" in block)) return [];
+            
+            const texts: string[] = [];
+            
+            // Handle paragraph blocks - temporarily collect ALL text to see what's available
             if (block.type === "paragraph" && block.paragraph?.rich_text?.length > 0) {
                 const text = block.paragraph.rich_text.map((t: any) => t.plain_text).join("").trim();
-                
-                console.log(`Found paragraph text (${text.length} chars): ${text.substring(0, 100)}...`);
-                
-                // For now, just add any paragraph with decent length to see what we get
-                if (text.length > 30) {
-                    reviewParagraphs.push(text);
+                console.log(`Found paragraph: "${text}"`);
+                if (text.length > 10) {  // Very low threshold to see everything
+                    texts.push(text);
                 }
             }
+            
+            // Handle column_list and column blocks
+            if (block.type === "column_list" || block.type === "column") {
+                try {
+                    console.log(`Fetching children for ${block.type} block...`);
+                    const childBlocks = await notion.blocks.children.list({
+                        block_id: block.id,
+                        page_size: 100,
+                    });
+                    
+                    console.log(`Found ${childBlocks.results.length} child blocks in ${block.type}`);
+                    
+                    for (const childBlock of childBlocks.results) {
+                        if ("type" in childBlock) {
+                            console.log(`  Child block type: ${childBlock.type}`);
+                        }
+                        const childTexts = await extractTextFromBlock(childBlock);
+                        console.log(`  Child block returned ${childTexts.length} texts`);
+                        if (childTexts.length > 0) {
+                            console.log(`  Child texts: ${childTexts.map(t => t.substring(0, 30)).join(', ')}...`);
+                        }
+                        texts.push(...childTexts);
+                    }
+                } catch (error) {
+                    console.log(`Error fetching children for ${block.type}:`, error);
+                }
+            }
+            
+            // Handle quote blocks (reviews might be in quotes)
+            if (block.type === "quote" && block.quote?.rich_text?.length > 0) {
+                const text = block.quote.rich_text.map((t: any) => t.plain_text).join("").trim();
+                console.log(`Found quote text: ${text.substring(0, 50)}...`);
+                if (text.length > 30) {
+                    texts.push(text);
+                }
+            }
+            
+            // Handle bulleted_list_item blocks (reviews might be in lists)
+            if (block.type === "bulleted_list_item" && block.bulleted_list_item?.rich_text?.length > 0) {
+                const text = block.bulleted_list_item.rich_text.map((t: any) => t.plain_text).join("").trim();
+                console.log(`Found bulleted list text: ${text.substring(0, 50)}...`);
+                if (text.length > 30 && !text.includes("UCLA Herb Alpert School of Music")) {
+                    texts.push(text);
+                }
+            }
+            
+            // Handle numbered_list_item blocks
+            if (block.type === "numbered_list_item" && block.numbered_list_item?.rich_text?.length > 0) {
+                const text = block.numbered_list_item.rich_text.map((t: any) => t.plain_text).join("").trim();
+                console.log(`Found numbered list text: ${text.substring(0, 50)}...`);
+                if (text.length > 30 && !text.includes("UCLA Herb Alpert School of Music")) {
+                    texts.push(text);
+                }
+            }
+            
+            // Handle callout blocks (reviews might be in callouts)
+            if (block.type === "callout" && block.callout?.rich_text?.length > 0) {
+                const text = block.callout.rich_text.map((t: any) => t.plain_text).join("").trim();
+                console.log(`Found callout text: ${text.substring(0, 50)}...`);
+                if (text.length > 30 && !text.includes("UCLA Herb Alpert School of Music")) {
+                    texts.push(text);
+                }
+            }
+            
+            // Debug: log block types we're not handling
+            const handledTypes = ['paragraph', 'quote', 'bulleted_list_item', 'numbered_list_item', 'callout', 'column_list', 'column'];
+            if (!handledTypes.includes(block.type)) {
+                console.log(`Unhandled block type: ${block.type}`);
+            }
+            
+            return texts;
+        };
+
+        for (const block of blocks.results) {
+            if (!("type" in block)) continue;
+            console.log(`Processing block type: ${block.type}`);
+            const texts = await extractTextFromBlock(block);
+            reviewParagraphs.push(...texts);
         }
 
         console.log(`Found ${reviewParagraphs.length} review paragraphs`);
