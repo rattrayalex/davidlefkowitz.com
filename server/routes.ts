@@ -195,17 +195,30 @@ Lefkowitz's compositions have been released on more than twenty commercial recor
                 return indexA - indexB;
             });
             
-            const mediaItems = sortedFiles.map((file, index) => ({
-                id: file.replace(/\.[^/.]+$/, ""), // Remove file extension for ID
-                title: file.replace(/\.[^/.]+$/, ""), // Remove file extension for title
-                description: "",
-                image_url: `/photos/${file}`,
-                alt_text: file.replace(/\.[^/.]+$/, ""),
-                category: "photo",
-                date_taken: "",
-                photo_credits: "Photo credits: 1-3, 8: Laura R. Lefkowitz; 4-6: Rob H. Baker; 7: David S. Lefkowitz",
-                display_order: index
-            }));
+            const mediaItems = sortedFiles.map((file, index) => {
+                // Assign individual photo credits based on position (1-indexed)
+                let photoCredit = "";
+                const position = index + 1;
+                if ([1, 2, 3, 8].includes(position)) {
+                    photoCredit = "Photo: Laura R. Lefkowitz";
+                } else if ([4, 5, 6].includes(position)) {
+                    photoCredit = "Photo: Rob H. Baker";
+                } else if (position === 7) {
+                    photoCredit = "Photo: David Waldorf";
+                }
+                
+                return {
+                    id: file.replace(/\.[^/.]+$/, ""), // Remove file extension for ID
+                    title: file.replace(/\.[^/.]+$/, ""), // Remove file extension for title
+                    description: "",
+                    image_url: `/photos/${file}`,
+                    alt_text: file.replace(/\.[^/.]+$/, ""),
+                    category: "photo",
+                    date_taken: "",
+                    photo_credits: photoCredit,
+                    display_order: index
+                };
+            });
             
             res.json(mediaItems);
         } catch (error) {
