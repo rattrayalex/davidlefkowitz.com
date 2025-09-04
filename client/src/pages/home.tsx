@@ -74,6 +74,11 @@ export default function Home() {
                                     alt={(profile as any)?.name}
                                     className="rounded-2xl shadow-2xl w-80 h-80 object-cover mx-auto"
                                     data-testid="hero-photo"
+                                    onError={(e) => {
+                                        console.error("Image failed to load:", e.currentTarget.src);
+                                        e.currentTarget.style.border = "2px solid red";
+                                    }}
+                                    onLoad={() => console.log("Image loaded successfully")}
                                 />
                             </div>
                         </div>

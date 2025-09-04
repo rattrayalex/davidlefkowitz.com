@@ -67,6 +67,11 @@ export default function About() {
                                 alt={(profile as any)?.name}
                                 className="rounded-xl shadow-lg w-full"
                                 data-testid="about-photo"
+                                onError={(e) => {
+                                    console.error("About page image failed to load:", e.currentTarget.src);
+                                    e.currentTarget.style.border = "2px solid red";
+                                }}
+                                onLoad={() => console.log("About page image loaded successfully")}
                             />
                         </div>
 
