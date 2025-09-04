@@ -20,8 +20,6 @@ export default function Home() {
         refetchOnWindowFocus: true,
     });
 
-    // Debug logging
-    console.log("Home page - profile data:", profile);
 
     const { data: compositions = [], isLoading: compositionsLoading } = useQuery<Composition[]>({
         queryKey: ["/api/compositions"],
@@ -64,7 +62,7 @@ export default function Home() {
                         {/* Main Title */}
                         <div style={{marginTop: '80px'}}>
                             <h1 className="text-4xl lg:text-5xl font-playfair font-bold text-navy leading-tight mb-6" data-testid="hero-name" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
-                                {(profile as any)?.name || "David S. Lefkowitz"}
+                                {(profile as any)?.name}
                             </h1>
                         </div>
                         
@@ -73,12 +71,9 @@ export default function Home() {
                             <div className="relative z-10">
                                 <img 
                                     src={(profile as any)?.photo_url}
-                                    alt={(profile as any)?.name || "David S. Lefkowitz"}
+                                    alt={(profile as any)?.name}
                                     className="rounded-2xl shadow-2xl w-80 h-80 object-cover mx-auto"
                                     data-testid="hero-photo"
-                                    onError={(e) => {
-                                        e.currentTarget.src = "/api/media-cache/profile-photo.jpg";
-                                    }}
                                 />
                             </div>
                         </div>
@@ -86,10 +81,10 @@ export default function Home() {
                         {/* Title and Institution - Below Photo */}
                         <div>
                             <p className="text-xl text-gray-700 mb-2" data-testid="hero-title" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif', fontWeight: '595'}}>
-                                {(profile as any)?.title || "Composer, Professor of Music Composition & Theory"}
+                                {(profile as any)?.title}
                             </p>
                             <p className="text-purple" data-testid="hero-institution" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif', fontWeight: '595', fontSize: '21px'}}>
-                                {(profile as any)?.institution || "UCLA Herb Alpert School of Music"}
+                                {(profile as any)?.institution}
                             </p>
                         </div>
                         

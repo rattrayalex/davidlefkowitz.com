@@ -18,8 +18,6 @@ export default function About() {
         refetchOnWindowFocus: true,
     });
 
-    // Debug logging
-    console.log("About page - profile data:", profile);
 
     if (isLoading) {
         return (
@@ -66,12 +64,9 @@ export default function About() {
                         <div className="md:col-span-1">
                             <img 
                                 src={(profile as any)?.photo_url}
-                                alt={(profile as any)?.name || "David S. Lefkowitz"}
+                                alt={(profile as any)?.name}
                                 className="rounded-xl shadow-lg w-full"
                                 data-testid="about-photo"
-                                onError={(e) => {
-                                    e.currentTarget.src = "/api/media-cache/profile-photo.jpg";
-                                }}
                             />
                         </div>
 
@@ -79,10 +74,10 @@ export default function About() {
                         <div className="md:col-span-2 space-y-6">
                             <div>
                                 <h2 className="text-3xl font-playfair font-bold text-navy mb-4" data-testid="profile-name" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
-                                    {(profile as any)?.name || "David S. Lefkowitz"}
+                                    {(profile as any)?.name}
                                 </h2>
                                 <p className="text-lg text-gray-600" data-testid="profile-institution" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
-                                    {(profile as any)?.institution || "UCLA Herb Alpert School of Music"}
+                                    {(profile as any)?.institution}
                                 </p>
                             </div>
 
