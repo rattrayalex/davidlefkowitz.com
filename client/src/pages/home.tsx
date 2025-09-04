@@ -62,10 +62,13 @@ export default function Home() {
                         <div className="relative inline-block" style={{marginTop: '40px'}}>
                             <div className="relative z-10">
                                 <img 
-                                    src={profile?.photo_url || "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=600"}
+                                    src={profile?.photo_url}
                                     alt={profile?.name || "David S. Lefkowitz"}
                                     className="rounded-2xl shadow-2xl w-80 h-80 object-cover mx-auto"
                                     data-testid="hero-photo"
+                                    onError={(e) => {
+                                        e.currentTarget.src = "/api/media-cache/profile-photo.jpg";
+                                    }}
                                 />
                             </div>
                         </div>

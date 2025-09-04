@@ -55,10 +55,13 @@ export default function About() {
                         {/* Photo */}
                         <div className="md:col-span-1">
                             <img 
-                                src={profile?.photo_url || "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=400"}
+                                src={profile?.photo_url}
                                 alt={profile?.name || "David S. Lefkowitz"}
                                 className="rounded-xl shadow-lg w-full"
                                 data-testid="about-photo"
+                                onError={(e) => {
+                                    e.currentTarget.src = "/api/media-cache/profile-photo.jpg";
+                                }}
                             />
                         </div>
 
@@ -74,13 +77,17 @@ export default function About() {
                             </div>
 
                             <div className="prose prose-lg max-w-none">
-                                <p className="text-gray-700 leading-relaxed" data-testid="profile-bio" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
-                                    {profile?.bio || `David S. Lefkowitz is an internationally recognized composer and scholar whose works have been performed by leading ensembles worldwide. His research focuses on advanced harmonic theory and contemporary compositional techniques, bridging traditional practices with innovative approaches to musical expression.
-
-                                    As a Professor of Music Composition & Theory at UCLA's Herb Alpert School of Music, he has mentored countless students and contributed significantly to the development of contemporary classical music pedagogy. His compositions range from intimate chamber works to large-scale orchestral pieces, each exploring the boundaries of harmonic language and structural innovation.
-
-                                    Dr. Lefkowitz's scholarly work has been published in numerous peer-reviewed journals, and his compositions have been featured in festivals and concert halls across North America, Europe, and Asia. He continues to push the boundaries of what contemporary classical music can be, while maintaining deep respect for the traditions that inform his creative practice.`}
-                                </p>
+                                <div className="text-gray-700 leading-relaxed" data-testid="profile-bio" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
+                                    {profile?.bio ? (
+                                        profile.bio.split('\n\n').map((paragraph, index) => (
+                                            <p key={index} className="mb-4">
+                                                {paragraph}
+                                            </p>
+                                        ))
+                                    ) : (
+                                        <p>Loading bio content...</p>
+                                    )}
+                                </div>
                             </div>
 
                         </div>
