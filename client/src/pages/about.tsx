@@ -65,7 +65,7 @@ export default function About() {
                             <img 
                                 src={(profile as any)?.photo_url}
                                 alt={(profile as any)?.name}
-                                className="rounded-xl shadow-lg w-full"
+                                className="rounded-xl shadow-lg w-full max-w-md mx-auto"
                                 data-testid="about-photo"
                             />
                         </div>
