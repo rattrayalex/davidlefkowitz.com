@@ -6,10 +6,15 @@ import twelvePointStarSvg from "@/assets/12_point_curved.svg";
 
 export default function About() {
     const { data: profile, isLoading } = useQuery({
-        queryKey: ["/api/profile"],
+        queryKey: ["/api/profile", Date.now()],
         staleTime: 0,
         gcTime: 0,
+        refetchOnMount: true,
+        refetchOnWindowFocus: true,
     });
+
+    // Debug logging
+    console.log("About page - profile data:", profile);
 
     if (isLoading) {
         return (
