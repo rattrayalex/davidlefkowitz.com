@@ -79,7 +79,9 @@ app.use((req, res, next) => {
         await syncBlogPosts();
         await syncCompositions();
         await syncRecordings();
-        await syncMedia();
+        // Download images from blog posts and compositions
+        const { downloadAllImages } = await import("./downloadImages");
+        await downloadAllImages();
         log('Scheduled Notion sync completed');
       } catch (error) {
         console.error('Scheduled sync failed:', error);

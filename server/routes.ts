@@ -559,9 +559,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
                 } else if (database_id === schemaData.databases.recordings.id) {
                     await syncRecordings();
                     console.log("Recordings synchronized via webhook");
-                } else if (database_id === schemaData.databases.media.id) {
-                    await syncMedia();
-                    console.log("Media synchronized via webhook");
                 }
             }
 
@@ -578,11 +575,22 @@ export async function registerRoutes(app: Express): Promise<Server> {
             await syncBlogPosts();
             await syncCompositions();
             await syncRecordings();
-            await syncMedia();
             res.json({ success: true, message: "Manual sync completed" });
         } catch (error) {
             console.error("Error during manual sync:", error);
             res.status(500).json({ error: "Failed to sync data" });
+        }
+    });
+
+    // Image download endpoint
+    app.post("/api/download-images", async (req, res) => {
+        try {
+            const { downloadAllImages } = await import("./downloadImages");
+            await downloadAllImages();
+            res.json({ success: true, message: "All images downloaded" });
+        } catch (error) {
+            console.error("Error downloading images:", error);
+            res.status(500).json({ error: "Failed to download images" });
         }
     });
 
