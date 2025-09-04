@@ -11,12 +11,61 @@ import {
     type InsertMedia,
 } from "@shared/schema";
 import { eq } from "drizzle-orm";
+import path from "path";
+import { createHash } from "crypto";
+import { promises as fsPromises } from "fs";
 
 // Load database schemas
 import * as fs from "fs";
 const schemaData = JSON.parse(
     fs.readFileSync("server/notion-schemas.json", "utf-8"),
 );
+
+/**
+ * Download an image from URL and save it locally
+ */
+async function downloadImage(imageUrl: string, mediaId: string): Promise<string> {
+    try {
+        // Create media-cache directory if it doesn't exist
+        await fsPromises.mkdir("media-cache", { recursive: true });
+        
+        // Get file extension from URL or default to jpg
+        const urlPath = new URL(imageUrl).pathname;
+        const extension = path.extname(urlPath) || ".jpg";
+        
+        // Generate filename using media ID and hash of URL for uniqueness
+        const hash = createHash('md5').update(imageUrl).digest('hex').slice(0, 8);
+        const filename = `${mediaId.replace(/[^a-zA-Z0-9]/g, '_')}_${hash}${extension}`;
+        const filePath = path.join("media-cache", filename);
+        
+        // Check if file already exists
+        try {
+            await fsPromises.access(filePath);
+            console.log(`Image already cached: ${filename}`);
+            return `/api/media-cache/${filename}`;
+        } catch {
+            // File doesn't exist, download it
+        }
+        
+        // Download the image
+        console.log(`Downloading image: ${imageUrl}`);
+        const response = await fetch(imageUrl);
+        if (!response.ok) {
+            throw new Error(`Failed to download image: ${response.status} ${response.statusText}`);
+        }
+        
+        // Save the image to local file
+        const buffer = Buffer.from(await response.arrayBuffer());
+        await fsPromises.writeFile(filePath, buffer);
+        
+        console.log(`Image downloaded and cached: ${filename}`);
+        return `/api/media-cache/${filename}`;
+    } catch (error) {
+        console.error(`Failed to download image from ${imageUrl}:`, error);
+        // Return original URL as fallback
+        return imageUrl;
+    }
+}
 
 /**
  * Convert Notion rich text to HTML, preserving links
@@ -592,10 +641,13 @@ export async function syncMedia() {
                 continue;
             }
 
+            // Download and cache the image locally
+            const localImageUrl = await downloadImage(imageUrl, page.id);
+
             const mediaItem: InsertMedia = {
                 title: titleProperty?.title?.[0]?.plain_text || "",
                 description: descriptionProperty?.rich_text?.[0]?.plain_text || "",
-                image_url: imageUrl,
+                image_url: localImageUrl, // Use local cached URL instead of Notion URL
                 alt_text: altTextProperty?.rich_text?.[0]?.plain_text || "",
                 category: categoryProperty?.select?.name || "",
                 date_taken: dateTakenProperty?.date?.start ? new Date(dateTakenProperty.date.start) : null,

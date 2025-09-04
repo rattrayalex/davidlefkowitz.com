@@ -490,6 +490,30 @@ export async function registerRoutes(app: Express): Promise<Server> {
         });
     });
 
+    // Serve cached media images from media-cache folder
+    app.get("/api/media-cache/:filename", (req, res) => {
+        const filename = req.params.filename;
+        const filePath = path.join(process.cwd(), 'media-cache', filename);
+        
+        // Security check - ensure filename doesn't contain path traversal
+        if (filename.includes('..') || filename.includes('/')) {
+            return res.status(400).json({ error: "Invalid filename" });
+        }
+        
+        // Set cache headers for better performance
+        res.set({
+            'Cache-Control': 'public, max-age=86400', // Cache for 24 hours
+            'ETag': filename // Simple ETag based on filename
+        });
+        
+        res.sendFile(filePath, (err) => {
+            if (err) {
+                console.error("Error serving cached media:", err);
+                res.status(404).json({ error: "Cached media not found" });
+            }
+        });
+    });
+
     // Contact form submission
     app.post("/api/contact", async (req, res) => {
         try {
