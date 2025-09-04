@@ -74,6 +74,8 @@ export default function Home() {
                                     alt={(profile as any)?.name}
                                     className="rounded-2xl shadow-2xl w-80 h-80 object-cover mx-auto"
                                     data-testid="hero-photo"
+                                    onLoad={() => console.log("✅ Home image loaded:", (profile as any)?.photo_url)}
+                                    onError={(e) => console.error("❌ Home image failed:", e.currentTarget.src)}
                                 />
                             </div>
                         </div>

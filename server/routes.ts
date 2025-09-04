@@ -32,7 +32,7 @@ David S. Lefkowitz's more than 150 compositions range from intimate works for ma
 
 Lefkowitz's compositions have been released on more than twenty commercial recordings, including on Bridge, Yarlung, Albany, and Parnassus Records, including four all-Lefkowitz recordings: David S. Lefkowitz Preludes and Fugues on Bridge Records, Harp's Desire: The Harp Music of David S. Lefkowitz and Music of Contradictions on Albany Records, and Inner World: the Music of David S. Lefkowitz on Yarlung Records.  His most recent composition, Green Mountains, Now Black, commissioned for Quartet Integra string quartet, will be released on Yarlung Records later this year.  His music has been published by Fatrock Music, Zenon Music, C. Alan Publications, Warner Brothers/Chappell Music, Yelton Rhodes Music.  Most of his music is available through Floating Point Music.`,
                 bio_short: "Composer, Theorist, and Professor at UCLA",
-                photo_url: "/api/media-cache/profile-photo.jpg",
+                photo_url: `/api/media-cache/profile-photo.jpg?v=${Date.now()}`,
                 email: "lefko at ucla.edu",
                 cv_url: null
             };
