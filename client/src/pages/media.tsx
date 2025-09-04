@@ -367,34 +367,37 @@ export default function MediaPage() {
                                 onDrop={(e) => handleDrop(e, item.id)}
                                 onDragEnd={handleDragEnd}
                             >
-                                <div className="max-w-6xl mx-auto text-center flex flex-col justify-center min-h-full">
-
-                                    <img
-                                        src={item.image_url}
-                                        alt={item.alt_text || item.title}
-                                        className="max-w-full object-contain mx-auto rounded-lg shadow-lg pointer-events-none"
-                                        style={{ 
-                                            maxHeight: 'calc(100vh - 120px)',
-                                            marginTop: '8px',
-                                            marginBottom: '8px'
-                                        }}
-                                        data-testid={`media-image-${index}`}
-                                    />
-                                    
-                                    {/* Photo credits */}
-                                    {item.photo_credits && (
-                                        <p 
-                                            className="text-gray-600 mb-4 pointer-events-none italic text-left"
+                                <div className="max-w-6xl mx-auto flex flex-col justify-center min-h-full items-center">
+                                    {/* Image and credit wrapper */}
+                                    <div className="relative inline-block">
+                                        <img
+                                            src={item.image_url}
+                                            alt={item.alt_text || item.title}
+                                            className="max-w-full object-contain rounded-lg shadow-lg pointer-events-none"
                                             style={{ 
-                                                fontSize: '12px',
-                                                fontFamily: 'Times, "Times New Roman", Palatino, serif',
-                                                marginTop: '0px'
+                                                maxHeight: 'calc(100vh - 120px)',
+                                                marginTop: '8px',
+                                                marginBottom: '8px'
                                             }}
-                                            data-testid={`photo-credits-${index}`}
-                                        >
-                                            {item.photo_credits}
-                                        </p>
-                                    )}
+                                            data-testid={`media-image-${index}`}
+                                        />
+                                        
+                                        {/* Photo credits - positioned to align with image left edge */}
+                                        {item.photo_credits && (
+                                            <p 
+                                                className="text-gray-600 mb-4 pointer-events-none italic"
+                                                style={{ 
+                                                    fontSize: '12px',
+                                                    fontFamily: 'Times, "Times New Roman", Palatino, serif',
+                                                    marginTop: '0px',
+                                                    textAlign: 'left'
+                                                }}
+                                                data-testid={`photo-credits-${index}`}
+                                            >
+                                                {item.photo_credits}
+                                            </p>
+                                        )}
+                                    </div>
                                 </div>
                             </div>
                         ))
