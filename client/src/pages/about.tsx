@@ -5,10 +5,10 @@ import { Profile } from "@shared/schema";
 import twelvePointStarSvg from "@/assets/12_point_curved.svg";
 
 export default function About() {
-    const { data: profile, isLoading } = useQuery<Profile>({
+    const { data: profile, isLoading } = useQuery({
         queryKey: ["/api/profile"],
         staleTime: 0,
-        cacheTime: 0,
+        gcTime: 0,
     });
 
     if (isLoading) {
@@ -55,8 +55,8 @@ export default function About() {
                         {/* Photo */}
                         <div className="md:col-span-1">
                             <img 
-                                src={profile?.photo_url}
-                                alt={profile?.name || "David S. Lefkowitz"}
+                                src={(profile as any)?.photo_url}
+                                alt={(profile as any)?.name || "David S. Lefkowitz"}
                                 className="rounded-xl shadow-lg w-full"
                                 data-testid="about-photo"
                                 onError={(e) => {
@@ -69,17 +69,17 @@ export default function About() {
                         <div className="md:col-span-2 space-y-6">
                             <div>
                                 <h2 className="text-3xl font-playfair font-bold text-navy mb-4" data-testid="profile-name" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
-                                    {profile?.name || "David S. Lefkowitz"}
+                                    {(profile as any)?.name || "David S. Lefkowitz"}
                                 </h2>
                                 <p className="text-lg text-gray-600" data-testid="profile-institution" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
-                                    {profile?.institution || "UCLA Herb Alpert School of Music"}
+                                    {(profile as any)?.institution || "UCLA Herb Alpert School of Music"}
                                 </p>
                             </div>
 
                             <div className="prose prose-lg max-w-none">
                                 <div className="text-gray-700 leading-relaxed" data-testid="profile-bio" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
-                                    {profile?.bio ? (
-                                        profile.bio.split('\n\n').map((paragraph, index) => (
+                                    {(profile as any)?.bio ? (
+                                        (profile as any).bio.split('\n\n').map((paragraph: string, index: number) => (
                                             <p key={index} className="mb-4">
                                                 {paragraph}
                                             </p>

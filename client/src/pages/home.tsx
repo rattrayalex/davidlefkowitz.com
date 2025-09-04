@@ -7,10 +7,10 @@ import { Composition, Recording, BlogPost, Profile } from "@shared/schema";
 import twelvePointStarSvg from "@/assets/12_point_curved.svg";
 
 export default function Home() {
-    const { data: profile, isLoading: profileLoading } = useQuery<Profile>({
+    const { data: profile, isLoading: profileLoading } = useQuery({
         queryKey: ["/api/profile"],
         staleTime: 0,
-        cacheTime: 0,
+        gcTime: 0,
     });
 
     const { data: compositions = [], isLoading: compositionsLoading } = useQuery<Composition[]>({
@@ -54,7 +54,7 @@ export default function Home() {
                         {/* Main Title */}
                         <div style={{marginTop: '80px'}}>
                             <h1 className="text-4xl lg:text-5xl font-playfair font-bold text-navy leading-tight mb-6" data-testid="hero-name" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
-                                {profile?.name || "David S. Lefkowitz"}
+                                {(profile as any)?.name || "David S. Lefkowitz"}
                             </h1>
                         </div>
                         
@@ -62,8 +62,8 @@ export default function Home() {
                         <div className="relative inline-block" style={{marginTop: '40px'}}>
                             <div className="relative z-10">
                                 <img 
-                                    src={profile?.photo_url}
-                                    alt={profile?.name || "David S. Lefkowitz"}
+                                    src={(profile as any)?.photo_url}
+                                    alt={(profile as any)?.name || "David S. Lefkowitz"}
                                     className="rounded-2xl shadow-2xl w-80 h-80 object-cover mx-auto"
                                     data-testid="hero-photo"
                                     onError={(e) => {
@@ -76,10 +76,10 @@ export default function Home() {
                         {/* Title and Institution - Below Photo */}
                         <div>
                             <p className="text-xl text-gray-700 mb-2" data-testid="hero-title" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif', fontWeight: '595'}}>
-                                {profile?.title || "Composer, Professor of Music Composition & Theory"}
+                                {(profile as any)?.title || "Composer, Professor of Music Composition & Theory"}
                             </p>
                             <p className="text-purple" data-testid="hero-institution" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif', fontWeight: '595', fontSize: '21px'}}>
-                                {profile?.institution || "UCLA Herb Alpert School of Music"}
+                                {(profile as any)?.institution || "UCLA Herb Alpert School of Music"}
                             </p>
                         </div>
                         
