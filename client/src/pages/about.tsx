@@ -6,7 +6,12 @@ import twelvePointStarSvg from "@/assets/12_point_curved.svg";
 
 export default function About() {
     const { data: profile, isLoading } = useQuery({
-        queryKey: ["/api/profile", Date.now()],
+        queryKey: ["/api/profile"],
+        queryFn: async () => {
+            const response = await fetch("/api/profile");
+            if (!response.ok) throw new Error('Network response was not ok');
+            return response.json();
+        },
         staleTime: 0,
         gcTime: 0,
         refetchOnMount: true,
