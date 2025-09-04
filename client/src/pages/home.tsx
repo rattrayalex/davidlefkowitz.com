@@ -67,7 +67,7 @@ export default function Home() {
                         </div>
                         
                         {/* Professional Photo - Centered and Prominent */}
-                        <div className="relative inline-block" style={{marginTop: '28px'}}>
+                        <div className="relative inline-block" style={{marginTop: '18px'}}>
                             <div className="relative z-10">
                                 <img 
                                     src={(profile as any)?.photo_url}
