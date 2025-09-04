@@ -40,8 +40,10 @@ export default function MediaPage() {
     const { data: mediaItems = [], isLoading } = useQuery<MediaResponse[]>({
         queryKey: ["/api/media"],
         select: (data: MediaResponse[]) => {
-            // Sort by title in ascending order
-            return [...data].sort((a, b) => a.title.localeCompare(b.title));
+            // Filter out photos with "profile" in the title and sort by title
+            return [...data]
+                .filter(item => !item.title.toLowerCase().includes('profile'))
+                .sort((a, b) => a.title.localeCompare(b.title));
         }
     });
 
@@ -366,32 +368,6 @@ export default function MediaPage() {
                                 onDragEnd={handleDragEnd}
                             >
                                 <div className="max-w-6xl mx-auto text-center flex flex-col justify-center min-h-full">
-                                    {/* Photo Title - Only show in Replit dev mode */}
-                                    {isReplitDev && (
-                                        <div className="mb-2">
-                                            {editingTitle === item.id ? (
-                                                <input
-                                                    type="text"
-                                                    value={editTitleValue}
-                                                    onChange={(e) => setEditTitleValue(e.target.value)}
-                                                    onKeyDown={(e) => handleTitleKeyPress(e, item.id)}
-                                                    onBlur={() => handleTitleBlur(item.id)}
-                                                    className="text-lg font-medium text-center bg-white border-2 border-blue-400 rounded px-2 py-1 w-full max-w-sm mx-auto focus:outline-none focus:border-blue-600"
-                                                    autoFocus
-                                                    placeholder="Enter title..."
-                                                    data-testid={`title-input-${index}`}
-                                                />
-                                            ) : (
-                                                <button
-                                                    onClick={() => startEditingTitle(item.id, item.title)}
-                                                    className="text-lg font-medium text-gray-800 hover:text-blue-600 hover:bg-gray-50 px-2 py-1 rounded transition-colors cursor-pointer"
-                                                    data-testid={`title-display-${index}`}
-                                                >
-                                                    {item.title}
-                                                </button>
-                                            )}
-                                        </div>
-                                    )}
 
                                     <img
                                         src={item.image_url}

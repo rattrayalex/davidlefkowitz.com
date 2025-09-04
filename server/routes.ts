@@ -203,7 +203,7 @@ Lefkowitz's compositions have been released on more than twenty commercial recor
                 alt_text: file.replace(/\.[^/.]+$/, ""),
                 category: "photo",
                 date_taken: "",
-                photo_credits: index === 0 ? "Photo credits: 1-3, 8: Laura R. Lefkowitz; 4-6: Rob H. Baker; 7: David S. Lefkowitz" : "",
+                photo_credits: "Photo credits: 1-3, 8: Laura R. Lefkowitz; 4-6: Rob H. Baker; 7: David S. Lefkowitz",
                 display_order: index
             }));
             
