@@ -61,13 +61,13 @@ export default function Home() {
                     <div className="space-y-8 mt-6">
                         {/* Main Title */}
                         <div style={{marginTop: '80px'}}>
-                            <h1 className="text-4xl lg:text-5xl font-playfair font-bold text-navy leading-tight mb-6" data-testid="hero-name" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
+                            <h1 className="text-4xl lg:text-5xl font-playfair font-bold text-navy leading-tight mb-3" data-testid="hero-name" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
                                 {(profile as any)?.name}
                             </h1>
                         </div>
                         
                         {/* Professional Photo - Centered and Prominent */}
-                        <div className="relative inline-block" style={{marginTop: '40px'}}>
+                        <div className="relative inline-block" style={{marginTop: '28px'}}>
                             <div className="relative z-10">
                                 <img 
                                     src={(profile as any)?.photo_url}
