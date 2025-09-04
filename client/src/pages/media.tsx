@@ -353,7 +353,7 @@ export default function MediaPage() {
                             <div 
                                 key={item.id}
                                 ref={(el) => imageRefs.current[index] = el}
-                                className={`snap-center px-4 py-6 relative cursor-move transition-all duration-200 ${
+                                className={`snap-center px-4 py-2 relative cursor-move transition-all duration-200 ${
                                     draggedItem === item.id ? 'opacity-50' : ''
                                 } ${
                                     draggedOver === item.id ? 'bg-blue-50' : ''
