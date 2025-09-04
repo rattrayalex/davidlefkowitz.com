@@ -8,7 +8,9 @@ import twelvePointStarSvg from "@/assets/12_point_curved.svg";
 
 export default function Home() {
     const { data: profile, isLoading: profileLoading } = useQuery<Profile>({
-        queryKey: ["/api/profile", "v2"],
+        queryKey: ["/api/profile"],
+        staleTime: 0,
+        cacheTime: 0,
     });
 
     const { data: compositions = [], isLoading: compositionsLoading } = useQuery<Composition[]>({
