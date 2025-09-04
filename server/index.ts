@@ -2,7 +2,7 @@ import express, { type Request, Response, NextFunction } from "express";
 import { registerRoutes } from "./routes";
 import { setupVite, serveStatic, log } from "./vite";
 import cron from "node-cron";
-import { syncBlogPosts, syncCompositions, syncRecordings } from "./sync";
+import { syncBlogPosts, syncCompositions, syncRecordings, syncMedia } from "./sync";
 
 const app = express();
 app.use(express.json());
@@ -79,6 +79,7 @@ app.use((req, res, next) => {
         await syncBlogPosts();
         await syncCompositions();
         await syncRecordings();
+        await syncMedia();
         log('Scheduled Notion sync completed');
       } catch (error) {
         console.error('Scheduled sync failed:', error);
