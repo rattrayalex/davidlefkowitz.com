@@ -2,7 +2,7 @@ import { Client } from "@notionhq/client";
 
 // Initialize Notion client
 export const notion = new Client({
-    auth: process.env.NOTION_INTEGRATION_SECRET!,
+    auth: process.env.NOTION_API_KEY!,
 });
 
 // Extract the page ID from the Notion page URL
