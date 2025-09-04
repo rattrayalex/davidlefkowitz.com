@@ -407,7 +407,7 @@ export default function MediaPage() {
             </section>
 
             {/* Reviews Section - integrated into main scroll */}
-            <div ref={reviewsRef} className="px-4 py-8" style={{backgroundColor: '#e5e5ff'}}>
+            <div ref={reviewsRef} className="px-4 py-6" style={{backgroundColor: '#e5e5ff'}}>
                 <div className="max-w-4xl mx-auto">
                     {reviewsData?.reviews ? (
                         <div className="space-y-8">
