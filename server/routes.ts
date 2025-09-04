@@ -43,7 +43,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
             const compositionsData = await db
                 .select()
                 .from(compositions)
-                .where(eq(compositions.published, true))
                 .orderBy(desc(compositions.year));
 
             const formattedCompositions = compositionsData.map((comp: Composition) => ({
