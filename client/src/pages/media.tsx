@@ -384,10 +384,11 @@ export default function MediaPage() {
                                     {/* Photo credits */}
                                     {item.photo_credits && (
                                         <p 
-                                            className="text-gray-600 mt-2 mb-4 pointer-events-none italic"
+                                            className="text-gray-600 mb-4 pointer-events-none italic text-left"
                                             style={{ 
                                                 fontSize: '12px',
-                                                fontFamily: 'Times, "Times New Roman", Palatino, serif'
+                                                fontFamily: 'Times, "Times New Roman", Palatino, serif',
+                                                marginTop: '0px'
                                             }}
                                             data-testid={`photo-credits-${index}`}
                                         >
