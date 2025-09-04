@@ -498,7 +498,7 @@ Lefkowitz's compositions have been released on more than twenty commercial recor
     // Serve cached media images from media-cache folder
     app.get("/api/media-cache/:filename", (req, res) => {
         const filename = req.params.filename;
-        const filePath = path.join(process.cwd(), 'media-cache', filename);
+        const filePath = path.join(process.cwd(), 'server', 'media-cache', filename);
         
         // Security check - ensure filename doesn't contain path traversal
         if (filename.includes('..') || filename.includes('/')) {
