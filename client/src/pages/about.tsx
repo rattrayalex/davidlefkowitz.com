@@ -57,21 +57,19 @@ export default function About() {
 
             {/* Main Content */}
             <section className="py-4">
-                <div className="flex">
-                    {/* Photo - with responsive padding matching header */}
-                    <div className="flex-shrink-0 px-4 sm:px-6 lg:px-8">
-                        <div className="w-96 h-96">
-                            <img 
-                                src={(profile as any)?.photo_url}
-                                alt={(profile as any)?.name}
-                                className="rounded-xl shadow-lg w-full h-full object-cover"
-                                data-testid="about-photo"
-                            />
-                        </div>
+                <div className="px-4 sm:px-6 lg:px-8">
+                    {/* Photo - floated left with responsive sizing */}
+                    <div className="float-left mr-6 mb-4 w-72 h-72 md:w-96 md:h-96">
+                        <img 
+                            src={(profile as any)?.photo_url}
+                            alt={(profile as any)?.name}
+                            className="rounded-xl shadow-lg w-full h-full object-cover"
+                            data-testid="about-photo"
+                        />
                     </div>
 
-                    {/* Bio Content */}
-                    <div className="flex-1 max-w-2xl ml-[6px] mr-4 space-y-6">
+                    {/* Bio Content - flows around photo */}
+                    <div className="space-y-6">
                         <div>
                             <h2 className="text-3xl font-playfair font-bold text-navy mb-4" data-testid="profile-name" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
                                 {(profile as any)?.name}
@@ -93,6 +91,9 @@ export default function About() {
                             </div>
                         </div>
                     </div>
+                    
+                    {/* Clear float */}
+                    <div className="clear-both"></div>
                 </div>
             </section>
 
