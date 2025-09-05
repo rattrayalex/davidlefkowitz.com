@@ -71,7 +71,7 @@ export default function About() {
                     </div>
 
                     {/* Bio Content */}
-                    <div className="flex-1 max-w-2xl ml-12 mr-4 space-y-6">
+                    <div className="flex-1 max-w-2xl ml-[6px] mr-4 space-y-6">
                         <div>
                             <h2 className="text-3xl font-playfair font-bold text-navy mb-4" data-testid="profile-name" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
                                 {(profile as any)?.name}
