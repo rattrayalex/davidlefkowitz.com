@@ -58,8 +58,8 @@ export default function About() {
             {/* Main Content */}
             <section className="py-4">
                 <div className="flex">
-                    {/* Photo - flush left */}
-                    <div className="flex-shrink-0">
+                    {/* Photo - with responsive padding matching header */}
+                    <div className="flex-shrink-0 px-4 sm:px-6 lg:px-8">
                         <div className="w-96 h-96">
                             <img 
                                 src={(profile as any)?.photo_url}
