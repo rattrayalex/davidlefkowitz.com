@@ -62,12 +62,14 @@ export default function About() {
                     <div className="grid md:grid-cols-3 gap-12 items-start">
                         {/* Photo */}
                         <div className="md:col-span-1">
-                            <img 
-                                src={(profile as any)?.photo_url}
-                                alt={(profile as any)?.name}
-                                className="rounded-xl shadow-lg w-96 h-96 object-cover"
-                                data-testid="about-photo"
-                            />
+                            <div className="w-96 h-96">
+                                <img 
+                                    src={(profile as any)?.photo_url}
+                                    alt={(profile as any)?.name}
+                                    className="rounded-xl shadow-lg w-full h-full object-cover"
+                                    data-testid="about-photo"
+                                />
+                            </div>
                         </div>
 
                         {/* Bio Content */}
