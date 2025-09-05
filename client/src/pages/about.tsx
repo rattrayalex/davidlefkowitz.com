@@ -57,44 +57,40 @@ export default function About() {
 
             {/* Main Content */}
             <section className="py-4">
-                
-                <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-                    <div className="grid md:grid-cols-3 gap-12 items-start">
-                        {/* Photo */}
-                        <div className="md:col-span-1">
-                            <div className="w-96 h-96">
-                                <img 
-                                    src={(profile as any)?.photo_url}
-                                    alt={(profile as any)?.name}
-                                    className="rounded-xl shadow-lg w-full h-full object-cover"
-                                    data-testid="about-photo"
-                                />
-                            </div>
+                <div className="flex">
+                    {/* Photo - flush left */}
+                    <div className="flex-shrink-0">
+                        <div className="w-96 h-96">
+                            <img 
+                                src={(profile as any)?.photo_url}
+                                alt={(profile as any)?.name}
+                                className="rounded-xl shadow-lg w-full h-full object-cover"
+                                data-testid="about-photo"
+                            />
+                        </div>
+                    </div>
+
+                    {/* Bio Content */}
+                    <div className="flex-1 max-w-2xl ml-12 mr-4 space-y-6">
+                        <div>
+                            <h2 className="text-3xl font-playfair font-bold text-navy mb-4" data-testid="profile-name" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
+                                {(profile as any)?.name}
+                            </h2>
+                            <p className="text-lg text-gray-600" data-testid="profile-institution" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
+                                {(profile as any)?.institution}
+                            </p>
                         </div>
 
-                        {/* Bio Content */}
-                        <div className="md:col-span-2 space-y-6">
-                            <div>
-                                <h2 className="text-3xl font-playfair font-bold text-navy mb-4" data-testid="profile-name" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
-                                    {(profile as any)?.name}
-                                </h2>
-                                <p className="text-lg text-gray-600" data-testid="profile-institution" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
-                                    {(profile as any)?.institution}
-                                </p>
+                        <div className="prose prose-lg max-w-none">
+                            <div className="text-gray-700 leading-relaxed" data-testid="profile-bio" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
+                                {(profile as any)?.bio ? (
+                                    (profile as any).bio.split('\n\n').map((paragraph: string, index: number) => (
+                                        <p key={index} className="mb-4" dangerouslySetInnerHTML={{__html: paragraph}} />
+                                    ))
+                                ) : (
+                                    <p>Loading bio content...</p>
+                                )}
                             </div>
-
-                            <div className="prose prose-lg max-w-none">
-                                <div className="text-gray-700 leading-relaxed" data-testid="profile-bio" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
-                                    {(profile as any)?.bio ? (
-                                        (profile as any).bio.split('\n\n').map((paragraph: string, index: number) => (
-                                            <p key={index} className="mb-4" dangerouslySetInnerHTML={{__html: paragraph}} />
-                                        ))
-                                    ) : (
-                                        <p>Loading bio content...</p>
-                                    )}
-                                </div>
-                            </div>
-
                         </div>
                     </div>
                 </div>
