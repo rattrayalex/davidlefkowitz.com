@@ -61,7 +61,7 @@ export default function About() {
                 <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
                     <div className="grid md:grid-cols-3 gap-12 items-start">
                         {/* Photo */}
-                        <div className="md:col-span-1">
+                        <div className="md:col-span-1 flex justify-start">
                             <div className="w-96 h-96">
                                 <img 
                                     src={(profile as any)?.photo_url}
