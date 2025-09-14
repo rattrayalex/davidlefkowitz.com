@@ -61,7 +61,7 @@ export default function Recordings() {
                             {recordings.map((recording) => (
                                 <div 
                                     key={recording.id}
-                                    className="border border-gray-300 rounded-xl overflow-hidden hover:shadow-lg transition-shadow duration-300" style={{backgroundColor: '#e5e5ff'}}
+                                    className="border border-purple rounded-xl overflow-hidden hover:shadow-lg transition-shadow duration-300" style={{backgroundColor: '#e5e5ff'}}
                                     data-testid={`recording-${recording.id}`}
                                 >
                                     {/* Album Cover */}
