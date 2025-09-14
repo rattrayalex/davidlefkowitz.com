@@ -23,7 +23,7 @@
         "Blog": "relation",
         "Year ©": "number",
         "Publisher": "multi_select",
-        "Instrumentation": "multi_select",
+        "Instrumentation Text": "rich_text",
         "Name": "title"
       },
       "ensemble_options": ["Choral", "Solos", "Piano Quintet", "Voice and Keyboard", "String Quartet", "Mixed Chamber Ensemble", "Pierrot Ensemble", "Piano Solo", "Piano Duo", "Solo Instrument & Piano", "String Duo", "Klezmer Ensemble", "Choir and Ensemble", "Orchestra", "Saxophone Quartet", "Flute Quartet", "Pierrot Ensemble plus Percussion", "String Orchestra", "Choir and Orchestra", "Voice and Pierrot Ensemble", "Children's Choir", "Harp Quartet", "Debussy Trio", "Brass Ensemble", "Chamber Orchestra", "Percussion Ensemble", "Marimba Duo"]

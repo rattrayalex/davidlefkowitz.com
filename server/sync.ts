@@ -446,7 +446,7 @@ export async function syncCompositions() {
         const properties = page.properties;
 
         const nameProperty = properties.Name as any;
-        const instrumentationProperty = properties.Instrumentation as any;
+        const instrumentationProperty = properties["Instrumentation Text"] as any;
         const ensembleProperty = properties.Ensemble as any;
         const yearProperty = properties["Year ©"] as any;
         const durationProperty = properties.Duration as any;
@@ -459,10 +459,7 @@ export async function syncCompositions() {
 
         const composition: InsertComposition = {
             title: nameProperty?.title?.[0]?.plain_text || "",
-            instrumentation:
-                (instrumentationProperty?.multi_select?.map(
-                    (item: any) => item.name,
-                ) as string[]) || [],
+            instrumentation: instrumentationProperty?.rich_text?.[0]?.plain_text ? [instrumentationProperty.rich_text[0].plain_text] : [],
             ensemble:
                 (ensembleProperty?.multi_select?.map(
                     (item: any) => item.name,
