@@ -537,16 +537,15 @@ export async function syncRecordings() {
             const yearProperty = properties["Year ©"] as any;
             const durationProperty = properties.Duration as any;
             const labelProperty = properties.Label as any;
-            const linksProperty = properties.Links as any;
+            const linksProperty = properties["Streaming Links"] as any;
+            const albumCoverProperty = properties["Album Cover"] as any;
 
             const recording: InsertRecording = {
                 title:
                     nameOfAlbumProperty?.title?.[0]?.plain_text || "",
                 composer: "David S. Lefkowitz",
                 performers:
-                    (performersProperty?.multi_select?.map(
-                        (item: any) => item.name,
-                    ) as string[]) || [],
+                    performersProperty?.rich_text?.map((item: any) => item.plain_text).join("") || "",
                 ensemble:
                     (ensembleProperty?.multi_select?.map(
                         (item: any) => item.name,
@@ -558,10 +557,9 @@ export async function syncRecordings() {
                 year: yearProperty?.number || null,
                 duration: durationProperty?.rich_text?.[0]?.plain_text || "",
                 label:
-                    (labelProperty?.multi_select?.map(
-                        (item: any) => item.name,
-                    ) as string[]) || [],
+                    labelProperty?.rich_text?.map((item: any) => item.plain_text).join("") || "",
                 links: linksProperty?.rich_text?.[0]?.plain_text || "",
+                album_cover: albumCoverProperty?.files?.[0]?.file?.url || albumCoverProperty?.files?.[0]?.external?.url || null,
             };
 
             // Insert or update the recording

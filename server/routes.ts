@@ -79,17 +79,27 @@ Lefkowitz's compositions have been released on more than twenty commercial recor
                 .from(recordings)
                 .orderBy(desc(recordings.year));
 
-            const formattedRecordings = recordingsData.map((rec: Recording) => ({
+            // Filter out recordings with empty titles
+            const validRecordings = recordingsData.filter((rec: Recording) => rec.title && rec.title.trim() !== "");
+
+            const formattedRecordings = validRecordings.map((rec: Recording) => ({
                 id: rec.id,
                 title: rec.title,
                 composer: rec.composer,
-                performers: Array.isArray(rec.performers) ? rec.performers.join(", ") : "",
+                performer: rec.performers || "",  // Now a text field, not array
+                performers: rec.performers || "",  // Keep both for compatibility
                 ensemble: Array.isArray(rec.ensemble) ? rec.ensemble.join(", ") : "",
                 instrumentation: Array.isArray(rec.instrumentation) ? rec.instrumentation.join(", ") : "",
                 year: rec.year,
                 duration: rec.duration || "",
-                label: Array.isArray(rec.label) ? rec.label.join(", ") : "",
+                label: rec.label || "",  // Now a text field, not array
                 links: rec.links || "",
+                album_cover: rec.album_cover || null,
+                // For frontend compatibility
+                audio_url: rec.links || "",
+                video_url: "",
+                description: "",
+                release_date: rec.year ? new Date(rec.year, 0, 1).toISOString() : ""
             }));
 
             res.json(formattedRecordings);

@@ -29,18 +29,20 @@
       "ensemble_options": ["Choral", "Solos", "Piano Quintet", "Voice and Keyboard", "String Quartet", "Mixed Chamber Ensemble", "Pierrot Ensemble", "Piano Solo", "Piano Duo", "Solo Instrument & Piano", "String Duo", "Klezmer Ensemble", "Choir and Ensemble", "Orchestra", "Saxophone Quartet", "Flute Quartet", "Pierrot Ensemble plus Percussion", "String Orchestra", "Choir and Orchestra", "Voice and Pierrot Ensemble", "Children's Choir", "Harp Quartet", "Debussy Trio", "Brass Ensemble", "Chamber Orchestra", "Percussion Ensemble", "Marimba Duo"]
     },
     "recordings": {
-      "id": "2363907b-2ee6-80be-9a86-d05c16db60d0",
-      "title": "Recordings", 
+      "id": "26c3907b-2ee6-8069-975c-fa77385dc5f2",
+      "title": "Recordings (Long Version)", 
       "properties": {
         "Duration": "rich_text",
         "Ensemble": "multi_select",
+        "Album Cover": "files",
+        "Album Track Listing": "files",
         "Composition": "rich_text",
         "Blog": "relation",
         "Year ©": "number",
-        "Label": "multi_select",
+        "Label": "rich_text",
         "Instrumentation": "multi_select",
-        "Links": "rich_text",
-        "Performers": "multi_select", 
+        "Streaming Links": "rich_text",
+        "Performers": "rich_text", 
         "Name of Album": "title"
       }
     },
