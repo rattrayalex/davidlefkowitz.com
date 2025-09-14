@@ -12,8 +12,8 @@
       }
     },
     "compositions": {
-      "id": "22e3907b-2ee6-808b-872a-fa16f680147d", 
-      "title": "Compositions",
+      "id": "2653907b-2ee6-809f-b742-dfc092ecdb40", 
+      "title": "Compositions (long version)",
       "properties": {
         "Date of premier": "date",
         "Duration": "rich_text",
