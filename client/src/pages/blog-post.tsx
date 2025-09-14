@@ -146,7 +146,7 @@ export default function BlogPostPage() {
                                             fontFamily: 'Times, "Times New Roman", Palatino, serif',
                                             whiteSpace: 'pre-wrap',
                                             tabSize: '2.5em',
-                                            fontWeight: '580',
+                                            fontWeight: '590',
                                             textIndent: index === 0 ? '2.5em' : '0' // Indent first paragraph only
                                         }}
                                         dangerouslySetInnerHTML={{__html: paragraph}}
