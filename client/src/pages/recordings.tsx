@@ -41,7 +41,8 @@ function RecordingTile({ recording }: { recording: Recording }) {
             left: `${leftMargin}px`,
             right: `${rightMargin}px`,
             height: `${boxHeight}px`,
-            border: '1px solid #6B46C1',
+            border: '0px',
+            backgroundColor: 'rgba(139, 92, 246, 0.05)', // Very slightly darker lilac
             borderRadius: '8px',
             cursor: 'pointer',
             zIndex: 1
