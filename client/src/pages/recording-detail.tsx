@@ -118,7 +118,7 @@ export default function RecordingDetail() {
                             {recording.performers && (
                                 <div className="mb-4">
                                     <h2 className="text-sm font-semibold text-gray-600 uppercase tracking-wider mb-2" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>PERFORMERS</h2>
-                                    <p className="text-gray-700" data-testid="recording-detail-performers" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
+                                    <p className="text-gray-700" data-testid="recording-detail-performers" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif', paddingLeft: '0.25in'}}>
                                         {recording.performers}
                                     </p>
                                 </div>
@@ -128,7 +128,7 @@ export default function RecordingDetail() {
                             {recording.composition && (
                                 <div className="mb-4">
                                     <h2 className="text-sm font-semibold text-gray-600 uppercase tracking-wider mb-2" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>COMPOSITIONS</h2>
-                                    <p className="text-gray-700 whitespace-pre-wrap" data-testid="recording-detail-composition" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
+                                    <p className="text-gray-700 whitespace-pre-wrap" data-testid="recording-detail-composition" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif', paddingLeft: '0.25in'}}>
                                         {recording.composition}
                                     </p>
                                 </div>
@@ -138,7 +138,7 @@ export default function RecordingDetail() {
                             {recording.duration && (
                                 <div className="mb-4">
                                     <h2 className="text-sm font-semibold text-gray-600 uppercase tracking-wider mb-2" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>DURATION</h2>
-                                    <p className="text-gray-700" data-testid="recording-detail-duration" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
+                                    <p className="text-gray-700" data-testid="recording-detail-duration" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif', paddingLeft: '0.25in'}}>
                                         {recording.duration}
                                     </p>
                                 </div>
@@ -153,7 +153,8 @@ export default function RecordingDetail() {
                                         data-testid="recording-detail-links" 
                                         style={{
                                             fontFamily: 'Times, "Times New Roman", Palatino, serif',
-                                            lineHeight: '1.8'
+                                            lineHeight: '1.8',
+                                            paddingLeft: '0.25in'
                                         }}
                                         dangerouslySetInnerHTML={{ __html: recording.links }}
                                     />
