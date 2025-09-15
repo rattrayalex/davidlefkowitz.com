@@ -10,7 +10,7 @@ import { blogPosts, compositions } from "../shared/schema";
 async function downloadImage(imageUrl: string, itemId: string): Promise<string> {
     try {
         // Create media-cache directory if it doesn't exist
-        await fsPromises.mkdir("media-cache", { recursive: true });
+        await fsPromises.mkdir("server/media-cache", { recursive: true });
         
         // Get file extension from URL or default to jpg
         const urlPath = new URL(imageUrl).pathname;
@@ -19,7 +19,7 @@ async function downloadImage(imageUrl: string, itemId: string): Promise<string> 
         // Generate filename using item ID and hash of URL for uniqueness
         const hash = createHash('md5').update(imageUrl).digest('hex').slice(0, 8);
         const filename = `${itemId.replace(/[^a-zA-Z0-9]/g, '_')}_${hash}${extension}`;
-        const filePath = path.join("media-cache", filename);
+        const filePath = path.join("server/media-cache", filename);
         
         // Check if file already exists
         try {
