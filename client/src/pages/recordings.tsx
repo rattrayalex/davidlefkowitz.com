@@ -1,8 +1,126 @@
-import React from "react";
+import React, { useRef, useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import LoadingSpinner from "@/components/ui/loading-spinner";
 import { Recording } from "@shared/schema";
 import twelvePointStarSvg from "@/assets/12_point_curved.svg";
+
+// Component for individual recording tile with measured overlay box
+function RecordingTile({ recording }: { recording: Recording }) {
+    const tileRef = useRef<HTMLDivElement>(null);
+    const titleRef = useRef<HTMLHeadingElement>(null);
+    const imageContainerRef = useRef<HTMLDivElement>(null);
+    const [overlayStyle, setOverlayStyle] = useState<React.CSSProperties>({});
+    const [showOverlay, setShowOverlay] = useState(false);
+
+    const calculateOverlay = () => {
+        if (!tileRef.current || !titleRef.current || !imageContainerRef.current) return;
+
+        const tileRect = tileRef.current.getBoundingClientRect();
+        const titleRect = titleRef.current.getBoundingClientRect();
+        const imgRect = imageContainerRef.current.getBoundingClientRect();
+
+        // Calculate positions relative to the tile
+        const titleTopRelative = titleRect.top - tileRect.top;
+        const imgLeftRelative = imgRect.left - tileRect.left;
+        const imgRightRelative = tileRect.right - imgRect.right;
+        const imgBottomRelative = imgRect.bottom - tileRect.top;
+
+        setOverlayStyle({
+            position: 'absolute',
+            top: `${titleTopRelative / 2}px`,
+            left: `${imgLeftRelative / 2}px`,
+            right: `${imgRightRelative / 2}px`,
+            height: `${imgBottomRelative - (titleTopRelative / 2)}px`,
+            border: '1px solid #6B46C1',
+            borderRadius: '8px',
+            pointerEvents: 'none',
+            zIndex: 1
+        });
+        setShowOverlay(true);
+    };
+
+    useEffect(() => {
+        // Initial calculation
+        const timer = setTimeout(calculateOverlay, 100);
+
+        // Recalculate on window resize
+        const handleResize = () => calculateOverlay();
+        window.addEventListener('resize', handleResize);
+
+        // Observe size changes
+        const resizeObserver = new ResizeObserver(() => calculateOverlay());
+        if (tileRef.current) resizeObserver.observe(tileRef.current);
+        if (imageContainerRef.current) resizeObserver.observe(imageContainerRef.current);
+
+        return () => {
+            clearTimeout(timer);
+            window.removeEventListener('resize', handleResize);
+            resizeObserver.disconnect();
+        };
+    }, []);
+
+    return (
+        <div 
+            ref={tileRef}
+            key={recording.id}
+            className="border border-purple rounded-xl overflow-hidden hover:shadow-lg transition-shadow duration-300 relative" 
+            style={{backgroundColor: '#e5e5ff'}}
+            data-testid={`recording-${recording.id}`}
+        >
+            {/* Overlay Box */}
+            {showOverlay && recording.album_cover && (
+                <div style={overlayStyle} />
+            )}
+
+            {/* Content */}
+            <div className="p-6">
+                {/* Title */}
+                <h3 
+                    ref={titleRef}
+                    className="text-xl font-playfair font-semibold text-navy mb-4 text-center" 
+                    data-testid={`recording-title-${recording.id}`}
+                >
+                    {recording.title}
+                </h3>
+
+                {/* Album Cover */}
+                {recording.album_cover && (
+                    <div 
+                        ref={imageContainerRef}
+                        className="aspect-square bg-gradient-to-br from-purple-100 to-blue-100 relative overflow-hidden mb-4 rounded-lg"
+                    >
+                        <img 
+                            src={recording.album_cover}
+                            alt={recording.title}
+                            className="w-full h-full object-cover"
+                            data-testid={`recording-cover-${recording.id}`}
+                            onLoad={calculateOverlay}
+                        />
+                    </div>
+                )}
+
+                {/* Label */}
+                {recording.label && (
+                    recording.label_url ? (
+                        <a 
+                            href={recording.label_url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-purple hover:text-purple-700 text-center block underline transition-colors duration-200"
+                            data-testid={`recording-label-${recording.id}`}
+                        >
+                            {recording.label}
+                        </a>
+                    ) : (
+                        <p className="text-gray-700 text-center" data-testid={`recording-label-${recording.id}`}>
+                            {recording.label}
+                        </p>
+                    )
+                )}
+            </div>
+        </div>
+    );
+}
 
 export default function Recordings() {
     const { data: recordings = [], isLoading } = useQuery<Recording[]>({
@@ -63,50 +181,7 @@ export default function Recordings() {
                     ) : (
                         <div className="grid md:grid-cols-3 gap-8">
                             {recordings.map((recording) => (
-                                <div 
-                                    key={recording.id}
-                                    className="border border-purple rounded-xl overflow-hidden hover:shadow-lg transition-shadow duration-300" style={{backgroundColor: '#e5e5ff'}}
-                                    data-testid={`recording-${recording.id}`}
-                                >
-                                    {/* Content */}
-                                    <div className="p-6">
-                                        {/* Title */}
-                                        <h3 className="text-xl font-playfair font-semibold text-navy mb-4 text-center" data-testid={`recording-title-${recording.id}`}>
-                                            {recording.title}
-                                        </h3>
-
-                                        {/* Album Cover */}
-                                        {recording.album_cover && (
-                                            <div className="aspect-square bg-gradient-to-br from-purple-100 to-blue-100 relative overflow-hidden mb-4 rounded-lg">
-                                                <img 
-                                                    src={recording.album_cover}
-                                                    alt={recording.title}
-                                                    className="w-full h-full object-cover"
-                                                    data-testid={`recording-cover-${recording.id}`}
-                                                />
-                                            </div>
-                                        )}
-
-                                        {/* Label */}
-                                        {recording.label && (
-                                            recording.label_url ? (
-                                                <a 
-                                                    href={recording.label_url}
-                                                    target="_blank"
-                                                    rel="noopener noreferrer"
-                                                    className="text-purple hover:text-purple-700 text-center block underline transition-colors duration-200"
-                                                    data-testid={`recording-label-${recording.id}`}
-                                                >
-                                                    {recording.label}
-                                                </a>
-                                            ) : (
-                                                <p className="text-gray-700 text-center" data-testid={`recording-label-${recording.id}`}>
-                                                    {recording.label}
-                                                </p>
-                                            )
-                                        )}
-                                    </div>
-                                </div>
+                                <RecordingTile key={recording.id} recording={recording} />
                             ))}
                         </div>
                     )}
