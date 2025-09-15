@@ -55,15 +55,33 @@ export default function RecordingDetail() {
 
                 <div className="bg-white rounded-xl shadow-lg overflow-hidden">
                     <div className="md:flex">
-                        {/* Album Cover */}
-                        {recording.album_cover && (
+                        {/* Album Cover and Track Listings */}
+                        {(recording.album_cover || recording.album_track_listing?.length > 0) && (
                             <div className="md:w-1/2">
-                                <img 
-                                    src={recording.album_cover}
-                                    alt={recording.title}
-                                    className="w-full h-full object-cover"
-                                    data-testid="recording-detail-cover"
-                                />
+                                {/* Album Cover */}
+                                {recording.album_cover && (
+                                    <img 
+                                        src={recording.album_cover}
+                                        alt={recording.title}
+                                        className="w-full object-cover mb-4"
+                                        data-testid="recording-detail-cover"
+                                    />
+                                )}
+                                
+                                {/* Album Track Listing Images */}
+                                {recording.album_track_listing && recording.album_track_listing.length > 0 && (
+                                    <div className="space-y-4">
+                                        {recording.album_track_listing.map((trackImage, index) => (
+                                            <img 
+                                                key={index}
+                                                src={trackImage}
+                                                alt={`Track listing ${index + 1}`}
+                                                className="w-full object-cover"
+                                                data-testid={`recording-track-listing-${index}`}
+                                            />
+                                        ))}
+                                    </div>
+                                )}
                             </div>
                         )}
 
@@ -73,10 +91,9 @@ export default function RecordingDetail() {
                                 {recording.title}
                             </h1>
 
-                            {/* Label */}
+                            {/* Label - without the word "Label" */}
                             {recording.label && (
                                 <div className="mb-4">
-                                    <h2 className="text-sm font-semibold text-gray-600 uppercase tracking-wider mb-2">Label</h2>
                                     {recording.label_url ? (
                                         <a 
                                             href={recording.label_url}
@@ -84,12 +101,13 @@ export default function RecordingDetail() {
                                             rel="noopener noreferrer"
                                             className="text-purple hover:text-purple-700 inline-flex items-center underline transition-colors duration-200"
                                             data-testid="recording-detail-label"
+                                            style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}
                                         >
                                             {recording.label}
                                             <ExternalLink className="ml-1 h-3 w-3" />
                                         </a>
                                     ) : (
-                                        <p className="text-gray-700" data-testid="recording-detail-label">
+                                        <p className="text-gray-700" data-testid="recording-detail-label" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
                                             {recording.label}
                                         </p>
                                     )}
@@ -99,38 +117,71 @@ export default function RecordingDetail() {
                             {/* Performers */}
                             {recording.performers && (
                                 <div className="mb-4">
-                                    <h2 className="text-sm font-semibold text-gray-600 uppercase tracking-wider mb-2">Performers</h2>
-                                    <p className="text-gray-700" data-testid="recording-detail-performers">
+                                    <h2 className="text-sm font-semibold text-gray-600 uppercase tracking-wider mb-2" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>PERFORMERS</h2>
+                                    <p className="text-gray-700" data-testid="recording-detail-performers" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
                                         {recording.performers}
                                     </p>
                                 </div>
                             )}
 
-                            {/* Description */}
-                            {recording.description && (
+                            {/* Compositions */}
+                            {recording.composition && (
                                 <div className="mb-4">
-                                    <h2 className="text-sm font-semibold text-gray-600 uppercase tracking-wider mb-2">Description</h2>
-                                    <p className="text-gray-700 whitespace-pre-wrap" data-testid="recording-detail-description">
-                                        {recording.description}
+                                    <h2 className="text-sm font-semibold text-gray-600 uppercase tracking-wider mb-2" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>COMPOSITIONS</h2>
+                                    <p className="text-gray-700 whitespace-pre-wrap" data-testid="recording-detail-composition" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
+                                        {recording.composition}
                                     </p>
                                 </div>
                             )}
 
-                            {/* Purchase Link */}
-                            {recording.purchase_link && (
-                                <div className="mt-6">
-                                    <a 
-                                        href={recording.purchase_link}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="inline-flex items-center px-6 py-3 bg-purple text-white rounded-lg hover:bg-purple-700 transition-colors duration-200"
-                                        data-testid="recording-detail-purchase"
-                                    >
-                                        Purchase Recording
-                                        <ExternalLink className="ml-2 h-4 w-4" />
-                                    </a>
+                            {/* Duration */}
+                            {recording.duration && (
+                                <div className="mb-4">
+                                    <h2 className="text-sm font-semibold text-gray-600 uppercase tracking-wider mb-2" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>DURATION</h2>
+                                    <p className="text-gray-700" data-testid="recording-detail-duration" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
+                                        {recording.duration}
+                                    </p>
                                 </div>
                             )}
+
+                            {/* Purchase and/or Streaming Links */}
+                            {recording.links && (
+                                <div className="mb-4">
+                                    <h2 className="text-sm font-semibold text-gray-600 uppercase tracking-wider mb-2" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>PURCHASE AND/OR STREAMING LINKS</h2>
+                                    <div className="text-gray-700" data-testid="recording-detail-links" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
+                                        {/* Parse links and render as hyperlinks */}
+                                        {recording.links.split('\n').map((link, index) => {
+                                            const trimmedLink = link.trim();
+                                            if (trimmedLink) {
+                                                // Check if it's a URL
+                                                if (trimmedLink.startsWith('http://') || trimmedLink.startsWith('https://')) {
+                                                    return (
+                                                        <a 
+                                                            key={index}
+                                                            href={trimmedLink}
+                                                            target="_blank"
+                                                            rel="noopener noreferrer"
+                                                            className="text-purple hover:text-purple-700 underline block mb-1 transition-colors duration-200"
+                                                            style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}
+                                                        >
+                                                            {trimmedLink}
+                                                        </a>
+                                                    );
+                                                } else {
+                                                    // If not a URL, display as text
+                                                    return (
+                                                        <p key={index} className="mb-1" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
+                                                            {trimmedLink}
+                                                        </p>
+                                                    );
+                                                }
+                                            }
+                                            return null;
+                                        })}
+                                    </div>
+                                </div>
+                            )}
+
                         </div>
                     </div>
                 </div>

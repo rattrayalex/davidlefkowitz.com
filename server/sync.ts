@@ -543,12 +543,29 @@ export async function syncRecordings() {
             const labelProperty = properties.Label as any;
             const linksProperty = properties["Streaming Links"] as any;
             const albumCoverProperty = properties["Album Cover"] as any;
+            const compositionProperty = properties.Composition as any;
+            const albumTrackListingProperty = properties["Album Track Listing"] as any;
 
             // Download and cache album cover if it exists
             let cachedAlbumCover = null;
             const albumCoverUrl = albumCoverProperty?.files?.[0]?.file?.url || albumCoverProperty?.files?.[0]?.external?.url;
             if (albumCoverUrl) {
                 cachedAlbumCover = await downloadImage(albumCoverUrl, `recording_${page.id}`);
+            }
+
+            // Download and cache album track listing images
+            const cachedTrackListings: string[] = [];
+            if (albumTrackListingProperty?.files) {
+                for (let i = 0; i < albumTrackListingProperty.files.length; i++) {
+                    const file = albumTrackListingProperty.files[i];
+                    const trackListingUrl = file?.file?.url || file?.external?.url;
+                    if (trackListingUrl) {
+                        const cachedUrl = await downloadImage(trackListingUrl, `recording_${page.id}_tracklist_${i}`);
+                        if (cachedUrl) {
+                            cachedTrackListings.push(cachedUrl);
+                        }
+                    }
+                }
             }
 
             const recording: InsertRecording = {
@@ -572,6 +589,8 @@ export async function syncRecordings() {
                 label_url: labelProperty?.rich_text?.[0]?.href || null,
                 links: linksProperty?.rich_text?.[0]?.plain_text || "",
                 album_cover: cachedAlbumCover,
+                composition: compositionProperty?.rich_text?.map((item: any) => item.plain_text).join("") || "",
+                album_track_listing: cachedTrackListings,
             };
 
             // Insert the recording (no need for conflict handling since we cleared all records)

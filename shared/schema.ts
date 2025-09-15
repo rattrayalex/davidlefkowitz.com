@@ -105,6 +105,8 @@ export const recordings = pgTable("recordings", {
   label_url: text("label_url"),
   links: text("links"),
   album_cover: text("album_cover"),
+  composition: text("composition"),
+  album_track_listing: json("album_track_listing").$type<string[]>().default([]),
   last_synced: timestamp("last_synced").defaultNow(),
   created_at: timestamp("created_at").defaultNow(),
   updated_at: timestamp("updated_at").defaultNow(),
