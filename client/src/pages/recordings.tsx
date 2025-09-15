@@ -46,8 +46,8 @@ export default function Recordings() {
             </section>
 
             {/* Instruction Text */}
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <p className="text-gray-600 text-left mb-10 italic">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-10 mb-10">
+                <p className="text-gray-600 text-left font-playfair italic" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
                     (Click on album image for more information.)
                 </p>
             </div>
