@@ -540,6 +540,13 @@ export async function syncRecordings() {
             const linksProperty = properties["Streaming Links"] as any;
             const albumCoverProperty = properties["Album Cover"] as any;
 
+            // Download and cache album cover if it exists
+            let cachedAlbumCover = null;
+            const albumCoverUrl = albumCoverProperty?.files?.[0]?.file?.url || albumCoverProperty?.files?.[0]?.external?.url;
+            if (albumCoverUrl) {
+                cachedAlbumCover = await downloadImage(albumCoverUrl, `recording_${page.id}`);
+            }
+
             const recording: InsertRecording = {
                 title:
                     nameOfAlbumProperty?.title?.[0]?.plain_text || "",
@@ -559,7 +566,7 @@ export async function syncRecordings() {
                 label:
                     labelProperty?.rich_text?.map((item: any) => item.plain_text).join("") || "",
                 links: linksProperty?.rich_text?.[0]?.plain_text || "",
-                album_cover: albumCoverProperty?.files?.[0]?.file?.url || albumCoverProperty?.files?.[0]?.external?.url || null,
+                album_cover: cachedAlbumCover,
             };
 
             // Insert or update the recording
