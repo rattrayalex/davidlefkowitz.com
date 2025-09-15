@@ -49,7 +49,7 @@ export default function Recordings() {
             <section className="py-20" style={{position: 'relative'}}>
                 {/* Instruction Text - positioned absolutely halfway */}
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" style={{position: 'absolute', top: '-40px', left: '0', right: '0'}}>
-                    <p className="text-gray-600 text-left font-playfair italic" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
+                    <p className="text-gray-600 text-left font-playfair italic" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif', fontSize: '21px'}}>
                         (Click on album image for more information.)
                     </p>
                 </div>
