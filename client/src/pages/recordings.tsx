@@ -73,7 +73,7 @@ function RecordingTile({ recording }: { recording: Recording }) {
         <div 
             ref={tileRef}
             key={recording.id}
-            className="border border-purple rounded-xl overflow-hidden hover:shadow-lg transition-shadow duration-300 relative h-full min-h-[450px]" 
+            className="border border-purple rounded-xl overflow-hidden hover:shadow-lg transition-shadow duration-300 relative h-full" 
             style={{backgroundColor: '#e5e5ff'}}
             data-testid={`recording-${recording.id}`}
         >
