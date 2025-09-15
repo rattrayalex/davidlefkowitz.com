@@ -1,5 +1,6 @@
 import React, { useRef, useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
+import { useLocation } from "wouter";
 import LoadingSpinner from "@/components/ui/loading-spinner";
 import { Recording } from "@shared/schema";
 import twelvePointStarSvg from "@/assets/12_point_curved.svg";
@@ -11,6 +12,7 @@ function RecordingTile({ recording }: { recording: Recording }) {
     const imageContainerRef = useRef<HTMLDivElement>(null);
     const [overlayStyle, setOverlayStyle] = useState<React.CSSProperties>({});
     const [showOverlay, setShowOverlay] = useState(false);
+    const [, setLocation] = useLocation();
 
     const calculateOverlay = () => {
         if (!tileRef.current || !titleRef.current || !imageContainerRef.current) return;
@@ -41,7 +43,7 @@ function RecordingTile({ recording }: { recording: Recording }) {
             height: `${boxHeight}px`,
             border: '1px solid #6B46C1',
             borderRadius: '8px',
-            pointerEvents: 'none',
+            cursor: 'pointer',
             zIndex: 1
         });
         setShowOverlay(true);
@@ -75,9 +77,13 @@ function RecordingTile({ recording }: { recording: Recording }) {
             style={{backgroundColor: '#e5e5ff'}}
             data-testid={`recording-${recording.id}`}
         >
-            {/* Overlay Box */}
+            {/* Overlay Box - Clickable */}
             {showOverlay && recording.album_cover && (
-                <div style={overlayStyle} />
+                <div 
+                    style={overlayStyle} 
+                    onClick={() => setLocation(`/recordings/${recording.id}`)}
+                    data-testid={`recording-box-${recording.id}`}
+                />
             )}
 
             {/* Content */}

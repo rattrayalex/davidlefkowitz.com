@@ -9,6 +9,7 @@ import Home from "@/pages/home";
 import About from "@/pages/about";
 import Compositions from "@/pages/compositions";
 import Recordings from "@/pages/recordings";
+import RecordingDetail from "@/pages/recording-detail";
 import Blog from "@/pages/blog";
 import BlogPost from "@/pages/blog-post";
 import Media from "@/pages/media";
@@ -25,6 +26,7 @@ function Router() {
           <Route path="/about" component={About} />
           <Route path="/compositions" component={Compositions} />
           <Route path="/recordings" component={Recordings} />
+          <Route path="/recordings/:id" component={RecordingDetail} />
           <Route path="/blog" component={Blog} />
           <Route path="/blog/:id" component={BlogPost} />
           <Route path="/media" component={Media} />
