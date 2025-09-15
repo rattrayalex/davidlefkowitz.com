@@ -118,7 +118,7 @@ export default function RecordingDetail() {
                             {recording.performers && (
                                 <div className="mb-4">
                                     <h2 className="text-sm font-semibold text-gray-600 uppercase tracking-wider mb-2" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>PERFORMERS</h2>
-                                    <p className="text-gray-700 whitespace-pre-wrap" data-testid="recording-detail-performers" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif', paddingLeft: '0.25in'}}>
+                                    <p className="text-gray-700 whitespace-pre-wrap" data-testid="recording-detail-performers" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif', paddingLeft: '0.375in', textIndent: '-0.125in'}}>
                                         {recording.performers}
                                     </p>
                                 </div>
