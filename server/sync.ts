@@ -95,7 +95,7 @@ function richTextToHtml(richTextArray: any[]): string {
         }
         
         return text;
-    }).join("");
+    }).join("<br />");
 }
 
 /**
