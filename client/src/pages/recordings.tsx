@@ -1,6 +1,5 @@
 import React from "react";
 import { useQuery } from "@tanstack/react-query";
-import { Music } from "lucide-react";
 import LoadingSpinner from "@/components/ui/loading-spinner";
 import { Recording } from "@shared/schema";
 import twelvePointStarSvg from "@/assets/12_point_curved.svg";
@@ -51,7 +50,6 @@ export default function Recordings() {
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     {recordings.length === 0 ? (
                         <div className="text-center py-12">
-                            <Music className="h-16 w-16 text-gray-400 mx-auto mb-4" />
                             <p className="text-gray-600 text-lg" data-testid="no-recordings">
                                 No recordings available at the moment.
                             </p>
@@ -72,20 +70,16 @@ export default function Recordings() {
                                         </h3>
 
                                         {/* Album Cover */}
-                                        <div className="aspect-square bg-gradient-to-br from-purple-100 to-blue-100 relative overflow-hidden mb-4 rounded-lg">
-                                            {recording.album_cover ? (
+                                        {recording.album_cover && (
+                                            <div className="aspect-square bg-gradient-to-br from-purple-100 to-blue-100 relative overflow-hidden mb-4 rounded-lg">
                                                 <img 
                                                     src={recording.album_cover}
                                                     alt={recording.title}
                                                     className="w-full h-full object-cover"
                                                     data-testid={`recording-cover-${recording.id}`}
                                                 />
-                                            ) : (
-                                                <div className="w-full h-full flex items-center justify-center">
-                                                    <Music className="h-16 w-16 text-purple opacity-30" />
-                                                </div>
-                                            )}
-                                        </div>
+                                            </div>
+                                        )}
 
                                         {/* Label */}
                                         {recording.label && (
