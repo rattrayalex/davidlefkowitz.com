@@ -45,8 +45,15 @@ export default function Recordings() {
                 </div>
             </section>
 
+            {/* Instruction Text */}
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <p className="text-gray-600 text-left mb-10">
+                    (Click on album image for more information.)
+                </p>
+            </div>
+
             {/* Recordings Grid */}
-            <section className="py-20">
+            <section className="pb-20">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     {recordings.length === 0 ? (
                         <div className="text-center py-12">
