@@ -45,15 +45,14 @@ export default function Recordings() {
                 </div>
             </section>
 
-            {/* Instruction Text */}
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-10 mb-10">
-                <p className="text-gray-600 text-left font-playfair italic" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
-                    (Click on album image for more information.)
-                </p>
-            </div>
-
             {/* Recordings Grid */}
-            <section className="pb-20">
+            <section className="py-20" style={{position: 'relative'}}>
+                {/* Instruction Text - positioned absolutely halfway */}
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" style={{position: 'absolute', top: '-40px', left: '0', right: '0'}}>
+                    <p className="text-gray-600 text-left font-playfair italic" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
+                        (Click on album image for more information.)
+                    </p>
+                </div>
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     {recordings.length === 0 ? (
                         <div className="text-center py-12">
