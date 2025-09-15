@@ -131,6 +131,13 @@ function RecordingTile({ recording }: { recording: Recording }) {
                         </p>
                     )
                 )}
+                
+                {/* Year */}
+                {recording.year && (
+                    <p className="text-gray-600 text-center mt-2" data-testid={`recording-year-${recording.id}`}>
+                        {recording.year}
+                    </p>
+                )}
             </div>
         </div>
     );
