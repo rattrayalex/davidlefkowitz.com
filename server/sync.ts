@@ -27,7 +27,7 @@ const schemaData = JSON.parse(
 async function downloadImage(imageUrl: string, mediaId: string): Promise<string> {
     try {
         // Create media-cache directory if it doesn't exist
-        await fsPromises.mkdir("media-cache", { recursive: true });
+        await fsPromises.mkdir("server/media-cache", { recursive: true });
         
         // Get file extension from URL or default to jpg
         const urlPath = new URL(imageUrl).pathname;
@@ -36,7 +36,7 @@ async function downloadImage(imageUrl: string, mediaId: string): Promise<string>
         // Generate filename using media ID and hash of URL for uniqueness
         const hash = createHash('md5').update(imageUrl).digest('hex').slice(0, 8);
         const filename = `${mediaId.replace(/[^a-zA-Z0-9]/g, '_')}_${hash}${extension}`;
-        const filePath = path.join("media-cache", filename);
+        const filePath = path.join("server/media-cache", filename);
         
         // Check if file already exists
         try {

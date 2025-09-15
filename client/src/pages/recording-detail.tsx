@@ -149,35 +149,46 @@ export default function RecordingDetail() {
                                 <div className="mb-4">
                                     <h2 className="text-sm font-semibold text-gray-600 uppercase tracking-wider mb-2" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>PURCHASE AND/OR STREAMING LINKS</h2>
                                     <div className="text-gray-700" data-testid="recording-detail-links" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
-                                        {/* Parse links and render as hyperlinks */}
-                                        {recording.links.split('\n').map((link, index) => {
-                                            const trimmedLink = link.trim();
-                                            if (trimmedLink) {
-                                                // Check if it's a URL
-                                                if (trimmedLink.startsWith('http://') || trimmedLink.startsWith('https://')) {
-                                                    return (
-                                                        <a 
-                                                            key={index}
-                                                            href={trimmedLink}
-                                                            target="_blank"
-                                                            rel="noopener noreferrer"
-                                                            className="text-purple hover:text-purple-700 underline block mb-1 transition-colors duration-200"
-                                                            style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}
-                                                        >
-                                                            {trimmedLink}
-                                                        </a>
-                                                    );
-                                                } else {
-                                                    // If not a URL, display as text
-                                                    return (
-                                                        <p key={index} className="mb-1" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
-                                                            {trimmedLink}
-                                                        </p>
-                                                    );
-                                                }
+                                        {/* Parse links - handle both URLs and text like "Amazon" */}
+                                        {(() => {
+                                            const linkText = recording.links.trim();
+                                            // Check if it's a URL
+                                            if (linkText.startsWith('http://') || linkText.startsWith('https://')) {
+                                                return (
+                                                    <a 
+                                                        href={linkText}
+                                                        target="_blank"
+                                                        rel="noopener noreferrer"
+                                                        className="text-purple hover:text-purple-700 underline block mb-1 transition-colors duration-200"
+                                                        style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}
+                                                    >
+                                                        {linkText}
+                                                    </a>
+                                                );
+                                            } else if (linkText.toLowerCase().includes('amazon')) {
+                                                // For Amazon links, create a search link
+                                                const searchQuery = `David Lefkowitz ${recording.title}`;
+                                                const amazonUrl = `https://www.amazon.com/s?k=${encodeURIComponent(searchQuery)}`;
+                                                return (
+                                                    <a 
+                                                        href={amazonUrl}
+                                                        target="_blank"
+                                                        rel="noopener noreferrer"
+                                                        className="text-purple hover:text-purple-700 underline block mb-1 transition-colors duration-200"
+                                                        style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}
+                                                    >
+                                                        {linkText} - Search for "{recording.title}"
+                                                    </a>
+                                                );
+                                            } else {
+                                                // For other text, display as is
+                                                return (
+                                                    <p className="mb-1" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
+                                                        {linkText}
+                                                    </p>
+                                                );
                                             }
-                                            return null;
-                                        })}
+                                        })()}
                                     </div>
                                 </div>
                             )}
