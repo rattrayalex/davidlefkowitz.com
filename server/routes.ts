@@ -88,6 +88,7 @@ Lefkowitz's compositions have been released on more than twenty commercial recor
                 composer: rec.composer,
                 performer: rec.performers || "",  // Now a text field, not array
                 performers: rec.performers || "",  // Keep both for compatibility
+                composition: rec.composition || "",  // Add composition field
                 ensemble: Array.isArray(rec.ensemble) ? rec.ensemble.join(", ") : "",
                 instrumentation: Array.isArray(rec.instrumentation) ? rec.instrumentation.join(", ") : "",
                 year: rec.year,
@@ -96,6 +97,7 @@ Lefkowitz's compositions have been released on more than twenty commercial recor
                 label_url: rec.label_url || null,
                 links: rec.links || "",
                 album_cover: rec.album_cover || null,
+                album_track_listing: rec.album_track_listing || [],  // Add track listing images
                 // For frontend compatibility
                 audio_url: rec.links || "",
                 video_url: "",

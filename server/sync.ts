@@ -587,7 +587,7 @@ export async function syncRecordings() {
                 label:
                     labelProperty?.rich_text?.map((item: any) => item.plain_text).join("") || "",
                 label_url: labelProperty?.rich_text?.[0]?.href || null,
-                links: linksProperty?.rich_text?.[0]?.plain_text || "",
+                links: richTextToHtml(linksProperty?.rich_text || []),
                 album_cover: cachedAlbumCover,
                 composition: compositionProperty?.rich_text?.map((item: any) => item.plain_text).join("") || "",
                 album_track_listing: cachedTrackListings,
