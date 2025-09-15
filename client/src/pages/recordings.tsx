@@ -25,12 +25,16 @@ function RecordingTile({ recording }: { recording: Recording }) {
         const imgRightRelative = tileRect.right - imgRect.right;
         const imgBottomRelative = imgRect.bottom - tileRect.top;
 
+        // Calculate the margins (distance from image to box edges)
+        const leftMargin = imgLeftRelative / 2;
+        const rightMargin = imgRightRelative / 2;
+        
         setOverlayStyle({
             position: 'absolute',
             top: `${titleTopRelative / 2}px`,
-            left: `${imgLeftRelative / 2}px`,
-            right: `${imgRightRelative / 2}px`,
-            height: `${imgBottomRelative - (titleTopRelative / 2)}px`,
+            left: `${leftMargin}px`,
+            right: `${rightMargin}px`,
+            bottom: `${leftMargin}px`, // Use same margin as left/right for bottom
             border: '1px solid #6B46C1',
             borderRadius: '8px',
             pointerEvents: 'none',
