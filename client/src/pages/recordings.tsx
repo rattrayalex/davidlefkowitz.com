@@ -42,7 +42,7 @@ function RecordingTile({ recording }: { recording: Recording }) {
             right: `${rightMargin}px`,
             height: `${boxHeight}px`,
             border: '0px',
-            backgroundColor: 'rgba(139, 92, 246, 0.05)', // Very slightly darker lilac
+            backgroundColor: '#dcd6ff', // More visible lilac background
             borderRadius: '8px',
             cursor: 'pointer',
             zIndex: 1
@@ -78,10 +78,29 @@ function RecordingTile({ recording }: { recording: Recording }) {
             style={{backgroundColor: '#e5e5ff'}}
             data-testid={`recording-${recording.id}`}
         >
-            {/* Overlay Box - Clickable */}
+            {/* Background Box - Behind content */}
             {showOverlay && recording.album_cover && (
                 <div 
-                    style={overlayStyle} 
+                    style={{
+                        ...overlayStyle,
+                        zIndex: 0, // Behind content
+                        pointerEvents: 'none' // Don't interfere with clicks
+                    }} 
+                />
+            )}
+            
+            {/* Clickable Area - Invisible overlay for click handling */}
+            {showOverlay && recording.album_cover && (
+                <div 
+                    style={{
+                        position: 'absolute',
+                        top: overlayStyle.top,
+                        left: overlayStyle.left,
+                        right: overlayStyle.right,
+                        height: overlayStyle.height,
+                        cursor: 'pointer',
+                        zIndex: 10 // Above content for clicking
+                    }}
                     onClick={() => setLocation(`/recordings/${recording.id}`)}
                     data-testid={`recording-box-${recording.id}`}
                 />
