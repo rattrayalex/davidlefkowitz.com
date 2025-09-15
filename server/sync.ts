@@ -519,6 +519,10 @@ export async function syncRecordings() {
     console.log("Syncing recordings from Notion...");
 
     try {
+        // First, delete all existing recordings to avoid duplicates
+        await db.delete(recordings);
+        console.log("Cleared existing recordings");
+
         const response = await notion.databases.query({
             database_id: schemaData.databases.recordings.id,
         });
@@ -570,20 +574,12 @@ export async function syncRecordings() {
                 album_cover: cachedAlbumCover,
             };
 
-            // Insert or update the recording
+            // Insert the recording (no need for conflict handling since we cleared all records)
             await db
                 .insert(recordings)
                 .values({
                     ...recording,
                     id: page.id,
-                })
-                .onConflictDoUpdate({
-                    target: recordings.id,
-                    set: {
-                        ...recording,
-                        updated_at: new Date(),
-                        last_synced: new Date(),
-                    },
                 });
 
             console.log(`✓ Synced recording: ${recording.title}`);
