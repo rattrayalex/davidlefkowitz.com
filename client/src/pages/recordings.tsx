@@ -29,12 +29,16 @@ function RecordingTile({ recording }: { recording: Recording }) {
         const leftMargin = imgLeftRelative / 2;
         const rightMargin = imgRightRelative / 2;
         
+        // Calculate height to extend past image bottom by same margin
+        const boxTop = titleTopRelative / 2;
+        const boxHeight = (imgBottomRelative - boxTop) + leftMargin;
+        
         setOverlayStyle({
             position: 'absolute',
-            top: `${titleTopRelative / 2}px`,
+            top: `${boxTop}px`,
             left: `${leftMargin}px`,
             right: `${rightMargin}px`,
-            bottom: `${leftMargin}px`, // Use same margin as left/right for bottom
+            height: `${boxHeight}px`,
             border: '1px solid #6B46C1',
             borderRadius: '8px',
             pointerEvents: 'none',
