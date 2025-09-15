@@ -107,7 +107,7 @@ function RecordingTile({ recording }: { recording: Recording }) {
             )}
 
             {/* Content */}
-            <div className="px-6 pt-6 pb-4 flex flex-col h-full">
+            <div className="px-6 pt-6 pb-4 flex flex-col h-full relative" style={{zIndex: 5}}>
                 {/* Title */}
                 <h3 
                     ref={titleRef}
