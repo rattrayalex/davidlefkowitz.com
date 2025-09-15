@@ -73,7 +73,7 @@ function RecordingTile({ recording }: { recording: Recording }) {
         <div 
             ref={tileRef}
             key={recording.id}
-            className="border border-purple rounded-xl overflow-hidden hover:shadow-lg transition-shadow duration-300 relative" 
+            className="border border-purple rounded-xl overflow-hidden hover:shadow-lg transition-shadow duration-300 relative h-full min-h-[450px]" 
             style={{backgroundColor: '#e5e5ff'}}
             data-testid={`recording-${recording.id}`}
         >
@@ -87,7 +87,7 @@ function RecordingTile({ recording }: { recording: Recording }) {
             )}
 
             {/* Content */}
-            <div className="px-6 pt-6 pb-4">
+            <div className="px-6 pt-6 pb-4 flex flex-col h-full">
                 {/* Title */}
                 <h3 
                     ref={titleRef}
@@ -97,47 +97,54 @@ function RecordingTile({ recording }: { recording: Recording }) {
                     {recording.title}
                 </h3>
 
-                {/* Album Cover */}
-                {recording.album_cover && (
-                    <div 
-                        ref={imageContainerRef}
-                        className="aspect-square bg-gradient-to-br from-purple-100 to-blue-100 relative overflow-hidden mb-4 rounded-lg"
-                    >
-                        <img 
-                            src={recording.album_cover}
-                            alt={recording.title}
-                            className="w-full h-full object-cover"
-                            data-testid={`recording-cover-${recording.id}`}
-                            onLoad={calculateOverlay}
-                        />
-                    </div>
-                )}
-
-                {/* Label */}
-                {recording.label && (
-                    recording.label_url ? (
-                        <a 
-                            href={recording.label_url}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-purple hover:text-purple-700 text-center block underline transition-colors duration-200"
-                            data-testid={`recording-label-${recording.id}`}
+                {/* Album Cover or Spacer */}
+                <div className="flex-grow flex items-center justify-center mb-4">
+                    {recording.album_cover ? (
+                        <div 
+                            ref={imageContainerRef}
+                            className="aspect-square bg-gradient-to-br from-purple-100 to-blue-100 relative overflow-hidden rounded-lg w-full"
                         >
-                            {recording.label}
-                        </a>
+                            <img 
+                                src={recording.album_cover}
+                                alt={recording.title}
+                                className="w-full h-full object-cover"
+                                data-testid={`recording-cover-${recording.id}`}
+                                onLoad={calculateOverlay}
+                            />
+                        </div>
                     ) : (
-                        <p className="text-gray-700 text-center" data-testid={`recording-label-${recording.id}`}>
-                            {recording.label}
+                        <div className="aspect-square w-full"></div>
+                    )}
+                </div>
+
+                {/* Bottom section - Label and Year */}
+                <div className="mt-auto">
+                    {/* Label */}
+                    {recording.label && (
+                        recording.label_url ? (
+                            <a 
+                                href={recording.label_url}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-purple hover:text-purple-700 text-center block underline transition-colors duration-200"
+                                data-testid={`recording-label-${recording.id}`}
+                            >
+                                {recording.label}
+                            </a>
+                        ) : (
+                            <p className="text-gray-700 text-center" data-testid={`recording-label-${recording.id}`}>
+                                {recording.label}
+                            </p>
+                        )
+                    )}
+                    
+                    {/* Year */}
+                    {recording.year && (
+                        <p className="text-gray-600 text-center mt-2" data-testid={`recording-year-${recording.id}`}>
+                            {recording.year}
                         </p>
-                    )
-                )}
-                
-                {/* Year */}
-                {recording.year && (
-                    <p className="text-gray-600 text-center mt-2" data-testid={`recording-year-${recording.id}`}>
-                        {recording.year}
-                    </p>
-                )}
+                    )}
+                </div>
             </div>
         </div>
     );
