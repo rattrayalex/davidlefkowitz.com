@@ -565,6 +565,7 @@ export async function syncRecordings() {
                 duration: durationProperty?.rich_text?.[0]?.plain_text || "",
                 label:
                     labelProperty?.rich_text?.map((item: any) => item.plain_text).join("") || "",
+                label_url: labelProperty?.rich_text?.[0]?.href || null,
                 links: linksProperty?.rich_text?.[0]?.plain_text || "",
                 album_cover: cachedAlbumCover,
             };

@@ -93,6 +93,7 @@ Lefkowitz's compositions have been released on more than twenty commercial recor
                 year: rec.year,
                 duration: rec.duration || "",
                 label: rec.label || "",  // Now a text field, not array
+                label_url: rec.label_url || null,
                 links: rec.links || "",
                 album_cover: rec.album_cover || null,
                 // For frontend compatibility

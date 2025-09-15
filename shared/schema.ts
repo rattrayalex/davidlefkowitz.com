@@ -102,6 +102,7 @@ export const recordings = pgTable("recordings", {
   year: integer("year"),
   duration: text("duration"),
   label: text("label").default(""),
+  label_url: text("label_url"),
   links: text("links"),
   album_cover: text("album_cover"),
   last_synced: timestamp("last_synced").defaultNow(),
