@@ -127,7 +127,7 @@ export default function Compositions() {
                 
                 <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
                     <div className="text-center">
-                        <h1 className="text-5xl lg:text-6xl font-playfair font-bold text-navy mb-6" data-testid="compositions-title">
+                        <h1 className="text-5xl lg:text-6xl font-playfair font-bold text-navy mb-6" data-testid="compositions-title" style={{marginRight: '0.375in'}}>
                             Compositions
                         </h1>
                     </div>
