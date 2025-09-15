@@ -47,7 +47,7 @@ export default function Recordings() {
 
             {/* Instruction Text */}
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <p className="text-gray-600 text-left mb-10">
+                <p className="text-gray-600 text-left mb-10 italic">
                     (Click on album image for more information.)
                 </p>
             </div>
