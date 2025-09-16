@@ -14,7 +14,7 @@ import { eq } from "drizzle-orm";
 import path from "path";
 import { createHash } from "crypto";
 import { promises as fsPromises } from "fs";
-import { Storage } from "@google-cloud/storage";
+import { objectStorageClient } from "./objectStorage";
 
 // Load database schemas
 import * as fs from "fs";
@@ -22,8 +22,7 @@ const schemaData = JSON.parse(
     fs.readFileSync("server/notion-schemas.json", "utf-8"),
 );
 
-// Initialize Google Cloud Storage
-const storage = new Storage();
+// Initialize object storage client
 const bucketName = process.env.DEFAULT_OBJECT_STORAGE_BUCKET_ID || "";
 
 /**
@@ -45,7 +44,7 @@ async function downloadImage(imageUrl: string, mediaId: string): Promise<string>
         const filename = `${mediaId.replace(/[^a-zA-Z0-9]/g, '_')}_${hash}${extension}`;
         const objectPath = `public/media-cache/${filename}`;
         
-        const bucket = storage.bucket(bucketName);
+        const bucket = objectStorageClient.bucket(bucketName);
         const file = bucket.file(objectPath);
         
         // Check if file already exists in object storage
@@ -71,8 +70,7 @@ async function downloadImage(imageUrl: string, mediaId: string): Promise<string>
             },
         });
         
-        // Make the file publicly accessible
-        await file.makePublic();
+        // Don't need to make public explicitly - Replit handles permissions
         
         console.log(`Image uploaded to object storage: ${objectPath}`);
         return `/api/media-cache/${filename}`;
