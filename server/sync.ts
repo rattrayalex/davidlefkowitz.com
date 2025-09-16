@@ -14,6 +14,7 @@ import { eq } from "drizzle-orm";
 import path from "path";
 import { createHash } from "crypto";
 import { promises as fsPromises } from "fs";
+import { Storage } from "@google-cloud/storage";
 
 // Load database schemas
 import * as fs from "fs";
@@ -21,13 +22,19 @@ const schemaData = JSON.parse(
     fs.readFileSync("server/notion-schemas.json", "utf-8"),
 );
 
+// Initialize Google Cloud Storage
+const storage = new Storage();
+const bucketName = process.env.DEFAULT_OBJECT_STORAGE_BUCKET_ID || "";
+
 /**
- * Download an image from URL and save it locally
+ * Download an image from URL and save it to object storage
  */
 async function downloadImage(imageUrl: string, mediaId: string): Promise<string> {
     try {
-        // Create media-cache directory if it doesn't exist
-        await fsPromises.mkdir("server/media-cache", { recursive: true });
+        if (!bucketName) {
+            console.error("No object storage bucket configured");
+            return imageUrl;
+        }
         
         // Get file extension from URL or default to jpg
         const urlPath = new URL(imageUrl).pathname;
@@ -36,29 +43,38 @@ async function downloadImage(imageUrl: string, mediaId: string): Promise<string>
         // Generate filename using media ID and hash of URL for uniqueness
         const hash = createHash('md5').update(imageUrl).digest('hex').slice(0, 8);
         const filename = `${mediaId.replace(/[^a-zA-Z0-9]/g, '_')}_${hash}${extension}`;
-        const filePath = path.join("server/media-cache", filename);
+        const objectPath = `public/media-cache/${filename}`;
         
-        // Check if file already exists
-        try {
-            await fsPromises.access(filePath);
-            console.log(`Image already cached: ${filename}`);
+        const bucket = storage.bucket(bucketName);
+        const file = bucket.file(objectPath);
+        
+        // Check if file already exists in object storage
+        const [exists] = await file.exists();
+        if (exists) {
+            console.log(`Image already cached in object storage: ${objectPath}`);
             return `/api/media-cache/${filename}`;
-        } catch {
-            // File doesn't exist, download it
         }
         
         // Download the image
-        console.log(`Downloading image: ${imageUrl}`);
+        console.log(`Downloading image to object storage: ${imageUrl}`);
         const response = await fetch(imageUrl);
         if (!response.ok) {
             throw new Error(`Failed to download image: ${response.status} ${response.statusText}`);
         }
         
-        // Save the image to local file
+        // Upload to object storage
         const buffer = Buffer.from(await response.arrayBuffer());
-        await fsPromises.writeFile(filePath, buffer);
+        await file.save(buffer, {
+            metadata: {
+                contentType: response.headers.get('content-type') || 'image/jpeg',
+                cacheControl: 'public, max-age=86400', // Cache for 24 hours
+            },
+        });
         
-        console.log(`Image downloaded and cached: ${filename}`);
+        // Make the file publicly accessible
+        await file.makePublic();
+        
+        console.log(`Image uploaded to object storage: ${objectPath}`);
         return `/api/media-cache/${filename}`;
     } catch (error) {
         console.error(`Failed to download image from ${imageUrl}:`, error);
