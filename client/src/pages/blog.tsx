@@ -39,7 +39,7 @@ export default function Blog() {
                 ></div>
                 
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-                    <div className="text-left" style={{paddingLeft: '3rem'}}>
+                    <div className="text-left" style={{paddingLeft: '64px'}}>
                         <h1 className="text-5xl lg:text-6xl font-playfair font-bold text-navy mb-4" data-testid="blog-title" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
                             Blog
                         </h1>
