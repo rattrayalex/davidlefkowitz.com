@@ -567,6 +567,7 @@ export async function syncRecordings() {
             if (!("properties" in page)) continue;
 
             const properties = page.properties;
+            
 
             const nameOfAlbumProperty = properties["Name of Album"] as any;
             const performersProperty = properties.Performers as any;
@@ -614,6 +615,40 @@ export async function syncRecordings() {
                 .join("") || "";
             const slug = nameOfPage || generateSlug(recordingTitle);
             
+            // Extract ranking from various possible property types
+            const extractRanking = (): number | null => {
+                if (!rankingWithinYearProperty) return null;
+                
+                // Try direct number property
+                if (rankingWithinYearProperty.number !== undefined) {
+                    return rankingWithinYearProperty.number;
+                }
+                
+                // Try formula property
+                if (rankingWithinYearProperty.formula?.number !== undefined) {
+                    return rankingWithinYearProperty.formula.number;
+                }
+                
+                // Try rollup property
+                if (rankingWithinYearProperty.rollup?.number !== undefined) {
+                    return rankingWithinYearProperty.rollup.number;
+                }
+                
+                // Try select property
+                if (rankingWithinYearProperty.select?.name) {
+                    const num = parseInt(rankingWithinYearProperty.select.name, 10);
+                    return Number.isFinite(num) ? num : null;
+                }
+                
+                // Try rich text property
+                if (rankingWithinYearProperty.rich_text?.[0]?.plain_text) {
+                    const num = parseInt(rankingWithinYearProperty.rich_text[0].plain_text, 10);
+                    return Number.isFinite(num) ? num : null;
+                }
+                
+                return null;
+            };
+
             const recording: InsertRecording = {
                 title: recordingTitle,
                 slug: slug,
@@ -629,7 +664,7 @@ export async function syncRecordings() {
                         (item: any) => item.name,
                     ) as string[]) || [],
                 year: yearProperty?.number || null,
-                ranking_within_year: rankingWithinYearProperty?.number || null,
+                ranking_within_year: extractRanking(),
                 duration: durationProperty?.rich_text?.[0]?.plain_text || "",
                 label:
                     labelProperty?.rich_text?.map((item: any) => item.plain_text).join("") || "",
