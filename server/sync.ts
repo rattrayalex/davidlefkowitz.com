@@ -334,10 +334,12 @@ export async function syncBlogPosts() {
             const properties = page.properties;
             const titleProperty = properties["Post Title"] as any;
             // Concatenate all rich text parts to get the full title
-            const title =
+            const rawTitle =
                 titleProperty?.title
                     ?.map((part: any) => part.plain_text)
                     .join("") || "";
+            // Clean the title by removing newlines and trimming whitespace
+            const title = rawTitle.replace(/\n/g, ' ').trim();
 
             // Skip posts with missing or invalid titles
             if (!title || title.trim() === "" || title.trim().length < 2) {
@@ -601,7 +603,9 @@ export async function syncRecordings() {
                 }
             }
 
-            const recordingTitle = nameOfAlbumProperty?.title?.[0]?.plain_text || "";
+            // Clean the title by removing newlines and trimming whitespace
+            const rawTitle = nameOfAlbumProperty?.title?.[0]?.plain_text || "";
+            const recordingTitle = rawTitle.replace(/\n/g, ' ').trim();
             
             // Use "Name of Page" from Notion for the slug
             const nameOfPage = nameOfPageProperty?.rich_text
