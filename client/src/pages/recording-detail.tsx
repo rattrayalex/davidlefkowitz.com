@@ -162,11 +162,10 @@ export default function RecordingDetail() {
                                 <div className="mb-4">
                                     <h2 className="text-sm font-semibold text-gray-600 uppercase tracking-wider mb-2" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>PURCHASE AND/OR STREAMING LINKS</h2>
                                     <div 
-                                        className="text-gray-700 recording-links space-y-1" 
+                                        className="text-gray-700 recording-links" 
                                         data-testid="recording-detail-links" 
                                         style={{
                                             fontFamily: 'Times, "Times New Roman", Palatino, serif',
-                                            lineHeight: '1.8',
                                             paddingLeft: '0.25in'
                                         }}
                                         dangerouslySetInnerHTML={{ __html: recording.links }}
