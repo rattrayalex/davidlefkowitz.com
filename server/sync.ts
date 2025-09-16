@@ -16,6 +16,16 @@ import { createHash } from "crypto";
 import { promises as fsPromises } from "fs";
 import { objectStorageClient } from "./objectStorage";
 
+// Helper function to generate URL-friendly slugs
+function generateSlug(text: string): string {
+    return text
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, '_') // Replace non-alphanumeric chars with underscores
+        .replace(/_+/g, '_') // Replace multiple underscores with single
+        .replace(/^_+|_+$/g, '') // Remove leading/trailing underscores
+        .substring(0, 100); // Limit length
+}
+
 // Load database schemas
 import * as fs from "fs";
 const schemaData = JSON.parse(
@@ -378,8 +388,11 @@ export async function syncBlogPosts() {
                 parseInt(day),
             ); // Month is 0-indexed
 
+            const slug = generateSlug(title);
+            
             const blogPost: InsertBlogPost = {
                 title: title.trim(),
+                slug: slug,
                 content: content,
                 excerpt: excerpt + (excerpt.length >= 150 ? "..." : ""),
                 comment: comment,
@@ -582,9 +595,12 @@ export async function syncRecordings() {
                 }
             }
 
+            const recordingTitle = nameOfAlbumProperty?.title?.[0]?.plain_text || "";
+            const slug = generateSlug(recordingTitle);
+            
             const recording: InsertRecording = {
-                title:
-                    nameOfAlbumProperty?.title?.[0]?.plain_text || "",
+                title: recordingTitle,
+                slug: slug,
                 composer: "David S. Lefkowitz",
                 performers:
                     performersProperty?.rich_text?.map((item: any) => item.plain_text).join("") || "",

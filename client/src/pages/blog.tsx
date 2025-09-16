@@ -80,13 +80,13 @@ export default function Blog() {
 
                                     {/* Title */}
                                     <h2 className={`font-playfair font-bold text-navy hover:text-purple transition-colors duration-200 ${post.title.toLowerCase().includes('an explainer') ? 'italic' : ''}`} style={{fontFamily: 'Times, "Times New Roman", Palatino, serif', fontSize: '21px'}}>
-                                        <Link href={`/blog/${post.id}`} data-testid={`blog-post-title-${post.id}`}>
+                                        <Link href={`/blog/${post.slug || post.id}`} data-testid={`blog-post-title-${post.id}`}>
                                             {post.title}
                                         </Link>
                                     </h2>
 
                                     {/* Tags */}
-                                    {post.tags.length > 0 && (
+                                    {post.tags && post.tags.length > 0 && (
                                         <div className="mb-2">
                                             <div className="flex flex-wrap gap-1">
                                                 {post.tags.map((tag) => (

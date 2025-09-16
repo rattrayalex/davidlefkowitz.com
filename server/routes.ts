@@ -72,6 +72,63 @@ Lefkowitz's compositions have been released on more than twenty commercial recor
     });
 
     // Get all recordings from local database
+    // Get single recording by ID or slug
+    app.get("/api/recordings/:id", async (req, res) => {
+        try {
+            const { id } = req.params;
+            
+            // Try to fetch by ID first (UUID), then try by slug
+            let recordingData = await db
+                .select()
+                .from(recordings)
+                .where(eq(recordings.id, id))
+                .limit(1);
+
+            // If not found by ID and it doesn't look like a UUID, try by slug
+            if (recordingData.length === 0 && !id.match(/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i)) {
+                recordingData = await db
+                    .select()
+                    .from(recordings)
+                    .where(eq(recordings.slug, id))
+                    .limit(1);
+            }
+
+            if (recordingData.length === 0) {
+                return res.status(404).json({ error: "Recording not found" });
+            }
+
+            const rec = recordingData[0];
+            const formattedRecording = {
+                id: rec.id,
+                slug: rec.slug,
+                title: rec.title,
+                composer: rec.composer,
+                performer: rec.performers || "",
+                performers: rec.performers || "",
+                composition: rec.composition || "",
+                ensemble: Array.isArray(rec.ensemble) ? rec.ensemble.join(", ") : "",
+                instrumentation: Array.isArray(rec.instrumentation) ? rec.instrumentation.join(", ") : "",
+                year: rec.year,
+                duration: rec.duration || "",
+                label: rec.label || "",
+                label_url: rec.label_url || null,
+                links: rec.links || "",
+                album_cover: rec.album_cover || null,
+                album_track_listing: rec.album_track_listing || [],
+                // For frontend compatibility
+                audio_url: rec.links || "",
+                video_url: "",
+                description: "",
+                release_date: rec.year ? new Date(rec.year, 0, 1).toISOString() : ""
+            };
+
+            res.json(formattedRecording);
+        } catch (error) {
+            console.error("Error fetching recording:", error);
+            res.status(500).json({ error: "Failed to fetch recording" });
+        }
+    });
+
     app.get("/api/recordings", async (req, res) => {
         try {
             const recordingsData = await db
@@ -84,6 +141,7 @@ Lefkowitz's compositions have been released on more than twenty commercial recor
 
             const formattedRecordings = validRecordings.map((rec: Recording) => ({
                 id: rec.id,
+                slug: rec.slug,
                 title: rec.title,
                 composer: rec.composer,
                 performer: rec.performers || "",  // Now a text field, not array
@@ -123,6 +181,7 @@ Lefkowitz's compositions have been released on more than twenty commercial recor
 
             const formattedPosts = blogPostsData.map((post: BlogPost) => ({
                 id: post.id,
+                slug: post.slug,
                 title: post.title,
                 excerpt: post.excerpt || "",
                 content: post.content,
@@ -145,11 +204,21 @@ Lefkowitz's compositions have been released on more than twenty commercial recor
         try {
             const { id } = req.params;
             
-            const blogPostData = await db
+            // Try to fetch by ID first (UUID), then try by slug
+            let blogPostData = await db
                 .select()
                 .from(blogPosts)
                 .where(eq(blogPosts.id, id))
                 .limit(1);
+
+            // If not found by ID and it doesn't look like a UUID, try by slug
+            if (blogPostData.length === 0 && !id.match(/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i)) {
+                blogPostData = await db
+                    .select()
+                    .from(blogPosts)
+                    .where(eq(blogPosts.slug, id))
+                    .limit(1);
+            }
 
             if (blogPostData.length === 0) {
                 return res.status(404).json({ error: "Post not found" });
@@ -158,6 +227,7 @@ Lefkowitz's compositions have been released on more than twenty commercial recor
             const post = blogPostData[0];
             const formattedPost = {
                 id: post.id,
+                slug: post.slug,
                 title: post.title,
                 excerpt: post.excerpt || "",
                 content: post.content,

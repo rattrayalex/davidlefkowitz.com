@@ -63,6 +63,7 @@ export type ContactForm = z.infer<typeof contactFormSchema>;
 export const blogPosts = pgTable("blog_posts", {
   id: varchar("id").primaryKey(), // Use Notion page ID
   title: text("title").notNull(),
+  slug: text("slug"), // Human-readable URL slug
   content: text("content").notNull().default(""),
   excerpt: text("excerpt").default(""),
   comment: text("comment").default(""), // Comment from Notion DB
@@ -95,6 +96,7 @@ export const compositions = pgTable("compositions", {
 export const recordings = pgTable("recordings", {
   id: varchar("id").primaryKey(), // Use Notion page ID
   title: text("title").notNull(),
+  slug: text("slug"), // Human-readable URL slug
   composer: text("composer").default("David S. Lefkowitz"),
   performers: text("performers").default(""),
   ensemble: json("ensemble").$type<string[]>().default([]),

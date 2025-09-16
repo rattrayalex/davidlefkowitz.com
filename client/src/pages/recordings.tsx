@@ -101,7 +101,7 @@ function RecordingTile({ recording }: { recording: Recording }) {
                         cursor: 'pointer',
                         zIndex: 10 // Above content for clicking
                     }}
-                    onClick={() => setLocation(`/recordings/${recording.id}`)}
+                    onClick={() => setLocation(`/recordings/${recording.slug || recording.id}`)}
                     data-testid={`recording-box-${recording.id}`}
                 />
             )}

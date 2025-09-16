@@ -22,7 +22,7 @@ export default function RecordingDetail() {
         );
     }
 
-    const recording = recordings.find(r => r.id === id);
+    const recording = recordings.find(r => r.id === id || r.slug === id);
 
     if (!recording) {
         return (
@@ -56,7 +56,7 @@ export default function RecordingDetail() {
                 <div className="bg-white rounded-xl shadow-lg overflow-hidden">
                     <div className="md:flex">
                         {/* Album Cover and Track Listings */}
-                        {(recording.album_cover || recording.album_track_listing?.length > 0) && (
+                        {(recording.album_cover || (recording.album_track_listing && recording.album_track_listing.length > 0)) && (
                             <div className="md:w-1/2">
                                 {/* Album Cover */}
                                 {recording.album_cover && (
@@ -166,7 +166,7 @@ export default function RecordingDetail() {
                                         data-testid="recording-detail-links" 
                                         style={{
                                             fontFamily: 'Times, "Times New Roman", Palatino, serif',
-                                            paddingLeft: '0.25in'
+                                            paddingLeft: '24px'
                                         }}
                                         dangerouslySetInnerHTML={{ __html: recording.links }}
                                     />
