@@ -141,21 +141,9 @@ function RecordingTile({ recording }: { recording: Recording }) {
                 <div className="mt-auto">
                     {/* Label */}
                     {recording.label && (
-                        recording.label_url ? (
-                            <a 
-                                href={recording.label_url}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="text-purple hover:text-purple-700 text-center block underline transition-colors duration-200"
-                                data-testid={`recording-label-${recording.id}`}
-                            >
-                                {recording.label}
-                            </a>
-                        ) : (
-                            <p className="text-gray-700 text-center" data-testid={`recording-label-${recording.id}`}>
-                                {recording.label}
-                            </p>
-                        )
+                        <p className="text-gray-700 text-center" data-testid={`recording-label-${recording.id}`}>
+                            {recording.label}
+                        </p>
                     )}
                     
                     {/* Year */}
