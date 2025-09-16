@@ -38,8 +38,8 @@ export default function Blog() {
                     }}
                 ></div>
                 
-                <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-                    <div className="text-center">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+                    <div className="text-left" style={{paddingLeft: '3rem'}}>
                         <h1 className="text-5xl lg:text-6xl font-playfair font-bold text-navy mb-4" data-testid="blog-title" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
                             Blog
                         </h1>
@@ -48,7 +48,7 @@ export default function Blog() {
             </section>
 
             {/* Blog Posts */}
-            <section className="py-4">
+            <section className="pt-12 pb-4">
                 <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
                     {posts.length === 0 ? (
                         <div className="text-center py-12">

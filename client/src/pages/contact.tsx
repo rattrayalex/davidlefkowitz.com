@@ -23,8 +23,8 @@ export default function Contact() {
                     }}
                 ></div>
                 
-                <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-                    <div className="text-center">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+                    <div className="text-left" style={{paddingLeft: '3rem'}}>
                         <h1 className="text-5xl lg:text-6xl font-playfair font-bold text-navy mb-2" data-testid="contact-title" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
                             Contact
                         </h1>
@@ -33,7 +33,7 @@ export default function Contact() {
             </section>
 
             {/* Contact Content */}
-            <section className="pt-2 pb-8">
+            <section className="pt-12 pb-8">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="grid lg:grid-cols-2 gap-16">
                         {/* Contact Information */}
