@@ -281,7 +281,7 @@ export default function MediaPage() {
                         </h1>
 
                         {/* Navigation Buttons */}
-                        <div className="flex justify-center gap-4 mb-8 mt-12">
+                        <div className="flex justify-start gap-4 mb-8 mt-12">
                             <button
                                 onClick={scrollToPhotos}
                                 className={`px-6 py-2 rounded-lg font-medium transition-colors ${
