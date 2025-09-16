@@ -3,7 +3,8 @@
 This is a composer's portfolio website for David S. Lefkowitz, built as a full-stack web application. The site showcases compositions, recordings, blog posts, and provides contact functionality. It integrates with Notion as a headless CMS for content management, allowing the composer to manage their portfolio content through familiar Notion interfaces while presenting it through a polished, professional web presence.
 
 ## Recent Updates (September 16, 2025)
-- **Human-readable URLs**: Implemented slug-based URLs for blog posts and recordings (e.g., `/recordings/Reimagine_Beethoven_&_Ravel` instead of UUID-based URLs)
+- **Ranking Within Year Fix**: Fixed critical issue where "Ranking within year" values from Notion weren't populating. Implemented flexible extraction logic to handle formula, rollup, and other Notion field types beyond simple numbers
+- **Human-readable URLs**: Implemented slug-based URLs for blog posts and recordings (e.g., `/recordings/Reimagine_Beethoven_&_Ravel` instead of UUID-based URLs)  
 - **Blog Formatting Fixes**: Resolved issues with line breaks appearing around italic text and hyperlinks in blog posts
 - **UI Improvements**: Fixed padding issues on recording detail pages, particularly for streaming links section
 - **Image Migration**: Successfully migrated all 72 images from local filesystem to Replit App Storage for production compatibility
