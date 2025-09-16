@@ -102,6 +102,7 @@ export const recordings = pgTable("recordings", {
   ensemble: json("ensemble").$type<string[]>().default([]),
   instrumentation: json("instrumentation").$type<string[]>().default([]),
   year: integer("year"),
+  ranking_within_year: integer("ranking_within_year"),
   duration: text("duration"),
   label: text("label").default(""),
   label_url: text("label_url"),

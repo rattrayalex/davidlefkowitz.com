@@ -580,6 +580,7 @@ export async function syncRecordings() {
             const compositionProperty = properties.Composition as any;
             const albumTrackListingProperty = properties["Album Track Listing"] as any;
             const nameOfPageProperty = properties["Name of Page"] as any;
+            const rankingWithinYearProperty = properties["Ranking within year"] as any;
 
             // Download and cache album cover if it exists
             let cachedAlbumCover = null;
@@ -628,6 +629,7 @@ export async function syncRecordings() {
                         (item: any) => item.name,
                     ) as string[]) || [],
                 year: yearProperty?.number || null,
+                ranking_within_year: rankingWithinYearProperty?.number || null,
                 duration: durationProperty?.rich_text?.[0]?.plain_text || "",
                 label:
                     labelProperty?.rich_text?.map((item: any) => item.plain_text).join("") || "",

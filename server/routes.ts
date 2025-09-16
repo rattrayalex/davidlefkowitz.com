@@ -3,7 +3,7 @@ import { createServer, type Server } from "http";
 import { notion } from "./notion";
 import { contactFormSchema, blogPosts, compositions, recordings, media, contacts, type BlogPost, type Composition, type Recording, type Media } from "@shared/schema";
 import { db } from "./db";
-import { eq, desc, sql, lt, gt } from "drizzle-orm";
+import { eq, desc, asc, sql, lt, gt } from "drizzle-orm";
 import { syncBlogPosts, syncCompositions, syncRecordings, syncMedia } from "./sync";
 import { getMediaPageReviews } from "./notion";
 import { ObjectStorageService } from "./objectStorage";
@@ -134,7 +134,7 @@ Lefkowitz's compositions have been released on more than twenty commercial recor
             const recordingsData = await db
                 .select()
                 .from(recordings)
-                .orderBy(desc(recordings.year));
+                .orderBy(desc(recordings.year), asc(recordings.ranking_within_year));
 
             // Filter out recordings with empty titles
             const validRecordings = recordingsData.filter((rec: Recording) => rec.title && rec.title.trim() !== "");
