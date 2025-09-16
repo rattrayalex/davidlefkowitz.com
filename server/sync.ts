@@ -348,6 +348,7 @@ export async function syncBlogPosts() {
             }
 
             const commentProperty = properties["Comment"] as any;
+            const nameOfPageProperty = properties["Name of Page"] as any;
 
             const publicationDateProperty = properties[
                 "Publication Date"
@@ -388,7 +389,11 @@ export async function syncBlogPosts() {
                 parseInt(day),
             ); // Month is 0-indexed
 
-            const slug = generateSlug(title);
+            // Use "Name of Page" from Notion for the slug
+            const nameOfPage = nameOfPageProperty?.rich_text
+                ?.map((part: any) => part.plain_text)
+                .join("") || "";
+            const slug = nameOfPage || generateSlug(title);
             
             const blogPost: InsertBlogPost = {
                 title: title.trim(),
@@ -572,6 +577,7 @@ export async function syncRecordings() {
             const albumCoverProperty = properties["Album Cover"] as any;
             const compositionProperty = properties.Composition as any;
             const albumTrackListingProperty = properties["Album Track Listing"] as any;
+            const nameOfPageProperty = properties["Name of Page"] as any;
 
             // Download and cache album cover if it exists
             let cachedAlbumCover = null;
@@ -596,7 +602,12 @@ export async function syncRecordings() {
             }
 
             const recordingTitle = nameOfAlbumProperty?.title?.[0]?.plain_text || "";
-            const slug = generateSlug(recordingTitle);
+            
+            // Use "Name of Page" from Notion for the slug
+            const nameOfPage = nameOfPageProperty?.rich_text
+                ?.map((part: any) => part.plain_text)
+                .join("") || "";
+            const slug = nameOfPage || generateSlug(recordingTitle);
             
             const recording: InsertRecording = {
                 title: recordingTitle,
