@@ -109,7 +109,7 @@ function richTextToHtml(richTextArray: any[]): string {
         }
         
         return text;
-    }).join("<br />");
+    }).join(""); // Join without line breaks - formatting changes are inline
 }
 
 /**
