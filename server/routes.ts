@@ -71,6 +71,42 @@ Lefkowitz's compositions have been released on more than twenty commercial recor
         }
     });
 
+    // Get single composition by slug
+    app.get("/api/compositions/:slug", async (req, res) => {
+        try {
+            const { slug } = req.params;
+            
+            const [composition] = await db
+                .select()
+                .from(compositions)
+                .where(eq(compositions.slug, slug))
+                .limit(1);
+            
+            if (!composition) {
+                return res.status(404).json({ error: "Composition not found" });
+            }
+
+            const formattedComposition = {
+                id: composition.id,
+                slug: composition.slug,
+                title: composition.title,
+                instrumentation: Array.isArray(composition.instrumentation) ? composition.instrumentation.join(", ") : "",
+                ensemble: Array.isArray(composition.ensemble) ? composition.ensemble.join(", ") : "",
+                year: composition.year,
+                category: Array.isArray(composition.ensemble) && composition.ensemble.length > 0 ? composition.ensemble[0] : "",
+                duration: composition.duration || "",
+                premiere_info: composition.premiere_info || "",
+                publisher: Array.isArray(composition.publisher) ? composition.publisher.join(", ") : "",
+                recording: composition.recording || "",
+            };
+
+            res.json(formattedComposition);
+        } catch (error) {
+            console.error("Error fetching composition:", error);
+            res.status(500).json({ error: "Failed to fetch composition" });
+        }
+    });
+
     // Get all recordings from local database
     // Get single recording by ID or slug
     app.get("/api/recordings/:id", async (req, res) => {
