@@ -101,7 +101,15 @@ export default function Compositions() {
             // Apply sorting based on sortMode only when "All" is selected
             if (selectedCategory === "All") {
                 if (sortMode === "Alphabetical") {
-                    return a.title.localeCompare(b.title);
+                    // Function to strip leading punctuation for sorting
+                    const stripLeadingPunctuation = (title: string) => {
+                        // Remove leading punctuation like "...", "(", quotes, etc.
+                        return title.replace(/^[\s\.\(\)\[\]"'`…]+/, '');
+                    };
+                    
+                    const aTitle = stripLeadingPunctuation(a.title);
+                    const bTitle = stripLeadingPunctuation(b.title);
+                    return aTitle.localeCompare(bTitle);
                 } else {
                     // Chronological (newest first)
                     return (b.year || 0) - (a.year || 0);
