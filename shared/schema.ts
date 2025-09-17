@@ -79,6 +79,7 @@ export const blogPosts = pgTable("blog_posts", {
 
 export const compositions = pgTable("compositions", {
   id: varchar("id").primaryKey(), // Use Notion page ID
+  slug: text("slug"), // URL-friendly version of title
   title: text("title").notNull(),
   instrumentation: json("instrumentation").$type<string[]>().default([]),
   ensemble: json("ensemble").$type<string[]>().default([]),

@@ -3,10 +3,12 @@ import { useQuery } from "@tanstack/react-query";
 import { ExternalLink, Music, Calendar, ChevronDown, Search } from "lucide-react";
 import LoadingSpinner from "@/components/ui/loading-spinner";
 import { Composition } from "@shared/schema";
+import { Link } from "wouter";
 
 // Define the API response type that matches what the server returns
 interface CompositionResponse {
     id: string;
+    slug?: string; // URL-friendly version of title
     title: string;
     instrumentation: string; // Transformed from array to comma-separated string
     ensemble: string; // Transformed from array to comma-separated string
@@ -16,6 +18,15 @@ interface CompositionResponse {
     premiere_info: string;
     publisher: string; // Transformed from array to comma-separated string
     recording: string;
+}
+
+// Function to generate slug from title (replace all punctuation and spaces with underscores)
+function generateCompositionSlug(title: string): string {
+    return title
+        .replace(/[^\w\s]/g, '') // Remove all punctuation
+        .replace(/\s+/g, '_') // Replace spaces with underscores
+        .replace(/_+/g, '_') // Replace multiple underscores with single
+        .replace(/^_|_$/g, ''); // Remove leading/trailing underscores
 }
 import twelvePointStarSvg from "@/assets/12_point_curved.svg";
 import {
@@ -273,9 +284,13 @@ export default function Compositions() {
                     ) : (
                         <div className="space-y-2">
                             {filteredCompositions.map((composition) => (
-                                <div 
+                                <Link 
                                     key={composition.id}
-                                    className="border border-purple rounded-lg p-2 hover:shadow-lg transition-shadow duration-300 flex items-center gap-4 flex-wrap" 
+                                    href={`/compositions/${composition.slug || generateCompositionSlug(composition.title)}`}
+                                    className="block"
+                                >
+                                <div 
+                                    className="border border-purple rounded-lg p-2 hover:shadow-lg transition-shadow duration-300 cursor-pointer flex items-center gap-4 flex-wrap" 
                                     style={{backgroundColor: '#e5e5ff'}}
                                     data-testid={`composition-${composition.id}`}
                                 >
@@ -313,32 +328,8 @@ export default function Compositions() {
                                         </span>
                                     )}
 
-                                    {/* 6. Publisher */}
-                                    {composition.publisher && (
-                                        <span className="text-gray-700" data-testid={`composition-publisher-${composition.id}`}>
-                                            {composition.publisher}
-                                        </span>
-                                    )}
-
-                                    {/* 7. Recording Link */}
-                                    {composition.recording && (
-                                        <span className="text-purple font-medium flex items-center flex-shrink-0" data-testid={`composition-recording-${composition.id}`}>
-                                            <Music className="h-4 w-4 mr-1" />
-                                            {composition.recording.includes('http') ? (
-                                                <a 
-                                                    href={composition.recording} 
-                                                    target="_blank" 
-                                                    rel="noopener noreferrer"
-                                                    className="hover:underline flex items-center"
-                                                >
-                                                    Recording <ExternalLink className="h-3 w-3 ml-1" />
-                                                </a>
-                                            ) : (
-                                                composition.recording
-                                            )}
-                                        </span>
-                                    )}
                                 </div>
+                                </Link>
                             ))}
                         </div>
                     )}
