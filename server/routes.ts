@@ -53,6 +53,7 @@ Lefkowitz's compositions have been released on more than twenty commercial recor
 
             const formattedCompositions = compositionsData.map((comp: Composition) => ({
                 id: comp.id,
+                slug: comp.slug,
                 title: comp.title,
                 instrumentation: Array.isArray(comp.instrumentation) ? comp.instrumentation.join(", ") : "",
                 ensemble: Array.isArray(comp.ensemble) ? comp.ensemble.join(", ") : "",
