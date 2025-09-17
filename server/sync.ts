@@ -491,8 +491,17 @@ export async function syncCompositions() {
         // Parse year - trust Notion to provide a number
         const year = yearProperty?.number || null;
 
+        // Generate slug from title (replace all punctuation and spaces with underscores)
+        const title = nameProperty?.title?.[0]?.plain_text || "";
+        const slug = title
+            .replace(/[^\w\s]/g, '') // Remove all punctuation
+            .replace(/\s+/g, '_') // Replace spaces with underscores
+            .replace(/_+/g, '_') // Replace multiple underscores with single
+            .replace(/^_|_$/g, ''); // Remove leading/trailing underscores
+
         const composition: InsertComposition = {
-            title: nameProperty?.title?.[0]?.plain_text || "",
+            slug: slug,
+            title: title,
             instrumentation: instrumentationProperty?.rich_text?.[0]?.plain_text ? [instrumentationProperty.rich_text[0].plain_text] : [],
             ensemble:
                 (ensembleProperty?.multi_select?.map(
