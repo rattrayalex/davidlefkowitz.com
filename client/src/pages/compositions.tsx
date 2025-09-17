@@ -72,6 +72,7 @@ export default function Compositions() {
     const [selectedCategory, setSelectedCategory] = useState<string>("All");
     const [titleSearch, setTitleSearch] = useState<string>("");
     const [instrumentSearch, setInstrumentSearch] = useState<string>("");
+    const [sortMode, setSortMode] = useState<"Chronological" | "Alphabetical">("Chronological");
     
     const { data: compositions = [], isLoading } = useQuery<CompositionResponse[]>({
         queryKey: ["/api/compositions"],
@@ -96,7 +97,19 @@ export default function Compositions() {
             
             return categoryMatch && titleMatch && instrumentMatch;
         })
-        .sort((a, b) => (b.year || 0) - (a.year || 0)); // Sort by year in reverse chronological order (newest first)
+        .sort((a, b) => {
+            // Apply sorting based on sortMode only when "All" is selected
+            if (selectedCategory === "All") {
+                if (sortMode === "Alphabetical") {
+                    return a.title.localeCompare(b.title);
+                } else {
+                    // Chronological (newest first)
+                    return (b.year || 0) - (a.year || 0);
+                }
+            }
+            // Default chronological sort for filtered categories
+            return (b.year || 0) - (a.year || 0);
+        });
 
     if (isLoading) {
         return (
@@ -177,18 +190,41 @@ export default function Compositions() {
                         
                         {/* Category Filters */}
                         <div className="flex flex-wrap gap-4 items-center">
-                        {/* All Button */}
-                        <button
-                            onClick={() => setSelectedCategory("All")}
-                            className={`px-6 py-2 rounded-full font-medium transition-all duration-200 ${
-                                selectedCategory === "All"
-                                    ? "bg-purple text-white shadow-lg"
-                                    : "border border-gray-300 text-gray-700 hover:border-gray-400"
-                            }`}
-                            data-testid="filter-all"
-                        >
-                            All
-                        </button>
+                        {/* All Button with Dropdown */}
+                        <DropdownMenu>
+                            <DropdownMenuTrigger
+                                className={`px-6 py-2 rounded-full font-medium transition-all duration-200 ${
+                                    selectedCategory === "All"
+                                        ? "bg-purple text-white shadow-lg"
+                                        : "border border-gray-300 text-gray-700 hover:border-gray-400"
+                                } focus:outline-none focus:ring-2 focus:ring-purple focus:ring-opacity-50`}
+                                data-testid="filter-all"
+                            >
+                                All
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent>
+                                <DropdownMenuItem
+                                    onClick={() => {
+                                        setSelectedCategory("All");
+                                        setSortMode("Chronological");
+                                    }}
+                                    className="cursor-pointer hover:bg-gray-100 focus:bg-gray-100"
+                                    data-testid="sort-chronological"
+                                >
+                                    Chronological
+                                </DropdownMenuItem>
+                                <DropdownMenuItem
+                                    onClick={() => {
+                                        setSelectedCategory("All");
+                                        setSortMode("Alphabetical");
+                                    }}
+                                    className="cursor-pointer hover:bg-gray-100 focus:bg-gray-100"
+                                    data-testid="sort-alphabetical"
+                                >
+                                    Alphabetical
+                                </DropdownMenuItem>
+                            </DropdownMenuContent>
+                        </DropdownMenu>
 
                         {/* Category Dropdowns */}
                         {Object.entries(categoryStructure).map(([mainCategory, subcategories]) => (
