@@ -88,6 +88,7 @@ export const compositions = pgTable("compositions", {
   publisher: json("publisher").$type<string[]>().default([]),
   premiere_info: text("premiere_info"),
   recording: text("recording"),
+  program_note: text("program_note"), // Program notes from Notion
   published: boolean("published").notNull().default(false),
   last_synced: timestamp("last_synced").defaultNow(),
   created_at: timestamp("created_at").defaultNow(),

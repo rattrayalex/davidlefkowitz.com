@@ -487,6 +487,7 @@ export async function syncCompositions() {
         const publisherProperty = properties.Publisher as any;
         const premiereProperty = properties["Date of premier"] as any;
         const recordingProperty = properties.Recording as any;
+        const programNoteProperty = properties["Program Note"] as any;
 
         // Parse year - trust Notion to provide a number
         const year = yearProperty?.number || null;
@@ -515,6 +516,7 @@ export async function syncCompositions() {
                 ) as string[]) || [],
             premiere_info: premiereProperty?.date?.start || "",
             recording: recordingProperty?.rich_text?.[0]?.plain_text || "",
+            program_note: programNoteProperty?.rich_text?.map((part: any) => part.plain_text).join("") || "",
             published: true,
         };
 
