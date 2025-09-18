@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { ExternalLink, Music, Calendar, ChevronDown, Search } from "lucide-react";
 import LoadingSpinner from "@/components/ui/loading-spinner";
 import { Composition } from "@shared/schema";
-import { Link } from "wouter";
+import { Link, useLocation } from "wouter";
 
 // Define the API response type that matches what the server returns
 interface CompositionResponse {
@@ -80,10 +80,35 @@ const categoryStructure = {
 };
 
 export default function Compositions() {
-    const [selectedCategory, setSelectedCategory] = useState<string>("All");
-    const [titleSearch, setTitleSearch] = useState<string>("");
-    const [instrumentSearch, setInstrumentSearch] = useState<string>("");
-    const [sortMode, setSortMode] = useState<"Chronological" | "Alphabetical">("Chronological");
+    const [location, setLocation] = useLocation();
+    
+    // Parse search params from URL
+    const searchParams = new URLSearchParams(location.split('?')[1] || '');
+    
+    // Initialize state from URL params or defaults
+    const [selectedCategory, setSelectedCategory] = useState<string>(searchParams.get('category') || "All");
+    const [titleSearch, setTitleSearch] = useState<string>(searchParams.get('title') || "");
+    const [instrumentSearch, setInstrumentSearch] = useState<string>(searchParams.get('instrument') || "");
+    const [sortMode, setSortMode] = useState<"Chronological" | "Alphabetical">(
+        (searchParams.get('sort') as "Chronological" | "Alphabetical") || "Chronological"
+    );
+    
+    // Update URL when filters change
+    useEffect(() => {
+        const params = new URLSearchParams();
+        if (selectedCategory !== "All") params.set('category', selectedCategory);
+        if (titleSearch) params.set('title', titleSearch);
+        if (instrumentSearch) params.set('instrument', instrumentSearch);
+        if (sortMode !== "Chronological") params.set('sort', sortMode);
+        
+        const queryString = params.toString();
+        const newPath = queryString ? `/compositions?${queryString}` : '/compositions';
+        
+        // Only update URL if it's different to avoid infinite loops
+        if (location !== newPath) {
+            setLocation(newPath);
+        }
+    }, [selectedCategory, titleSearch, instrumentSearch, sortMode, location, setLocation]);
     
     const { data: compositions = [], isLoading } = useQuery<CompositionResponse[]>({
         queryKey: ["/api/compositions"],
@@ -286,7 +311,7 @@ export default function Compositions() {
                             {filteredCompositions.map((composition) => (
                                 <Link 
                                     key={composition.id}
-                                    href={`/compositions/${composition.slug || generateCompositionSlug(composition.title)}`}
+                                    href={`/compositions/${composition.slug || generateCompositionSlug(composition.title)}${location.includes('?') ? location.substring(location.indexOf('?')) : ''}`}
                                     className="block"
                                 >
                                 <div 
