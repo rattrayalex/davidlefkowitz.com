@@ -87,48 +87,59 @@ Lefkowitz's compositions have been released on more than twenty commercial recor
                 return res.status(404).json({ error: "Composition not found" });
             }
 
-            // If there's a recording link, try to find the matching recording
-            let recordingInfo = null;
+            // If there are recording links, try to find the matching recordings
+            let recordingInfoArray: any[] = [];
             if (composition.recording) {
-                // Extract the slug from the URL if it's a URL, otherwise treat as title
-                let searchCriteria = composition.recording;
+                // Handle recording as an array (new format) or string (legacy format)
+                const recordingUrls = Array.isArray(composition.recording) 
+                    ? composition.recording 
+                    : typeof composition.recording === 'string' && composition.recording.trim() 
+                        ? [composition.recording]
+                        : [];
                 
-                // Check if it's a URL and extract the slug
-                if (composition.recording.includes('/recordings/')) {
-                    const urlParts = composition.recording.split('/recordings/');
-                    searchCriteria = urlParts[urlParts.length - 1];
-                }
-                
-                // Try to find a matching recording by slug
-                const [matchingRecording] = await db
-                    .select()
-                    .from(recordings)
-                    .where(eq(recordings.slug, searchCriteria))
-                    .limit(1);
-                
-                // If not found by slug and it's not a URL, try by title
-                if (!matchingRecording && !composition.recording.includes('/recordings/')) {
-                    const [titleMatch] = await db
+                for (const recordingUrl of recordingUrls) {
+                    if (!recordingUrl || typeof recordingUrl !== 'string') continue;
+                    
+                    // Extract the slug from the URL if it's a URL, otherwise treat as title
+                    let searchCriteria = recordingUrl;
+                    
+                    // Check if it's a URL and extract the slug
+                    if (recordingUrl.includes('/recordings/')) {
+                        const urlParts = recordingUrl.split('/recordings/');
+                        searchCriteria = urlParts[urlParts.length - 1];
+                    }
+                    
+                    // Try to find a matching recording by slug
+                    const [matchingRecording] = await db
                         .select()
                         .from(recordings)
-                        .where(eq(recordings.title, searchCriteria))
+                        .where(eq(recordings.slug, searchCriteria))
                         .limit(1);
                     
-                    if (titleMatch) {
-                        recordingInfo = {
-                            id: titleMatch.id,
-                            slug: titleMatch.slug,
-                            title: titleMatch.title,
-                            album_cover: titleMatch.album_cover || "",
-                        };
+                    // If not found by slug and it's not a URL, try by title
+                    if (!matchingRecording && !recordingUrl.includes('/recordings/')) {
+                        const [titleMatch] = await db
+                            .select()
+                            .from(recordings)
+                            .where(eq(recordings.title, searchCriteria))
+                            .limit(1);
+                        
+                        if (titleMatch) {
+                            recordingInfoArray.push({
+                                id: titleMatch.id,
+                                slug: titleMatch.slug,
+                                title: titleMatch.title,
+                                album_cover: titleMatch.album_cover || "",
+                            });
+                        }
+                    } else if (matchingRecording) {
+                        recordingInfoArray.push({
+                            id: matchingRecording.id,
+                            slug: matchingRecording.slug,
+                            title: matchingRecording.title,
+                            album_cover: matchingRecording.album_cover || "",
+                        });
                     }
-                } else if (matchingRecording) {
-                    recordingInfo = {
-                        id: matchingRecording.id,
-                        slug: matchingRecording.slug,
-                        title: matchingRecording.title,
-                        album_cover: matchingRecording.album_cover || "",
-                    };
                 }
             }
 
@@ -145,7 +156,7 @@ Lefkowitz's compositions have been released on more than twenty commercial recor
                 publisher: Array.isArray(composition.publisher) ? composition.publisher.join(", ") : "",
                 recording: composition.recording || "",
                 streaming_links: composition.streaming_links || "",
-                recording_info: recordingInfo,
+                recording_info: recordingInfoArray.length > 0 ? recordingInfoArray : null,
                 program_note: composition.program_note || "",
             };
 
