@@ -136,7 +136,7 @@ export default function CompositionDetail() {
 
                                 {/* Recording */}
                                 {composition.recording_info && composition.recording_info.album_cover && (
-                                    <div>
+                                    <div className="w-48">
                                         <h2 className="text-lg font-semibold text-navy mb-2" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
                                             Recording
                                         </h2>
@@ -145,12 +145,12 @@ export default function CompositionDetail() {
                                                 <img 
                                                     src={composition.recording_info.album_cover}
                                                     alt={composition.recording_info.title}
-                                                    className="w-48 h-48 object-cover rounded-lg shadow-md"
+                                                    className="w-full h-48 object-cover rounded-lg shadow-md"
                                                     data-testid="composition-recording-cover"
                                                 />
                                             </a>
                                         </Link>
-                                        <p className="text-gray-600 mt-2" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif', fontSize: '1rem'}}>
+                                        <p className="text-gray-600 mt-2 break-words" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif', fontSize: '1rem'}}>
                                             {composition.recording_info.title}
                                         </p>
                                     </div>
