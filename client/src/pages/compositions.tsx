@@ -82,16 +82,20 @@ const categoryStructure = {
 export default function Compositions() {
     const [location, setLocation] = useLocation();
     
-    // Parse search params from URL
-    const searchParams = new URLSearchParams(location.split('?')[1] || '');
+    // Initialize state
+    const [selectedCategory, setSelectedCategory] = useState<string>("All");
+    const [titleSearch, setTitleSearch] = useState<string>("");
+    const [instrumentSearch, setInstrumentSearch] = useState<string>("");
+    const [sortMode, setSortMode] = useState<"Chronological" | "Alphabetical">("Chronological");
     
-    // Initialize state from URL params or defaults
-    const [selectedCategory, setSelectedCategory] = useState<string>(searchParams.get('category') || "All");
-    const [titleSearch, setTitleSearch] = useState<string>(searchParams.get('title') || "");
-    const [instrumentSearch, setInstrumentSearch] = useState<string>(searchParams.get('instrument') || "");
-    const [sortMode, setSortMode] = useState<"Chronological" | "Alphabetical">(
-        (searchParams.get('sort') as "Chronological" | "Alphabetical") || "Chronological"
-    );
+    // Update state from URL when location changes (e.g., when navigating back)
+    useEffect(() => {
+        const searchParams = new URLSearchParams(location.split('?')[1] || '');
+        setSelectedCategory(searchParams.get('category') || "All");
+        setTitleSearch(searchParams.get('title') || "");
+        setInstrumentSearch(searchParams.get('instrument') || "");
+        setSortMode((searchParams.get('sort') as "Chronological" | "Alphabetical") || "Chronological");
+    }, [location]);
     
     // Update URL when filters change
     useEffect(() => {
@@ -308,12 +312,14 @@ export default function Compositions() {
                         </div>
                     ) : (
                         <div className="space-y-2">
-                            {filteredCompositions.map((composition) => (
-                                <Link 
-                                    key={composition.id}
-                                    href={`/compositions/${composition.slug || generateCompositionSlug(composition.title)}${location.includes('?') ? location.substring(location.indexOf('?')) : ''}`}
-                                    className="block"
-                                >
+                            {filteredCompositions.map((composition) => {
+                                const detailUrl = `/compositions/${composition.slug || generateCompositionSlug(composition.title)}${location.includes('?') ? location.substring(location.indexOf('?')) : ''}`;
+                                return (
+                                    <Link 
+                                        key={composition.id}
+                                        href={detailUrl}
+                                        className="block"
+                                    >
                                 <div 
                                     className="border border-purple rounded-lg p-2 hover:shadow-lg transition-shadow duration-300 cursor-pointer flex items-center gap-4 flex-wrap" 
                                     style={{backgroundColor: '#e5e5ff'}}
@@ -353,9 +359,10 @@ export default function Compositions() {
                                         </span>
                                     )}
 
-                                </div>
-                                </Link>
-                            ))}
+                                    </div>
+                                    </Link>
+                                );
+                            })}
                         </div>
                     )}
                 </div>
