@@ -192,12 +192,15 @@ export default function CompositionDetail() {
                                     Program Note
                                 </h2>
                                 <div 
-                                    className="text-gray-700 prose prose-lg max-w-none" 
+                                    className="text-gray-700 max-w-none" 
                                     data-testid="composition-program-note"
-                                    style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}
+                                    style={{
+                                        fontFamily: 'Times, "Times New Roman", Palatino, serif',
+                                        lineHeight: '1.2'
+                                    }}
                                 >
                                     {composition.program_note.split('\n').map((paragraph, index) => (
-                                        <p key={index} className="mb-4">
+                                        <p key={index} style={{margin: 0}}>
                                             {paragraph}
                                         </p>
                                     ))}
