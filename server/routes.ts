@@ -90,17 +90,39 @@ Lefkowitz's compositions have been released on more than twenty commercial recor
             // If there's a recording link, try to find the matching recording
             let recordingInfo = null;
             if (composition.recording) {
-                // Extract the recording title from the link (e.g., "Expanded Universe" from the recording field)
-                const recordingTitle = composition.recording;
+                // Extract the slug from the URL if it's a URL, otherwise treat as title
+                let searchCriteria = composition.recording;
                 
-                // Try to find a matching recording by title
+                // Check if it's a URL and extract the slug
+                if (composition.recording.includes('/recordings/')) {
+                    const urlParts = composition.recording.split('/recordings/');
+                    searchCriteria = urlParts[urlParts.length - 1];
+                }
+                
+                // Try to find a matching recording by slug
                 const [matchingRecording] = await db
                     .select()
                     .from(recordings)
-                    .where(eq(recordings.title, recordingTitle))
+                    .where(eq(recordings.slug, searchCriteria))
                     .limit(1);
                 
-                if (matchingRecording) {
+                // If not found by slug and it's not a URL, try by title
+                if (!matchingRecording && !composition.recording.includes('/recordings/')) {
+                    const [titleMatch] = await db
+                        .select()
+                        .from(recordings)
+                        .where(eq(recordings.title, searchCriteria))
+                        .limit(1);
+                    
+                    if (titleMatch) {
+                        recordingInfo = {
+                            id: titleMatch.id,
+                            slug: titleMatch.slug,
+                            title: titleMatch.title,
+                            album_cover: titleMatch.album_cover || "",
+                        };
+                    }
+                } else if (matchingRecording) {
                     recordingInfo = {
                         id: matchingRecording.id,
                         slug: matchingRecording.slug,
