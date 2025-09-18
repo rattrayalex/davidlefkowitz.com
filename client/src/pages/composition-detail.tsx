@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useParams, Link } from "wouter";
+import { useParams, Link, useLocation } from "wouter";
 import { useQuery } from "@tanstack/react-query";
 import { ArrowLeft, ExternalLink } from "lucide-react";
 import LoadingSpinner from "@/components/ui/loading-spinner";
@@ -30,6 +30,10 @@ interface CompositionDetailResponse {
 
 export default function CompositionDetail() {
     const { slug } = useParams();
+    const [location] = useLocation();
+    
+    // Preserve search params from the URL
+    const searchParams = location.includes('?') ? location.substring(location.indexOf('?')) : '';
     
     const { data: composition, isLoading } = useQuery<CompositionDetailResponse>({
         queryKey: [`/api/compositions/${slug}`],
@@ -48,7 +52,7 @@ export default function CompositionDetail() {
         return (
             <div className="min-h-screen" style={{backgroundColor: '#e5e5ff'}}>
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-                    <Link href="/compositions">
+                    <Link href={`/compositions${searchParams}`}>
                         <a className="inline-flex items-center text-purple hover:text-purple-dark mb-6">
                             <ArrowLeft className="h-4 w-4 mr-2" />
                             Back to Compositions
@@ -70,7 +74,7 @@ export default function CompositionDetail() {
             {/* Hero Section */}
             <section className="py-12 relative" style={{backgroundColor: '#e5e5ff'}}>
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-                    <Link href="/compositions">
+                    <Link href={`/compositions${searchParams}`}>
                         <a className="inline-flex items-center text-purple hover:text-purple-dark mb-6" data-testid="link-back-to-compositions">
                             <ArrowLeft className="h-4 w-4 mr-2" />
                             Back to Compositions
