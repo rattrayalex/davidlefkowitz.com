@@ -144,6 +144,7 @@ Lefkowitz's compositions have been released on more than twenty commercial recor
                 premiere_info: composition.premiere_info || "",
                 publisher: Array.isArray(composition.publisher) ? composition.publisher.join(", ") : "",
                 recording: composition.recording || "",
+                streaming_links: composition.streaming_links || "",
                 recording_info: recordingInfo,
                 program_note: composition.program_note || "",
             };

@@ -23,6 +23,7 @@ interface CompositionDetailResponse {
     premiere_info: string;
     publisher: string;
     recording: string;
+    streaming_links: string;
     recording_info: RecordingInfo | null;
     program_note: string;
 }
@@ -167,6 +168,41 @@ export default function CompositionDetail() {
                                         </h2>
                                         <p className="text-gray-700" data-testid="composition-publisher" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
                                             {composition.publisher}
+                                        </p>
+                                    </div>
+                                )}
+
+                                {/* Streaming Links */}
+                                {composition.streaming_links && (
+                                    <div>
+                                        <h2 className="text-lg font-semibold text-navy mb-2" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
+                                            {composition.recording_info ? "Additional Streaming Links" : "Streaming Links"}
+                                        </h2>
+                                        <p className="text-gray-700" data-testid="composition-streaming-links" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
+                                            {composition.streaming_links.split('\n').map((link, index) => {
+                                                // Check if the link contains a URL
+                                                const urlMatch = link.match(/(https?:\/\/[^\s]+)/);
+                                                if (urlMatch) {
+                                                    const url = urlMatch[1];
+                                                    const text = link.replace(url, '').trim() || url;
+                                                    return (
+                                                        <span key={index}>
+                                                            {index > 0 && <br />}
+                                                            <a href={url} target="_blank" rel="noopener noreferrer" className="text-purple hover:text-purple-dark underline">
+                                                                {text}
+                                                            </a>
+                                                        </span>
+                                                    );
+                                                } else {
+                                                    // Plain text link
+                                                    return (
+                                                        <span key={index}>
+                                                            {index > 0 && <br />}
+                                                            {link}
+                                                        </span>
+                                                    );
+                                                }
+                                            })}
                                         </p>
                                     </div>
                                 )}
