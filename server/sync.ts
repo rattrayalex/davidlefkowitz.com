@@ -499,7 +499,16 @@ export async function syncCompositions() {
         const nameOfPage = nameOfPageProperty?.rich_text
             ?.map((part: any) => part.plain_text)
             .join("") || "";
-        const slug = nameOfPage || generateSlug(title);
+        
+        // Debug logging for Calder's Closet
+        if (title.includes("Calder")) {
+            console.log(`  - Title: ${title}`);
+            console.log(`  - Name of Page: "${nameOfPage}"`);
+        }
+        
+        // Process nameOfPage through slug generation to make it URL-safe
+        // Use the original nameOfPage if it exists, but convert spaces/special chars
+        const slug = nameOfPage ? nameOfPage.replace(/\s+/g, '_').replace(/[^a-zA-Z0-9_-]/g, '') : generateSlug(title);
 
         const composition: InsertComposition = {
             slug: slug,
