@@ -24,7 +24,7 @@ interface CompositionDetailResponse {
     publisher: string;
     recording: string;
     streaming_links: string;
-    recording_info: RecordingInfo | null;
+    recording_info: RecordingInfo[] | RecordingInfo | null;
     program_note: string;
 }
 
@@ -135,27 +135,49 @@ export default function CompositionDetail() {
                                     </div>
                                 )}
 
-                                {/* Recording */}
-                                {composition.recording_info && composition.recording_info.album_cover && (
-                                    <div className="w-48">
-                                        <h2 className="text-lg text-navy mb-2 whitespace-nowrap" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
-                                            <span className="font-semibold">Recording</span> <span className="font-normal" style={{fontSize: '1rem'}}>(click on image)</span>
-                                        </h2>
-                                        <Link href={`/recordings/${composition.recording_info.slug}`}>
-                                            <a className="block hover:opacity-90 transition-opacity" data-testid="composition-recording-link">
-                                                <img 
-                                                    src={composition.recording_info.album_cover}
-                                                    alt={composition.recording_info.title}
-                                                    className="w-full h-48 object-cover rounded-lg shadow-md"
-                                                    data-testid="composition-recording-cover"
-                                                />
-                                            </a>
-                                        </Link>
-                                        <p className="text-gray-600 mt-2 break-words" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif', fontSize: '1rem'}}>
-                                            {composition.recording_info.title}
-                                        </p>
-                                    </div>
-                                )}
+                                {/* Recording(s) */}
+                                {composition.recording_info && (() => {
+                                    // Handle both single recording (legacy) and multiple recordings (new format)
+                                    const recordings = Array.isArray(composition.recording_info) 
+                                        ? composition.recording_info 
+                                        : [composition.recording_info];
+                                    
+                                    const validRecordings = recordings.filter(rec => rec && rec.album_cover);
+                                    
+                                    if (validRecordings.length === 0) return null;
+                                    
+                                    return (
+                                        <div className="w-48">
+                                            <h2 className="text-lg text-navy mb-2 whitespace-nowrap" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
+                                                <span className="font-semibold">
+                                                    {validRecordings.length > 1 ? 'Recordings' : 'Recording'}
+                                                </span> 
+                                                <span className="font-normal" style={{fontSize: '1rem'}}>
+                                                    (click on image{validRecordings.length > 1 ? 's' : ''})
+                                                </span>
+                                            </h2>
+                                            <div className="space-y-4">
+                                                {validRecordings.map((recordingInfo, index) => (
+                                                    <div key={`${recordingInfo.id}-${index}`}>
+                                                        <Link href={`/recordings/${recordingInfo.slug}`}>
+                                                            <a className="block hover:opacity-90 transition-opacity" data-testid={`composition-recording-link-${index}`}>
+                                                                <img 
+                                                                    src={recordingInfo.album_cover}
+                                                                    alt={recordingInfo.title}
+                                                                    className="w-full h-48 object-cover rounded-lg shadow-md"
+                                                                    data-testid={`composition-recording-cover-${index}`}
+                                                                />
+                                                            </a>
+                                                        </Link>
+                                                        <p className="text-gray-600 mt-2 break-words" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif', fontSize: '1rem'}}>
+                                                            {recordingInfo.title}
+                                                        </p>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    );
+                                })()}
                             </div>
 
                             {/* Right Column */}
@@ -176,7 +198,10 @@ export default function CompositionDetail() {
                                 {composition.streaming_links && (
                                     <div>
                                         <h2 className="text-lg font-semibold text-navy mb-2" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
-                                            {composition.recording_info ? "Additional Streaming Links" : "Streaming Links"}
+                                            {composition.recording_info && 
+                                             ((Array.isArray(composition.recording_info) && composition.recording_info.length > 0) || 
+                                              (!Array.isArray(composition.recording_info) && composition.recording_info)) 
+                                             ? "Additional Streaming Links" : "Streaming Links"}
                                         </h2>
                                         <p className="text-gray-700" data-testid="composition-streaming-links" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
                                             {composition.streaming_links.split('\n').map((link, index) => {
