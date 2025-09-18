@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useParams, Link } from "wouter";
 import { useQuery } from "@tanstack/react-query";
-import { ArrowLeft, Users, ExternalLink } from "lucide-react";
+import { ArrowLeft, ExternalLink } from "lucide-react";
 import LoadingSpinner from "@/components/ui/loading-spinner";
 
 interface CompositionDetailResponse {
@@ -68,41 +68,33 @@ export default function CompositionDetail() {
                     </Link>
                     
                     <div className="bg-white rounded-lg shadow-xl p-8">
-                        {/* Title and Year */}
+                        {/* Title and Year with Category Badge */}
                         <div className="mb-8">
                             <h1 className="text-4xl lg:text-5xl font-playfair font-bold text-navy mb-4" data-testid="composition-title" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
                                 {composition.title}
                             </h1>
-                            {(composition.year || composition.ensemble) && (
-                                <div className="flex items-center text-xl text-gray-600" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
-                                    {composition.ensemble && (
-                                        <>
-                                            <Users className="h-5 w-5 mr-2" />
-                                            <span className="mr-4" data-testid="composition-ensemble">{composition.ensemble}</span>
-                                        </>
+                            {(composition.year || composition.category) && (
+                                <div className="flex items-center">
+                                    {composition.category && (
+                                        <span className={`inline-block text-white text-sm px-4 py-2 rounded-full font-medium mr-4 ${
+                                            composition.ensemble.includes('String Quartet') ? 'bg-purple' :
+                                            composition.ensemble.includes('Orchestra') ? 'bg-gold' :
+                                            composition.ensemble.includes('Piano Solo') ? 'bg-blue-500' :
+                                            composition.ensemble.includes('Choral') ? 'bg-green-500' :
+                                            composition.ensemble.includes('Solos') ? 'bg-red-500' :
+                                            'bg-gray-500'
+                                        }`} data-testid="composition-category">
+                                            {composition.category}
+                                        </span>
                                     )}
                                     {composition.year && (
-                                        <span data-testid="composition-year">{composition.year}</span>
+                                        <span className="text-xl text-gray-600" data-testid="composition-year" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
+                                            {composition.year}
+                                        </span>
                                     )}
                                 </div>
                             )}
                         </div>
-
-                        {/* Category Badge */}
-                        {composition.category && (
-                            <div className="mb-6">
-                                <span className={`inline-block text-white text-sm px-4 py-2 rounded-full font-medium ${
-                                    composition.ensemble.includes('String Quartet') ? 'bg-purple' :
-                                    composition.ensemble.includes('Orchestra') ? 'bg-gold' :
-                                    composition.ensemble.includes('Piano Solo') ? 'bg-blue-500' :
-                                    composition.ensemble.includes('Choral') ? 'bg-green-500' :
-                                    composition.ensemble.includes('Solos') ? 'bg-red-500' :
-                                    'bg-gray-500'
-                                }`} data-testid="composition-category">
-                                    {composition.category}
-                                </span>
-                            </div>
-                        )}
 
                         {/* Details Grid */}
                         <div className="grid md:grid-cols-2 gap-8">
