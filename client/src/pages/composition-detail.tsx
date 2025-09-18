@@ -235,7 +235,7 @@ export default function CompositionDetail() {
                                                                         // Header row
                                                                         return (
                                                                             <tr key={rowIndex}>
-                                                                                <td style={{paddingRight: '0.5em', textAlign: 'right', width: '3em'}}>No.</td>
+                                                                                <td style={{paddingRight: '0.5em', textAlign: 'left', width: '3em'}}>No.</td>
                                                                                 <td style={{paddingRight: '1em', textAlign: 'left', width: '4em'}}>(Key)</td>
                                                                                 <td style={{paddingRight: '1em', textAlign: 'center'}}>Prelude</td>
                                                                                 <td style={{paddingRight: '1em', textAlign: 'center'}}>Fugue</td>
@@ -254,7 +254,7 @@ export default function CompositionDetail() {
                                                                             if (num === '7' || num === '13') {
                                                                                 return (
                                                                                     <tr key={rowIndex}>
-                                                                                        <td style={{paddingRight: '0.5em', textAlign: 'right', width: '3em'}}>{num}</td>
+                                                                                        <td style={{paddingRight: '0.5em', textAlign: 'left', width: '3em'}}>{num}</td>
                                                                                         <td style={{paddingRight: '1em', textAlign: 'left', width: '4em'}}>({key})</td>
                                                                                         <td colSpan={2} style={{paddingRight: '1em', textAlign: 'center'}}>{times[0]}</td>
                                                                                         <td style={{textAlign: 'center'}}>{times[1] || ''}</td>
@@ -263,7 +263,7 @@ export default function CompositionDetail() {
                                                                             } else {
                                                                                 return (
                                                                                     <tr key={rowIndex}>
-                                                                                        <td style={{paddingRight: '0.5em', textAlign: 'right', width: '3em'}}>{num}</td>
+                                                                                        <td style={{paddingRight: '0.5em', textAlign: 'left', width: '3em'}}>{num}</td>
                                                                                         <td style={{paddingRight: '1em', textAlign: 'left', width: '4em'}}>({key})</td>
                                                                                         <td style={{paddingRight: '1em', textAlign: 'center'}}>{times[0] || ''}</td>
                                                                                         <td style={{paddingRight: '1em', textAlign: 'center'}}>{times[1] || ''}</td>
