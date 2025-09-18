@@ -200,11 +200,33 @@ export default function CompositionDetail() {
                                         lineHeight: '1.2'
                                     }}
                                 >
-                                    {composition.program_note.split('\n').map((paragraph, index) => (
-                                        <p key={index} style={{margin: 0}}>
-                                            {paragraph}
-                                        </p>
-                                    ))}
+                                    {composition.program_note.split('\n').map((paragraph, index) => {
+                                        // Check if this line looks like part of the duration table
+                                        const isTableLine = paragraph.includes('Prelude') && paragraph.includes('Fugue') ||
+                                                          /^\d+\s+\(/.test(paragraph.trim()) || // Lines starting with number and parenthesis
+                                                          /^\s*\d+:\d+\s+\d+:\d+/.test(paragraph) || // Lines with time format
+                                                          paragraph.trim().startsWith('No.') && paragraph.includes('Key');
+                                        
+                                        if (isTableLine) {
+                                            return (
+                                                <pre key={index} style={{
+                                                    margin: 0,
+                                                    fontFamily: 'monospace',
+                                                    fontSize: '1rem',
+                                                    lineHeight: '1.2',
+                                                    whiteSpace: 'pre'
+                                                }}>
+                                                    {paragraph}
+                                                </pre>
+                                            );
+                                        } else {
+                                            return (
+                                                <p key={index} style={{margin: 0}}>
+                                                    {paragraph}
+                                                </p>
+                                            );
+                                        }
+                                    })}
                                 </div>
                             </div>
                         )}
