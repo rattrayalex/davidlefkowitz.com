@@ -150,7 +150,7 @@ export default function CompositionDetail() {
                                                 />
                                             </a>
                                         </Link>
-                                        <p className="text-sm text-gray-600 mt-2" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
+                                        <p className="text-gray-600 mt-2" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif', fontSize: '1rem'}}>
                                             {composition.recording_info.title}
                                         </p>
                                     </div>
