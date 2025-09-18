@@ -133,33 +133,6 @@ export default function CompositionDetail() {
                                         </span>
                                     </div>
                                 )}
-                            </div>
-
-                            {/* Right Column */}
-                            <div className="space-y-6">
-                                {/* Premiere Information */}
-                                {composition.premiere_info && (
-                                    <div>
-                                        <h2 className="text-lg font-semibold text-navy mb-2" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
-                                            Premiere Information
-                                        </h2>
-                                        <p className="text-gray-700" data-testid="composition-premiere" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
-                                            {composition.premiere_info}
-                                        </p>
-                                    </div>
-                                )}
-
-                                {/* Publisher */}
-                                {composition.publisher && (
-                                    <div>
-                                        <h2 className="text-lg font-semibold text-navy mb-2" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
-                                            Publisher
-                                        </h2>
-                                        <p className="text-gray-700" data-testid="composition-publisher" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
-                                            {composition.publisher}
-                                        </p>
-                                    </div>
-                                )}
 
                                 {/* Recording */}
                                 {composition.recording_info && composition.recording_info.album_cover && (
@@ -179,6 +152,21 @@ export default function CompositionDetail() {
                                         </Link>
                                         <p className="text-sm text-gray-600 mt-2" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
                                             {composition.recording_info.title}
+                                        </p>
+                                    </div>
+                                )}
+                            </div>
+
+                            {/* Right Column */}
+                            <div className="space-y-6">
+                                {/* Publisher */}
+                                {composition.publisher && (
+                                    <div>
+                                        <h2 className="text-lg font-semibold text-navy mb-2" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
+                                            Publisher
+                                        </h2>
+                                        <p className="text-gray-700" data-testid="composition-publisher" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
+                                            {composition.publisher}
                                         </p>
                                     </div>
                                 )}
