@@ -196,6 +196,7 @@ export default function CompositionDetail() {
                                     data-testid="composition-program-note"
                                     style={{
                                         fontFamily: 'Times, "Times New Roman", Palatino, serif',
+                                        fontSize: '1.125rem',
                                         lineHeight: '1.2'
                                     }}
                                 >
