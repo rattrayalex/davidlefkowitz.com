@@ -2,7 +2,8 @@
 
 This is a composer's portfolio website for David S. Lefkowitz, built as a full-stack web application. The site showcases compositions, recordings, blog posts, and provides contact functionality. It integrates with Notion as a headless CMS for content management, allowing the composer to manage their portfolio content through familiar Notion interfaces while presenting it through a polished, professional web presence.
 
-## Recent Updates (September 16, 2025)
+## Recent Updates (September 18, 2025)
+- **Unique URL Fix for Compositions**: Fixed critical navigation bug where multiple compositions with same title (e.g., three Calder's Closet versions) were generating duplicate slugs. Now properly uses "Name of Page" field from Notion to create unique URL-safe slugs for each composition variant
 - **Ranking Within Year Fix**: Fixed critical issue where "Ranking within year" values from Notion weren't populating. Implemented flexible extraction logic to handle formula, rollup, and other Notion field types beyond simple numbers
 - **Human-readable URLs**: Implemented slug-based URLs for blog posts and recordings (e.g., `/recordings/Reimagine_Beethoven_&_Ravel` instead of UUID-based URLs)  
 - **Blog Formatting Fixes**: Resolved issues with line breaks appearing around italic text and hyperlinks in blog posts
