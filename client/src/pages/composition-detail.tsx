@@ -226,7 +226,7 @@ export default function CompositionDetail() {
                                                     elements.push(
                                                         <div key={`table-${i}`} style={{
                                                             fontFamily: 'Times, "Times New Roman", Palatino, serif',
-                                                            fontSize: '1rem',
+                                                            fontSize: '1.125rem',
                                                             margin: '0.5em 0'
                                                         }}>
                                                             <table style={{borderSpacing: 0}}>
@@ -307,7 +307,7 @@ export default function CompositionDetail() {
                                             elements.push(
                                                 <div key="table-end" style={{
                                                     fontFamily: 'Times, "Times New Roman", Palatino, serif',
-                                                    fontSize: '1rem',
+                                                    fontSize: '1.125rem',
                                                     margin: '0.5em 0'
                                                 }}>
                                                     <table style={{borderSpacing: 0}}>
