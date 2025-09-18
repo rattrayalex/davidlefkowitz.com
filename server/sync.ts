@@ -489,17 +489,17 @@ export async function syncCompositions() {
         const recordingProperty = properties.Recording as any;
         const streamingLinksProperty = properties["Additional Streaming Links"] as any;
         const programNoteProperty = properties["Program Note"] as any;
+        const nameOfPageProperty = properties["Name of Page"] as any;
 
         // Parse year - trust Notion to provide a number
         const year = yearProperty?.number || null;
 
-        // Generate slug from title (replace all punctuation and spaces with underscores)
+        // Use "Name of Page" from Notion for the slug
         const title = nameProperty?.title?.[0]?.plain_text || "";
-        const slug = title
-            .replace(/[^\w\s]/g, '') // Remove all punctuation
-            .replace(/\s+/g, '_') // Replace spaces with underscores
-            .replace(/_+/g, '_') // Replace multiple underscores with single
-            .replace(/^_|_$/g, ''); // Remove leading/trailing underscores
+        const nameOfPage = nameOfPageProperty?.rich_text
+            ?.map((part: any) => part.plain_text)
+            .join("") || "";
+        const slug = nameOfPage || generateSlug(title);
 
         const composition: InsertComposition = {
             slug: slug,
