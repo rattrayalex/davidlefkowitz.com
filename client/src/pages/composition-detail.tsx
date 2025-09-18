@@ -200,33 +200,162 @@ export default function CompositionDetail() {
                                         lineHeight: '1.2'
                                     }}
                                 >
-                                    {composition.program_note.split('\n').map((paragraph, index) => {
-                                        // Check if this line looks like part of the duration table
-                                        const isTableLine = paragraph.includes('Prelude') && paragraph.includes('Fugue') ||
-                                                          /^\d+\s+\(/.test(paragraph.trim()) || // Lines starting with number and parenthesis
-                                                          /^\s*\d+:\d+\s+\d+:\d+/.test(paragraph) || // Lines with time format
-                                                          paragraph.trim().startsWith('No.') && paragraph.includes('Key');
+                                    {(() => {
+                                        const lines = composition.program_note.split('\n');
+                                        const elements: JSX.Element[] = [];
+                                        let inTable = false;
+                                        let tableRows: string[] = [];
                                         
-                                        if (isTableLine) {
-                                            return (
-                                                <pre key={index} style={{
-                                                    margin: 0,
-                                                    fontFamily: 'monospace',
+                                        for (let i = 0; i < lines.length; i++) {
+                                            const line = lines[i];
+                                            const trimmedLine = line.trim();
+                                            
+                                            // Check if this is the table header
+                                            if (trimmedLine.startsWith('No.') && trimmedLine.includes('Key') && trimmedLine.includes('Prelude')) {
+                                                inTable = true;
+                                                tableRows = [line];
+                                            }
+                                            // Check if we're in the table and this is a data row
+                                            else if (inTable && (
+                                                /^\s*\d+\s+\(/.test(line) || // Lines starting with number and parenthesis  
+                                                /^\s*$/.test(line) // Empty line ends the table
+                                            )) {
+                                                if (/^\s*$/.test(line)) {
+                                                    // Empty line - end of table
+                                                    // Process the table
+                                                    elements.push(
+                                                        <div key={`table-${i}`} style={{
+                                                            fontFamily: 'Times, "Times New Roman", Palatino, serif',
+                                                            fontSize: '1rem',
+                                                            margin: '0.5em 0'
+                                                        }}>
+                                                            <table style={{borderSpacing: 0}}>
+                                                                {tableRows.map((row, rowIndex) => {
+                                                                    if (rowIndex === 0) {
+                                                                        // Header row
+                                                                        return (
+                                                                            <tr key={rowIndex}>
+                                                                                <td style={{paddingRight: '1em', textAlign: 'left'}}>No. (Key)</td>
+                                                                                <td style={{paddingRight: '1em', textAlign: 'center'}}>Prelude</td>
+                                                                                <td style={{paddingRight: '1em', textAlign: 'center'}}>Fugue</td>
+                                                                                <td style={{textAlign: 'center'}}>Total</td>
+                                                                            </tr>
+                                                                        );
+                                                                    } else {
+                                                                        // Data row - parse the values
+                                                                        const match = row.match(/^\s*(\d+)\s+\(([^)]+)\)\s*([\d:]+)?\s*([\d:]+)?\s*([\d:]+)?/);
+                                                                        if (match) {
+                                                                            const num = match[1];
+                                                                            const key = match[2];
+                                                                            const times = [match[3], match[4], match[5]].filter(t => t);
+                                                                            
+                                                                            // Special handling for rows 7 and 13
+                                                                            if (num === '7' || num === '13') {
+                                                                                return (
+                                                                                    <tr key={rowIndex}>
+                                                                                        <td style={{paddingRight: '1em', textAlign: 'left'}}>{num.padStart(2, ' ')} ({key})</td>
+                                                                                        <td colSpan="2" style={{paddingRight: '1em', textAlign: 'center'}}>{times[0]}</td>
+                                                                                        <td style={{textAlign: 'center'}}>{times[1] || ''}</td>
+                                                                                    </tr>
+                                                                                );
+                                                                            } else {
+                                                                                return (
+                                                                                    <tr key={rowIndex}>
+                                                                                        <td style={{paddingRight: '1em', textAlign: 'left'}}>{num.padStart(2, ' ')} ({key})</td>
+                                                                                        <td style={{paddingRight: '1em', textAlign: 'center'}}>{times[0] || ''}</td>
+                                                                                        <td style={{paddingRight: '1em', textAlign: 'center'}}>{times[1] || ''}</td>
+                                                                                        <td style={{textAlign: 'center'}}>{times[2] || ''}</td>
+                                                                                    </tr>
+                                                                                );
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                })}
+                                                            </table>
+                                                        </div>
+                                                    );
+                                                    inTable = false;
+                                                    tableRows = [];
+                                                } else {
+                                                    // Add to table rows
+                                                    tableRows.push(line);
+                                                }
+                                            }
+                                            // Regular paragraph
+                                            else if (!inTable && trimmedLine) {
+                                                elements.push(
+                                                    <p key={i} style={{margin: 0}}>
+                                                        {line}
+                                                    </p>
+                                                );
+                                            }
+                                            // Empty line outside table
+                                            else if (!inTable) {
+                                                elements.push(
+                                                    <p key={i} style={{margin: 0}}>
+                                                        {line}
+                                                    </p>
+                                                );
+                                            }
+                                        }
+                                        
+                                        // Handle case where table goes to end of text
+                                        if (inTable && tableRows.length > 0) {
+                                            elements.push(
+                                                <div key="table-end" style={{
+                                                    fontFamily: 'Times, "Times New Roman", Palatino, serif',
                                                     fontSize: '1rem',
-                                                    lineHeight: '1.2',
-                                                    whiteSpace: 'pre'
+                                                    margin: '0.5em 0'
                                                 }}>
-                                                    {paragraph}
-                                                </pre>
-                                            );
-                                        } else {
-                                            return (
-                                                <p key={index} style={{margin: 0}}>
-                                                    {paragraph}
-                                                </p>
+                                                    <table style={{borderSpacing: 0}}>
+                                                        {tableRows.map((row, rowIndex) => {
+                                                            if (rowIndex === 0) {
+                                                                // Header row
+                                                                return (
+                                                                    <tr key={rowIndex}>
+                                                                        <td style={{paddingRight: '1em', textAlign: 'left'}}>No. (Key)</td>
+                                                                        <td style={{paddingRight: '1em', textAlign: 'center'}}>Prelude</td>
+                                                                        <td style={{paddingRight: '1em', textAlign: 'center'}}>Fugue</td>
+                                                                        <td style={{textAlign: 'center'}}>Total</td>
+                                                                    </tr>
+                                                                );
+                                                            } else {
+                                                                // Data row - parse the values
+                                                                const match = row.match(/^\s*(\d+)\s+\(([^)]+)\)\s*([\d:]+)?\s*([\d:]+)?\s*([\d:]+)?/);
+                                                                if (match) {
+                                                                    const num = match[1];
+                                                                    const key = match[2];
+                                                                    const times = [match[3], match[4], match[5]].filter(t => t);
+                                                                    
+                                                                    // Special handling for rows 7 and 13
+                                                                    if (num === '7' || num === '13') {
+                                                                        return (
+                                                                            <tr key={rowIndex}>
+                                                                                <td style={{paddingRight: '1em', textAlign: 'left'}}>{num.padStart(2, ' ')} ({key})</td>
+                                                                                <td colSpan="2" style={{paddingRight: '1em', textAlign: 'center'}}>{times[0]}</td>
+                                                                                <td style={{textAlign: 'center'}}>{times[1] || ''}</td>
+                                                                            </tr>
+                                                                        );
+                                                                    } else {
+                                                                        return (
+                                                                            <tr key={rowIndex}>
+                                                                                <td style={{paddingRight: '1em', textAlign: 'left'}}>{num.padStart(2, ' ')} ({key})</td>
+                                                                                <td style={{paddingRight: '1em', textAlign: 'center'}}>{times[0] || ''}</td>
+                                                                                <td style={{paddingRight: '1em', textAlign: 'center'}}>{times[1] || ''}</td>
+                                                                                <td style={{textAlign: 'center'}}>{times[2] || ''}</td>
+                                                                            </tr>
+                                                                        );
+                                                                    }
+                                                                }
+                                                            }
+                                                        })}
+                                                    </table>
+                                                </div>
                                             );
                                         }
-                                    })}
+                                        
+                                        return elements;
+                                    })()}
                                 </div>
                             </div>
                         )}
