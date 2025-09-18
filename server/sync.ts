@@ -519,7 +519,9 @@ export async function syncCompositions() {
                     (item: any) => item.name,
                 ) as string[]) || [],
             premiere_info: premiereProperty?.date?.start || "",
-            recording: recordingProperty?.rich_text?.[0]?.plain_text || "",
+            recording: recordingProperty?.rich_text
+                ?.map((part: any) => part.plain_text?.trim())
+                .filter((r: string) => r && r.length > 0) || [],
             streaming_links: streamingLinksProperty?.rich_text?.[0]?.plain_text || "",
             program_note: programNoteProperty?.rich_text?.map((part: any) => part.plain_text).join("") || "",
             published: true,
@@ -529,13 +531,24 @@ export async function syncCompositions() {
         await db
             .insert(compositions)
             .values({
-                ...composition,
                 id: page.id,
+                ...composition,
             })
             .onConflictDoUpdate({
                 target: compositions.id,
                 set: {
-                    ...composition,
+                    slug: composition.slug,
+                    title: composition.title,
+                    instrumentation: composition.instrumentation,
+                    ensemble: composition.ensemble,
+                    year: composition.year,
+                    duration: composition.duration,
+                    publisher: composition.publisher,
+                    premiere_info: composition.premiere_info,
+                    recording: composition.recording,
+                    streaming_links: composition.streaming_links,
+                    program_note: composition.program_note,
+                    published: composition.published,
                     updated_at: new Date(),
                     last_synced: new Date(),
                 },
