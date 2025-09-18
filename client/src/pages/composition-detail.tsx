@@ -137,7 +137,7 @@ export default function CompositionDetail() {
                                 {/* Recording */}
                                 {composition.recording_info && composition.recording_info.album_cover && (
                                     <div className="w-48">
-                                        <h2 className="text-lg text-navy mb-2" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
+                                        <h2 className="text-lg text-navy mb-2 whitespace-nowrap" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
                                             <span className="font-semibold">Recording</span> <span className="font-normal">(click on image)</span>
                                         </h2>
                                         <Link href={`/recordings/${composition.recording_info.slug}`}>
