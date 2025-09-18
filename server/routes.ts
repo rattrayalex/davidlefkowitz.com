@@ -87,6 +87,29 @@ Lefkowitz's compositions have been released on more than twenty commercial recor
                 return res.status(404).json({ error: "Composition not found" });
             }
 
+            // If there's a recording link, try to find the matching recording
+            let recordingInfo = null;
+            if (composition.recording) {
+                // Extract the recording title from the link (e.g., "Expanded Universe" from the recording field)
+                const recordingTitle = composition.recording;
+                
+                // Try to find a matching recording by title
+                const [matchingRecording] = await db
+                    .select()
+                    .from(recordings)
+                    .where(eq(recordings.title, recordingTitle))
+                    .limit(1);
+                
+                if (matchingRecording) {
+                    recordingInfo = {
+                        id: matchingRecording.id,
+                        slug: matchingRecording.slug,
+                        title: matchingRecording.title,
+                        album_cover: matchingRecording.album_cover || "",
+                    };
+                }
+            }
+
             const formattedComposition = {
                 id: composition.id,
                 slug: composition.slug,
@@ -99,6 +122,8 @@ Lefkowitz's compositions have been released on more than twenty commercial recor
                 premiere_info: composition.premiere_info || "",
                 publisher: Array.isArray(composition.publisher) ? composition.publisher.join(", ") : "",
                 recording: composition.recording || "",
+                recording_info: recordingInfo,
+                program_note: composition.program_note || "",
             };
 
             res.json(formattedComposition);

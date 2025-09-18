@@ -4,6 +4,13 @@ import { useQuery } from "@tanstack/react-query";
 import { ArrowLeft, ExternalLink } from "lucide-react";
 import LoadingSpinner from "@/components/ui/loading-spinner";
 
+interface RecordingInfo {
+    id: string;
+    slug: string;
+    title: string;
+    album_cover: string;
+}
+
 interface CompositionDetailResponse {
     id: string;
     slug?: string;
@@ -16,6 +23,8 @@ interface CompositionDetailResponse {
     premiere_info: string;
     publisher: string;
     recording: string;
+    recording_info: RecordingInfo | null;
+    program_note: string;
 }
 
 export default function CompositionDetail() {
@@ -153,31 +162,48 @@ export default function CompositionDetail() {
                                 )}
 
                                 {/* Recording */}
-                                {composition.recording && (
+                                {composition.recording_info && composition.recording_info.album_cover && (
                                     <div>
                                         <h2 className="text-lg font-semibold text-navy mb-2" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
                                             Recording
                                         </h2>
-                                        {composition.recording.includes('http') ? (
-                                            <a 
-                                                href={composition.recording} 
-                                                target="_blank" 
-                                                rel="noopener noreferrer"
-                                                className="text-purple hover:underline flex items-center"
-                                                data-testid="composition-recording-link"
-                                            >
-                                                Listen to Recording
-                                                <ExternalLink className="h-4 w-4 ml-2" />
+                                        <Link href={`/recordings/${composition.recording_info.slug}`}>
+                                            <a className="block hover:opacity-90 transition-opacity" data-testid="composition-recording-link">
+                                                <img 
+                                                    src={composition.recording_info.album_cover}
+                                                    alt={composition.recording_info.title}
+                                                    className="w-48 h-48 object-cover rounded-lg shadow-md"
+                                                    data-testid="composition-recording-cover"
+                                                />
                                             </a>
-                                        ) : (
-                                            <p className="text-gray-700" data-testid="composition-recording" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
-                                                {composition.recording}
-                                            </p>
-                                        )}
+                                        </Link>
+                                        <p className="text-sm text-gray-600 mt-2" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
+                                            {composition.recording_info.title}
+                                        </p>
                                     </div>
                                 )}
                             </div>
                         </div>
+
+                        {/* Program Note */}
+                        {composition.program_note && (
+                            <div className="mt-8">
+                                <h2 className="text-2xl font-semibold text-navy mb-4" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
+                                    Program Note
+                                </h2>
+                                <div 
+                                    className="text-gray-700 prose prose-lg max-w-none" 
+                                    data-testid="composition-program-note"
+                                    style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}
+                                >
+                                    {composition.program_note.split('\n').map((paragraph, index) => (
+                                        <p key={index} className="mb-4">
+                                            {paragraph}
+                                        </p>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
                     </div>
                 </div>
             </section>
