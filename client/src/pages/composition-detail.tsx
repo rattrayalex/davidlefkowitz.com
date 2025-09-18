@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useParams, Link } from "wouter";
 import { useQuery } from "@tanstack/react-query";
-import { ArrowLeft, Music, Clock, Calendar, Users, ExternalLink } from "lucide-react";
+import { ArrowLeft, Users, ExternalLink } from "lucide-react";
 import LoadingSpinner from "@/components/ui/loading-spinner";
 
 interface CompositionDetailResponse {
@@ -44,10 +44,10 @@ export default function CompositionDetail() {
                             Back to Compositions
                         </a>
                     </Link>
-                    <h1 className="text-3xl font-playfair font-bold text-navy mb-4">
+                    <h1 className="text-3xl font-playfair font-bold text-navy mb-4" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
                         Composition Not Found
                     </h1>
-                    <p className="text-gray-600">
+                    <p className="text-gray-600" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
                         The composition you're looking for doesn't exist or has been removed.
                     </p>
                 </div>
@@ -70,13 +70,20 @@ export default function CompositionDetail() {
                     <div className="bg-white rounded-lg shadow-xl p-8">
                         {/* Title and Year */}
                         <div className="mb-8">
-                            <h1 className="text-4xl lg:text-5xl font-playfair font-bold text-navy mb-4" data-testid="composition-title">
+                            <h1 className="text-4xl lg:text-5xl font-playfair font-bold text-navy mb-4" data-testid="composition-title" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
                                 {composition.title}
                             </h1>
-                            {composition.year && (
-                                <div className="flex items-center text-xl text-gray-600">
-                                    <Calendar className="h-5 w-5 mr-2" />
-                                    <span data-testid="composition-year">{composition.year}</span>
+                            {(composition.year || composition.ensemble) && (
+                                <div className="flex items-center text-xl text-gray-600" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
+                                    {composition.ensemble && (
+                                        <>
+                                            <Users className="h-5 w-5 mr-2" />
+                                            <span className="mr-4" data-testid="composition-ensemble">{composition.ensemble}</span>
+                                        </>
+                                    )}
+                                    {composition.year && (
+                                        <span data-testid="composition-year">{composition.year}</span>
+                                    )}
                                 </div>
                             )}
                         </div>
@@ -104,39 +111,25 @@ export default function CompositionDetail() {
                                 {/* Instrumentation */}
                                 {composition.instrumentation && (
                                     <div>
-                                        <h2 className="text-lg font-semibold text-navy mb-2 flex items-center">
-                                            <Music className="h-5 w-5 mr-2" />
+                                        <h2 className="text-lg font-semibold text-navy mb-2" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
                                             Instrumentation
                                         </h2>
-                                        <p className="text-gray-700" data-testid="composition-instrumentation">
+                                        <p className="text-gray-700" data-testid="composition-instrumentation" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
                                             {composition.instrumentation}
                                         </p>
                                     </div>
                                 )}
 
-                                {/* Ensemble */}
-                                {composition.ensemble && (
-                                    <div>
-                                        <h2 className="text-lg font-semibold text-navy mb-2 flex items-center">
-                                            <Users className="h-5 w-5 mr-2" />
-                                            Ensemble Type
-                                        </h2>
-                                        <p className="text-gray-700" data-testid="composition-ensemble">
-                                            {composition.ensemble}
-                                        </p>
-                                    </div>
-                                )}
 
                                 {/* Duration */}
                                 {composition.duration && (
                                     <div>
-                                        <h2 className="text-lg font-semibold text-navy mb-2 flex items-center">
-                                            <Clock className="h-5 w-5 mr-2" />
-                                            Duration
+                                        <h2 className="text-lg font-semibold text-navy inline mr-2" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
+                                            Duration:
                                         </h2>
-                                        <p className="text-gray-700" data-testid="composition-duration">
+                                        <span className="text-gray-700" data-testid="composition-duration" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
                                             {composition.duration}
-                                        </p>
+                                        </span>
                                     </div>
                                 )}
                             </div>
@@ -146,10 +139,10 @@ export default function CompositionDetail() {
                                 {/* Premiere Information */}
                                 {composition.premiere_info && (
                                     <div>
-                                        <h2 className="text-lg font-semibold text-navy mb-2">
+                                        <h2 className="text-lg font-semibold text-navy mb-2" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
                                             Premiere Information
                                         </h2>
-                                        <p className="text-gray-700" data-testid="composition-premiere">
+                                        <p className="text-gray-700" data-testid="composition-premiere" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
                                             {composition.premiere_info}
                                         </p>
                                     </div>
@@ -158,10 +151,10 @@ export default function CompositionDetail() {
                                 {/* Publisher */}
                                 {composition.publisher && (
                                     <div>
-                                        <h2 className="text-lg font-semibold text-navy mb-2">
+                                        <h2 className="text-lg font-semibold text-navy mb-2" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
                                             Publisher
                                         </h2>
-                                        <p className="text-gray-700" data-testid="composition-publisher">
+                                        <p className="text-gray-700" data-testid="composition-publisher" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
                                             {composition.publisher}
                                         </p>
                                     </div>
@@ -170,7 +163,7 @@ export default function CompositionDetail() {
                                 {/* Recording */}
                                 {composition.recording && (
                                     <div>
-                                        <h2 className="text-lg font-semibold text-navy mb-2">
+                                        <h2 className="text-lg font-semibold text-navy mb-2" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
                                             Recording
                                         </h2>
                                         {composition.recording.includes('http') ? (
@@ -185,7 +178,7 @@ export default function CompositionDetail() {
                                                 <ExternalLink className="h-4 w-4 ml-2" />
                                             </a>
                                         ) : (
-                                            <p className="text-gray-700" data-testid="composition-recording">
+                                            <p className="text-gray-700" data-testid="composition-recording" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
                                                 {composition.recording}
                                             </p>
                                         )}
