@@ -7,6 +7,16 @@ export default function FYC() {
     const [isLoading, setIsLoading] = useState(true);
     
     useEffect(() => {
+        // Set the browser window title for this page
+        document.title = "FYC 2025: DAVID S. LEFKOWITZ PRELUDES AND FUGUES";
+        
+        // Reset to default title when leaving the page
+        return () => {
+            document.title = "David S. Lefkowitz";
+        };
+    }, []);
+
+    useEffect(() => {
         // Fetch updated links from Notion
         fetch("/api/fyc-content")
             .then(res => {
@@ -43,7 +53,7 @@ export default function FYC() {
                 <div className="relative">
                 {/* Header */}
                 <h1 className="text-4xl font-bold text-left mb-4" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif', paddingLeft: '24px'}}>
-                    FYC 2025: DAVID S. LEFKOWITZ PRELUDES AND FUGUES
+                    For Your Consideration
                 </h1>
                 
                 {/* Album cover image - positioned absolute on the right, aligned with title */}
