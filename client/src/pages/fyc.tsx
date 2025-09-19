@@ -41,7 +41,7 @@ export default function FYC() {
         <div className="max-w-5xl mx-auto p-6">
             <div>
                 {/* Header */}
-                <h1 className="text-4xl font-bold text-left mb-4" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
+                <h1 className="text-4xl font-bold text-left mb-4" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif', paddingLeft: '24px'}}>
                     For Your Consideration
                 </h1>
                 
