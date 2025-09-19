@@ -43,7 +43,7 @@ export default function FYC() {
                 <div className="relative">
                 {/* Header */}
                 <h1 className="text-4xl font-bold text-left mb-4" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif', paddingLeft: '24px'}}>
-                    For Your Consideration
+                    FYC 2025: DAVID S. LEFKOWITZ PRELUDES AND FUGUES
                 </h1>
                 
                 {/* Album cover image - positioned absolute on the right, aligned with title */}
