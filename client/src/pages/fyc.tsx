@@ -61,9 +61,7 @@ export default function FYC() {
                         <h2 className="text-2xl font-semibold mb-4" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
                             LISTEN HERE:
                         </h2>
-                        {isLoading ? (
-                            <p className="text-muted-foreground">Loading streaming links...</p>
-                        ) : (
+                        {!isLoading && (
                             <div style={{fontFamily: 'Times, "Times New Roman", Palatino, serif', paddingLeft: '24px'}}>
                                 {streamingLinks["Amazon Music"] && (
                                     <div>
