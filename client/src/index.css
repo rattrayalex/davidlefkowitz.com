@@ -59,60 +59,54 @@
 }
 
 /* FYC page animated background */
-@keyframes lilacGradientShift {
-  0% {
-    background: linear-gradient(135deg, 
-      #e6d5f7 0%,    /* light lilac */
-      #d4b5f0 25%,   /* medium lilac */
-      #e0ccf2 50%,   /* soft purple */
-      #f0e5f7 75%,   /* very light lilac */
-      #e6d5f7 100%   /* light lilac */
-    );
+@keyframes spinGradient {
+  from {
+    transform: rotate(0deg) scale(1.1);
   }
-  25% {
-    background: linear-gradient(135deg, 
-      #d4b5f0 0%,    /* medium lilac */
-      #e0ccf2 25%,   /* soft purple */
-      #f0e5f7 50%,   /* very light lilac */
-      #e6d5f7 75%,   /* light lilac */
-      #d4b5f0 100%   /* medium lilac */
-    );
-  }
-  50% {
-    background: linear-gradient(135deg, 
-      #e0ccf2 0%,    /* soft purple */
-      #f0e5f7 25%,   /* very light lilac */
-      #e6d5f7 50%,   /* light lilac */
-      #d4b5f0 75%,   /* medium lilac */
-      #e0ccf2 100%   /* soft purple */
-    );
-  }
-  75% {
-    background: linear-gradient(135deg, 
-      #f0e5f7 0%,    /* very light lilac */
-      #e6d5f7 25%,   /* light lilac */
-      #d4b5f0 50%,   /* medium lilac */
-      #e0ccf2 75%,   /* soft purple */
-      #f0e5f7 100%   /* very light lilac */
-    );
-  }
-  100% {
-    background: linear-gradient(135deg, 
-      #e6d5f7 0%,    /* light lilac */
-      #d4b5f0 25%,   /* medium lilac */
-      #e0ccf2 50%,   /* soft purple */
-      #f0e5f7 75%,   /* very light lilac */
-      #e6d5f7 100%   /* light lilac */
-    );
+  to {
+    transform: rotate(360deg) scale(1.1);
   }
 }
 
 .fyc-animated-background {
   min-height: 100vh;
   width: 100%;
-  animation: lilacGradientShift 20s ease-in-out infinite;
-  background-size: 200% 200%;
   position: relative;
+  overflow: hidden;
+  background: #f0e5f7; /* fallback base color */
+}
+
+.fyc-animated-background::before {
+  content: "";
+  position: absolute;
+  inset: -50%; /* extend beyond viewport to hide edges */
+  z-index: 0;
+  background: conic-gradient(
+    from 0deg at 50% 50%,
+    #e6d5f7 0deg,
+    #d4b5f0 90deg,
+    #e0ccf2 180deg,
+    #f0e5f7 270deg,
+    #e6d5f7 360deg
+  );
+  filter: blur(100px) saturate(1.1);
+  opacity: 0.7;
+  animation: spinGradient 60s linear infinite;
+  will-change: transform;
+  pointer-events: none;
+}
+
+/* Ensure content is above the animated background */
+.fyc-animated-background > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* Respect user's motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  .fyc-animated-background::before {
+    animation: none;
+  }
 }
 
 .dark {
