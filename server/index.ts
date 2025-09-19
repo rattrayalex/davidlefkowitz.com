@@ -63,33 +63,59 @@ app.use((req, res, next) => {
   // this serves both the API and the client.
   // It is the only port that is not firewalled.
   const port = parseInt(process.env.PORT || '5000', 10);
+  
+  // Mutex to prevent overlapping sync operations
+  let isSyncing = false;
+  
+  async function performSync() {
+    if (isSyncing) {
+      log('Sync already in progress, skipping...');
+      return;
+    }
+    
+    isSyncing = true;
+    try {
+      log('Starting Notion sync...');
+      await syncBlogPosts();
+      await syncCompositions();
+      await syncRecordings();
+      // Download images from blog posts and compositions
+      const { downloadAllImages } = await import("./downloadImages");
+      await downloadAllImages();
+      log('Notion sync completed successfully');
+    } catch (error) {
+      console.error('Sync failed:', error);
+    } finally {
+      isSyncing = false;
+    }
+  }
+  
   server.listen({
     port,
     host: "0.0.0.0",
     reusePort: true,
-  }, () => {
+  }, async () => {
     log(`serving on port ${port}`);
     
-    // Set up cron job to sync from Notion every hour during PST working hours (9 AM - 5 PM PST)
-    // PST working hours: 9 AM PST = 17:00 UTC, 5 PM PST = 01:00 UTC next day
-    // Cron runs at: 17:00, 18:00, 19:00, 20:00, 21:00, 22:00, 23:00, 00:00, 01:00 UTC
-    cron.schedule('0 17-23,0 * * *', async () => {
-      try {
-        log('Starting scheduled Notion sync...');
-        await syncBlogPosts();
-        await syncCompositions();
-        await syncRecordings();
-        // Download images from blog posts and compositions
-        const { downloadAllImages } = await import("./downloadImages");
-        await downloadAllImages();
-        log('Scheduled Notion sync completed');
-      } catch (error) {
-        console.error('Scheduled sync failed:', error);
-      }
+    // Perform initial sync on startup
+    log('Performing initial sync on startup...');
+    await performSync();
+    
+    // Set up cron job to sync from Notion every 15 minutes, 24/7
+    cron.schedule('*/15 * * * *', async () => {
+      await performSync();
     }, {
       timezone: 'UTC'
     });
     
-    log('Notion sync cron job scheduled for PST working hours');
+    // Set up daily full sync at 3 AM UTC for reconciliation
+    cron.schedule('0 3 * * *', async () => {
+      log('Starting daily full sync...');
+      await performSync();
+    }, {
+      timezone: 'UTC'
+    });
+    
+    log('Notion sync scheduled: every 15 minutes + daily full sync at 3 AM UTC');
   });
 })();
