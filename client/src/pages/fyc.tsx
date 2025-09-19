@@ -4,19 +4,11 @@ import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 
 export default function FYC() {
-    const [streamingLinks, setStreamingLinks] = useState<{ [key: string]: string }>({
-        "Amazon Music": "https://music.amazon.com/albums/B0D7YQ6YQ1",
-        "Apple Music": "https://music.apple.com/album/1768074405",
-        "Deezer": "https://www.deezer.com/us/album/598962392",
-        "Pandora": "https://www.pandora.com/artist/david-s-lefkowitz/preludes-and-fugues-books-i-ii/AL77xK3fhrvXJPZ",
-        "Spotify": "https://open.spotify.com/album/5m5Ahe5oTR8p8fVYRAaGEJ",
-        "Tidal": "https://tidal.com/browse/album/374849064",
-        "YouTube": "https://www.youtube.com/playlist?list=OLAK5uy_nn8VxGnp1_Rd2ZQaLQqRCYgDt4d9aecX8"
-    });
+    const [streamingLinks, setStreamingLinks] = useState<{ [key: string]: string }>({});
     const [isLoading, setIsLoading] = useState(true);
     
     useEffect(() => {
-        // Try to fetch updated links from Notion if available
+        // Fetch updated links from Notion
         fetch("/api/fyc-content")
             .then(res => {
                 if (res.ok) {
@@ -31,7 +23,17 @@ export default function FYC() {
                 setIsLoading(false);
             })
             .catch(err => {
-                console.log("Using default streaming links");
+                console.log("Error fetching FYC content:", err);
+                // Fallback to default links
+                setStreamingLinks({
+                    "Amazon Music": "https://www.amazon.com/dp/B0F3FMBQVP",
+                    "Apple Music": "https://classical.music.apple.com/us/album/1818776381",
+                    "Deezer": "https://www.deezer.com/us/album/736897251",
+                    "Pandora": "https://www.pandora.com/artist/david-kaplan-mika-sasaki-michael-mizrahi-and-steven-beck/david-s-lefkowitz-preludes-and-fugues-for-piano/ALk9zhjXvZ56VgJ",
+                    "Spotify": "https://open.spotify.com/album/1AXDnGNFGtceS4zGvmLn8H",
+                    "Tidal": "https://tidal.com/browse/track/427812074/u",
+                    "YouTube": "https://youtube.com/playlist?list=PL1WjDUvuhzW9pgsYIJhDD9i374wjGNkKi"
+                });
                 setIsLoading(false);
             });
     }, []);
@@ -50,28 +52,63 @@ export default function FYC() {
                             LISTEN HERE:
                         </h2>
                         {isLoading ? (
-                            <div className="flex flex-wrap gap-3">
-                                {[...Array(7)].map((_, i) => (
-                                    <Skeleton key={i} className="h-10 w-32" />
-                                ))}
-                            </div>
+                            <p className="text-muted-foreground">Loading streaming links...</p>
                         ) : (
-                            <div className="flex flex-wrap gap-3">
-                                {Object.entries(streamingLinks).map(([platform, url]) => (
-                                    <Button
-                                        key={platform}
-                                        variant="outline"
-                                        size="lg"
-                                        className="hover:bg-accent transition-colors"
-                                        style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}
-                                        asChild
-                                    >
-                                        <a href={url} target="_blank" rel="noopener noreferrer">
-                                            {platform}
+                            <p style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
+                                {streamingLinks["Amazon Music"] && (
+                                    <>
+                                        <a href={streamingLinks["Amazon Music"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
+                                            Amazon Music
                                         </a>
-                                    </Button>
-                                ))}
-                            </div>
+                                        {" | "}
+                                    </>
+                                )}
+                                {streamingLinks["Apple Music"] && (
+                                    <>
+                                        <a href={streamingLinks["Apple Music"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
+                                            Apple Music
+                                        </a>
+                                        {" | "}
+                                    </>
+                                )}
+                                {streamingLinks["Deezer"] && (
+                                    <>
+                                        <a href={streamingLinks["Deezer"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
+                                            Deezer
+                                        </a>
+                                        {" | "}
+                                    </>
+                                )}
+                                {streamingLinks["Pandora"] && (
+                                    <>
+                                        <a href={streamingLinks["Pandora"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
+                                            Pandora
+                                        </a>
+                                        {" | "}
+                                    </>
+                                )}
+                                {streamingLinks["Spotify"] && (
+                                    <>
+                                        <a href={streamingLinks["Spotify"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
+                                            Spotify
+                                        </a>
+                                        {" | "}
+                                    </>
+                                )}
+                                {streamingLinks["Tidal"] && (
+                                    <>
+                                        <a href={streamingLinks["Tidal"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
+                                            Tidal
+                                        </a>
+                                        {" | "}
+                                    </>
+                                )}
+                                {streamingLinks["YouTube"] && (
+                                    <a href={streamingLinks["YouTube"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
+                                        YouTube
+                                    </a>
+                                )}
+                            </p>
                         )}
                     </CardContent>
                 </Card>
@@ -89,7 +126,26 @@ export default function FYC() {
                                     CONTEMPORARY CLASSICAL COMPOSITION
                                 </h3>
                                 <p className="text-muted-foreground mt-1" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
-                                    Preludes and Fugues Books I & II, David S. Lefkowitz, Composer, on <em>David S. Lefkowitz, Preludes and Fugues</em> (Bridge Records 9594A/B)
+                                    {streamingLinks["Preludes and Fugues Book I"] && streamingLinks["Preludes and Fugues Book II"] ? (
+                                        <>
+                                            <a href={streamingLinks["Preludes and Fugues Book I"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
+                                                Preludes and Fugues Book I
+                                            </a>
+                                            {" & "}
+                                            <a href={streamingLinks["Preludes and Fugues Book II"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
+                                                Preludes and Fugues Book II
+                                            </a>
+                                            {", "}
+                                            {streamingLinks["David S. Lefkowitz"] ? (
+                                                <a href={streamingLinks["David S. Lefkowitz"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
+                                                    David S. Lefkowitz
+                                                </a>
+                                            ) : "David S. Lefkowitz"}
+                                            , Composer, on <em>David S. Lefkowitz, Preludes and Fugues</em> (Bridge Records 9594A/B)
+                                        </>
+                                    ) : (
+                                        <>Preludes and Fugues Books I & II, David S. Lefkowitz, Composer, on <em>David S. Lefkowitz, Preludes and Fugues</em> (Bridge Records 9594A/B)</>
+                                    )}
                                 </p>
                                 <p className="text-sm text-muted-foreground mt-1" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
                                     Submission ID # 1073957
@@ -101,7 +157,12 @@ export default function FYC() {
                                     CLASSICAL COMPENDIUM
                                 </h3>
                                 <p className="text-muted-foreground mt-1" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
-                                    <em>David S. Lefkowitz, Preludes and Fugues</em> (Bridge Records 9594A/B)
+                                    <em>David S. Lefkowitz, Preludes and Fugues</em> (
+                                    {streamingLinks["Bridge Records"] ? (
+                                        <a href={streamingLinks["Bridge Records"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
+                                            Bridge Records
+                                        </a>
+                                    ) : "Bridge Records"} 9594A/B)
                                 </p>
                                 <p className="text-sm text-muted-foreground" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
                                     David S. Lefkowitz producer, David Starobin and Becky Starobin, Executive Producers
@@ -157,7 +218,36 @@ export default function FYC() {
                                     Performers
                                 </dt>
                                 <dd className="mt-1" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
-                                    Steven Beck, David Kaplan, Michael Mizrahi, & Mika Sasaki, pianos, with Cantor Marcus Feldman, baritone, and David S. Lefkowitz, whistling, and additional piano and extended piano techniques.
+                                    {streamingLinks["Steven Beck"] ? (
+                                        <a href={streamingLinks["Steven Beck"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
+                                            Steven Beck
+                                        </a>
+                                    ) : "Steven Beck"}
+                                    {", "}
+                                    {streamingLinks["David Kaplan"] ? (
+                                        <a href={streamingLinks["David Kaplan"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
+                                            David Kaplan
+                                        </a>
+                                    ) : "David Kaplan"}
+                                    {", "}
+                                    {streamingLinks["Michael Mizrahi"] ? (
+                                        <a href={streamingLinks["Michael Mizrahi"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
+                                            Michael Mizrahi
+                                        </a>
+                                    ) : "Michael Mizrahi"}
+                                    {", & "}
+                                    {streamingLinks["Mika Sasaki"] ? (
+                                        <a href={streamingLinks["Mika Sasaki"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
+                                            Mika Sasaki
+                                        </a>
+                                    ) : "Mika Sasaki"}
+                                    {", pianos, with "}
+                                    {streamingLinks["Cantor Marcus Feldman"] ? (
+                                        <a href={streamingLinks["Cantor Marcus Feldman"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
+                                            Cantor Marcus Feldman
+                                        </a>
+                                    ) : "Cantor Marcus Feldman"}
+                                    {", baritone, and David S. Lefkowitz, whistling, and additional piano and extended piano techniques."}
                                 </dd>
                             </div>
                             
@@ -193,7 +283,18 @@ export default function FYC() {
                                     Recording Engineers
                                 </dt>
                                 <dd className="mt-1" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
-                                    Stuart Schenk, Benjamin Maas, Matheus Maciel
+                                    {streamingLinks["Stuart Schenk"] ? (
+                                        <a href={streamingLinks["Stuart Schenk"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
+                                            Stuart Schenk
+                                        </a>
+                                    ) : "Stuart Schenk"}
+                                    {", "}
+                                    {streamingLinks["Benjamin Maas"] ? (
+                                        <a href={streamingLinks["Benjamin Maas"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
+                                            Benjamin Maas
+                                        </a>
+                                    ) : "Benjamin Maas"}
+                                    {", Matheus Maciel"}
                                 </dd>
                             </div>
                             
@@ -202,7 +303,12 @@ export default function FYC() {
                                     Editing and Mastering Engineers
                                 </dt>
                                 <dd className="mt-1" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
-                                    Steve Kaplan, Sergey Parfenov, with David S. Lefkowitz
+                                    {streamingLinks["Steve Kaplan"] ? (
+                                        <a href={streamingLinks["Steve Kaplan"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
+                                            Steve Kaplan
+                                        </a>
+                                    ) : "Steve Kaplan"}
+                                    {", Sergey Parfenov, with David S. Lefkowitz"}
                                 </dd>
                             </div>
                             
@@ -211,7 +317,12 @@ export default function FYC() {
                                     Label
                                 </dt>
                                 <dd className="mt-1" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
-                                    Bridge Records, 200 Clinton Ave, New Rochelle, NY  10801
+                                    {streamingLinks["Bridge Records"] ? (
+                                        <a href={streamingLinks["Bridge Records"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
+                                            Bridge Records
+                                        </a>
+                                    ) : "Bridge Records"}
+                                    {", 200 Clinton Ave, New Rochelle, NY  10801"}
                                 </dd>
                             </div>
                             
@@ -229,7 +340,11 @@ export default function FYC() {
                                     Music Publisher
                                 </dt>
                                 <dd className="mt-1" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
-                                    Floating Point Music
+                                    {streamingLinks["Floating Point Music"] ? (
+                                        <a href={streamingLinks["Floating Point Music"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
+                                            Floating Point Music
+                                        </a>
+                                    ) : "Floating Point Music"}
                                 </dd>
                             </div>
                             
@@ -238,7 +353,11 @@ export default function FYC() {
                                     David S. Lefkowitz Representation
                                 </dt>
                                 <dd className="mt-1" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
-                                    Genevieve Spielberg Artists
+                                    {streamingLinks["Genevieve Spielberg Artists"] ? (
+                                        <a href={streamingLinks["Genevieve Spielberg Artists"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
+                                            Genevieve Spielberg Artists
+                                        </a>
+                                    ) : "Genevieve Spielberg Artists"}
                                 </dd>
                             </div>
                         </dl>
