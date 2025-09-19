@@ -169,189 +169,129 @@ export default function FYC() {
                             Album Details
                         </h2>
                         
-                        <dl className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-3">
-                            <div>
-                                <dt className="font-semibold text-sm text-muted-foreground" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
-                                    Composition
-                                </dt>
-                                <dd className="mt-1" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
-                                    {streamingLinks["Preludes and Fugues Book I"] && streamingLinks["Preludes and Fugues Book II"] ? (
-                                        <>
-                                            <a href={streamingLinks["Preludes and Fugues Book I"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
-                                                Preludes and Fugues Book I
-                                            </a>
-                                            {" & "}
-                                            <a href={streamingLinks["Preludes and Fugues Book II"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
-                                                Preludes and Fugues Book II
-                                            </a>
-                                        </>
-                                    ) : (
-                                        <>Preludes and Fugues Book I & Preludes and Fugues Book II</>
-                                    )}
-                                </dd>
+                        <div className="space-y-2">
+                            <div style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
+                                <span className="font-semibold">Composition:</span> {streamingLinks["Preludes and Fugues Book I"] && streamingLinks["Preludes and Fugues Book II"] ? (
+                                    <>
+                                        <a href={streamingLinks["Preludes and Fugues Book I"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
+                                            Preludes and Fugues Book I
+                                        </a>
+                                        {" & "}
+                                        <a href={streamingLinks["Preludes and Fugues Book II"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
+                                            Preludes and Fugues Book II
+                                        </a>
+                                    </>
+                                ) : (
+                                    <>Preludes and Fugues Book I & Preludes and Fugues Book II</>
+                                )}
                             </div>
                             
-                            <div>
-                                <dt className="font-semibold text-sm text-muted-foreground" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
-                                    Composer
-                                </dt>
-                                <dd className="mt-1" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
-                                    {streamingLinks["David S. Lefkowitz"] ? (
-                                        <a href={streamingLinks["David S. Lefkowitz"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
-                                            David S. Lefkowitz
-                                        </a>
-                                    ) : "David S. Lefkowitz"}
-                                </dd>
+                            <div style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
+                                <span className="font-semibold">Composer:</span> {streamingLinks["David S. Lefkowitz"] ? (
+                                    <a href={streamingLinks["David S. Lefkowitz"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
+                                        David S. Lefkowitz
+                                    </a>
+                                ) : "David S. Lefkowitz"}
                             </div>
                             
-                            <div className="md:col-span-2">
-                                <dt className="font-semibold text-sm text-muted-foreground" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
-                                    Performers
-                                </dt>
-                                <dd className="mt-1" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
-                                    {streamingLinks["Steven Beck"] ? (
-                                        <a href={streamingLinks["Steven Beck"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
-                                            Steven Beck
-                                        </a>
-                                    ) : "Steven Beck"}
-                                    {", "}
-                                    {streamingLinks["David Kaplan"] ? (
-                                        <a href={streamingLinks["David Kaplan"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
-                                            David Kaplan
-                                        </a>
-                                    ) : "David Kaplan"}
-                                    {", "}
-                                    {streamingLinks["Michael Mizrahi"] ? (
-                                        <a href={streamingLinks["Michael Mizrahi"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
-                                            Michael Mizrahi
-                                        </a>
-                                    ) : "Michael Mizrahi"}
-                                    {", & "}
-                                    {streamingLinks["Mika Sasaki"] ? (
-                                        <a href={streamingLinks["Mika Sasaki"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
-                                            Mika Sasaki
-                                        </a>
-                                    ) : "Mika Sasaki"}
-                                    {", pianos, with "}
-                                    {streamingLinks["Cantor Marcus Feldman"] ? (
-                                        <a href={streamingLinks["Cantor Marcus Feldman"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
-                                            Cantor Marcus Feldman
-                                        </a>
-                                    ) : "Cantor Marcus Feldman"}
-                                    {", baritone, and David S. Lefkowitz, whistling, and additional piano and extended piano techniques."}
-                                </dd>
+                            <div style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
+                                <span className="font-semibold">Performers:</span> {streamingLinks["Steven Beck"] ? (
+                                    <a href={streamingLinks["Steven Beck"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
+                                        Steven Beck
+                                    </a>
+                                ) : "Steven Beck"}
+                                {", "}
+                                {streamingLinks["David Kaplan"] ? (
+                                    <a href={streamingLinks["David Kaplan"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
+                                        David Kaplan
+                                    </a>
+                                ) : "David Kaplan"}
+                                {", "}
+                                {streamingLinks["Michael Mizrahi"] ? (
+                                    <a href={streamingLinks["Michael Mizrahi"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
+                                        Michael Mizrahi
+                                    </a>
+                                ) : "Michael Mizrahi"}
+                                {", & "}
+                                {streamingLinks["Mika Sasaki"] ? (
+                                    <a href={streamingLinks["Mika Sasaki"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
+                                        Mika Sasaki
+                                    </a>
+                                ) : "Mika Sasaki"}
+                                {", pianos, with "}
+                                {streamingLinks["Cantor Marcus Feldman"] ? (
+                                    <a href={streamingLinks["Cantor Marcus Feldman"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
+                                        Cantor Marcus Feldman
+                                    </a>
+                                ) : "Cantor Marcus Feldman"}
+                                {", baritone, and David S. Lefkowitz, whistling, and additional piano and extended piano techniques."}
                             </div>
                             
-                            <div>
-                                <dt className="font-semibold text-sm text-muted-foreground" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
-                                    Duration
-                                </dt>
-                                <dd className="mt-1" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
-                                    2:48:27
-                                </dd>
+                            <div style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
+                                <span className="font-semibold">Duration:</span> 2:48:27
                             </div>
                             
-                            <div>
-                                <dt className="font-semibold text-sm text-muted-foreground" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
-                                    Recorded
-                                </dt>
-                                <dd className="mt-1" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
-                                    20-24 May, 2023
-                                </dd>
+                            <div style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
+                                <span className="font-semibold">Recorded:</span> 20-24 May, 2023
                             </div>
                             
-                            <div>
-                                <dt className="font-semibold text-sm text-muted-foreground" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
-                                    Venue
-                                </dt>
-                                <dd className="mt-1" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
-                                    UCLA Ostin Recording Studio
-                                </dd>
+                            <div style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
+                                <span className="font-semibold">Venue:</span> UCLA Ostin Recording Studio
                             </div>
                             
-                            <div>
-                                <dt className="font-semibold text-sm text-muted-foreground" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
-                                    Recording Engineers
-                                </dt>
-                                <dd className="mt-1" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
-                                    {streamingLinks["Stuart Schenk"] ? (
-                                        <a href={streamingLinks["Stuart Schenk"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
-                                            Stuart Schenk
-                                        </a>
-                                    ) : "Stuart Schenk"}
-                                    {", "}
-                                    {streamingLinks["Benjamin Maas"] ? (
-                                        <a href={streamingLinks["Benjamin Maas"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
-                                            Benjamin Maas
-                                        </a>
-                                    ) : "Benjamin Maas"}
-                                    {", Matheus Maciel"}
-                                </dd>
+                            <div style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
+                                <span className="font-semibold">Recording Engineers:</span> {streamingLinks["Stuart Schenk"] ? (
+                                    <a href={streamingLinks["Stuart Schenk"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
+                                        Stuart Schenk
+                                    </a>
+                                ) : "Stuart Schenk"}
+                                {", "}
+                                {streamingLinks["Benjamin Maas"] ? (
+                                    <a href={streamingLinks["Benjamin Maas"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
+                                        Benjamin Maas
+                                    </a>
+                                ) : "Benjamin Maas"}
+                                {", Matheus Maciel"}
                             </div>
                             
-                            <div className="md:col-span-2">
-                                <dt className="font-semibold text-sm text-muted-foreground" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
-                                    Editing and Mastering Engineers
-                                </dt>
-                                <dd className="mt-1" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
-                                    {streamingLinks["Steve Kaplan"] ? (
-                                        <a href={streamingLinks["Steve Kaplan"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
-                                            Steve Kaplan
-                                        </a>
-                                    ) : "Steve Kaplan"}
-                                    {", Sergey Parfenov, with David S. Lefkowitz"}
-                                </dd>
+                            <div style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
+                                <span className="font-semibold">Editing and Mastering Engineers:</span> {streamingLinks["Steve Kaplan"] ? (
+                                    <a href={streamingLinks["Steve Kaplan"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
+                                        Steve Kaplan
+                                    </a>
+                                ) : "Steve Kaplan"}
+                                {", Sergey Parfenov, with David S. Lefkowitz"}
                             </div>
                             
-                            <div className="md:col-span-2">
-                                <dt className="font-semibold text-sm text-muted-foreground" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
-                                    Label
-                                </dt>
-                                <dd className="mt-1" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
-                                    {streamingLinks["Bridge Records"] ? (
-                                        <a href={streamingLinks["Bridge Records"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
-                                            Bridge Records
-                                        </a>
-                                    ) : "Bridge Records"}
-                                    {", 200 Clinton Ave, New Rochelle, NY  10801"}
-                                </dd>
+                            <div style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
+                                <span className="font-semibold">Label:</span> {streamingLinks["Bridge Records"] ? (
+                                    <a href={streamingLinks["Bridge Records"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
+                                        Bridge Records
+                                    </a>
+                                ) : "Bridge Records"}
+                                {", 200 Clinton Ave, New Rochelle, NY  10801"}
                             </div>
                             
-                            <div>
-                                <dt className="font-semibold text-sm text-muted-foreground" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
-                                    Cover Image
-                                </dt>
-                                <dd className="mt-1" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
-                                    Casey Siu
-                                </dd>
+                            <div style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
+                                <span className="font-semibold">Cover Image:</span> Casey Siu
                             </div>
                             
-                            <div>
-                                <dt className="font-semibold text-sm text-muted-foreground" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
-                                    Music Publisher
-                                </dt>
-                                <dd className="mt-1" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
-                                    {streamingLinks["Floating Point Music"] ? (
-                                        <a href={streamingLinks["Floating Point Music"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
-                                            Floating Point Music
-                                        </a>
-                                    ) : "Floating Point Music"}
-                                </dd>
+                            <div style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
+                                <span className="font-semibold">Music Publisher:</span> {streamingLinks["Floating Point Music"] ? (
+                                    <a href={streamingLinks["Floating Point Music"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
+                                        Floating Point Music
+                                    </a>
+                                ) : "Floating Point Music"}
                             </div>
                             
-                            <div className="md:col-span-2">
-                                <dt className="font-semibold text-sm text-muted-foreground" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
-                                    David S. Lefkowitz Representation
-                                </dt>
-                                <dd className="mt-1" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
-                                    {streamingLinks["Genevieve Spielberg Artists"] ? (
-                                        <a href={streamingLinks["Genevieve Spielberg Artists"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
-                                            Genevieve Spielberg Artists
-                                        </a>
-                                    ) : "Genevieve Spielberg Artists"}
-                                </dd>
+                            <div style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
+                                <span className="font-semibold">David S. Lefkowitz Representation:</span> {streamingLinks["Genevieve Spielberg Artists"] ? (
+                                    <a href={streamingLinks["Genevieve Spielberg Artists"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
+                                        Genevieve Spielberg Artists
+                                    </a>
+                                ) : "Genevieve Spielberg Artists"}
                             </div>
-                        </dl>
+                        </div>
                 </div>
             </div>
         </div>
