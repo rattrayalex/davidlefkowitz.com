@@ -21,7 +21,7 @@ interface CompositionDetailResponse {
     category: string;
     duration: string;
     premiere_info: string;
-    publisher: string;
+    publisher: string[] | string;  // Can be array or string for compatibility
     recording: string;
     streaming_links: string;
     recording_info: RecordingInfo[] | RecordingInfo | null;
@@ -187,7 +187,9 @@ export default function CompositionDetail() {
                             {/* Right Column */}
                             <div className="space-y-6">
                                 {/* Publisher */}
-                                {composition.publisher && Array.isArray(composition.publisher) && composition.publisher.length > 0 && (
+                                {composition.publisher && (
+                                    Array.isArray(composition.publisher) ? composition.publisher.length > 0 : composition.publisher
+                                ) && (
                                     <div>
                                         <h2 className="text-lg font-semibold text-navy mb-2" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
                                             Publisher
@@ -197,9 +199,13 @@ export default function CompositionDetail() {
                                             data-testid="composition-publisher" 
                                             style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}
                                         >
-                                            {composition.publisher.map((pub, index) => (
-                                                <div key={index} dangerouslySetInnerHTML={{ __html: pub }} />
-                                            ))}
+                                            {Array.isArray(composition.publisher) ? (
+                                                composition.publisher.map((pub, index) => (
+                                                    <div key={index} dangerouslySetInnerHTML={{ __html: pub }} />
+                                                ))
+                                            ) : (
+                                                <div dangerouslySetInnerHTML={{ __html: composition.publisher }} />
+                                            )}
                                         </div>
                                     </div>
                                 )}

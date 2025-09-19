@@ -153,7 +153,7 @@ Lefkowitz's compositions have been released on more than twenty commercial recor
                 category: Array.isArray(composition.ensemble) && composition.ensemble.length > 0 ? composition.ensemble[0] : "",
                 duration: composition.duration || "",
                 premiere_info: composition.premiere_info || "",
-                publisher: Array.isArray(composition.publisher) ? composition.publisher.join(", ") : "",
+                publisher: composition.publisher || [],  // Keep as array, don't join
                 recording: composition.recording || "",
                 streaming_links: composition.streaming_links || "",
                 recording_info: recordingInfoArray.length > 0 ? recordingInfoArray : null,
