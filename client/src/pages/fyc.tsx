@@ -39,9 +39,9 @@ export default function FYC() {
 
     return (
         <div className="max-w-5xl mx-auto p-6">
-            <div className="space-y-6">
+            <div>
                 {/* Header with album image */}
-                <div className="flex justify-between items-start">
+                <div className="flex justify-between items-start mb-6">
                     <h1 className="text-4xl font-bold text-left pl-16" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
                         For Your Consideration
                     </h1>
@@ -56,15 +56,14 @@ export default function FYC() {
                 </div>
                 
                 {/* Listen Here Section with vertical links */}
-                <Card className="bg-background mb-4">
-                    <CardContent className="pt-6">
+                <div className="bg-white rounded-lg px-6 pt-6" style={{ marginBottom: '1rem', paddingBottom: 0 }}>
                         <h2 className="text-2xl font-semibold mb-4" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
                             LISTEN HERE:
                         </h2>
                         {isLoading ? (
                             <p className="text-muted-foreground">Loading streaming links...</p>
                         ) : (
-                            <div className="space-y-2" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif', paddingLeft: '24px'}}>
+                            <div style={{fontFamily: 'Times, "Times New Roman", Palatino, serif', paddingLeft: '24px'}}>
                                 {streamingLinks["Amazon Music"] && (
                                     <div>
                                         <a href={streamingLinks["Amazon Music"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
@@ -116,12 +115,10 @@ export default function FYC() {
                                 )}
                             </div>
                         )}
-                    </CardContent>
-                </Card>
+                </div>
 
                 {/* Grammy Submissions Section */}
-                <Card className="bg-background mb-4">
-                    <CardContent className="pt-6 space-y-6">
+                <div className="bg-white rounded-lg px-6 pt-6" style={{ marginBottom: '1rem', paddingBottom: 0 }}>
                         <div className="space-y-4">
                             <div className="border-l-4 border-primary pl-4">
                                 <h3 className="font-bold text-lg" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
@@ -186,12 +183,10 @@ export default function FYC() {
                                 </p>
                             </div>
                         </div>
-                    </CardContent>
-                </Card>
+                </div>
 
                 {/* Album Details Section */}
-                <Card className="bg-background">
-                    <CardContent className="pt-6">
+                <div className="bg-white rounded-lg p-6">
                         <h2 className="text-2xl font-semibold mb-4" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
                             Album Details
                         </h2>
@@ -363,8 +358,7 @@ export default function FYC() {
                                 </dd>
                             </div>
                         </dl>
-                    </CardContent>
-                </Card>
+                </div>
             </div>
         </div>
     );
