@@ -3,6 +3,7 @@
 This is a composer's portfolio website for David S. Lefkowitz, built as a full-stack web application. The site showcases compositions, recordings, blog posts, and provides contact functionality. It integrates with Notion as a headless CMS for content management, allowing the composer to manage their portfolio content through familiar Notion interfaces while presenting it through a polished, professional web presence.
 
 ## Recent Updates (September 19, 2025)
+- **FYC (For Your Consideration) Page**: Added Grammy awards campaign page at `/fyc` featuring "Preludes and Fugues Books I & II" submissions with streaming links and detailed album information
 - **Unique URL Fix for Compositions**: Fixed critical navigation bug where multiple compositions with same title (e.g., three Calder's Closet versions) were generating duplicate slugs. Now properly uses "Name of Page" field from Notion to create unique URL-safe slugs for each composition variant
 - **Ranking Within Year Fix**: Fixed critical issue where "Ranking within year" values from Notion weren't populating. Implemented flexible extraction logic to handle formula, rollup, and other Notion field types beyond simple numbers
 - **Human-readable URLs**: Implemented slug-based URLs for blog posts and recordings (e.g., `/recordings/Reimagine_Beethoven_&_Ravel` instead of UUID-based URLs)  
@@ -21,6 +22,7 @@ Preferred communication style: Simple, everyday language.
 ## Frontend Architecture
 - **React with TypeScript**: Modern component-based UI built with React 18 and TypeScript for type safety
 - **Wouter Router**: Lightweight client-side routing solution for navigation between pages
+- **Static Pages**: About and FYC pages implemented as static components for maximum control
 - **Shadcn/ui Components**: Pre-built UI component library based on Radix UI primitives with Tailwind CSS styling
 - **Tailwind CSS**: Utility-first CSS framework for responsive design and consistent styling
 - **React Query**: Data fetching and caching library for managing server state and API interactions
