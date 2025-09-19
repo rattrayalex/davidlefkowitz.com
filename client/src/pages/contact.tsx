@@ -103,6 +103,16 @@ export default function Contact() {
                                     please mention "URGENT" in your subject line.
                                 </p>
                             </div>
+
+                            {/* Floating Point Music */}
+                            <div className="border border-gray-300 rounded-xl border-l-4 border-purple p-6" style={{backgroundColor: '#e5e5ff'}}>
+                                <h3 className="text-4xl lg:text-5xl font-bold text-navy mb-3" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
+                                    Floating Point Music
+                                </h3>
+                                <p className="text-xl text-gray-700" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
+                                    To inquire about purchasing scores published by Floating Point Music, write to FloatingPointMusic@davidlefkowitz.com.
+                                </p>
+                            </div>
                         </div>
 
                     </div>
