@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 
 export default function FYC() {
@@ -41,11 +40,22 @@ export default function FYC() {
     return (
         <div className="max-w-5xl mx-auto p-6 space-y-8">
             <div className="space-y-6">
-                <h1 className="text-4xl font-bold text-left pl-16" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
-                    For Your Consideration
-                </h1>
+                {/* Header with album image */}
+                <div className="flex justify-between items-start">
+                    <h1 className="text-4xl font-bold text-left pl-16" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
+                        For Your Consideration
+                    </h1>
+                    {/* Album cover image */}
+                    <div className="w-64 h-64 flex-shrink-0 ml-8">
+                        <img 
+                            src="/api/media-cache/recording_26c3907b_2ee6_81cb_9edf_f38464971746_97444b41.jpg"
+                            alt="Preludes and Fugues Album Cover"
+                            className="w-full h-full object-cover rounded-lg shadow-lg"
+                        />
+                    </div>
+                </div>
                 
-                {/* Listen Here Section */}
+                {/* Listen Here Section with vertical links */}
                 <Card className="bg-background">
                     <CardContent className="pt-6">
                         <h2 className="text-2xl font-semibold mb-4" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
@@ -54,136 +64,58 @@ export default function FYC() {
                         {isLoading ? (
                             <p className="text-muted-foreground">Loading streaming links...</p>
                         ) : (
-                            <p style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
+                            <div className="space-y-2" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif', paddingLeft: '24px'}}>
                                 {streamingLinks["Amazon Music"] && (
-                                    <>
+                                    <div>
                                         <a href={streamingLinks["Amazon Music"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
                                             Amazon Music
                                         </a>
-                                        {" | "}
-                                    </>
+                                    </div>
                                 )}
                                 {streamingLinks["Apple Music"] && (
-                                    <>
+                                    <div>
                                         <a href={streamingLinks["Apple Music"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
                                             Apple Music
                                         </a>
-                                        {" | "}
-                                    </>
+                                    </div>
                                 )}
                                 {streamingLinks["Deezer"] && (
-                                    <>
+                                    <div>
                                         <a href={streamingLinks["Deezer"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
                                             Deezer
                                         </a>
-                                        {" | "}
-                                    </>
+                                    </div>
                                 )}
                                 {streamingLinks["Pandora"] && (
-                                    <>
+                                    <div>
                                         <a href={streamingLinks["Pandora"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
                                             Pandora
                                         </a>
-                                        {" | "}
-                                    </>
+                                    </div>
                                 )}
                                 {streamingLinks["Spotify"] && (
-                                    <>
+                                    <div>
                                         <a href={streamingLinks["Spotify"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
                                             Spotify
                                         </a>
-                                        {" | "}
-                                    </>
+                                    </div>
                                 )}
                                 {streamingLinks["Tidal"] && (
-                                    <>
+                                    <div>
                                         <a href={streamingLinks["Tidal"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
                                             Tidal
                                         </a>
-                                        {" | "}
-                                    </>
+                                    </div>
                                 )}
                                 {streamingLinks["YouTube"] && (
-                                    <a href={streamingLinks["YouTube"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
-                                        YouTube
-                                    </a>
-                                )}
-                            </p>
-                        )}
-                    </CardContent>
-                </Card>
-
-                {/* Grammy Submissions Section */}
-                <Card className="bg-background">
-                    <CardContent className="pt-6 space-y-6">
-                        <h2 className="text-2xl font-semibold mb-4" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
-                            FOR YOUR CONSIDERATION:
-                        </h2>
-                        
-                        <div className="space-y-4">
-                            <div className="border-l-4 border-primary pl-4">
-                                <h3 className="font-bold text-lg" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
-                                    CONTEMPORARY CLASSICAL COMPOSITION
-                                </h3>
-                                <p className="text-muted-foreground mt-1" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
-                                    {streamingLinks["Preludes and Fugues Book I"] && streamingLinks["Preludes and Fugues Book II"] ? (
-                                        <>
-                                            <a href={streamingLinks["Preludes and Fugues Book I"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
-                                                Preludes and Fugues Book I
-                                            </a>
-                                            {" & "}
-                                            <a href={streamingLinks["Preludes and Fugues Book II"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
-                                                Preludes and Fugues Book II
-                                            </a>
-                                            {", "}
-                                            {streamingLinks["David S. Lefkowitz"] ? (
-                                                <a href={streamingLinks["David S. Lefkowitz"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
-                                                    David S. Lefkowitz
-                                                </a>
-                                            ) : "David S. Lefkowitz"}
-                                            , Composer, on <em>David S. Lefkowitz, Preludes and Fugues</em> (Bridge Records 9594A/B)
-                                        </>
-                                    ) : (
-                                        <>Preludes and Fugues Books I & II, David S. Lefkowitz, Composer, on <em>David S. Lefkowitz, Preludes and Fugues</em> (Bridge Records 9594A/B)</>
-                                    )}
-                                </p>
-                                <p className="text-sm text-muted-foreground mt-1" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
-                                    Submission ID # 1073957
-                                </p>
-                            </div>
-
-                            <div className="border-l-4 border-primary pl-4">
-                                <h3 className="font-bold text-lg" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
-                                    CLASSICAL COMPENDIUM
-                                </h3>
-                                <p className="text-muted-foreground mt-1" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
-                                    <em>David S. Lefkowitz, Preludes and Fugues</em> (
-                                    {streamingLinks["Bridge Records"] ? (
-                                        <a href={streamingLinks["Bridge Records"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
-                                            Bridge Records
+                                    <div>
+                                        <a href={streamingLinks["YouTube"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
+                                            YouTube
                                         </a>
-                                    ) : "Bridge Records"} 9594A/B)
-                                </p>
-                                <p className="text-sm text-muted-foreground" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
-                                    David S. Lefkowitz producer, David Starobin and Becky Starobin, Executive Producers
-                                </p>
-                                <p className="text-sm text-muted-foreground mt-1" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
-                                    Submission ID # 1074384
-                                </p>
+                                    </div>
+                                )}
                             </div>
-
-                            <div className="border-l-4 border-primary pl-4">
-                                <h3 className="font-bold text-lg" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
-                                    PRODUCER OF THE YEAR, CLASSICAL
-                                </h3>
-                                <p className="text-muted-foreground mt-1" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
-                                    David S. Lefkowitz, producer of <em>David S. Lefkowitz, Preludes and Fugues</em> (Bridge Records 9594A/B)
-                                </p>
-                                <p className="text-sm text-muted-foreground mt-1" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
-                                    Submission ID # 74403
-                                </p>
-                            </div>
-                        </div>
+                        )}
                     </CardContent>
                 </Card>
 
