@@ -39,22 +39,23 @@ export default function FYC() {
 
     return (
         <div className="max-w-5xl mx-auto p-6">
-            <div>
+            <div className="relative">
                 {/* Header */}
                 <h1 className="text-4xl font-bold text-left mb-4" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif', paddingLeft: '24px'}}>
                     For Your Consideration
                 </h1>
                 
-                {/* Container for streaming links and album image */}
-                <div className="relative">
-                    {/* Album cover image - positioned absolute on the right */}
-                    <div className="absolute right-0 top-0 w-64 h-64 z-10">
-                        <img 
-                            src="/api/media-cache/recording_26c3907b_2ee6_81cb_9edf_f38464971746_97444b41.jpg"
-                            alt="Preludes and Fugues Album Cover"
-                            className="w-full h-full object-cover rounded-lg shadow-lg"
-                        />
-                    </div>
+                {/* Album cover image - positioned absolute on the right, aligned with title */}
+                <div className="absolute right-0 top-0 z-10" style={{ width: '320px', height: '380px' }}>
+                    <img 
+                        src="/api/media-cache/recording_26c3907b_2ee6_81cb_9edf_f38464971746_97444b41.jpg"
+                        alt="Preludes and Fugues Album Cover"
+                        className="w-full h-full object-cover rounded-lg shadow-lg"
+                    />
+                </div>
+                
+                {/* Container for streaming links */}
+                <div>
                     
                     {/* Listen Here Section with vertical links - extends full width behind image */}
                     <div className="rounded-lg px-6 pt-6" style={{ marginBottom: 0, paddingBottom: 0, minHeight: '280px' }}>
