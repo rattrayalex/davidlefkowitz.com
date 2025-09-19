@@ -148,7 +148,7 @@ export default function CompositionDetail() {
                                         </div>
                                     )}
 
-                                    {/* Publisher - Moved here for these specific compositions */}
+                                    {/* Publisher */}
                                     {composition.publisher && (
                                         Array.isArray(composition.publisher) ? composition.publisher.length > 0 : composition.publisher
                                     ) && (
@@ -171,11 +171,8 @@ export default function CompositionDetail() {
                                             </div>
                                         </div>
                                     )}
-                                </div>
 
-                                {/* Right Column */}
-                                <div className="space-y-6">
-                                    {/* Recording(s) */}
+                                    {/* Recording(s) - Moved to left column below Publisher */}
                                     {composition.recording_info && (() => {
                                         // Handle both single recording (legacy) and multiple recordings (new format)
                                         const recordings = Array.isArray(composition.recording_info) 
@@ -219,7 +216,7 @@ export default function CompositionDetail() {
                                         );
                                     })()}
 
-                                    {/* Additional Streaming Links - Moved here right after Recording */}
+                                    {/* Additional Streaming Links - Moved to left column below Recording */}
                                     {composition.streaming_links && composition.streaming_links.trim() && (
                                         <div>
                                             <h2 className="text-lg font-semibold text-navy mb-2" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
@@ -262,8 +259,11 @@ export default function CompositionDetail() {
                                             </div>
                                         </div>
                                     )}
+                                </div>
 
-                                    {/* Relevant Blogposts - Moved up */}
+                                {/* Right Column */}
+                                <div className="space-y-6">
+                                    {/* Relevant Blogposts - At the top of right column */}
                                     {composition.related_blogposts && composition.related_blogposts.length > 0 && (
                                         <div>
                                             <h2 className="text-lg font-semibold text-navy mb-2" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
