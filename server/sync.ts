@@ -514,20 +514,48 @@ export async function syncCompositions() {
                 ) as string[]) || [],
             year: year,
             duration: durationProperty?.rich_text?.[0]?.plain_text || "",
-            publisher: publisherProperty?.rich_text
-                ?.map((part: any) => {
-                    // Preserve HTML links from rich text
-                    if (part.href) {
-                        return `<a href="${part.href}" target="_blank" rel="noopener noreferrer">${part.plain_text}</a>`;
-                    }
-                    return part.plain_text;
-                })
-                .filter((p: string) => p && p.trim().length > 0) || [],
+            publisher: (() => {
+                const richText = publisherProperty?.rich_text;
+                if (!richText || richText.length === 0) return [];
+                
+                // Build complete HTML from rich text segments
+                const htmlContent = richText
+                    .map((part: any) => {
+                        const text = part.plain_text || "";
+                        // If this segment has a link
+                        if (part.href) {
+                            return `<a href="${part.href}" target="_blank" rel="noopener noreferrer">${text}</a>`;
+                        }
+                        return text;
+                    })
+                    .join("");
+                
+                // Split by common separators and clean up
+                return htmlContent
+                    .split(/[,;]/)
+                    .map((p: string) => p.trim())
+                    .filter((p: string) => p.length > 0);
+            })(),
             premiere_info: premiereProperty?.date?.start || "",
             recording: recordingProperty?.rich_text
                 ?.map((part: any) => part.plain_text?.trim())
                 .filter((r: string) => r && r.length > 0) || [],
-            streaming_links: streamingLinksProperty?.rich_text?.[0]?.plain_text || "",
+            streaming_links: (() => {
+                const richText = streamingLinksProperty?.rich_text;
+                if (!richText || richText.length === 0) return "";
+                
+                // Build HTML from rich text segments
+                return richText
+                    .map((part: any) => {
+                        const text = part.plain_text || "";
+                        // If this segment has a link
+                        if (part.href) {
+                            return `<a href="${part.href}" target="_blank" rel="noopener noreferrer">${text}</a>`;
+                        }
+                        return text;
+                    })
+                    .join("");
+            })(),
             program_note: programNoteProperty?.rich_text?.map((part: any) => part.plain_text).join("") || "",
             published: true,
         };

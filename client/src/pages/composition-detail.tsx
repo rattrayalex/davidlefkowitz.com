@@ -192,7 +192,11 @@ export default function CompositionDetail() {
                                         <h2 className="text-lg font-semibold text-navy mb-2" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
                                             Publisher
                                         </h2>
-                                        <div className="text-gray-700" data-testid="composition-publisher" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
+                                        <div 
+                                            className="text-gray-700 [&_a]:text-purple [&_a]:hover:text-purple-700 [&_a]:underline [&_a]:transition-colors [&_a]:duration-200" 
+                                            data-testid="composition-publisher" 
+                                            style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}
+                                        >
                                             {composition.publisher.map((pub, index) => (
                                                 <div key={index} dangerouslySetInnerHTML={{ __html: pub }} />
                                             ))}
@@ -201,7 +205,7 @@ export default function CompositionDetail() {
                                 )}
 
                                 {/* Streaming Links */}
-                                {composition.streaming_links && (
+                                {composition.streaming_links && composition.streaming_links.trim() && (
                                     <div>
                                         <h2 className="text-lg font-semibold text-navy mb-2" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
                                             {composition.recording_info && 
@@ -209,32 +213,37 @@ export default function CompositionDetail() {
                                               (!Array.isArray(composition.recording_info) && composition.recording_info)) 
                                              ? "Additional Streaming Links" : "Streaming Links"}
                                         </h2>
-                                        <p className="text-gray-700" data-testid="composition-streaming-links" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
-                                            {composition.streaming_links.split('\n').map((link, index) => {
-                                                // Check if the link contains a URL
-                                                const urlMatch = link.match(/(https?:\/\/[^\s]+)/);
-                                                if (urlMatch) {
-                                                    const url = urlMatch[1];
-                                                    const text = link.replace(url, '').trim() || url;
-                                                    return (
-                                                        <span key={index}>
-                                                            {index > 0 && <br />}
-                                                            <a href={url} target="_blank" rel="noopener noreferrer" className="text-purple hover:text-purple-dark underline">
-                                                                {text}
-                                                            </a>
-                                                        </span>
-                                                    );
-                                                } else {
-                                                    // Plain text link
-                                                    return (
-                                                        <span key={index}>
-                                                            {index > 0 && <br />}
-                                                            {link}
-                                                        </span>
-                                                    );
-                                                }
-                                            })}
-                                        </p>
+                                        <div className="text-gray-700" data-testid="composition-streaming-links" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
+                                            {/* Check if content has HTML */}
+                                            {composition.streaming_links.includes('<a ') ? (
+                                                <div dangerouslySetInnerHTML={{ __html: composition.streaming_links }} />
+                                            ) : (
+                                                composition.streaming_links.split('\n').map((link, index) => {
+                                                    // Check if the link contains a URL
+                                                    const urlMatch = link.match(/(https?:\/\/[^\s]+)/);
+                                                    if (urlMatch) {
+                                                        const url = urlMatch[1];
+                                                        const text = link.replace(url, '').trim() || url;
+                                                        return (
+                                                            <span key={index}>
+                                                                {index > 0 && <br />}
+                                                                <a href={url} target="_blank" rel="noopener noreferrer" className="text-purple hover:text-purple-dark underline">
+                                                                    {text}
+                                                                </a>
+                                                            </span>
+                                                        );
+                                                    } else {
+                                                        // Plain text link
+                                                        return (
+                                                            <span key={index}>
+                                                                {index > 0 && <br />}
+                                                                {link}
+                                                            </span>
+                                                        );
+                                                    }
+                                                })
+                                            )}
+                                        </div>
                                     </div>
                                 )}
                             </div>
