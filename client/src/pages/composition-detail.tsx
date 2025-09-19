@@ -190,7 +190,7 @@ export default function CompositionDetail() {
                                                         {validRecordings.length > 1 ? 'Recordings' : 'Recording'}
                                                     </span>{' '}
                                                     <span className="font-normal" style={{fontSize: '1rem'}}>
-                                                        (click on image{validRecordings.length > 1 ? 's' : ''})
+                                                        (click on image{validRecordings.length > 1 ? 's' : ''} for information and links)
                                                     </span>
                                                 </h2>
                                                 <div className="space-y-4">
@@ -334,7 +334,7 @@ export default function CompositionDetail() {
                                                         {validRecordings.length > 1 ? 'Recordings' : 'Recording'}
                                                     </span>{' '}
                                                     <span className="font-normal" style={{fontSize: '1rem'}}>
-                                                        (click on image{validRecordings.length > 1 ? 's' : ''})
+                                                        (click on image{validRecordings.length > 1 ? 's' : ''} for information and links)
                                                     </span>
                                                 </h2>
                                                 <div className="space-y-4">
