@@ -155,7 +155,7 @@ export default function CompositionDetail() {
                                             <h2 className="text-lg text-navy mb-2 whitespace-nowrap" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
                                                 <span className="font-semibold">
                                                     {validRecordings.length > 1 ? 'Recordings' : 'Recording'}
-                                                </span> 
+                                                </span>{' '}
                                                 <span className="font-normal" style={{fontSize: '1rem'}}>
                                                     (click on image{validRecordings.length > 1 ? 's' : ''})
                                                 </span>
