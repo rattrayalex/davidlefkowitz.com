@@ -38,7 +38,7 @@ export default function FYC() {
     }, []);
 
     return (
-        <div className="max-w-5xl mx-auto p-6 space-y-8">
+        <div className="max-w-5xl mx-auto p-6">
             <div className="space-y-6">
                 {/* Header with album image */}
                 <div className="flex justify-between items-start">
@@ -56,7 +56,7 @@ export default function FYC() {
                 </div>
                 
                 {/* Listen Here Section with vertical links */}
-                <Card className="bg-background">
+                <Card className="bg-background mb-4">
                     <CardContent className="pt-6">
                         <h2 className="text-2xl font-semibold mb-4" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
                             LISTEN HERE:
@@ -120,7 +120,7 @@ export default function FYC() {
                 </Card>
 
                 {/* Grammy Submissions Section */}
-                <Card className="bg-background">
+                <Card className="bg-background mb-4">
                     <CardContent className="pt-6 space-y-6">
                         <div className="space-y-4">
                             <div className="border-l-4 border-primary pl-4">
