@@ -318,6 +318,8 @@ export default function FYC() {
                             </div>
                         </div>
                 </div>
+                </div>
             </div>
+        </div>
     );
 }
