@@ -143,7 +143,9 @@ Lefkowitz's compositions have been released on more than twenty commercial recor
                 }
             }
 
-            // Fetch blog posts that reference this composition (by composition ID)
+            // Fetch blog posts that reference this composition (by Notion page ID)
+            // Blog posts store the Notion page IDs from the relation field, not local DB IDs
+            // So we need to use the composition's Notion ID (stored as the composition.id)
             const relatedBlogPosts = await db
                 .select({
                     id: blogPosts.id,

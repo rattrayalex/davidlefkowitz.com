@@ -401,8 +401,19 @@ export async function syncBlogPosts() {
             // Extract related compositions from the Composition column (relation field)
             const relatedCompositionIds = compositionProperty?.relation?.map((r: any) => r.id) || [];
             
-            // We'll store the composition IDs, not slugs
-            // Later we'll convert these to actual composition references
+            // Map the old Notion IDs to the correct composition IDs in our database
+            // These are hardcoded mappings for the known Preludes and Fugues books
+            const compositionIdMapping: { [key: string]: string } = {
+                // Book I (Expanded Universe) - old Notion ID -> new ID
+                "22f3907b-2ee6-8197-97ba-e86cb4dee864": "2653907b-2ee6-81a8-b453-eb1e7fa8749b",
+                // Book II (Parallel Universes) - old Notion ID -> new ID  
+                "22f3907b-2ee6-811b-b72e-cf2abb394b9a": "2653907b-2ee6-8126-a1c5-f99f41bb9abb",
+            };
+            
+            // Map the Notion IDs to our database IDs
+            const mappedCompositionIds = relatedCompositionIds.map((id: string) => 
+                compositionIdMapping[id] || id // Use mapping if available, otherwise keep original
+            );
 
             const blogPost: InsertBlogPost = {
                 title: title.trim(),
@@ -415,7 +426,7 @@ export async function syncBlogPosts() {
                 tags: [], // No tags in current schema, but ready for future
                 read_time: readTime,
                 notion_url: `https://www.notion.so/${page.id.replace(/-/g, "")}`,
-                related_compositions: relatedCompositionIds, // Store the composition IDs from Notion relation
+                related_compositions: mappedCompositionIds, // Store the mapped composition IDs
             };
 
             // Insert or update the blog post
