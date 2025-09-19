@@ -812,6 +812,50 @@ Lefkowitz's compositions have been released on more than twenty commercial recor
         }
     });
 
+    // Individual sync endpoints
+    app.post("/api/sync-recordings", async (req, res) => {
+        try {
+            await syncRecordings();
+            res.json({ success: true, message: "Recordings sync completed" });
+        } catch (error) {
+            console.error("Error during recordings sync:", error);
+            res.status(500).json({ error: "Failed to sync recordings" });
+        }
+    });
+
+    app.post("/api/sync-compositions", async (req, res) => {
+        try {
+            await syncCompositions();
+            res.json({ success: true, message: "Compositions sync completed" });
+        } catch (error) {
+            console.error("Error during compositions sync:", error);
+            res.status(500).json({ error: "Failed to sync compositions" });
+        }
+    });
+
+    app.post("/api/sync-blog", async (req, res) => {
+        try {
+            await syncBlogPosts();
+            res.json({ success: true, message: "Blog posts sync completed" });
+        } catch (error) {
+            console.error("Error during blog posts sync:", error);
+            res.status(500).json({ error: "Failed to sync blog posts" });
+        }
+    });
+
+    app.post("/api/sync-all", async (req, res) => {
+        try {
+            await syncBlogPosts();
+            await syncCompositions();
+            await syncRecordings();
+            await syncMedia();
+            res.json({ success: true, message: "Full sync completed" });
+        } catch (error) {
+            console.error("Error during full sync:", error);
+            res.status(500).json({ error: "Failed to sync all data" });
+        }
+    });
+
     // Image download endpoint
     app.post("/api/download-images", async (req, res) => {
         try {
