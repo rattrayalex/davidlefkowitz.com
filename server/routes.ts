@@ -812,38 +812,94 @@ Lefkowitz's compositions have been released on more than twenty commercial recor
         }
     });
 
+    // Middleware to protect manual sync endpoints in production
+    const requireAdminAuth = (req: any, res: any, next: any) => {
+        // In production, require an admin token
+        if (process.env.NODE_ENV === 'production') {
+            const adminToken = process.env.ADMIN_SYNC_TOKEN;
+            const providedToken = req.headers['x-admin-token'] || req.query.token;
+            
+            if (!adminToken) {
+                // If no admin token is set, log warning and proceed (for backward compatibility)
+                console.warn('Warning: ADMIN_SYNC_TOKEN not set in production');
+                next();
+                return;
+            }
+            
+            if (providedToken !== adminToken) {
+                res.status(401).json({ error: "Unauthorized" });
+                return;
+            }
+        }
+        next();
+    };
+    
+    // Shared mutex with the automatic sync in index.ts
+    let syncMutex = (global as any).syncMutex || { isSyncing: false };
+    (global as any).syncMutex = syncMutex;
+    
     // Individual sync endpoints
-    app.get("/api/sync-recordings", async (req, res) => {
+    app.get("/api/sync-recordings", requireAdminAuth, async (req, res) => {
+        if (syncMutex.isSyncing) {
+            res.json({ success: false, message: "Sync already in progress" });
+            return;
+        }
+        
+        syncMutex.isSyncing = true;
         try {
             await syncRecordings();
             res.json({ success: true, message: "Recordings sync completed" });
         } catch (error) {
             console.error("Error during recordings sync:", error);
             res.status(500).json({ error: "Failed to sync recordings" });
+        } finally {
+            syncMutex.isSyncing = false;
         }
     });
 
-    app.get("/api/sync-compositions", async (req, res) => {
+    app.get("/api/sync-compositions", requireAdminAuth, async (req, res) => {
+        if (syncMutex.isSyncing) {
+            res.json({ success: false, message: "Sync already in progress" });
+            return;
+        }
+        
+        syncMutex.isSyncing = true;
         try {
             await syncCompositions();
             res.json({ success: true, message: "Compositions sync completed" });
         } catch (error) {
             console.error("Error during compositions sync:", error);
             res.status(500).json({ error: "Failed to sync compositions" });
+        } finally {
+            syncMutex.isSyncing = false;
         }
     });
 
-    app.get("/api/sync-blog", async (req, res) => {
+    app.get("/api/sync-blog", requireAdminAuth, async (req, res) => {
+        if (syncMutex.isSyncing) {
+            res.json({ success: false, message: "Sync already in progress" });
+            return;
+        }
+        
+        syncMutex.isSyncing = true;
         try {
             await syncBlogPosts();
             res.json({ success: true, message: "Blog posts sync completed" });
         } catch (error) {
             console.error("Error during blog posts sync:", error);
             res.status(500).json({ error: "Failed to sync blog posts" });
+        } finally {
+            syncMutex.isSyncing = false;
         }
     });
 
-    app.get("/api/sync-all", async (req, res) => {
+    app.get("/api/sync-all", requireAdminAuth, async (req, res) => {
+        if (syncMutex.isSyncing) {
+            res.json({ success: false, message: "Sync already in progress" });
+            return;
+        }
+        
+        syncMutex.isSyncing = true;
         try {
             await syncBlogPosts();
             await syncCompositions();
@@ -853,6 +909,8 @@ Lefkowitz's compositions have been released on more than twenty commercial recor
         } catch (error) {
             console.error("Error during full sync:", error);
             res.status(500).json({ error: "Failed to sync all data" });
+        } finally {
+            syncMutex.isSyncing = false;
         }
     });
 

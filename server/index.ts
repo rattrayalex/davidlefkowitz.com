@@ -64,16 +64,17 @@ app.use((req, res, next) => {
   // It is the only port that is not firewalled.
   const port = parseInt(process.env.PORT || '5000', 10);
   
-  // Mutex to prevent overlapping sync operations
-  let isSyncing = false;
+  // Shared mutex to prevent overlapping sync operations (shared with routes.ts)
+  let syncMutex = (global as any).syncMutex || { isSyncing: false };
+  (global as any).syncMutex = syncMutex;
   
   async function performSync() {
-    if (isSyncing) {
+    if (syncMutex.isSyncing) {
       log('Sync already in progress, skipping...');
       return;
     }
     
-    isSyncing = true;
+    syncMutex.isSyncing = true;
     try {
       log('Starting Notion sync...');
       await syncBlogPosts();
@@ -86,7 +87,7 @@ app.use((req, res, next) => {
     } catch (error) {
       console.error('Sync failed:', error);
     } finally {
-      isSyncing = false;
+      syncMutex.isSyncing = false;
     }
   }
   
