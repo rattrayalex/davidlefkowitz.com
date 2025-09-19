@@ -20,8 +20,10 @@ export default function Footer() {
         return true;
     });
 
+    const isFYCPage = location === '/fyc';
+    
     return (
-        <footer className="text-navy py-12" style={{backgroundColor: '#e5e5ff'}}>
+        <footer className="text-navy py-12" style={{backgroundColor: isFYCPage ? 'transparent' : '#e5e5ff'}}>
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="grid md:grid-cols-2 gap-8">
                     <div>

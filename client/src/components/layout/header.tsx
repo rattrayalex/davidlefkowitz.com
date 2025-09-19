@@ -23,8 +23,10 @@ export default function Header() {
         return false;
     };
 
+    const isFYCPage = location === '/fyc';
+    
     return (
-        <header className="relative shadow-sm" style={{backgroundColor: '#e5e5ff'}}>
+        <header className={`relative ${isFYCPage ? '' : 'shadow-sm'}`} style={{backgroundColor: isFYCPage ? 'transparent' : '#e5e5ff'}}>
             <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex justify-between items-center py-4">
                     {/* Logo/Name */}
