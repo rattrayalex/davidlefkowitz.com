@@ -57,7 +57,7 @@ export default function FYC() {
                     </div>
                     
                     {/* Listen Here Section with vertical links - extends full width behind image */}
-                    <div className="rounded-lg px-6 pt-6" style={{ marginBottom: '1rem', paddingBottom: 0, minHeight: '280px' }}>
+                    <div className="rounded-lg px-6 pt-6" style={{ marginBottom: 0, paddingBottom: 0, minHeight: '280px' }}>
                         <h2 className="text-2xl font-semibold mb-4" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
                             LISTEN HERE:
                         </h2>
@@ -120,7 +120,7 @@ export default function FYC() {
                 </div>
 
                 {/* Grammy Submissions Section */}
-                <div className="rounded-lg px-6 pt-6" style={{ marginBottom: '1rem', paddingBottom: 0 }}>
+                <div className="rounded-lg px-6 pt-6" style={{ marginBottom: 0, paddingBottom: 0 }}>
                         <div className="space-y-4">
                             <div className="border-l-4 border-primary pl-4">
                                 <h3 className="font-bold text-lg" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
