@@ -484,7 +484,7 @@ export async function syncCompositions() {
         const ensembleProperty = properties.Ensemble as any;
         const yearProperty = properties["Year ©"] as any;
         const durationProperty = properties.Duration as any;
-        const publisherProperty = properties.Publisher as any;
+        const publisherProperty = properties["Publisher Better Links"] as any; // Changed to use Publisher Better Links
         const premiereProperty = properties["Date of premier"] as any;
         const recordingProperty = properties.Recording as any;
         const streamingLinksProperty = properties["Additional Streaming Links"] as any;
@@ -514,10 +514,15 @@ export async function syncCompositions() {
                 ) as string[]) || [],
             year: year,
             duration: durationProperty?.rich_text?.[0]?.plain_text || "",
-            publisher:
-                (publisherProperty?.multi_select?.map(
-                    (item: any) => item.name,
-                ) as string[]) || [],
+            publisher: publisherProperty?.rich_text
+                ?.map((part: any) => {
+                    // Preserve HTML links from rich text
+                    if (part.href) {
+                        return `<a href="${part.href}" target="_blank" rel="noopener noreferrer">${part.plain_text}</a>`;
+                    }
+                    return part.plain_text;
+                })
+                .filter((p: string) => p && p.trim().length > 0) || [],
             premiere_info: premiereProperty?.date?.start || "",
             recording: recordingProperty?.rich_text
                 ?.map((part: any) => part.plain_text?.trim())

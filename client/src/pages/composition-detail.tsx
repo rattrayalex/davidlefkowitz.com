@@ -187,14 +187,16 @@ export default function CompositionDetail() {
                             {/* Right Column */}
                             <div className="space-y-6">
                                 {/* Publisher */}
-                                {composition.publisher && (
+                                {composition.publisher && Array.isArray(composition.publisher) && composition.publisher.length > 0 && (
                                     <div>
                                         <h2 className="text-lg font-semibold text-navy mb-2" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
                                             Publisher
                                         </h2>
-                                        <p className="text-gray-700" data-testid="composition-publisher" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
-                                            {composition.publisher}
-                                        </p>
+                                        <div className="text-gray-700" data-testid="composition-publisher" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
+                                            {composition.publisher.map((pub, index) => (
+                                                <div key={index} dangerouslySetInnerHTML={{ __html: pub }} />
+                                            ))}
+                                        </div>
                                     </div>
                                 )}
 
