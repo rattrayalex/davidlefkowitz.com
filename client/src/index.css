@@ -210,7 +210,7 @@
 /* Recording Links - Each link on its own line with minimal spacing */
 .recording-links a {
   display: block !important;
-  margin-bottom: 0.4rem !important;
+  margin-bottom: 0.5rem !important;
   margin-top: 0 !important;
   padding-top: 0 !important;
   padding-bottom: 0 !important;
