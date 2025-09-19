@@ -14,6 +14,7 @@ export default function Header() {
         { name: "Blog", href: "/blog" },
         { name: "Media", href: "/media" },
         { name: "Contact", href: "/contact" },
+        { name: "FYC", href: "/fyc" },
     ];
 
     const isActive = (href: string) => {
