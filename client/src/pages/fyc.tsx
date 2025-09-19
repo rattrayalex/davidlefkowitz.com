@@ -119,6 +119,76 @@ export default function FYC() {
                     </CardContent>
                 </Card>
 
+                {/* Grammy Submissions Section */}
+                <Card className="bg-background">
+                    <CardContent className="pt-6 space-y-6">
+                        <div className="space-y-4">
+                            <div className="border-l-4 border-primary pl-4">
+                                <h3 className="font-bold text-lg" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
+                                    CONTEMPORARY CLASSICAL COMPOSITION
+                                </h3>
+                                <p className="text-muted-foreground mt-1" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
+                                    {streamingLinks["Preludes and Fugues Book I"] && streamingLinks["Preludes and Fugues Book II"] ? (
+                                        <>
+                                            <a href={streamingLinks["Preludes and Fugues Book I"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
+                                                Preludes and Fugues Book I
+                                            </a>
+                                            {" & "}
+                                            <a href={streamingLinks["Preludes and Fugues Book II"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
+                                                Preludes and Fugues Book II
+                                            </a>
+                                            {", "}
+                                            {streamingLinks["David S. Lefkowitz"] ? (
+                                                <a href={streamingLinks["David S. Lefkowitz"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
+                                                    David S. Lefkowitz
+                                                </a>
+                                            ) : "David S. Lefkowitz"}
+                                            , Composer, on <em>David S. Lefkowitz, Preludes and Fugues</em> (Bridge Records 9594A/B)
+                                        </>
+                                    ) : (
+                                        <>Preludes and Fugues Books I & II, David S. Lefkowitz, Composer, on <em>David S. Lefkowitz, Preludes and Fugues</em> (Bridge Records 9594A/B)</>
+                                    )}
+                                </p>
+                                <p className="text-sm text-muted-foreground mt-1" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
+                                    Submission ID # 1073957
+                                </p>
+                            </div>
+
+                            <div className="border-l-4 border-primary pl-4">
+                                <h3 className="font-bold text-lg" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
+                                    CLASSICAL COMPENDIUM
+                                </h3>
+                                <p className="text-muted-foreground mt-1" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
+                                    <em>David S. Lefkowitz, Preludes and Fugues</em> (
+                                    {streamingLinks["Bridge Records"] ? (
+                                        <a href={streamingLinks["Bridge Records"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
+                                            Bridge Records
+                                        </a>
+                                    ) : "Bridge Records"} 9594A/B)
+                                </p>
+                                <p className="text-sm text-muted-foreground" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
+                                    David S. Lefkowitz producer, David Starobin and Becky Starobin, Executive Producers
+                                </p>
+                                <p className="text-sm text-muted-foreground mt-1" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
+                                    Submission ID # 1074384
+                                </p>
+                            </div>
+
+                            <div className="border-l-4 border-primary pl-4">
+                                <h3 className="font-bold text-lg" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
+                                    PRODUCER OF THE YEAR, CLASSICAL
+                                </h3>
+                                <p className="text-muted-foreground mt-1" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
+                                    David S. Lefkowitz, producer of <em>David S. Lefkowitz, Preludes and Fugues</em> (Bridge Records 9594A/B)
+                                </p>
+                                <p className="text-sm text-muted-foreground mt-1" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
+                                    Submission ID # 74403
+                                </p>
+                            </div>
+                        </div>
+                    </CardContent>
+                </Card>
+
                 {/* Album Details Section */}
                 <Card className="bg-background">
                     <CardContent className="pt-6">
