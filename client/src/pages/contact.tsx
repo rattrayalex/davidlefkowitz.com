@@ -1,8 +1,20 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Mail, MapPin, Calendar } from "lucide-react";
 import twelvePointStarSvg from "@/assets/12_point_curved.svg";
 
 export default function Contact() {
+    
+    // Scroll to anchor if present in URL
+    useEffect(() => {
+        if (window.location.hash === '#floating-point-music') {
+            setTimeout(() => {
+                const element = document.getElementById('floating-point-music');
+                if (element) {
+                    element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+            }, 100);
+        }
+    }, []);
 
     return (
         <div className="min-h-screen" style={{backgroundColor: '#e5e5ff'}}>
@@ -105,7 +117,7 @@ export default function Contact() {
                             </div>
 
                             {/* Floating Point Music */}
-                            <div className="border border-gray-300 rounded-xl border-l-4 border-purple p-6" style={{backgroundColor: '#e5e5ff'}}>
+                            <div id="floating-point-music" className="border border-gray-300 rounded-xl border-l-4 border-purple p-6" style={{backgroundColor: '#e5e5ff'}}>
                                 <h3 className="text-4xl lg:text-5xl font-bold text-navy mb-3" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
                                     Floating Point Music
                                 </h3>
