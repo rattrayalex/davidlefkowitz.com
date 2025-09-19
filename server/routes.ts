@@ -914,6 +914,56 @@ Lefkowitz's compositions have been released on more than twenty commercial recor
         }
     });
 
+    // Fetch FYC page from Notion
+    app.get("/api/fyc-content", async (req, res) => {
+        try {
+            const { getNotionPages, fetchNotionPageContent } = await import("./notion");
+            
+            // Find the FYC page
+            const pages = await getNotionPages();
+            const fycPage = pages.find(p => 
+                p.title.toUpperCase().includes("FYC") || 
+                p.title.toUpperCase().includes("FOR YOUR CONSIDERATION") ||
+                p.title.toUpperCase().includes("GRAMMYS")
+            );
+            
+            if (!fycPage) {
+                res.status(404).json({ error: "FYC page not found in Notion" });
+                return;
+            }
+            
+            // Fetch the page content
+            const blocks = await fetchNotionPageContent(fycPage.id);
+            
+            // Process blocks to extract formatted text and links
+            const links: { [text: string]: string } = {};
+            const content: string[] = [];
+            
+            for (const block of blocks) {
+                if (block.type === "paragraph" && block.paragraph) {
+                    const richTextArray = block.paragraph.rich_text || [];
+                    
+                    for (const richText of richTextArray) {
+                        const text = richText.plain_text || "";
+                        
+                        if (richText.href) {
+                            // Store the link mapping
+                            links[text.trim()] = richText.href;
+                        }
+                    }
+                }
+            }
+            
+            res.json({
+                title: fycPage.title,
+                links: links
+            });
+        } catch (error) {
+            console.error("Error fetching FYC content:", error);
+            res.status(500).json({ error: "Failed to fetch FYC content" });
+        }
+    });
+
     // Image download endpoint
     app.post("/api/download-images", async (req, res) => {
         try {
