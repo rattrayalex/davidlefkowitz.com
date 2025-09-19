@@ -213,7 +213,11 @@ export default function CompositionDetail() {
                                               (!Array.isArray(composition.recording_info) && composition.recording_info)) 
                                              ? "Additional Streaming Links" : "Streaming Links"}
                                         </h2>
-                                        <div className="text-gray-700" data-testid="composition-streaming-links" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
+                                        <div 
+                                            className="text-gray-700 recording-links [&_a]:text-purple [&_a]:hover:text-purple-700 [&_a]:underline [&_a]:transition-colors [&_a]:duration-200" 
+                                            data-testid="composition-streaming-links" 
+                                            style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}
+                                        >
                                             {/* Check if content has HTML */}
                                             {composition.streaming_links.includes('<a ') ? (
                                                 <div dangerouslySetInnerHTML={{ __html: composition.streaming_links }} />
@@ -225,22 +229,19 @@ export default function CompositionDetail() {
                                                         const url = urlMatch[1];
                                                         const text = link.replace(url, '').trim() || url;
                                                         return (
-                                                            <span key={index}>
-                                                                {index > 0 && <br />}
-                                                                <a href={url} target="_blank" rel="noopener noreferrer" className="text-purple hover:text-purple-dark underline">
-                                                                    {text}
-                                                                </a>
-                                                            </span>
+                                                            <a key={index} href={url} target="_blank" rel="noopener noreferrer" className="text-purple hover:text-purple-700 underline">
+                                                                {text}
+                                                            </a>
                                                         );
-                                                    } else {
+                                                    } else if (link.trim()) {
                                                         // Plain text link
                                                         return (
-                                                            <span key={index}>
-                                                                {index > 0 && <br />}
+                                                            <span key={index} className="block">
                                                                 {link}
                                                             </span>
                                                         );
                                                     }
+                                                    return null;
                                                 })
                                             )}
                                         </div>
