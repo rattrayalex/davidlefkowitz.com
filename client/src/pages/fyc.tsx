@@ -48,7 +48,7 @@ export default function FYC() {
     }, []);
 
     return (
-        <div className="fyc-animated-background">
+        <div>
             <div className="max-w-5xl mx-auto p-6">
                 <div className="relative">
                 {/* Header */}
@@ -319,7 +319,5 @@ export default function FYC() {
                         </div>
                 </div>
             </div>
-            </div>
-        </div>
     );
 }
