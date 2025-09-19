@@ -813,7 +813,7 @@ Lefkowitz's compositions have been released on more than twenty commercial recor
     });
 
     // Individual sync endpoints
-    app.post("/api/sync-recordings", async (req, res) => {
+    app.get("/api/sync-recordings", async (req, res) => {
         try {
             await syncRecordings();
             res.json({ success: true, message: "Recordings sync completed" });
@@ -823,7 +823,7 @@ Lefkowitz's compositions have been released on more than twenty commercial recor
         }
     });
 
-    app.post("/api/sync-compositions", async (req, res) => {
+    app.get("/api/sync-compositions", async (req, res) => {
         try {
             await syncCompositions();
             res.json({ success: true, message: "Compositions sync completed" });
@@ -833,7 +833,7 @@ Lefkowitz's compositions have been released on more than twenty commercial recor
         }
     });
 
-    app.post("/api/sync-blog", async (req, res) => {
+    app.get("/api/sync-blog", async (req, res) => {
         try {
             await syncBlogPosts();
             res.json({ success: true, message: "Blog posts sync completed" });
@@ -843,7 +843,7 @@ Lefkowitz's compositions have been released on more than twenty commercial recor
         }
     });
 
-    app.post("/api/sync-all", async (req, res) => {
+    app.get("/api/sync-all", async (req, res) => {
         try {
             await syncBlogPosts();
             await syncCompositions();
