@@ -64,49 +64,49 @@ export default function FYC() {
                         {!isLoading && (
                             <div style={{fontFamily: 'Times, "Times New Roman", Palatino, serif', paddingLeft: '24px'}}>
                                 {streamingLinks["Amazon Music"] && (
-                                    <div>
+                                    <div style={{ marginBottom: '4px' }}>
                                         <a href={streamingLinks["Amazon Music"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
                                             Amazon Music
                                         </a>
                                     </div>
                                 )}
                                 {streamingLinks["Apple Music"] && (
-                                    <div>
+                                    <div style={{ marginBottom: '4px' }}>
                                         <a href={streamingLinks["Apple Music"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
                                             Apple Music
                                         </a>
                                     </div>
                                 )}
                                 {streamingLinks["Deezer"] && (
-                                    <div>
+                                    <div style={{ marginBottom: '4px' }}>
                                         <a href={streamingLinks["Deezer"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
                                             Deezer
                                         </a>
                                     </div>
                                 )}
                                 {streamingLinks["Pandora"] && (
-                                    <div>
+                                    <div style={{ marginBottom: '4px' }}>
                                         <a href={streamingLinks["Pandora"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
                                             Pandora
                                         </a>
                                     </div>
                                 )}
                                 {streamingLinks["Spotify"] && (
-                                    <div>
+                                    <div style={{ marginBottom: '4px' }}>
                                         <a href={streamingLinks["Spotify"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
                                             Spotify
                                         </a>
                                     </div>
                                 )}
                                 {streamingLinks["Tidal"] && (
-                                    <div>
+                                    <div style={{ marginBottom: '4px' }}>
                                         <a href={streamingLinks["Tidal"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
                                             Tidal
                                         </a>
                                     </div>
                                 )}
                                 {streamingLinks["YouTube"] && (
-                                    <div>
+                                    <div style={{ marginBottom: '4px' }}>
                                         <a href={streamingLinks["YouTube"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
                                             YouTube
                                         </a>
