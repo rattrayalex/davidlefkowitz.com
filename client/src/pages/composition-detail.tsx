@@ -189,7 +189,7 @@ export default function CompositionDetail() {
                                                     <span className="font-semibold">
                                                         {validRecordings.length > 1 ? 'Recordings' : 'Recording'}
                                                     </span>{' '}
-                                                    <span className="font-normal" style={{fontSize: '1rem'}}>
+                                                    <span className="font-normal" style={{fontSize: '1rem', lineHeight: '1.1'}}>
                                                         (click on image{validRecordings.length > 1 ? 's' : ''}<br />for information and links)
                                                     </span>
                                                 </h2>
@@ -333,7 +333,7 @@ export default function CompositionDetail() {
                                                     <span className="font-semibold">
                                                         {validRecordings.length > 1 ? 'Recordings' : 'Recording'}
                                                     </span>{' '}
-                                                    <span className="font-normal" style={{fontSize: '1rem'}}>
+                                                    <span className="font-normal" style={{fontSize: '1rem', lineHeight: '1.1'}}>
                                                         (click on image{validRecordings.length > 1 ? 's' : ''}<br />for information and links)
                                                     </span>
                                                 </h2>
