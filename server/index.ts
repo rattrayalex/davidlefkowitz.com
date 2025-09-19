@@ -65,7 +65,7 @@ app.use((req, res, next) => {
   const port = parseInt(process.env.PORT || '5000', 10);
   
   // Shared mutex to prevent overlapping sync operations (shared with routes.ts)
-  let syncMutex = (global as any).syncMutex || { isSyncing: false };
+  let syncMutex = (global as any).syncMutex || { isSyncing: false, lastSyncTime: null };
   (global as any).syncMutex = syncMutex;
   
   async function performSync() {
@@ -83,6 +83,7 @@ app.use((req, res, next) => {
       // Download images from blog posts and compositions
       const { downloadAllImages } = await import("./downloadImages");
       await downloadAllImages();
+      syncMutex.lastSyncTime = Date.now();
       log('Notion sync completed successfully');
     } catch (error) {
       console.error('Sync failed:', error);
@@ -91,16 +92,21 @@ app.use((req, res, next) => {
     }
   }
   
+  // Make performSync available globally for lazy loading
+  (global as any).performSync = performSync;
+  
   server.listen({
     port,
     host: "0.0.0.0",
-    reusePort: true,
-  }, async () => {
+  }, () => {
     log(`serving on port ${port}`);
     
-    // Perform initial sync on startup
-    log('Performing initial sync on startup...');
-    await performSync();
+    // Schedule background sync after server is ready (non-blocking)
+    setTimeout(async () => {
+      log('Starting background initial sync...');
+      await performSync();
+      log('Background initial sync completed');
+    }, 2000); // Start sync 2 seconds after server is ready
     
     // Set up cron job to sync from Notion every 15 minutes, 24/7
     cron.schedule('*/15 * * * *', async () => {

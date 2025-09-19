@@ -16,6 +16,48 @@ import * as path from 'path';
 const schemaData = JSON.parse(fs.readFileSync("server/notion-schemas.json", "utf-8"));
 
 export async function registerRoutes(app: Express): Promise<Server> {
+    // Health check endpoint for deployment readiness - early registration to avoid catch-all conflicts
+    app.get("/health", (req, res) => {
+        res.status(200).json({ 
+            status: "healthy", 
+            timestamp: new Date().toISOString(),
+            version: "1.0.0"
+        });
+    });
+
+    // HEAD health check for load balancers
+    app.head("/health", (req, res) => {
+        res.status(200).end();
+    });
+
+    // Lazy sync middleware for API routes - triggers sync on first request if no data
+    app.use("/api", async (req, res, next) => {
+        const syncMutex = (global as any).syncMutex;
+        const performSync = (global as any).performSync;
+        
+        // Check if we need to trigger initial sync
+        if (!syncMutex.lastSyncTime && !syncMutex.isSyncing && performSync) {
+            // Check if we have any data in the database
+            try {
+                const compositionCount = await db.select({ count: sql`count(*)` }).from(compositions);
+                const blogPostCount = await db.select({ count: sql`count(*)` }).from(blogPosts);
+                
+                // If no data exists and sync hasn't run, trigger lazy sync in background
+                if ((compositionCount[0]?.count === 0 || blogPostCount[0]?.count === 0)) {
+                    console.log('No data found, triggering lazy sync in background...');
+                    // Don't await - let it run in background
+                    performSync().catch((error: any) => {
+                        console.error('Background lazy sync failed:', error);
+                    });
+                }
+            } catch (error) {
+                console.error('Error checking for data in lazy sync middleware:', error);
+            }
+        }
+        
+        next();
+    });
+
     // Get profile information
     app.get("/api/profile", async (req, res) => {
         try {
