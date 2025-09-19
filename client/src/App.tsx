@@ -15,6 +15,7 @@ import Blog from "@/pages/blog";
 import BlogPost from "@/pages/blog-post";
 import Media from "@/pages/media";
 import Contact from "@/pages/contact";
+import FYC from "@/pages/fyc";
 import NotFound from "@/pages/not-found";
 
 function Router() {
@@ -33,6 +34,7 @@ function Router() {
           <Route path="/blog/:id" component={BlogPost} />
           <Route path="/media" component={Media} />
           <Route path="/contact" component={Contact} />
+          <Route path="/fyc" component={FYC} />
           <Route component={NotFound} />
         </Switch>
       </main>
