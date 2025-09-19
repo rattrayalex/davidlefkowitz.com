@@ -917,22 +917,77 @@ Lefkowitz's compositions have been released on more than twenty commercial recor
     // Fetch FYC page from Notion
     app.get("/api/fyc-content", async (req, res) => {
         try {
-            const { getNotionPages, fetchNotionPageContent } = await import("./notion");
+            // Import the existing notion client
+            const { notion } = await import("./notion");
             
-            // Find the FYC page
-            const pages = await getNotionPages();
-            const fycPage = pages.find(p => 
-                p.title.toUpperCase().includes("FYC") || 
-                p.title.toUpperCase().includes("FOR YOUR CONSIDERATION") ||
-                p.title.toUpperCase().includes("GRAMMYS")
-            );
+            // Search for FYC page in all databases
+            const searchResponse = await notion.search({
+                query: "FYC",
+                filter: {
+                    value: "page",
+                    property: "object"
+                }
+            });
+            
+            console.log("Search results for 'FYC':", searchResponse.results.length);
+            
+            // Look for a page with FYC in the title
+            let fycPage: any = null;
+            
+            for (const result of searchResponse.results) {
+                if (result.object === "page") {
+                    const pageTitle = (result as any).properties?.title?.title?.[0]?.plain_text ||
+                                    (result as any).properties?.Name?.title?.[0]?.plain_text || "";
+                    
+                    console.log("Found page:", pageTitle);
+                    
+                    if (pageTitle.toUpperCase().includes("FYC") || 
+                        pageTitle.toUpperCase().includes("FOR YOUR CONSIDERATION") ||
+                        pageTitle.toUpperCase().includes("GRAMMY")) {
+                        fycPage = result;
+                        break;
+                    }
+                }
+            }
             
             if (!fycPage) {
-                res.status(404).json({ error: "FYC page not found in Notion" });
+                // Try another search for "For Your Consideration"
+                const searchResponse2 = await notion.search({
+                    query: "For Your Consideration",
+                    filter: {
+                        value: "page",
+                        property: "object"
+                    }
+                });
+                
+                console.log("Search results for 'For Your Consideration':", searchResponse2.results.length);
+                
+                for (const result of searchResponse2.results) {
+                    if (result.object === "page") {
+                        const pageTitle = (result as any).properties?.title?.title?.[0]?.plain_text ||
+                                        (result as any).properties?.Name?.title?.[0]?.plain_text || "";
+                        
+                        console.log("Found page:", pageTitle);
+                        
+                        if (pageTitle.toUpperCase().includes("FYC") || 
+                            pageTitle.toUpperCase().includes("FOR YOUR CONSIDERATION") ||
+                            pageTitle.toUpperCase().includes("GRAMMY")) {
+                            fycPage = result;
+                            break;
+                        }
+                    }
+                }
+            }
+            
+            if (!fycPage) {
+                res.status(404).json({ 
+                    error: "FYC page not found in Notion. Make sure you have a page with 'FYC' or 'For Your Consideration' in the title."
+                });
                 return;
             }
             
             // Fetch the page content
+            const { fetchNotionPageContent } = await import("./notion");
             const blocks = await fetchNotionPageContent(fycPage.id);
             
             // Process blocks to extract formatted text and links
@@ -954,8 +1009,11 @@ Lefkowitz's compositions have been released on more than twenty commercial recor
                 }
             }
             
+            console.log("Found links:", links);
+            
             res.json({
-                title: fycPage.title,
+                title: (fycPage as any).properties?.title?.title?.[0]?.plain_text ||
+                       (fycPage as any).properties?.Name?.title?.[0]?.plain_text || "FYC",
                 links: links
             });
         } catch (error) {
