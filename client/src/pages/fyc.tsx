@@ -127,26 +127,7 @@ export default function FYC() {
                                     CONTEMPORARY CLASSICAL COMPOSITION
                                 </h3>
                                 <p className="text-muted-foreground mt-1" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
-                                    {streamingLinks["Preludes and Fugues Book I"] && streamingLinks["Preludes and Fugues Book II"] ? (
-                                        <>
-                                            <a href={streamingLinks["Preludes and Fugues Book I"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
-                                                Preludes and Fugues Book I
-                                            </a>
-                                            {" & "}
-                                            <a href={streamingLinks["Preludes and Fugues Book II"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
-                                                Preludes and Fugues Book II
-                                            </a>
-                                            {", "}
-                                            {streamingLinks["David S. Lefkowitz"] ? (
-                                                <a href={streamingLinks["David S. Lefkowitz"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
-                                                    David S. Lefkowitz
-                                                </a>
-                                            ) : "David S. Lefkowitz"}
-                                            , Composer, on <em>David S. Lefkowitz, Preludes and Fugues</em> (Bridge Records 9594A/B)
-                                        </>
-                                    ) : (
-                                        <>Preludes and Fugues Books I & II, David S. Lefkowitz, Composer, on <em>David S. Lefkowitz, Preludes and Fugues</em> (Bridge Records 9594A/B)</>
-                                    )}
+                                    Preludes and Fugues Books I & II, David S. Lefkowitz, Composer, on <em>David S. Lefkowitz, Preludes and Fugues</em> (Bridge Records 9594A/B)
                                 </p>
                                 <p className="text-sm text-muted-foreground mt-1" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
                                     Submission ID # 1073957
@@ -158,12 +139,7 @@ export default function FYC() {
                                     CLASSICAL COMPENDIUM
                                 </h3>
                                 <p className="text-muted-foreground mt-1" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
-                                    <em>David S. Lefkowitz, Preludes and Fugues</em> (
-                                    {streamingLinks["Bridge Records"] ? (
-                                        <a href={streamingLinks["Bridge Records"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
-                                            Bridge Records
-                                        </a>
-                                    ) : "Bridge Records"} 9594A/B)
+                                    <em>David S. Lefkowitz, Preludes and Fugues</em> (Bridge Records 9594A/B)
                                 </p>
                                 <p className="text-sm text-muted-foreground" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
                                     David S. Lefkowitz producer, David Starobin and Becky Starobin, Executive Producers
@@ -199,7 +175,19 @@ export default function FYC() {
                                     Composition
                                 </dt>
                                 <dd className="mt-1" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
-                                    Preludes and Fugues Book I & Preludes and Fugues Book II
+                                    {streamingLinks["Preludes and Fugues Book I"] && streamingLinks["Preludes and Fugues Book II"] ? (
+                                        <>
+                                            <a href={streamingLinks["Preludes and Fugues Book I"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
+                                                Preludes and Fugues Book I
+                                            </a>
+                                            {" & "}
+                                            <a href={streamingLinks["Preludes and Fugues Book II"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
+                                                Preludes and Fugues Book II
+                                            </a>
+                                        </>
+                                    ) : (
+                                        <>Preludes and Fugues Book I & Preludes and Fugues Book II</>
+                                    )}
                                 </dd>
                             </div>
                             
@@ -208,7 +196,11 @@ export default function FYC() {
                                     Composer
                                 </dt>
                                 <dd className="mt-1" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
-                                    David S. Lefkowitz
+                                    {streamingLinks["David S. Lefkowitz"] ? (
+                                        <a href={streamingLinks["David S. Lefkowitz"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
+                                            David S. Lefkowitz
+                                        </a>
+                                    ) : "David S. Lefkowitz"}
                                 </dd>
                             </div>
                             
