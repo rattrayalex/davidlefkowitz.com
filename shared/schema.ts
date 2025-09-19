@@ -72,6 +72,7 @@ export const blogPosts = pgTable("blog_posts", {
   tags: json("tags").$type<string[]>().default([]),
   read_time: integer("read_time").default(5),
   notion_url: text("notion_url"),
+  related_compositions: json("related_compositions").$type<string[]>().default([]), // Array of composition slugs
   last_synced: timestamp("last_synced").defaultNow(),
   created_at: timestamp("created_at").defaultNow(),
   updated_at: timestamp("updated_at").defaultNow(),

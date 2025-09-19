@@ -11,6 +11,13 @@ interface RecordingInfo {
     album_cover: string;
 }
 
+interface BlogPostReference {
+    id: string;
+    slug: string;
+    title: string;
+    published_date: string;
+}
+
 interface CompositionDetailResponse {
     id: string;
     slug?: string;
@@ -26,6 +33,7 @@ interface CompositionDetailResponse {
     streaming_links: string;
     recording_info: RecordingInfo[] | RecordingInfo | null;
     program_note: string;
+    related_blogposts?: BlogPostReference[];
 }
 
 export default function CompositionDetail() {
@@ -250,6 +258,28 @@ export default function CompositionDetail() {
                                                     return null;
                                                 })
                                             )}
+                                        </div>
+                                    </div>
+                                )}
+
+                                {/* Relevant Blogposts */}
+                                {composition.related_blogposts && composition.related_blogposts.length > 0 && (
+                                    <div>
+                                        <h2 className="text-lg font-semibold text-navy mb-2" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
+                                            Relevant Blogposts
+                                        </h2>
+                                        <div 
+                                            className="text-gray-700 recording-links" 
+                                            data-testid="composition-related-blogposts" 
+                                            style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}
+                                        >
+                                            {composition.related_blogposts.map((blogpost, index) => (
+                                                <Link key={blogpost.id} href={`/blog/${blogpost.slug}`}>
+                                                    <a className="text-purple hover:text-purple-700 underline transition-colors duration-200" data-testid={`blogpost-link-${index}`}>
+                                                        {blogpost.title}
+                                                    </a>
+                                                </Link>
+                                            ))}
                                         </div>
                                     </div>
                                 )}

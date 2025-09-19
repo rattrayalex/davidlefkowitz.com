@@ -143,6 +143,18 @@ Lefkowitz's compositions have been released on more than twenty commercial recor
                 }
             }
 
+            // Fetch blog posts that reference this composition
+            const relatedBlogPosts = await db
+                .select({
+                    id: blogPosts.id,
+                    title: blogPosts.title,
+                    slug: blogPosts.slug,
+                    published_date: blogPosts.published_date,
+                })
+                .from(blogPosts)
+                .where(sql`${blogPosts.related_compositions}::jsonb ? ${slug}`)
+                .orderBy(desc(blogPosts.published_date));
+
             const formattedComposition = {
                 id: composition.id,
                 slug: composition.slug,
@@ -158,6 +170,7 @@ Lefkowitz's compositions have been released on more than twenty commercial recor
                 streaming_links: composition.streaming_links || "",
                 recording_info: recordingInfoArray.length > 0 ? recordingInfoArray : null,
                 program_note: composition.program_note || "",
+                related_blogposts: relatedBlogPosts,
             };
 
             res.json(formattedComposition);

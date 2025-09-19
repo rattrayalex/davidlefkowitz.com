@@ -397,6 +397,18 @@ export async function syncBlogPosts() {
                 .join("") || "";
             const slug = nameOfPage || generateSlug(title);
             
+            // Extract related compositions from the content
+            // Look for links to composition pages
+            const relatedCompositions: string[] = [];
+            const compositionLinkRegex = /\/compositions\/([^'">\s]+)/g;
+            const matches = content.matchAll(compositionLinkRegex);
+            for (const match of matches) {
+                const compositionSlug = match[1];
+                if (compositionSlug && !relatedCompositions.includes(compositionSlug)) {
+                    relatedCompositions.push(compositionSlug);
+                }
+            }
+
             const blogPost: InsertBlogPost = {
                 title: title.trim(),
                 slug: slug,
@@ -408,6 +420,7 @@ export async function syncBlogPosts() {
                 tags: [], // No tags in current schema, but ready for future
                 read_time: readTime,
                 notion_url: `https://www.notion.so/${page.id.replace(/-/g, "")}`,
+                related_compositions: relatedCompositions,
             };
 
             // Insert or update the blog post
