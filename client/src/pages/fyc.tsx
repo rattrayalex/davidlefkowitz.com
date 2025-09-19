@@ -224,7 +224,13 @@ export default function FYC() {
                                         Cantor Marcus Feldman
                                     </a>
                                 ) : "Cantor Marcus Feldman"}
-                                {", baritone, and David S. Lefkowitz, whistling, and additional piano and extended piano techniques."}
+                                {", baritone, and "}
+                                {streamingLinks["David S. Lefkowitz"] ? (
+                                    <a href={streamingLinks["David S. Lefkowitz"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
+                                        David S. Lefkowitz
+                                    </a>
+                                ) : "David S. Lefkowitz"}
+                                {", whistling, and additional piano and extended piano techniques."}
                             </div>
                             
                             <div style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
