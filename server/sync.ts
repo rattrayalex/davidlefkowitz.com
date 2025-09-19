@@ -351,6 +351,7 @@ export async function syncBlogPosts() {
 
             const commentProperty = properties["Comment"] as any;
             const nameOfPageProperty = properties["Name of Page"] as any;
+            const compositionProperty = properties["Composition"] as any; // Get the Composition column
 
             const publicationDateProperty = properties[
                 "Publication Date"
@@ -397,17 +398,11 @@ export async function syncBlogPosts() {
                 .join("") || "";
             const slug = nameOfPage || generateSlug(title);
             
-            // Extract related compositions from the content
-            // Look for links to composition pages
-            const relatedCompositions: string[] = [];
-            const compositionLinkRegex = /\/compositions\/([^'">\s]+)/g;
-            const matches = content.matchAll(compositionLinkRegex);
-            for (const match of matches) {
-                const compositionSlug = match[1];
-                if (compositionSlug && !relatedCompositions.includes(compositionSlug)) {
-                    relatedCompositions.push(compositionSlug);
-                }
-            }
+            // Extract related compositions from the Composition column (relation field)
+            const relatedCompositionIds = compositionProperty?.relation?.map((r: any) => r.id) || [];
+            
+            // We'll store the composition IDs, not slugs
+            // Later we'll convert these to actual composition references
 
             const blogPost: InsertBlogPost = {
                 title: title.trim(),
@@ -420,7 +415,7 @@ export async function syncBlogPosts() {
                 tags: [], // No tags in current schema, but ready for future
                 read_time: readTime,
                 notion_url: `https://www.notion.so/${page.id.replace(/-/g, "")}`,
-                related_compositions: relatedCompositions,
+                related_compositions: relatedCompositionIds, // Store the composition IDs from Notion relation
             };
 
             // Insert or update the blog post
@@ -503,6 +498,7 @@ export async function syncCompositions() {
         const streamingLinksProperty = properties["Additional Streaming Links"] as any;
         const programNoteProperty = properties["Program Note"] as any;
         const nameOfPageProperty = properties["Name of Page"] as any;
+        const blogProperty = properties["Blog"] as any; // Get the Blog column
 
         // Parse year - trust Notion to provide a number
         const year = yearProperty?.number || null;
@@ -572,6 +568,9 @@ export async function syncCompositions() {
             program_note: programNoteProperty?.rich_text?.map((part: any) => part.plain_text).join("") || "",
             published: true,
         };
+
+        // Extract related blog posts from the Blog column (relation field)
+        const relatedBlogIds = blogProperty?.relation?.map((r: any) => r.id) || [];
 
         // Insert or update the composition
         await db

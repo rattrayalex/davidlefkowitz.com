@@ -143,7 +143,7 @@ Lefkowitz's compositions have been released on more than twenty commercial recor
                 }
             }
 
-            // Fetch blog posts that reference this composition
+            // Fetch blog posts that reference this composition (by composition ID)
             const relatedBlogPosts = await db
                 .select({
                     id: blogPosts.id,
@@ -152,7 +152,7 @@ Lefkowitz's compositions have been released on more than twenty commercial recor
                     published_date: blogPosts.published_date,
                 })
                 .from(blogPosts)
-                .where(sql`${blogPosts.related_compositions}::jsonb ? ${slug}`)
+                .where(sql`${blogPosts.related_compositions}::jsonb @> ${JSON.stringify([composition.id])}`)
                 .orderBy(desc(blogPosts.published_date));
 
             const formattedComposition = {
