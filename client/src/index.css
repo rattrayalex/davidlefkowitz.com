@@ -58,6 +58,63 @@
   --charcoal: hsl(210, 25%, 25%);
 }
 
+/* FYC page animated background */
+@keyframes lilacGradientShift {
+  0% {
+    background: linear-gradient(135deg, 
+      #e6d5f7 0%,    /* light lilac */
+      #d4b5f0 25%,   /* medium lilac */
+      #e0ccf2 50%,   /* soft purple */
+      #f0e5f7 75%,   /* very light lilac */
+      #e6d5f7 100%   /* light lilac */
+    );
+  }
+  25% {
+    background: linear-gradient(135deg, 
+      #d4b5f0 0%,    /* medium lilac */
+      #e0ccf2 25%,   /* soft purple */
+      #f0e5f7 50%,   /* very light lilac */
+      #e6d5f7 75%,   /* light lilac */
+      #d4b5f0 100%   /* medium lilac */
+    );
+  }
+  50% {
+    background: linear-gradient(135deg, 
+      #e0ccf2 0%,    /* soft purple */
+      #f0e5f7 25%,   /* very light lilac */
+      #e6d5f7 50%,   /* light lilac */
+      #d4b5f0 75%,   /* medium lilac */
+      #e0ccf2 100%   /* soft purple */
+    );
+  }
+  75% {
+    background: linear-gradient(135deg, 
+      #f0e5f7 0%,    /* very light lilac */
+      #e6d5f7 25%,   /* light lilac */
+      #d4b5f0 50%,   /* medium lilac */
+      #e0ccf2 75%,   /* soft purple */
+      #f0e5f7 100%   /* very light lilac */
+    );
+  }
+  100% {
+    background: linear-gradient(135deg, 
+      #e6d5f7 0%,    /* light lilac */
+      #d4b5f0 25%,   /* medium lilac */
+      #e0ccf2 50%,   /* soft purple */
+      #f0e5f7 75%,   /* very light lilac */
+      #e6d5f7 100%   /* light lilac */
+    );
+  }
+}
+
+.fyc-animated-background {
+  min-height: 100vh;
+  width: 100%;
+  animation: lilacGradientShift 20s ease-in-out infinite;
+  background-size: 200% 200%;
+  position: relative;
+}
+
 .dark {
   --background: hsl(0, 0%, 0%);
   --foreground: hsl(200, 6.6667%, 91.1765%);

@@ -38,8 +38,9 @@ export default function FYC() {
     }, []);
 
     return (
-        <div className="max-w-5xl mx-auto p-6">
-            <div className="relative">
+        <div className="fyc-animated-background">
+            <div className="max-w-5xl mx-auto p-6">
+                <div className="relative">
                 {/* Header */}
                 <h1 className="text-4xl font-bold text-left mb-4" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif', paddingLeft: '24px'}}>
                     For Your Consideration
@@ -298,6 +299,7 @@ export default function FYC() {
                             </div>
                         </div>
                 </div>
+            </div>
             </div>
         </div>
     );
