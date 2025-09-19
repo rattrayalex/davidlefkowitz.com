@@ -118,173 +118,343 @@ export default function CompositionDetail() {
                             )}
                         </div>
 
-                        {/* Details Grid */}
-                        <div className="grid md:grid-cols-2 gap-8">
-                            {/* Left Column */}
-                            <div className="space-y-6">
-                                {/* Instrumentation */}
-                                {composition.instrumentation && (
-                                    <div>
-                                        <h2 className="text-lg font-semibold text-navy mb-2" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
-                                            Instrumentation
-                                        </h2>
-                                        <p className="text-gray-700" data-testid="composition-instrumentation" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
-                                            {composition.instrumentation}
-                                        </p>
-                                    </div>
-                                )}
-
-
-                                {/* Duration */}
-                                {composition.duration && (
-                                    <div>
-                                        <h2 className="text-lg font-semibold text-navy inline mr-2" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
-                                            Duration:
-                                        </h2>
-                                        <span className="text-gray-700" data-testid="composition-duration" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
-                                            {composition.duration}
-                                        </span>
-                                    </div>
-                                )}
-
-                                {/* Recording(s) */}
-                                {composition.recording_info && (() => {
-                                    // Handle both single recording (legacy) and multiple recordings (new format)
-                                    const recordings = Array.isArray(composition.recording_info) 
-                                        ? composition.recording_info 
-                                        : [composition.recording_info];
-                                    
-                                    const validRecordings = recordings.filter(rec => rec && rec.album_cover);
-                                    
-                                    if (validRecordings.length === 0) return null;
-                                    
-                                    return (
-                                        <div className="w-48">
-                                            <h2 className="text-lg text-navy mb-2 whitespace-nowrap" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
-                                                <span className="font-semibold">
-                                                    {validRecordings.length > 1 ? 'Recordings' : 'Recording'}
-                                                </span>{' '}
-                                                <span className="font-normal" style={{fontSize: '1rem'}}>
-                                                    (click on image{validRecordings.length > 1 ? 's' : ''})
-                                                </span>
+                        {/* Details Grid - Check if this is Expanded Universe or Parallel Universes */}
+                        {(composition.slug === 'Expanded_Universe' || composition.slug === 'Parallel_Universes') ? (
+                            // Special layout for Preludes and Fugues books
+                            <div className="grid md:grid-cols-2 gap-8">
+                                {/* Left Column */}
+                                <div className="space-y-6">
+                                    {/* Instrumentation */}
+                                    {composition.instrumentation && (
+                                        <div>
+                                            <h2 className="text-lg font-semibold text-navy mb-2" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
+                                                Instrumentation
                                             </h2>
-                                            <div className="space-y-4">
-                                                {validRecordings.map((recordingInfo, index) => (
-                                                    <div key={`${recordingInfo.id}-${index}`}>
-                                                        <Link href={`/recordings/${recordingInfo.slug}`}>
-                                                            <a className="block hover:opacity-90 transition-opacity" data-testid={`composition-recording-link-${index}`}>
-                                                                <img 
-                                                                    src={recordingInfo.album_cover}
-                                                                    alt={recordingInfo.title}
-                                                                    className="w-full h-48 object-cover rounded-lg shadow-md"
-                                                                    data-testid={`composition-recording-cover-${index}`}
-                                                                />
-                                                            </a>
-                                                        </Link>
-                                                        <p className="text-gray-600 mt-2 break-words" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif', fontSize: '1rem'}}>
-                                                            {recordingInfo.title}
-                                                        </p>
-                                                    </div>
+                                            <p className="text-gray-700" data-testid="composition-instrumentation" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
+                                                {composition.instrumentation}
+                                            </p>
+                                        </div>
+                                    )}
+
+                                    {/* Duration */}
+                                    {composition.duration && (
+                                        <div>
+                                            <h2 className="text-lg font-semibold text-navy inline mr-2" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
+                                                Duration:
+                                            </h2>
+                                            <span className="text-gray-700" data-testid="composition-duration" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
+                                                {composition.duration}
+                                            </span>
+                                        </div>
+                                    )}
+
+                                    {/* Publisher - Moved here for these specific compositions */}
+                                    {composition.publisher && (
+                                        Array.isArray(composition.publisher) ? composition.publisher.length > 0 : composition.publisher
+                                    ) && (
+                                        <div>
+                                            <h2 className="text-lg font-semibold text-navy mb-2" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
+                                                Publisher
+                                            </h2>
+                                            <div 
+                                                className="text-gray-700 [&_a]:text-purple [&_a]:hover:text-purple-700 [&_a]:underline [&_a]:transition-colors [&_a]:duration-200" 
+                                                data-testid="composition-publisher" 
+                                                style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}
+                                            >
+                                                {Array.isArray(composition.publisher) ? (
+                                                    composition.publisher.map((pub, index) => (
+                                                        <div key={index} dangerouslySetInnerHTML={{ __html: pub }} />
+                                                    ))
+                                                ) : (
+                                                    <div dangerouslySetInnerHTML={{ __html: composition.publisher }} />
+                                                )}
+                                            </div>
+                                        </div>
+                                    )}
+                                </div>
+
+                                {/* Right Column */}
+                                <div className="space-y-6">
+                                    {/* Recording(s) */}
+                                    {composition.recording_info && (() => {
+                                        // Handle both single recording (legacy) and multiple recordings (new format)
+                                        const recordings = Array.isArray(composition.recording_info) 
+                                            ? composition.recording_info 
+                                            : [composition.recording_info];
+                                        
+                                        const validRecordings = recordings.filter(rec => rec && rec.album_cover);
+                                        
+                                        if (validRecordings.length === 0) return null;
+                                        
+                                        return (
+                                            <div className="w-48">
+                                                <h2 className="text-lg text-navy mb-2 whitespace-nowrap" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
+                                                    <span className="font-semibold">
+                                                        {validRecordings.length > 1 ? 'Recordings' : 'Recording'}
+                                                    </span>{' '}
+                                                    <span className="font-normal" style={{fontSize: '1rem'}}>
+                                                        (click on image{validRecordings.length > 1 ? 's' : ''})
+                                                    </span>
+                                                </h2>
+                                                <div className="space-y-4">
+                                                    {validRecordings.map((recordingInfo, index) => (
+                                                        <div key={`${recordingInfo.id}-${index}`}>
+                                                            <Link href={`/recordings/${recordingInfo.slug}`}>
+                                                                <a className="block hover:opacity-90 transition-opacity" data-testid={`composition-recording-link-${index}`}>
+                                                                    <img 
+                                                                        src={recordingInfo.album_cover}
+                                                                        alt={recordingInfo.title}
+                                                                        className="w-full h-48 object-cover rounded-lg shadow-md"
+                                                                        data-testid={`composition-recording-cover-${index}`}
+                                                                    />
+                                                                </a>
+                                                            </Link>
+                                                            <p className="text-gray-600 mt-2 break-words" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif', fontSize: '1rem'}}>
+                                                                {recordingInfo.title}
+                                                            </p>
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                            </div>
+                                        );
+                                    })()}
+
+                                    {/* Additional Streaming Links - Moved here right after Recording */}
+                                    {composition.streaming_links && composition.streaming_links.trim() && (
+                                        <div>
+                                            <h2 className="text-lg font-semibold text-navy mb-2" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
+                                                {composition.recording_info && 
+                                                 ((Array.isArray(composition.recording_info) && composition.recording_info.length > 0) || 
+                                                  (!Array.isArray(composition.recording_info) && composition.recording_info)) 
+                                                 ? "Additional Streaming Links" : "Streaming Links"}
+                                            </h2>
+                                            <div 
+                                                className="text-gray-700 recording-links [&_a]:text-purple [&_a]:hover:text-purple-700 [&_a]:underline [&_a]:transition-colors [&_a]:duration-200" 
+                                                data-testid="composition-streaming-links" 
+                                                style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}
+                                            >
+                                                {/* Check if content has HTML */}
+                                                {composition.streaming_links.includes('<a ') ? (
+                                                    <div dangerouslySetInnerHTML={{ __html: composition.streaming_links }} />
+                                                ) : (
+                                                    composition.streaming_links.split('\n').map((link, index) => {
+                                                        // Check if the link contains a URL
+                                                        const urlMatch = link.match(/(https?:\/\/[^\s]+)/);
+                                                        if (urlMatch) {
+                                                            const url = urlMatch[1];
+                                                            const text = link.replace(url, '').trim() || url;
+                                                            return (
+                                                                <a key={index} href={url} target="_blank" rel="noopener noreferrer" className="text-purple hover:text-purple-700 underline">
+                                                                    {text}
+                                                                </a>
+                                                            );
+                                                        } else if (link.trim()) {
+                                                            // Plain text link
+                                                            return (
+                                                                <span key={index} className="block">
+                                                                    {link}
+                                                                </span>
+                                                            );
+                                                        }
+                                                        return null;
+                                                    })
+                                                )}
+                                            </div>
+                                        </div>
+                                    )}
+
+                                    {/* Relevant Blogposts - Moved up */}
+                                    {composition.related_blogposts && composition.related_blogposts.length > 0 && (
+                                        <div>
+                                            <h2 className="text-lg font-semibold text-navy mb-2" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
+                                                Relevant Blogposts
+                                            </h2>
+                                            <div 
+                                                className="text-gray-700 recording-links" 
+                                                data-testid="composition-related-blogposts" 
+                                                style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}
+                                            >
+                                                {composition.related_blogposts.map((blogpost, index) => (
+                                                    <Link key={blogpost.id} href={`/blog/${blogpost.slug}`}>
+                                                        <a className="text-purple hover:text-purple-700 underline transition-colors duration-200" data-testid={`blogpost-link-${index}`}>
+                                                            {blogpost.title}
+                                                        </a>
+                                                    </Link>
                                                 ))}
                                             </div>
                                         </div>
-                                    );
-                                })()}
+                                    )}
+                                </div>
                             </div>
-
-                            {/* Right Column */}
-                            <div className="space-y-6">
-                                {/* Publisher */}
-                                {composition.publisher && (
-                                    Array.isArray(composition.publisher) ? composition.publisher.length > 0 : composition.publisher
-                                ) && (
-                                    <div>
-                                        <h2 className="text-lg font-semibold text-navy mb-2" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
-                                            Publisher
-                                        </h2>
-                                        <div 
-                                            className="text-gray-700 [&_a]:text-purple [&_a]:hover:text-purple-700 [&_a]:underline [&_a]:transition-colors [&_a]:duration-200" 
-                                            data-testid="composition-publisher" 
-                                            style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}
-                                        >
-                                            {Array.isArray(composition.publisher) ? (
-                                                composition.publisher.map((pub, index) => (
-                                                    <div key={index} dangerouslySetInnerHTML={{ __html: pub }} />
-                                                ))
-                                            ) : (
-                                                <div dangerouslySetInnerHTML={{ __html: composition.publisher }} />
-                                            )}
+                        ) : (
+                            // Default layout for all other compositions
+                            <div className="grid md:grid-cols-2 gap-8">
+                                {/* Left Column */}
+                                <div className="space-y-6">
+                                    {/* Instrumentation */}
+                                    {composition.instrumentation && (
+                                        <div>
+                                            <h2 className="text-lg font-semibold text-navy mb-2" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
+                                                Instrumentation
+                                            </h2>
+                                            <p className="text-gray-700" data-testid="composition-instrumentation" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
+                                                {composition.instrumentation}
+                                            </p>
                                         </div>
-                                    </div>
-                                )}
+                                    )}
 
-                                {/* Streaming Links */}
-                                {composition.streaming_links && composition.streaming_links.trim() && (
-                                    <div>
-                                        <h2 className="text-lg font-semibold text-navy mb-2" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
-                                            {composition.recording_info && 
-                                             ((Array.isArray(composition.recording_info) && composition.recording_info.length > 0) || 
-                                              (!Array.isArray(composition.recording_info) && composition.recording_info)) 
-                                             ? "Additional Streaming Links" : "Streaming Links"}
-                                        </h2>
-                                        <div 
-                                            className="text-gray-700 recording-links [&_a]:text-purple [&_a]:hover:text-purple-700 [&_a]:underline [&_a]:transition-colors [&_a]:duration-200" 
-                                            data-testid="composition-streaming-links" 
-                                            style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}
-                                        >
-                                            {/* Check if content has HTML */}
-                                            {composition.streaming_links.includes('<a ') ? (
-                                                <div dangerouslySetInnerHTML={{ __html: composition.streaming_links }} />
-                                            ) : (
-                                                composition.streaming_links.split('\n').map((link, index) => {
-                                                    // Check if the link contains a URL
-                                                    const urlMatch = link.match(/(https?:\/\/[^\s]+)/);
-                                                    if (urlMatch) {
-                                                        const url = urlMatch[1];
-                                                        const text = link.replace(url, '').trim() || url;
-                                                        return (
-                                                            <a key={index} href={url} target="_blank" rel="noopener noreferrer" className="text-purple hover:text-purple-700 underline">
-                                                                {text}
-                                                            </a>
-                                                        );
-                                                    } else if (link.trim()) {
-                                                        // Plain text link
-                                                        return (
-                                                            <span key={index} className="block">
-                                                                {link}
-                                                            </span>
-                                                        );
-                                                    }
-                                                    return null;
-                                                })
-                                            )}
-                                        </div>
-                                    </div>
-                                )}
 
-                                {/* Relevant Blogposts */}
-                                {composition.related_blogposts && composition.related_blogposts.length > 0 && (
-                                    <div>
-                                        <h2 className="text-lg font-semibold text-navy mb-2" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
-                                            Relevant Blogposts
-                                        </h2>
-                                        <div 
-                                            className="text-gray-700 recording-links" 
-                                            data-testid="composition-related-blogposts" 
-                                            style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}
-                                        >
-                                            {composition.related_blogposts.map((blogpost, index) => (
-                                                <Link key={blogpost.id} href={`/blog/${blogpost.slug}`}>
-                                                    <a className="text-purple hover:text-purple-700 underline transition-colors duration-200" data-testid={`blogpost-link-${index}`}>
-                                                        {blogpost.title}
-                                                    </a>
-                                                </Link>
-                                            ))}
+                                    {/* Duration */}
+                                    {composition.duration && (
+                                        <div>
+                                            <h2 className="text-lg font-semibold text-navy inline mr-2" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
+                                                Duration:
+                                            </h2>
+                                            <span className="text-gray-700" data-testid="composition-duration" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
+                                                {composition.duration}
+                                            </span>
                                         </div>
-                                    </div>
-                                )}
+                                    )}
+
+                                    {/* Recording(s) */}
+                                    {composition.recording_info && (() => {
+                                        // Handle both single recording (legacy) and multiple recordings (new format)
+                                        const recordings = Array.isArray(composition.recording_info) 
+                                            ? composition.recording_info 
+                                            : [composition.recording_info];
+                                        
+                                        const validRecordings = recordings.filter(rec => rec && rec.album_cover);
+                                        
+                                        if (validRecordings.length === 0) return null;
+                                        
+                                        return (
+                                            <div className="w-48">
+                                                <h2 className="text-lg text-navy mb-2 whitespace-nowrap" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
+                                                    <span className="font-semibold">
+                                                        {validRecordings.length > 1 ? 'Recordings' : 'Recording'}
+                                                    </span>{' '}
+                                                    <span className="font-normal" style={{fontSize: '1rem'}}>
+                                                        (click on image{validRecordings.length > 1 ? 's' : ''})
+                                                    </span>
+                                                </h2>
+                                                <div className="space-y-4">
+                                                    {validRecordings.map((recordingInfo, index) => (
+                                                        <div key={`${recordingInfo.id}-${index}`}>
+                                                            <Link href={`/recordings/${recordingInfo.slug}`}>
+                                                                <a className="block hover:opacity-90 transition-opacity" data-testid={`composition-recording-link-${index}`}>
+                                                                    <img 
+                                                                        src={recordingInfo.album_cover}
+                                                                        alt={recordingInfo.title}
+                                                                        className="w-full h-48 object-cover rounded-lg shadow-md"
+                                                                        data-testid={`composition-recording-cover-${index}`}
+                                                                    />
+                                                                </a>
+                                                            </Link>
+                                                            <p className="text-gray-600 mt-2 break-words" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif', fontSize: '1rem'}}>
+                                                                {recordingInfo.title}
+                                                            </p>
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                            </div>
+                                        );
+                                    })()}
+                                </div>
+
+                                {/* Right Column */}
+                                <div className="space-y-6">
+                                    {/* Publisher */}
+                                    {composition.publisher && (
+                                        Array.isArray(composition.publisher) ? composition.publisher.length > 0 : composition.publisher
+                                    ) && (
+                                        <div>
+                                            <h2 className="text-lg font-semibold text-navy mb-2" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
+                                                Publisher
+                                            </h2>
+                                            <div 
+                                                className="text-gray-700 [&_a]:text-purple [&_a]:hover:text-purple-700 [&_a]:underline [&_a]:transition-colors [&_a]:duration-200" 
+                                                data-testid="composition-publisher" 
+                                                style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}
+                                            >
+                                                {Array.isArray(composition.publisher) ? (
+                                                    composition.publisher.map((pub, index) => (
+                                                        <div key={index} dangerouslySetInnerHTML={{ __html: pub }} />
+                                                    ))
+                                                ) : (
+                                                    <div dangerouslySetInnerHTML={{ __html: composition.publisher }} />
+                                                )}
+                                            </div>
+                                        </div>
+                                    )}
+
+                                    {/* Streaming Links */}
+                                    {composition.streaming_links && composition.streaming_links.trim() && (
+                                        <div>
+                                            <h2 className="text-lg font-semibold text-navy mb-2" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
+                                                {composition.recording_info && 
+                                                 ((Array.isArray(composition.recording_info) && composition.recording_info.length > 0) || 
+                                                  (!Array.isArray(composition.recording_info) && composition.recording_info)) 
+                                                 ? "Additional Streaming Links" : "Streaming Links"}
+                                            </h2>
+                                            <div 
+                                                className="text-gray-700 recording-links [&_a]:text-purple [&_a]:hover:text-purple-700 [&_a]:underline [&_a]:transition-colors [&_a]:duration-200" 
+                                                data-testid="composition-streaming-links" 
+                                                style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}
+                                            >
+                                                {/* Check if content has HTML */}
+                                                {composition.streaming_links.includes('<a ') ? (
+                                                    <div dangerouslySetInnerHTML={{ __html: composition.streaming_links }} />
+                                                ) : (
+                                                    composition.streaming_links.split('\n').map((link, index) => {
+                                                        // Check if the link contains a URL
+                                                        const urlMatch = link.match(/(https?:\/\/[^\s]+)/);
+                                                        if (urlMatch) {
+                                                            const url = urlMatch[1];
+                                                            const text = link.replace(url, '').trim() || url;
+                                                            return (
+                                                                <a key={index} href={url} target="_blank" rel="noopener noreferrer" className="text-purple hover:text-purple-700 underline">
+                                                                    {text}
+                                                                </a>
+                                                            );
+                                                        } else if (link.trim()) {
+                                                            // Plain text link
+                                                            return (
+                                                                <span key={index} className="block">
+                                                                    {link}
+                                                                </span>
+                                                            );
+                                                        }
+                                                        return null;
+                                                    })
+                                                )}
+                                            </div>
+                                        </div>
+                                    )}
+
+                                    {/* Relevant Blogposts */}
+                                    {composition.related_blogposts && composition.related_blogposts.length > 0 && (
+                                        <div>
+                                            <h2 className="text-lg font-semibold text-navy mb-2" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
+                                                Relevant Blogposts
+                                            </h2>
+                                            <div 
+                                                className="text-gray-700 recording-links" 
+                                                data-testid="composition-related-blogposts" 
+                                                style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}
+                                            >
+                                                {composition.related_blogposts.map((blogpost, index) => (
+                                                    <Link key={blogpost.id} href={`/blog/${blogpost.slug}`}>
+                                                        <a className="text-purple hover:text-purple-700 underline transition-colors duration-200" data-testid={`blogpost-link-${index}`}>
+                                                            {blogpost.title}
+                                                        </a>
+                                                    </Link>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    )}
+                                </div>
                             </div>
-                        </div>
+                        )}
 
                         {/* Program Note */}
                         {composition.program_note && (
