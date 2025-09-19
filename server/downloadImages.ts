@@ -114,12 +114,25 @@ export async function downloadAllImages(): Promise<void> {
         
         // Process compositions (they might have images in recording field or other text fields)
         for (const composition of allCompositions) {
-            const textFields = [composition.recording, composition.premiere_info].filter(Boolean);
+            // Handle recording field (it's an array of strings) and premiere_info (string)
+            const textFields: string[] = [];
+            
+            // Add recording field - it's an array of strings so we need to handle it differently
+            if (composition.recording && Array.isArray(composition.recording)) {
+                textFields.push(...composition.recording);
+            }
+            
+            // Add premiere_info field - it's a simple string
+            if (composition.premiere_info) {
+                textFields.push(composition.premiere_info);
+            }
             
             for (const textField of textFields) {
-                if (textField) {
+                if (textField && typeof textField === 'string') {
                     const imageUrls = extractImageUrls(textField);
-                    console.log(`Found ${imageUrls.length} images in composition: ${composition.title}`);
+                    if (imageUrls.length > 0) {
+                        console.log(`Found ${imageUrls.length} images in composition: ${composition.title}`);
+                    }
                     
                     for (const imageUrl of imageUrls) {
                         try {
