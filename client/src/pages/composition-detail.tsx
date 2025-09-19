@@ -189,7 +189,7 @@ export default function CompositionDetail() {
                                                     <span className="font-semibold">
                                                         {validRecordings.length > 1 ? 'Recordings' : 'Recording'}
                                                     </span>{' '}
-                                                    <span className="font-normal" style={{fontSize: '1rem', lineHeight: '1.1'}}>
+                                                    <span className="font-normal" style={{fontSize: '1rem', lineHeight: '1.0'}}>
                                                         (click on image{validRecordings.length > 1 ? 's' : ''}<br />for information and links)
                                                     </span>
                                                 </h2>
@@ -274,13 +274,17 @@ export default function CompositionDetail() {
                                                 data-testid="composition-related-blogposts" 
                                                 style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}
                                             >
-                                                {composition.related_blogposts.map((blogpost, index) => (
-                                                    <Link key={blogpost.id} href={`/blog/${blogpost.slug}`}>
-                                                        <a className="text-purple hover:text-purple-700 underline transition-colors duration-200" data-testid={`blogpost-link-${index}`}>
-                                                            {blogpost.title}
-                                                        </a>
-                                                    </Link>
-                                                ))}
+                                                {composition.related_blogposts.map((blogpost, index) => {
+                                                    // Remove ", Book I" or ", Book II" from the title for these specific compositions
+                                                    const displayTitle = blogpost.title.replace(/, Book I+$/i, '');
+                                                    return (
+                                                        <Link key={blogpost.id} href={`/blog/${blogpost.slug}`}>
+                                                            <a className="text-purple hover:text-purple-700 underline transition-colors duration-200" data-testid={`blogpost-link-${index}`}>
+                                                                {displayTitle}
+                                                            </a>
+                                                        </Link>
+                                                    );
+                                                })}
                                             </div>
                                         </div>
                                     )}
@@ -333,7 +337,7 @@ export default function CompositionDetail() {
                                                     <span className="font-semibold">
                                                         {validRecordings.length > 1 ? 'Recordings' : 'Recording'}
                                                     </span>{' '}
-                                                    <span className="font-normal" style={{fontSize: '1rem', lineHeight: '1.1'}}>
+                                                    <span className="font-normal" style={{fontSize: '1rem', lineHeight: '1.0'}}>
                                                         (click on image{validRecordings.length > 1 ? 's' : ''}<br />for information and links)
                                                     </span>
                                                 </h2>
