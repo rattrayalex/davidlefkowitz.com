@@ -176,7 +176,7 @@ export default function BlogPostPage() {
                         </div>
 
                         {/* Content */}
-                        <div className="text-gray-700 leading-relaxed" data-testid="post-content" style={{lineHeight: '1.6', fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
+                        <div className="text-gray-700 leading-relaxed" data-testid="post-content" style={{lineHeight: '1.6', fontFamily: 'Times, "Times New Roman", Palatino, serif', backgroundColor: 'white', padding: '1rem', borderRadius: '0.5rem'}}>
                             {(() => {
                                 // Apply paragraph formatting with consistent indentation
                                 // First try to split by double newlines
