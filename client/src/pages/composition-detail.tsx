@@ -475,7 +475,12 @@ export default function CompositionDetail() {
                                         lineHeight: '1.2'
                                     }}
                                 >
-                                    {(() => {
+                                    {composition.slug === 'Green_Mountains' ? (
+                                        // Special formatting for Green Mountains, Now Black - same style as About page bio
+                                        composition.program_note.split('\n\n').map((paragraph: string, index: number) => (
+                                            <p key={index} className="mb-4" style={{textIndent: '36px'}} dangerouslySetInnerHTML={{__html: paragraph}} />
+                                        ))
+                                    ) : ((() => {
                                         const lines = composition.program_note.split('\n');
                                         const elements: JSX.Element[] = [];
                                         let inTable = false;
@@ -636,7 +641,7 @@ export default function CompositionDetail() {
                                         }
                                         
                                         return elements;
-                                    })()}
+                                    })())}
                                 </div>
                             </div>
                         )}
