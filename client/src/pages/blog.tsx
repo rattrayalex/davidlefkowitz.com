@@ -61,7 +61,7 @@ export default function Blog() {
                             {posts.map((post) => (
                                 <Link key={post.id} href={`/blog/${post.slug || post.id}`} className="block">
                                     <article 
-                                        className="border border-gray-300 rounded-md p-3 hover:shadow-md transition-shadow duration-300 w-4/5 cursor-pointer" style={{backgroundColor: 'white'}}
+                                        className="border border-purple rounded-md p-3 hover:shadow-md transition-shadow duration-300 w-4/5 cursor-pointer" style={{backgroundColor: 'white'}}
                                         data-testid={`blog-post-${post.id}`}
                                     >
                                         {/* Meta information */}
