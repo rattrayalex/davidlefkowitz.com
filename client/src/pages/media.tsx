@@ -341,6 +341,15 @@ export default function MediaPage() {
                         }
                     `}</style>
                     
+                    {/* Permission text above first photo */}
+                    {mediaItems.length > 0 && (
+                        <div className="text-center pt-4 pb-2">
+                            <p className="italic text-gray-700" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
+                                (Contact David S. Lefkowitz for permission to use photos)
+                            </p>
+                        </div>
+                    )}
+                    
                     {mediaItems.length === 0 ? (
                         <div className="h-screen flex items-center justify-center">
                             <div className="text-center">
