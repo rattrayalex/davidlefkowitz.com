@@ -59,7 +59,7 @@ export default function Blog() {
                     ) : (
                         <div className="space-y-3">
                             {posts.map((post) => (
-                                <Link key={post.id} href={`/blog/${post.slug || post.id}`}>
+                                <Link key={post.id} href={`/blog/${post.slug || post.id}`} className="block">
                                     <article 
                                         className="border border-gray-300 rounded-md p-3 hover:shadow-md transition-shadow duration-300 w-4/5 cursor-pointer" style={{backgroundColor: '#e5e5ff'}}
                                         data-testid={`blog-post-${post.id}`}
