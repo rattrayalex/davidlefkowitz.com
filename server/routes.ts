@@ -1,10 +1,10 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { notion } from "./notion";
-import { contactFormSchema, blogPosts, compositions, recordings, media, contacts, type BlogPost, type Composition, type Recording, type Media } from "@shared/schema";
+import { contactFormSchema, blogPosts, compositions, recordings, media, contacts, profile, type BlogPost, type Composition, type Recording, type Media } from "@shared/schema";
 import { db } from "./db";
 import { eq, desc, asc, sql, lt, gt } from "drizzle-orm";
-import { syncBlogPosts, syncCompositions, syncRecordings, syncMedia } from "./sync";
+import { syncBlogPosts, syncCompositions, syncRecordings, syncMedia, syncAboutPage } from "./sync";
 import { getMediaPageReviews } from "./notion";
 import { ObjectStorageService } from "./objectStorage";
 import { z } from "zod";
@@ -61,24 +61,42 @@ export async function registerRoutes(app: Express): Promise<Server> {
     // Get profile information
     app.get("/api/profile", async (req, res) => {
         try {
-            // Profile data from the existing website - exact text only
-            const profile = {
-                name: "David S. Lefkowitz",
-                title: "Composer, Professor of Music Composition & Theory",
-                institution: "UCLA Herb Alpert School of Music",
-                bio: `Composer, theorist, and professor David S. Lefkowitz has won international acclaim, with performances in Japan, China, Hong Kong, Taiwan, Russia, Ukraine, Switzerland, Italy, Netherlands, UK, France, Germany, Hungary, Czechoslovakia, Spain, Canada, Mexico, Israel, and Egypt. He has won recognition from Fukui Harp Music, ASCAP Young Composers, NACUSA, Guild of Temple Musi­cians, Chicago Civic Orchestra, Washington International, Society for New Music's Brian Israel, ALEA III, and Gaudeamus Music Week. He has had residencies with the University of Nevada/Las Vegas, National Sun-Yat Sen University (Kaoshiung, Taiwan), National Capital Normal University (Beijing, China), Herzen University (St. Petersburg, Russia), and Meet the Composer. He has presented his music at countless universities across four continents and throughout the United States.  He has also been a judge for many competitions for composers, locally, nationally, and in St. Petersburg, Russia.  Dr. David S. Lefkowitz received his Ph.D. in Music Composition and Theory from the Eastman School of Music/University of Rochester, where he studied primarily with Samuel Adler and Joseph Schwantner.  He received his M.A. in Music Composition from University of Pennsylvania, where he studied primarily with George Crumb.  He received his B.A. from Cornell University, where he studied both philosophy and music, and where he studied music composition with Karel Husa and Yehudi Wyner.
+            // Try to fetch from database first
+            const [profileData] = await db.select().from(profile).limit(1);
+            
+            if (profileData) {
+                // Use database data
+                const profileResponse = {
+                    name: profileData.name,
+                    title: profileData.title || "Composer, Professor of Music Composition & Theory",
+                    institution: profileData.institution || "UCLA Herb Alpert School of Music",
+                    bio: profileData.bio,
+                    bio_short: profileData.bio_short || "Composer, Theorist, and Professor at UCLA",
+                    photo_url: profileData.photo_url || `/api/media-cache/profile-photo.jpg?v=${Date.now()}`,
+                    email: profileData.email || "lefko at ucla.edu",
+                    cv_url: profileData.cv_url || null
+                };
+                res.json(profileResponse);
+            } else {
+                // Fallback to hardcoded data if database is empty
+                const fallbackProfile = {
+                    name: "David S. Lefkowitz",
+                    title: "Composer, Professor of Music Composition & Theory",
+                    institution: "UCLA Herb Alpert School of Music",
+                    bio: `Composer, theorist, and professor David S. Lefkowitz has won international acclaim, with performances in Japan, China, Hong Kong, Taiwan, Russia, Ukraine, Switzerland, Italy, Netherlands, UK, France, Germany, Hungary, Czechoslovakia, Spain, Canada, Mexico, Israel, and Egypt. He has won recognition from Fukui Harp Music, ASCAP Young Composers, NACUSA, Guild of Temple Musi­cians, Chicago Civic Orchestra, Washington International, Society for New Music's Brian Israel, ALEA III, and Gaudeamus Music Week. He has had residencies with the University of Nevada/Las Vegas, National Sun-Yat Sen University (Kaoshiung, Taiwan), National Capital Normal University (Beijing, China), Herzen University (St. Petersburg, Russia), and Meet the Composer. He has presented his music at countless universities across four continents and throughout the United States.  He has also been a judge for many competitions for composers, locally, nationally, and in St. Petersburg, Russia.  Dr. David S. Lefkowitz received his Ph.D. in Music Composition and Theory from the Eastman School of Music/University of Rochester, where he studied primarily with Samuel Adler and Joseph Schwantner.  He received his M.A. in Music Composition from University of Pennsylvania, where he studied primarily with George Crumb.  He received his B.A. from Cornell University, where he studied both philosophy and music, and where he studied music composition with Karel Husa and Yehudi Wyner.
 
 At <a href="https://schoolofmusic.ucla.edu/people/david-lefkowitz/" target="_blank" rel="noopener noreferrer">UCLA</a>, David S. Lefkowitz teaches courses in Music Composition, Orchestration, Contemporary Music Analysis, Music Theory, Speculative Music Theory, and Music Theory for Composers.  In his 31 years at UCLA, he has been nominated by the Music Department for the Distinguished Teaching Award, he served as Chair of the Division of Composition for more than 7 years, and has served for three years as Vice Chair of the Department.  He has been very active inviting ensembles from around the world to residencies at UCLA, including the Moscow Contemporary Music Ensemble, the Quatuor Diotima (Diotima String Quartet), Yarn/Wire, Syrinx Ensemble, Jose Menor, Alexander Boldachev, and the Aperture Duo, as well as collaborations with the Helfman Group and Junior Chamber Music.
 
 David S. Lefkowitz's more than 150 compositions range from intimate works for many different solo instruments to large ensemble music for orchestra and for wind ensemble, and for choir, soloists, and orchestra.  He has received more than 50 commissions for new works, from soloists Inna Faliks, Gloria Cheng, Suzana Bartal, Susanne Kessel, David Geringas, Grace Cloutier, Petteri Iivonen, Robert Paterson, and Hans Joachim Dumeier; and for ensembles incluing Yarlung Artists for Elinor Frey and David Fung and for Lindsay Deutsch and Joanne Pearce Martin, Pacific Serenades, Coretet for Quartet Integra and for the Sibelius Piano Trio, Cantor's Assembly, Glory Star Children's Chorus, Center for Jewish Culture and Creativity for the Synergy Ensemble, Debussy Trio, Russian String Orchestra, Moscow Contemporary Music Ensemble, Herzen University for the St. Petersburg in the Mirror of the World's Cultural Heritage competition, Irina Donskaya for a harp quartet, Cornell University Glee Club, Baroque Camerata of Zhongshan Daxue (Kaoshiung, Taiwan), Harvard Westlake Symphony Orchestra, and for the Beijing City Opera Company.
 
 Lefkowitz's compositions have been released on more than twenty commercial recordings, including on Bridge, Yarlung, Albany, and Parnassus Records, including four all-Lefkowitz recordings: David S. Lefkowitz Preludes and Fugues on Bridge Records, Harp's Desire: The Harp Music of David S. Lefkowitz and Music of Contradictions on Albany Records, and Inner World: the Music of David S. Lefkowitz on Yarlung Records.  His most recent composition, Green Mountains, Now Black, commissioned for Quartet Integra string quartet, will be released on Yarlung Records later this year.  His music has been published by Fatrock Music, Zenon Music, C. Alan Publications, Warner Brothers/Chappell Music, Yelton Rhodes Music.  Most of his music is available through Floating Point Music.`,
-                bio_short: "Composer, Theorist, and Professor at UCLA",
-                photo_url: `/api/media-cache/profile-photo.jpg?v=${Date.now()}`,
-                email: "lefko at ucla.edu",
-                cv_url: null
-            };
-            res.json(profile);
+                    bio_short: "Composer, Theorist, and Professor at UCLA",
+                    photo_url: `/api/media-cache/profile-photo.jpg?v=${Date.now()}`,
+                    email: "lefko at ucla.edu",
+                    cv_url: null
+                };
+                res.json(fallbackProfile);
+            }
         } catch (error) {
             console.error("Error fetching profile:", error);
             res.status(500).json({ error: "Failed to fetch profile" });
