@@ -1,10 +1,31 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Card, CardContent } from "@/components/ui/card";
-import { Skeleton } from "@/components/ui/skeleton";
 
 export default function FYC() {
-    const [streamingLinks, setStreamingLinks] = useState<{ [key: string]: string }>({});
-    const [isLoading, setIsLoading] = useState(true);
+    // Hardcoded streaming links for faster loading
+    const streamingLinks = {
+        "Amazon Music": "https://www.amazon.com/dp/B0F3FMBQVP",
+        "Apple Music": "https://classical.music.apple.com/us/album/1818776381",
+        "Deezer": "https://www.deezer.com/us/album/736897251",
+        "Pandora": "https://www.pandora.com/artist/david-kaplan-mika-sasaki-michael-mizrahi-and-steven-beck/david-s-lefkowitz-preludes-and-fugues-for-piano/ALk9zhjXvZ56VgJ",
+        "Spotify": "https://open.spotify.com/album/1AXDnGNFGtceS4zGvmLn8H",
+        "Tidal": "https://tidal.com/browse/track/427812074/u",
+        "YouTube": "https://youtube.com/playlist?list=PL1WjDUvuhzW9pgsYIJhDD9i374wjGNkKi",
+        "Preludes and Fugues Book I": "https://www.davidlefkowitz.com/compositions/Expanded_Universe",
+        "Preludes and Fugues Book II": "https://www.davidlefkowitz.com/compositions/Parallel_Universes",
+        "David S. Lefkowitz": "https://www.davidlefkowitz.com/",
+        "Steven Beck": "https://stevenbeck.me/",
+        "David Kaplan": "https://www.davidkaplanpiano.com/",
+        "Michael Mizrahi": "https://www.michaelmizrahipiano.com/",
+        "Mika Sasaki": "https://www.mikasasaki.com/",
+        "Cantor Marcus Feldman": "https://www.sinaitemple.org/about/clergy-senior-staff/cantor-marcus-feldman/",
+        "Stuart Schenk": "http://stuartschenk.com/",
+        "Benjamin Maas": "http://www.fifthcircle.com/about.html",
+        "Steve Kaplan": "https://www.noiseandotherdistortions.com/contact",
+        "Bridge Records": "https://bridgerecords.com/",
+        "Floating Point Music": "https://davidlefkowitz.com/contact#floating-point-music",
+        "Genevieve Spielberg Artists": "https://www.gsiartists.com/"
+    };
     
     useEffect(() => {
         // Set the browser window title for this page
@@ -14,37 +35,6 @@ export default function FYC() {
         return () => {
             document.title = "David S. Lefkowitz";
         };
-    }, []);
-
-    useEffect(() => {
-        // Fetch updated links from Notion
-        fetch("/api/fyc-content")
-            .then(res => {
-                if (res.ok) {
-                    return res.json();
-                }
-                throw new Error('Failed to fetch');
-            })
-            .then(data => {
-                if (data.links && Object.keys(data.links).length > 0) {
-                    setStreamingLinks(data.links);
-                }
-                setIsLoading(false);
-            })
-            .catch(err => {
-                console.log("Error fetching FYC content:", err);
-                // Fallback to default links
-                setStreamingLinks({
-                    "Amazon Music": "https://www.amazon.com/dp/B0F3FMBQVP",
-                    "Apple Music": "https://classical.music.apple.com/us/album/1818776381",
-                    "Deezer": "https://www.deezer.com/us/album/736897251",
-                    "Pandora": "https://www.pandora.com/artist/david-kaplan-mika-sasaki-michael-mizrahi-and-steven-beck/david-s-lefkowitz-preludes-and-fugues-for-piano/ALk9zhjXvZ56VgJ",
-                    "Spotify": "https://open.spotify.com/album/1AXDnGNFGtceS4zGvmLn8H",
-                    "Tidal": "https://tidal.com/browse/track/427812074/u",
-                    "YouTube": "https://youtube.com/playlist?list=PL1WjDUvuhzW9pgsYIJhDD9i374wjGNkKi"
-                });
-                setIsLoading(false);
-            });
     }, []);
 
     return (
@@ -59,7 +49,7 @@ export default function FYC() {
                 {/* Album cover image - positioned absolute on the right, aligned with title */}
                 <div className="absolute right-0 top-0 z-10" style={{ width: '320px', height: '380px' }}>
                     <img 
-                        src="/api/media-cache/recording_26c3907b_2ee6_81cb_9edf_f38464971746_e818c4a1.jpg"
+                        src="/api/media-cache/recording_26c3907b_2ee6_81cb_9edf_f38464971746_14045b66.jpg"
                         alt="Preludes and Fugues Album Cover"
                         className="w-full h-full object-cover rounded-lg shadow-lg"
                     />
@@ -73,59 +63,43 @@ export default function FYC() {
                         <h2 className="text-2xl font-semibold mb-4" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
                             LISTEN HERE:
                         </h2>
-                        {!isLoading && (
-                            <div style={{fontFamily: 'Times, "Times New Roman", Palatino, serif', paddingLeft: '24px'}}>
-                                {streamingLinks["Amazon Music"] && (
-                                    <div style={{ marginBottom: '4px' }}>
-                                        <a href={streamingLinks["Amazon Music"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
-                                            Amazon Music
-                                        </a>
-                                    </div>
-                                )}
-                                {streamingLinks["Apple Music"] && (
-                                    <div style={{ marginBottom: '4px' }}>
-                                        <a href={streamingLinks["Apple Music"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
-                                            Apple Music
-                                        </a>
-                                    </div>
-                                )}
-                                {streamingLinks["Deezer"] && (
-                                    <div style={{ marginBottom: '4px' }}>
-                                        <a href={streamingLinks["Deezer"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
-                                            Deezer
-                                        </a>
-                                    </div>
-                                )}
-                                {streamingLinks["Pandora"] && (
-                                    <div style={{ marginBottom: '4px' }}>
-                                        <a href={streamingLinks["Pandora"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
-                                            Pandora
-                                        </a>
-                                    </div>
-                                )}
-                                {streamingLinks["Spotify"] && (
-                                    <div style={{ marginBottom: '4px' }}>
-                                        <a href={streamingLinks["Spotify"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
-                                            Spotify
-                                        </a>
-                                    </div>
-                                )}
-                                {streamingLinks["Tidal"] && (
-                                    <div style={{ marginBottom: '4px' }}>
-                                        <a href={streamingLinks["Tidal"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
-                                            Tidal
-                                        </a>
-                                    </div>
-                                )}
-                                {streamingLinks["YouTube"] && (
-                                    <div style={{ marginBottom: '4px' }}>
-                                        <a href={streamingLinks["YouTube"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
-                                            YouTube
-                                        </a>
-                                    </div>
-                                )}
+                        <div style={{fontFamily: 'Times, "Times New Roman", Palatino, serif', paddingLeft: '24px'}}>
+                            <div style={{ marginBottom: '4px' }}>
+                                <a href={streamingLinks["Amazon Music"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
+                                    Amazon Music
+                                </a>
                             </div>
-                        )}
+                            <div style={{ marginBottom: '4px' }}>
+                                <a href={streamingLinks["Apple Music"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
+                                    Apple Music
+                                </a>
+                            </div>
+                            <div style={{ marginBottom: '4px' }}>
+                                <a href={streamingLinks["Deezer"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
+                                    Deezer
+                                </a>
+                            </div>
+                            <div style={{ marginBottom: '4px' }}>
+                                <a href={streamingLinks["Pandora"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
+                                    Pandora
+                                </a>
+                            </div>
+                            <div style={{ marginBottom: '4px' }}>
+                                <a href={streamingLinks["Spotify"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
+                                    Spotify
+                                </a>
+                            </div>
+                            <div style={{ marginBottom: '4px' }}>
+                                <a href={streamingLinks["Tidal"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
+                                    Tidal
+                                </a>
+                            </div>
+                            <div style={{ marginBottom: '4px' }}>
+                                <a href={streamingLinks["YouTube"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
+                                    YouTube
+                                </a>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -181,65 +155,48 @@ export default function FYC() {
                         
                         <div className="space-y-2">
                             <div style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
-                                <span className="font-semibold">Composition:</span> {streamingLinks["Preludes and Fugues Book I"] && streamingLinks["Preludes and Fugues Book II"] ? (
-                                    <>
-                                        <a href={streamingLinks["Preludes and Fugues Book I"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
-                                            Preludes and Fugues Book I
-                                        </a>
-                                        {" & "}
-                                        <a href={streamingLinks["Preludes and Fugues Book II"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
-                                            Preludes and Fugues Book II
-                                        </a>
-                                    </>
-                                ) : (
-                                    <>Preludes and Fugues Book I & Preludes and Fugues Book II</>
-                                )}
+                                <span className="font-semibold">Composition:</span> {' '}
+                                <a href={streamingLinks["Preludes and Fugues Book I"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
+                                    Preludes and Fugues Book I
+                                </a>
+                                {" & "}
+                                <a href={streamingLinks["Preludes and Fugues Book II"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
+                                    Preludes and Fugues Book II
+                                </a>
                             </div>
                             
                             <div style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
-                                <span className="font-semibold">Composer:</span> {streamingLinks["David S. Lefkowitz"] ? (
-                                    <a href={streamingLinks["David S. Lefkowitz"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
-                                        David S. Lefkowitz
-                                    </a>
-                                ) : "David S. Lefkowitz"}
+                                <span className="font-semibold">Composer:</span> {' '}
+                                <a href={streamingLinks["David S. Lefkowitz"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
+                                    David S. Lefkowitz
+                                </a>
                             </div>
                             
                             <div style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
-                                <span className="font-semibold">Performers:</span> {streamingLinks["Steven Beck"] ? (
-                                    <a href={streamingLinks["Steven Beck"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
-                                        Steven Beck
-                                    </a>
-                                ) : "Steven Beck"}
+                                <span className="font-semibold">Performers:</span> {' '}
+                                <a href={streamingLinks["Steven Beck"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
+                                    Steven Beck
+                                </a>
                                 {", "}
-                                {streamingLinks["David Kaplan"] ? (
-                                    <a href={streamingLinks["David Kaplan"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
-                                        David Kaplan
-                                    </a>
-                                ) : "David Kaplan"}
+                                <a href={streamingLinks["David Kaplan"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
+                                    David Kaplan
+                                </a>
                                 {", "}
-                                {streamingLinks["Michael Mizrahi"] ? (
-                                    <a href={streamingLinks["Michael Mizrahi"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
-                                        Michael Mizrahi
-                                    </a>
-                                ) : "Michael Mizrahi"}
+                                <a href={streamingLinks["Michael Mizrahi"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
+                                    Michael Mizrahi
+                                </a>
                                 {", & "}
-                                {streamingLinks["Mika Sasaki"] ? (
-                                    <a href={streamingLinks["Mika Sasaki"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
-                                        Mika Sasaki
-                                    </a>
-                                ) : "Mika Sasaki"}
+                                <a href={streamingLinks["Mika Sasaki"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
+                                    Mika Sasaki
+                                </a>
                                 {", pianos, with "}
-                                {streamingLinks["Cantor Marcus Feldman"] ? (
-                                    <a href={streamingLinks["Cantor Marcus Feldman"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
-                                        Cantor Marcus Feldman
-                                    </a>
-                                ) : "Cantor Marcus Feldman"}
+                                <a href={streamingLinks["Cantor Marcus Feldman"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
+                                    Cantor Marcus Feldman
+                                </a>
                                 {", baritone, and "}
-                                {streamingLinks["David S. Lefkowitz"] ? (
-                                    <a href={streamingLinks["David S. Lefkowitz"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
-                                        David S. Lefkowitz
-                                    </a>
-                                ) : "David S. Lefkowitz"}
+                                <a href={streamingLinks["David S. Lefkowitz"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
+                                    David S. Lefkowitz
+                                </a>
                                 {", whistling, and additional piano and extended piano techniques."}
                             </div>
                             
@@ -256,35 +213,30 @@ export default function FYC() {
                             </div>
                             
                             <div style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
-                                <span className="font-semibold">Recording Engineers:</span> {streamingLinks["Stuart Schenk"] ? (
-                                    <a href={streamingLinks["Stuart Schenk"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
-                                        Stuart Schenk
-                                    </a>
-                                ) : "Stuart Schenk"}
+                                <span className="font-semibold">Recording Engineers:</span> {' '}
+                                <a href={streamingLinks["Stuart Schenk"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
+                                    Stuart Schenk
+                                </a>
                                 {", "}
-                                {streamingLinks["Benjamin Maas"] ? (
-                                    <a href={streamingLinks["Benjamin Maas"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
-                                        Benjamin Maas
-                                    </a>
-                                ) : "Benjamin Maas"}
+                                <a href={streamingLinks["Benjamin Maas"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
+                                    Benjamin Maas
+                                </a>
                                 {", Matheus Maciel"}
                             </div>
                             
                             <div style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
-                                <span className="font-semibold">Editing and Mastering Engineers:</span> {streamingLinks["Steve Kaplan"] ? (
-                                    <a href={streamingLinks["Steve Kaplan"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
-                                        Steve Kaplan
-                                    </a>
-                                ) : "Steve Kaplan"}
+                                <span className="font-semibold">Editing and Mastering Engineers:</span> {' '}
+                                <a href={streamingLinks["Steve Kaplan"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
+                                    Steve Kaplan
+                                </a>
                                 {", Sergey Parfenov, with David S. Lefkowitz"}
                             </div>
                             
                             <div style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
-                                <span className="font-semibold">Label:</span> {streamingLinks["Bridge Records"] ? (
-                                    <a href={streamingLinks["Bridge Records"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
-                                        Bridge Records
-                                    </a>
-                                ) : "Bridge Records"}
+                                <span className="font-semibold">Label:</span> {' '}
+                                <a href={streamingLinks["Bridge Records"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
+                                    Bridge Records
+                                </a>
                                 {", 200 Clinton Ave, New Rochelle, NY  10801"}
                             </div>
                             
@@ -293,19 +245,17 @@ export default function FYC() {
                             </div>
                             
                             <div style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
-                                <span className="font-semibold">Music Publisher:</span> {streamingLinks["Floating Point Music"] ? (
-                                    <a href={streamingLinks["Floating Point Music"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
-                                        Floating Point Music
-                                    </a>
-                                ) : "Floating Point Music"}
+                                <span className="font-semibold">Music Publisher:</span> {' '}
+                                <a href={streamingLinks["Floating Point Music"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
+                                    Floating Point Music
+                                </a>
                             </div>
                             
                             <div style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
-                                <span className="font-semibold">David S. Lefkowitz Representation:</span> {streamingLinks["Genevieve Spielberg Artists"] ? (
-                                    <a href={streamingLinks["Genevieve Spielberg Artists"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
-                                        Genevieve Spielberg Artists
-                                    </a>
-                                ) : "Genevieve Spielberg Artists"}
+                                <span className="font-semibold">David S. Lefkowitz Representation:</span> {' '}
+                                <a href={streamingLinks["Genevieve Spielberg Artists"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
+                                    Genevieve Spielberg Artists
+                                </a>
                             </div>
                             
                             <div style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
