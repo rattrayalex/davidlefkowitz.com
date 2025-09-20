@@ -58,13 +58,16 @@
   --charcoal: hsl(210, 25%, 25%);
 }
 
-/* FYC page animated background */
-@keyframes spinGradient {
-  from {
-    transform: rotate(0deg) scale(1.1);
+/* FYC page animated background - based on #e5e5ff */
+@keyframes gradientShift {
+  0% { 
+    background-position: 0% 50%;
   }
-  to {
-    transform: rotate(360deg) scale(1.1);
+  50% { 
+    background-position: 100% 50%;
+  }
+  100% { 
+    background-position: 0% 50%;
   }
 }
 
@@ -73,7 +76,16 @@
   width: 100%;
   position: relative;
   overflow: hidden;
-  background: #f0e5f7; /* fallback base color */
+  background: linear-gradient(
+    135deg,
+    #e5e5ff 0%,
+    #d5d5ff 25%,
+    #f0e5ff 50%,
+    #e5f0ff 75%,
+    #e5e5ff 100%
+  );
+  background-size: 400% 400%;
+  animation: gradientShift 8s ease infinite;
 }
 
 .fyc-animated-background::before {
