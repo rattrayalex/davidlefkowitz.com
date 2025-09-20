@@ -59,50 +59,49 @@ export default function Blog() {
                     ) : (
                         <div className="space-y-3">
                             {posts.map((post) => (
-                                <article 
-                                    key={post.id}
-                                    className="border border-gray-300 rounded-md p-3 hover:shadow-md transition-shadow duration-300 w-4/5" style={{backgroundColor: '#e5e5ff'}}
-                                    data-testid={`blog-post-${post.id}`}
-                                >
-                                    {/* Meta information */}
-                                    <div className="flex items-center text-sm text-gray-700 font-medium mb-1" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
-                                        <div className="flex items-center">
-                                            <Calendar className="h-3 w-3 mr-1" />
-                                            <time data-testid={`blog-post-date-${post.id}`}>
-                                                {new Date(post.published_date + 'T12:00:00').toLocaleDateString('en-US', {
-                                                    year: 'numeric',
-                                                    month: 'short',
-                                                    day: 'numeric'
-                                                })}
-                                            </time>
-                                        </div>
-                                    </div>
-
-                                    {/* Title */}
-                                    <h2 className={`font-playfair font-bold text-navy hover:text-purple transition-colors duration-200 ${post.title.toLowerCase().includes('an explainer') ? 'italic' : ''}`} style={{fontFamily: 'Times, "Times New Roman", Palatino, serif', fontSize: '21px'}}>
-                                        <Link href={`/blog/${post.slug || post.id}`} data-testid={`blog-post-title-${post.id}`}>
-                                            {post.title}
-                                        </Link>
-                                    </h2>
-
-                                    {/* Tags */}
-                                    {post.tags && post.tags.length > 0 && (
-                                        <div className="mb-2">
-                                            <div className="flex flex-wrap gap-1">
-                                                {post.tags.map((tag) => (
-                                                    <span 
-                                                        key={tag}
-                                                        className="inline-block bg-purple-100 text-purple-700 text-xs px-2 py-1 rounded-full"
-                                                        style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}
-                                                        data-testid={`blog-post-tag-${post.id}-${tag.toLowerCase()}`}
-                                                    >
-                                                        {tag}
-                                                    </span>
-                                                ))}
+                                <Link key={post.id} href={`/blog/${post.slug || post.id}`}>
+                                    <article 
+                                        className="border border-gray-300 rounded-md p-3 hover:shadow-md transition-shadow duration-300 w-4/5 cursor-pointer" style={{backgroundColor: '#e5e5ff'}}
+                                        data-testid={`blog-post-${post.id}`}
+                                    >
+                                        {/* Meta information */}
+                                        <div className="flex items-center text-sm text-gray-700 font-medium mb-1" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
+                                            <div className="flex items-center">
+                                                <Calendar className="h-3 w-3 mr-1" />
+                                                <time data-testid={`blog-post-date-${post.id}`}>
+                                                    {new Date(post.published_date + 'T12:00:00').toLocaleDateString('en-US', {
+                                                        year: 'numeric',
+                                                        month: 'short',
+                                                        day: 'numeric'
+                                                    })}
+                                                </time>
                                             </div>
                                         </div>
-                                    )}
-                                </article>
+
+                                        {/* Title */}
+                                        <h2 className={`font-playfair font-bold text-navy hover:text-purple transition-colors duration-200 ${post.title.toLowerCase().includes('an explainer') ? 'italic' : ''}`} style={{fontFamily: 'Times, "Times New Roman", Palatino, serif', fontSize: '21px'}} data-testid={`blog-post-title-${post.id}`}>
+                                            {post.title}
+                                        </h2>
+
+                                        {/* Tags */}
+                                        {post.tags && post.tags.length > 0 && (
+                                            <div className="mb-2">
+                                                <div className="flex flex-wrap gap-1">
+                                                    {post.tags.map((tag) => (
+                                                        <span 
+                                                            key={tag}
+                                                            className="inline-block bg-purple-100 text-purple-700 text-xs px-2 py-1 rounded-full"
+                                                            style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}
+                                                            data-testid={`blog-post-tag-${post.id}-${tag.toLowerCase()}`}
+                                                        >
+                                                            {tag}
+                                                        </span>
+                                                    ))}
+                                                </div>
+                                            </div>
+                                        )}
+                                    </article>
+                                </Link>
                             ))}
                         </div>
                     )}
