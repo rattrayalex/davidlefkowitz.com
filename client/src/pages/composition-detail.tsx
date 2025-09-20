@@ -89,7 +89,7 @@ export default function CompositionDetail() {
                         </a>
                     </Link>
                     
-                    <div className="bg-white rounded-lg shadow-xl p-8">
+                    <div className="bg-white rounded-lg shadow-xl p-8 max-w-3xl">
                         {/* Title and Year with Category Badge */}
                         <div className="mb-8">
                             <h1 className="text-4xl lg:text-5xl font-playfair font-bold text-navy mb-4" data-testid="composition-title" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
