@@ -136,22 +136,28 @@ export default function BlogPostPage() {
                         </div>
 
                         {/* Content */}
-                        <div className="text-gray-700 leading-relaxed" data-testid="post-content" style={{lineHeight: '1.6', tabSize: '2.5em', fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
+                        <div className="text-gray-700 leading-relaxed" data-testid="post-content" style={{lineHeight: '1.6', fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
                             {(() => {
-                                const paragraphs = post.content.split('\n').filter(p => p.trim());
+                                // Apply paragraph formatting with consistent indentation
+                                // First try to split by double newlines
+                                let paragraphs = post.content.split(/\n\n+/).map(p => p.trim()).filter(p => p.length > 0);
+                                
+                                // If that gives only one paragraph, try splitting by single newlines
+                                if (paragraphs.length === 1) {
+                                    paragraphs = post.content.split(/\n/).map(p => p.trim()).filter(p => p.length > 0);
+                                }
+                                
                                 return paragraphs.map((paragraph, index) => (
-                                    <div 
+                                    <p 
                                         key={index}
+                                        className="mb-2"
                                         style={{
                                             fontFamily: 'Times, "Times New Roman", Palatino, serif',
-                                            whiteSpace: 'pre-wrap',
-                                            tabSize: '2.5em',
                                             fontWeight: '590',
-                                            textIndent: index === 0 ? '2.5em' : '0' // Indent first paragraph only
+                                            textIndent: '36px'
                                         }}
                                         dangerouslySetInnerHTML={{__html: paragraph}}
-                                    >
-                                    </div>
+                                    />
                                 ));
                             })()}
                         </div>
