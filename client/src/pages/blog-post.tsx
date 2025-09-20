@@ -145,7 +145,7 @@ export default function BlogPostPage() {
 
                     {/* Tags */}
                     {post.tags && post.tags.length > 0 && (
-                        <div className="mb-6">
+                        <div className="mb-4">
                             <div className="flex flex-wrap gap-2">
                                 {post.tags.map((tag) => (
                                     <span 
