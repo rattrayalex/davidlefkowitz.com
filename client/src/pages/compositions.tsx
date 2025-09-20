@@ -318,10 +318,10 @@ export default function Compositions() {
                                     <Link 
                                         key={composition.id}
                                         href={detailUrl}
-                                        className="block max-w-fit"
+                                        className="block max-w-[850px]"
                                     >
                                 <div 
-                                    className="border border-purple rounded-lg p-2 hover:shadow-lg transition-shadow duration-300 cursor-pointer flex items-center gap-4 flex-wrap bg-white w-fit pr-3"
+                                    className="border border-purple rounded-lg p-2 hover:shadow-lg transition-shadow duration-300 cursor-pointer flex items-center gap-4 flex-wrap bg-white"
                                     data-testid={`composition-${composition.id}`}
                                 >
                                     {/* 1. Category Badge */}
