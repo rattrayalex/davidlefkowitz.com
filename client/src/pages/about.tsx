@@ -83,7 +83,7 @@ export default function About() {
                             <div className="text-gray-700 leading-relaxed" data-testid="profile-bio" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
                                 {(profile as any)?.bio ? (
                                     (profile as any).bio.split('\n\n').map((paragraph: string, index: number) => (
-                                        <p key={index} className="mb-4" dangerouslySetInnerHTML={{__html: paragraph}} />
+                                        <p key={index} className="mb-4" style={{textIndent: '36px'}} dangerouslySetInnerHTML={{__html: paragraph}} />
                                     ))
                                 ) : (
                                     <p>Loading bio content...</p>
