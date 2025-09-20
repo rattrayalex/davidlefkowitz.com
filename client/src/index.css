@@ -96,11 +96,11 @@
   z-index: 0;
   background: conic-gradient(
     from 0deg at 50% 50%,
-    #e6d5f7 0deg,
-    #d4b5f0 90deg,
-    #e0ccf2 180deg,
-    #f0e5f7 270deg,
-    #e6d5f7 360deg
+    #e5e8ff 0deg,
+    #e8ebff 90deg,
+    #e5eaff 180deg,
+    #ebf0ff 270deg,
+    #e5e8ff 360deg
   );
   filter: blur(100px) saturate(1.1);
   opacity: 0.7;
