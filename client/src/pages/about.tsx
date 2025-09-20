@@ -46,7 +46,7 @@ export default function About() {
                     }}
                 ></div>
                 
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+                <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
                     <div className="text-left" style={{paddingLeft: '64px'}}>
                         <h1 className="text-5xl lg:text-6xl font-playfair font-bold text-navy mb-6" data-testid="about-title" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
                             About
@@ -57,7 +57,7 @@ export default function About() {
 
             {/* Main Content */}
             <section className="pt-12 pb-4">
-                <div className="px-4 sm:px-6 lg:px-8">
+                <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
                     {/* Photo - floated left with responsive sizing */}
                     <div className="float-left mr-6 mb-4 w-72 h-72 md:w-96 md:h-96">
                         <img 
