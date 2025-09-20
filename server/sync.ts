@@ -1,14 +1,16 @@
 import { db } from "./db";
-import { notion } from "./notion";
+import { notion, getNotionPages } from "./notion";
 import {
     blogPosts,
     compositions,
     recordings,
     media,
+    profile,
     type InsertBlogPost,
     type InsertComposition,
     type InsertRecording,
     type InsertMedia,
+    type InsertProfile,
 } from "@shared/schema";
 import { eq } from "drizzle-orm";
 import path from "path";
@@ -867,11 +869,97 @@ export async function syncMedia() {
 }
 
 /**
+ * Sync About page content from Notion
+ */
+export async function syncAboutPage() {
+    if (!notion) {
+        throw new Error("Notion client not available");
+    }
+
+    console.log("Syncing About page from Notion...");
+
+    try {
+        // Get all child pages from the main Notion page
+        const childPages = await getNotionPages();
+        
+        // Find the About page
+        const aboutPage = childPages.find(page => 
+            page.title.toLowerCase() === "about" || 
+            page.title.toLowerCase().includes("about")
+        );
+        
+        if (!aboutPage) {
+            console.log("About page not found in Notion");
+            return;
+        }
+        
+        console.log(`Found About page: ${aboutPage.title} (${aboutPage.id})`);
+        
+        // Get the page content
+        const blocks = await notion.blocks.children.list({
+            block_id: aboutPage.id,
+            page_size: 100,
+        });
+        
+        // Extract text content from blocks
+        let bioContent = "";
+        const contentBlocks = [];
+        
+        for (const block of blocks.results) {
+            if (!("type" in block)) continue;
+            
+            if (block.type === "paragraph") {
+                const paragraphText = richTextToHtml(block.paragraph?.rich_text || []);
+                if (paragraphText.trim()) {
+                    contentBlocks.push(paragraphText);
+                }
+            }
+        }
+        
+        // Join paragraphs with double newlines to preserve paragraph breaks
+        bioContent = contentBlocks.join("\n\n");
+        
+        // For now, use the hardcoded profile data but with the synced bio
+        const profileData: InsertProfile = {
+            name: "David S. Lefkowitz",
+            title: "Composer, Professor of Music Composition & Theory",
+            institution: "UCLA Herb Alpert School of Music",
+            bio: bioContent || "Bio content not available",
+            bio_short: "",
+            photo_url: "/api/media-cache/profile-photo.jpg",
+            email: "david@lefkowitz.me",
+            cv_url: null,
+        };
+        
+        // Insert or update the profile
+        await db
+            .insert(profile)
+            .values({
+                ...profileData,
+                id: aboutPage.id,
+            })
+            .onConflictDoUpdate({
+                target: profile.id,
+                set: {
+                    ...profileData,
+                    updated_at: new Date(),
+                },
+            });
+        
+        console.log("✓ Synced About page content");
+    } catch (error) {
+        console.error("Error syncing About page:", error);
+        throw error;
+    }
+}
+
+/**
  * Sync all data from Notion to local database
  */
 export async function syncAllData() {
     console.log("Starting full data sync from Notion...");
 
+    await syncAboutPage();
     await syncBlogPosts();
     await syncCompositions();
     await syncRecordings();
