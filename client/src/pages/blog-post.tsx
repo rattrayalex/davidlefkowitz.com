@@ -132,10 +132,10 @@ export default function BlogPostPage() {
                     <div className="prose prose-lg max-w-none">
                         {/* Excerpt or Special Comment */}
                         <div className="text-gray-700 mb-6 p-6 border border-gray-300 rounded-xl border-l-4 border-purple" data-testid="post-excerpt" style={{backgroundColor: '#e5e5ff', fontFamily: 'Times, "Times New Roman", Palatino, serif', fontSize: '21px', lineHeight: '1.43'}}>
-                            <div>
-                                <span style={{fontSize: '31.5px', fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>&ldquo;</span>
+                            <div style={{lineHeight: '1.43'}}>
+                                <span style={{fontSize: '31.5px', fontFamily: 'Times, "Times New Roman", Palatino, serif', lineHeight: '0.91', verticalAlign: 'baseline'}}>&ldquo;</span>
                                 <span dangerouslySetInnerHTML={{__html: (post.comment && post.comment.trim() ? post.comment : post.excerpt) || ''}} />
-                                <span style={{fontSize: '31.5px', fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>&rdquo;</span>
+                                <span style={{fontSize: '31.5px', fontFamily: 'Times, "Times New Roman", Palatino, serif', lineHeight: '0.91', verticalAlign: 'baseline'}}>&rdquo;</span>
                             </div>
                         </div>
 
