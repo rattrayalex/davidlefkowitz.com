@@ -60,6 +60,19 @@ export const contactFormSchema = z.object({
 export type ContactForm = z.infer<typeof contactFormSchema>;
 
 // Database tables for mirroring Notion data
+export const profile = pgTable("profile", {
+  id: varchar("id").primaryKey(), // Use Notion page ID
+  name: text("name").notNull(),
+  title: text("title"),
+  institution: text("institution"),
+  bio: text("bio").notNull(),
+  bio_short: text("bio_short"),
+  photo_url: text("photo_url"),
+  email: text("email"),
+  cv_url: text("cv_url"),
+  last_synced: timestamp("last_synced").defaultNow(),
+  updated_at: timestamp("updated_at").defaultNow(),
+});
 export const blogPosts = pgTable("blog_posts", {
   id: varchar("id").primaryKey(), // Use Notion page ID
   title: text("title").notNull(),
@@ -192,7 +205,15 @@ export const insertUserSchema = createInsertSchema(users).pick({
   password: true,
 });
 
+export const insertProfileSchema = createInsertSchema(profile).omit({
+  id: true,
+  last_synced: true,
+  updated_at: true,
+});
+
 // Export types
+export type ProfileData = typeof profile.$inferSelect;
+export type InsertProfile = z.infer<typeof insertProfileSchema>;
 export type BlogPost = typeof blogPosts.$inferSelect;
 export type InsertBlogPost = z.infer<typeof insertBlogPostSchema>;
 export type Composition = typeof compositions.$inferSelect;
