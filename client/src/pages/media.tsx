@@ -408,11 +408,11 @@ export default function MediaPage() {
 
             {/* Reviews Section - integrated into main scroll */}
             <div ref={reviewsRef} className="px-4 py-6" style={{backgroundColor: '#e5e5ff'}}>
-                <div className="max-w-4xl mx-auto">
+                <div className="max-w-3xl mx-auto">
                     {reviewsData?.reviews ? (
                         <div className="space-y-8">
                             {reviewsData.reviews.map((review: string, index: number) => (
-                                <div key={index} className="p-6 border border-gray-300 rounded-xl border-l-4 border-purple shadow-lg" style={{backgroundColor: '#e5e5ff'}}>
+                                <div key={index} className="p-6 border border-gray-300 rounded-xl border-l-4 border-purple shadow-lg" style={{backgroundColor: 'white'}}>
                                     <p className="text-lg leading-relaxed text-gray-800" style={{ fontFamily: 'Times, "Times New Roman", Palatino, serif' }}>
                                         {review}
                                     </p>
