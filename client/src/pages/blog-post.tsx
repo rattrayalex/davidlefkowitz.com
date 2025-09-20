@@ -132,13 +132,11 @@ export default function BlogPostPage() {
 
                     {/* Title */}
                     <h1 
-                        className={`text-4xl lg:text-5xl font-playfair font-bold text-navy ${
-                            post.slug === 'Chaconne_and_Triple_Fugue' ? 'pr-56' : 'pr-80'
-                        } ${post.title.toLowerCase().includes('an explainer') ? 'italic' : ''}`} 
+                        className={`text-4xl lg:text-5xl font-playfair font-bold text-navy pr-56 ${post.title.toLowerCase().includes('an explainer') ? 'italic' : ''}`} 
                         data-testid="post-title" 
                         style={{
                             fontFamily: 'Times, "Times New Roman", Palatino, serif',
-                            lineHeight: post.slug === 'Chaconne_and_Triple_Fugue' ? '1.25' : undefined
+                            lineHeight: '1.25'
                         }}>
                         {post.title}
                     </h1>
