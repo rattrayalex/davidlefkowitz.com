@@ -133,9 +133,9 @@ export default function BlogPostPage() {
                         {/* Excerpt or Special Comment */}
                         <div className="text-gray-700 mb-6 p-6 border border-gray-300 rounded-xl border-l-4 border-purple" data-testid="post-excerpt" style={{backgroundColor: '#e5e5ff', fontFamily: 'Times, "Times New Roman", Palatino, serif', fontSize: '21px', lineHeight: '1.43'}}>
                             <div>
-                                <span style={{fontSize: '31.5px', fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>"</span>
+                                <span style={{fontSize: '31.5px', fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>&ldquo;</span>
                                 <span dangerouslySetInnerHTML={{__html: (post.comment && post.comment.trim() ? post.comment : post.excerpt) || ''}} />
-                                <span style={{fontSize: '31.5px', fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>"</span>
+                                <span style={{fontSize: '31.5px', fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>&rdquo;</span>
                             </div>
                         </div>
 
