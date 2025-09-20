@@ -59,7 +59,7 @@ export default function FYC() {
                 {/* Album cover image - positioned absolute on the right, aligned with title */}
                 <div className="absolute right-0 top-0 z-10" style={{ width: '320px', height: '380px' }}>
                     <img 
-                        src="/api/media-cache/recording_26c3907b_2ee6_81cb_9edf_f38464971746_97444b41.jpg"
+                        src="/api/media-cache/recording_26c3907b_2ee6_81cb_9edf_f38464971746_e818c4a1.jpg"
                         alt="Preludes and Fugues Album Cover"
                         className="w-full h-full object-cover rounded-lg shadow-lg"
                     />
