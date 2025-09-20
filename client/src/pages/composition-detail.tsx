@@ -475,20 +475,36 @@ export default function CompositionDetail() {
                                         lineHeight: '1.2'
                                     }}
                                 >
-                                    {composition.slug === 'Green_Mountains' ? (
-                                        // Special formatting for Green Mountains, Now Black - same style as About page bio
-                                        (() => {
-                                            // Split by multiple spaces/line breaks to get the paragraphs
-                                            const paragraphs = composition.program_note
-                                                .split(/\n\s+/)
+                                    {(() => {
+                                        // Apply paragraph formatting to all program notes
+                                        // First try to split by multiple spaces/line breaks to get distinct paragraphs
+                                        const paragraphs = composition.program_note
+                                            .split(/\n\s+/)
+                                            .map(p => p.trim())
+                                            .filter(p => p.length > 0);
+                                        
+                                        // If that only gives us one paragraph, try splitting by double newlines
+                                        if (paragraphs.length === 1) {
+                                            const altParagraphs = composition.program_note
+                                                .split(/\n\n/)
                                                 .map(p => p.trim())
                                                 .filter(p => p.length > 0);
                                             
+                                            if (altParagraphs.length > 1) {
+                                                return altParagraphs.map((paragraph: string, index: number) => (
+                                                    <p key={index} className="mb-2" style={{textIndent: '36px'}} dangerouslySetInnerHTML={{__html: paragraph}} />
+                                                ));
+                                            }
+                                        }
+                                        
+                                        // If we have multiple paragraphs, format them with indent and spacing
+                                        if (paragraphs.length > 1) {
                                             return paragraphs.map((paragraph: string, index: number) => (
                                                 <p key={index} className="mb-2" style={{textIndent: '36px'}} dangerouslySetInnerHTML={{__html: paragraph}} />
                                             ));
-                                        })()
-                                    ) : (() => {
+                                        }
+                                        
+                                        // Otherwise, keep the original formatting logic for single paragraph or table content
                                         const lines = composition.program_note.split('\n');
                                         const elements: JSX.Element[] = [];
                                         let inTable = false;
