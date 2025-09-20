@@ -3,7 +3,7 @@ import { createServer, type Server } from "http";
 import { notion } from "./notion";
 import { contactFormSchema, blogPosts, compositions, recordings, media, contacts, profile, type BlogPost, type Composition, type Recording, type Media } from "@shared/schema";
 import { db } from "./db";
-import { eq, desc, asc, sql, lt, gt } from "drizzle-orm";
+import { eq, desc, asc, sql, lt, gt, and } from "drizzle-orm";
 import { syncBlogPosts, syncCompositions, syncRecordings, syncMedia, syncAboutPage } from "./sync";
 import { getMediaPageReviews } from "./notion";
 import { ObjectStorageService } from "./objectStorage";
@@ -415,6 +415,77 @@ Lefkowitz's compositions have been released on more than twenty commercial recor
         } catch (error) {
             console.error("Error fetching blog post:", error);
             res.status(500).json({ error: "Failed to fetch blog post" });
+        }
+    });
+
+    // Get navigation info for a blog post (previous and next posts)
+    app.get("/api/blog-posts/:id/navigation", async (req, res) => {
+        try {
+            const { id } = req.params;
+            
+            // Get the current post first to know its date
+            let currentPostData = await db
+                .select()
+                .from(blogPosts)
+                .where(eq(blogPosts.id, id))
+                .limit(1);
+
+            // If not found by ID and it doesn't look like a UUID, try by slug
+            if (currentPostData.length === 0 && !id.match(/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i)) {
+                currentPostData = await db
+                    .select()
+                    .from(blogPosts)
+                    .where(eq(blogPosts.slug, id))
+                    .limit(1);
+            }
+
+            if (currentPostData.length === 0) {
+                return res.status(404).json({ error: "Post not found" });
+            }
+
+            const currentPost = currentPostData[0];
+
+            // Get previous post (older - earlier date)
+            const previousPost = await db
+                .select({
+                    id: blogPosts.id,
+                    slug: blogPosts.slug,
+                    title: blogPosts.title
+                })
+                .from(blogPosts)
+                .where(
+                    and(
+                        eq(blogPosts.published, true),
+                        lt(blogPosts.published_date, currentPost.published_date)
+                    )
+                )
+                .orderBy(desc(blogPosts.published_date))
+                .limit(1);
+
+            // Get next post (newer - later date)
+            const nextPost = await db
+                .select({
+                    id: blogPosts.id,
+                    slug: blogPosts.slug,
+                    title: blogPosts.title
+                })
+                .from(blogPosts)
+                .where(
+                    and(
+                        eq(blogPosts.published, true),
+                        gt(blogPosts.published_date, currentPost.published_date)
+                    )
+                )
+                .orderBy(blogPosts.published_date)
+                .limit(1);
+
+            res.json({
+                previous: previousPost[0] || null,
+                next: nextPost[0] || null
+            });
+        } catch (error) {
+            console.error("Error fetching blog post navigation:", error);
+            res.status(500).json({ error: "Failed to fetch blog post navigation" });
         }
     });
 
