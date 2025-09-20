@@ -318,7 +318,7 @@ export default function Compositions() {
                                     <Link 
                                         key={composition.id}
                                         href={detailUrl}
-                                        className="block max-w-[850px]"
+                                        className="block max-w-[1100px]"
                                     >
                                 <div 
                                     className="border border-purple rounded-lg p-2 hover:shadow-lg transition-shadow duration-300 cursor-pointer flex items-center gap-4 flex-wrap bg-white"
