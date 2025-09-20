@@ -485,7 +485,7 @@ export default function CompositionDetail() {
                                                 .filter(p => p.length > 0);
                                             
                                             return paragraphs.map((paragraph: string, index: number) => (
-                                                <p key={index} className="mb-4" style={{textIndent: '36px'}} dangerouslySetInnerHTML={{__html: paragraph}} />
+                                                <p key={index} className="mb-2" style={{textIndent: '36px'}} dangerouslySetInnerHTML={{__html: paragraph}} />
                                             ));
                                         })()
                                     ) : (() => {
