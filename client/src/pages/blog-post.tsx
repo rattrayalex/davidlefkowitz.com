@@ -31,7 +31,7 @@ export default function BlogPostPage() {
     if (error || !post) {
         return (
             <div className="min-h-screen" style={{backgroundColor: '#e5e5ff'}}>
-                <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+                <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
                     <div className="text-center">
                         <h1 className="text-3xl font-playfair font-bold text-navy mb-4" data-testid="post-not-found-title">
                             Post Not Found
@@ -70,7 +70,7 @@ export default function BlogPostPage() {
                     }}
                 ></div>
                 
-                <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+                <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
                     {/* Back to Blog Link */}
                     <div className="mb-8">
                         <Link href="/blog">
@@ -128,7 +128,7 @@ export default function BlogPostPage() {
 
             {/* Content */}
             <section className="pt-3 pb-8">
-                <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="prose prose-lg max-w-none">
                         {/* Excerpt or Special Comment */}
                         <div className="text-gray-700 mb-6 p-6 border border-gray-300 rounded-xl border-l-4 border-purple" data-testid="post-excerpt" style={{backgroundColor: '#e5e5ff', fontFamily: 'Times, "Times New Roman", Palatino, serif', fontSize: '21px', lineHeight: '1.43'}}>
