@@ -191,7 +191,7 @@ export default function BlogPostPage() {
                                         className="mb-1"
                                         style={{
                                             fontFamily: 'Times, "Times New Roman", Palatino, serif',
-                                            fontWeight: '590',
+                                            fontWeight: '500',
                                             textIndent: '36px'
                                         }}
                                         dangerouslySetInnerHTML={{__html: paragraph}}
