@@ -327,7 +327,7 @@ export default function Compositions() {
                                 <div 
                                     className={`border border-purple rounded-lg p-2 hover:shadow-lg transition-shadow duration-300 cursor-pointer flex items-center gap-4 flex-wrap bg-white ${
                                         composition.title.includes("(Sur-)Real (Cine-)Music I") 
-                                            ? "w-fit pr-4" 
+                                            ? "w-fit pr-3" 
                                             : ""
                                     }`}
                                     data-testid={`composition-${composition.id}`}
