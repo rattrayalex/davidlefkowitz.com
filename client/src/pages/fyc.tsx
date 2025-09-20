@@ -5,6 +5,16 @@ import { Skeleton } from "@/components/ui/skeleton";
 export default function FYC() {
     const [streamingLinks, setStreamingLinks] = useState<{ [key: string]: string }>({});
     const [isLoading, setIsLoading] = useState(true);
+    const [gradientIndex, setGradientIndex] = useState(0);
+    
+    // Define gradient variations based on #e5e5ff
+    const gradients = [
+        'linear-gradient(135deg, #e5e5ff 0%, #d5d5ff 50%, #f0e5ff 100%)',
+        'linear-gradient(135deg, #f0e5ff 0%, #e5e5ff 50%, #d0d5ff 100%)',
+        'linear-gradient(135deg, #d5d5ff 0%, #e5e5ff 50%, #e5f0ff 100%)',
+        'linear-gradient(135deg, #e5f0ff 0%, #e5e5ff 50%, #f5e5ff 100%)',
+        'linear-gradient(135deg, #e5e5ff 0%, #f0e5ff 50%, #e5d5ff 100%)',
+    ];
     
     useEffect(() => {
         // Set the browser window title for this page
@@ -14,6 +24,15 @@ export default function FYC() {
         return () => {
             document.title = "David S. Lefkowitz";
         };
+    }, []);
+    
+    useEffect(() => {
+        // Animate gradient changes
+        const interval = setInterval(() => {
+            setGradientIndex((prevIndex) => (prevIndex + 1) % gradients.length);
+        }, 3000); // Change every 3 seconds
+        
+        return () => clearInterval(interval);
     }, []);
 
     useEffect(() => {
@@ -48,7 +67,12 @@ export default function FYC() {
     }, []);
 
     return (
-        <div>
+        <div 
+            className="min-h-screen transition-all duration-1000 ease-in-out"
+            style={{
+                background: gradients[gradientIndex],
+            }}
+        >
             <div className="max-w-5xl mx-auto p-6">
                 <div className="relative">
                 {/* Header */}
