@@ -76,16 +76,17 @@
   width: 100%;
   position: relative;
   overflow: hidden;
+  background: #e5e5ff;
   background: linear-gradient(
     135deg,
     #e5e5ff 0%,
-    #d5d5ff 25%,
-    #f0e5ff 50%,
-    #e5f0ff 75%,
+    #e5e5ff 40%,
+    #ebebff 50%,
+    #e5e5ff 60%,
     #e5e5ff 100%
   );
-  background-size: 400% 400%;
-  animation: gradientShift 8s ease infinite;
+  background-size: 200% 200%;
+  animation: gradientShift 10s ease infinite;
 }
 
 .fyc-animated-background::before {
