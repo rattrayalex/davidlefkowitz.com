@@ -326,6 +326,13 @@ export default function MediaPage() {
                 </div>
             </section>
 
+            {/* Permission text - permanently displayed */}
+            <div className="text-center py-4" style={{backgroundColor: '#e5e5ff'}}>
+                <p className="italic text-gray-700" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
+                    (Contact David S. Lefkowitz for permission to use photos)
+                </p>
+            </div>
+
             {/* Media Gallery with Snap Scroll */}
             <section className="relative" ref={photosRef}>
 
@@ -340,15 +347,6 @@ export default function MediaPage() {
                             display: none;
                         }
                     `}</style>
-                    
-                    {/* Permission text above first photo */}
-                    {mediaItems.length > 0 && (
-                        <div className="text-center pt-4 pb-2">
-                            <p className="italic text-gray-700" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
-                                (Contact David S. Lefkowitz for permission to use photos)
-                            </p>
-                        </div>
-                    )}
                     
                     {mediaItems.length === 0 ? (
                         <div className="h-screen flex items-center justify-center">
