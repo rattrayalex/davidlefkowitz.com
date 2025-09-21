@@ -82,31 +82,29 @@ export default function BlogPostPage() {
                 
                 <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
                     {/* Navigation Links at Top */}
-                    <div className="mb-8 flex items-center justify-between">
+                    <div className="mb-8 flex items-center gap-6">
                         <Link href="/blog">
                             <a className="inline-flex items-center text-purple hover:text-purple-700 font-medium transition-colors duration-200" data-testid="back-to-blog-link">
                                 <ArrowLeft className="mr-2 h-4 w-4" />
                                 Back to Blog
                             </a>
                         </Link>
-                        <div className="flex items-center gap-6">
-                            {navigation?.previous && (
-                                <Link href={`/blog/${navigation.previous.slug || navigation.previous.id}`}>
-                                    <a className="inline-flex items-center text-purple hover:text-purple-700 font-medium transition-colors duration-200" data-testid="previous-post-link">
-                                        <ChevronLeft className="mr-1 h-4 w-4" />
-                                        Previous Blogpost
-                                    </a>
-                                </Link>
-                            )}
-                            {navigation?.next && (
-                                <Link href={`/blog/${navigation.next.slug || navigation.next.id}`}>
-                                    <a className="inline-flex items-center text-purple hover:text-purple-700 font-medium transition-colors duration-200" data-testid="next-post-link">
-                                        Next Blogpost
-                                        <ChevronRight className="ml-1 h-4 w-4" />
-                                    </a>
-                                </Link>
-                            )}
-                        </div>
+                        {navigation?.previous && (
+                            <Link href={`/blog/${navigation.previous.slug || navigation.previous.id}`}>
+                                <a className="inline-flex items-center text-purple hover:text-purple-700 font-medium transition-colors duration-200" data-testid="previous-post-link">
+                                    <ChevronLeft className="mr-1 h-4 w-4" />
+                                    Previous Blogpost
+                                </a>
+                            </Link>
+                        )}
+                        {navigation?.next && (
+                            <Link href={`/blog/${navigation.next.slug || navigation.next.id}`}>
+                                <a className="inline-flex items-center text-purple hover:text-purple-700 font-medium transition-colors duration-200" data-testid="next-post-link">
+                                    Next Blogpost
+                                    <ChevronRight className="ml-1 h-4 w-4" />
+                                </a>
+                            </Link>
+                        )}
                     </div>
 
                     {/* Post Meta */}
@@ -215,31 +213,27 @@ export default function BlogPostPage() {
 
                     {/* Navigation */}
                     <div className="mt-12 pt-8 border-t border-gray-200">
-                        <div className="flex items-center justify-between">
-                            {navigation?.previous ? (
+                        <div className="flex items-center gap-6">
+                            <Link href="/blog">
+                                <a className="inline-flex items-center text-purple hover:text-purple-700 font-medium text-lg transition-colors duration-200" data-testid="back-to-blog-bottom">
+                                    Back to All Posts
+                                </a>
+                            </Link>
+                            {navigation?.previous && (
                                 <Link href={`/blog/${navigation.previous.slug || navigation.previous.id}`}>
                                     <a className="inline-flex items-center text-purple hover:text-purple-700 font-medium text-lg transition-colors duration-200" data-testid="previous-post-link-bottom">
                                         <ChevronLeft className="mr-1 h-5 w-5" />
                                         Previous Blogpost
                                     </a>
                                 </Link>
-                            ) : (
-                                <div></div>
                             )}
-                            <Link href="/blog">
-                                <a className="inline-flex items-center text-purple hover:text-purple-700 font-medium text-lg transition-colors duration-200" data-testid="back-to-blog-bottom">
-                                    Back to All Posts
-                                </a>
-                            </Link>
-                            {navigation?.next ? (
+                            {navigation?.next && (
                                 <Link href={`/blog/${navigation.next.slug || navigation.next.id}`}>
                                     <a className="inline-flex items-center text-purple hover:text-purple-700 font-medium text-lg transition-colors duration-200" data-testid="next-post-link-bottom">
                                         Next Blogpost
                                         <ChevronRight className="ml-1 h-5 w-5" />
                                     </a>
                                 </Link>
-                            ) : (
-                                <div></div>
                             )}
                         </div>
                     </div>
