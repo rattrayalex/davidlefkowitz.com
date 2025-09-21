@@ -88,7 +88,7 @@ export default function Contact() {
                                         <h3 className="text-xl font-semibold text-navy mb-1" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>Office Location</h3>
                                         <p className="text-xl text-gray-700" data-testid="contact-address" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
                                             208 Ostin Music Building B, <br />UCLA Herb Alpert School of Music<br />
-                                            Los Angeles, CA
+                                            Los Angeles, CA  90095-1616
                                         </p>
                                     </div>
                                 </div>
