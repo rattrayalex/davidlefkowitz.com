@@ -418,15 +418,32 @@ export default function MediaPage() {
                 <div className="max-w-3xl mx-auto">
                     {reviewsData?.reviews ? (
                         <div className="space-y-8">
-                            {reviewsData.reviews.map((review: string, index: number) => (
-                                <div key={index} className="p-6 border border-gray-300 rounded-xl border-l-4 border-purple shadow-lg" style={{backgroundColor: 'white'}}>
-                                    <p className="text-lg leading-relaxed text-gray-800" style={{ fontFamily: 'Times, "Times New Roman", Palatino, serif' }}>
-                                        <span style={{fontSize: '31.5px', fontFamily: 'Times, "Times New Roman", Palatino, serif', lineHeight: '0.91', verticalAlign: 'baseline'}}>&ldquo;</span>
-                                        {review}
-                                        <span style={{fontSize: '31.5px', fontFamily: 'Times, "Times New Roman", Palatino, serif', lineHeight: '0.91', verticalAlign: 'baseline'}}>&rdquo;</span>
-                                    </p>
-                                </div>
-                            ))}
+                            {reviewsData.reviews.map((review: string, index: number) => {
+                                // Split the review text to replace quotation marks
+                                const parts = review.split(/(")/g);
+                                let quoteCount = 0;
+                                
+                                return (
+                                    <div key={index} className="p-6 border border-gray-300 rounded-xl border-l-4 border-purple shadow-lg" style={{backgroundColor: 'white'}}>
+                                        <p className="text-lg leading-relaxed text-gray-800" style={{ fontFamily: 'Times, "Times New Roman", Palatino, serif' }}>
+                                            {parts.map((part, i) => {
+                                                if (part === '"') {
+                                                    quoteCount++;
+                                                    // Odd quotes are opening, even are closing
+                                                    const isOpening = quoteCount % 2 === 1;
+                                                    return (
+                                                        <span key={i} style={{fontSize: '31.5px', fontFamily: 'Times, "Times New Roman", Palatino, serif', lineHeight: '0.91', verticalAlign: 'baseline'}}>
+                                                            {isOpening ? '\u201C' : '\u201D'}
+                                                        </span>
+                                                    );
+                                                } else {
+                                                    return part;
+                                                }
+                                            })}
+                                        </p>
+                                    </div>
+                                );
+                            })}
                         </div>
                     ) : (
                         <div className="text-center">
