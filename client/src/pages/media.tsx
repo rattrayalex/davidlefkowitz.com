@@ -421,7 +421,9 @@ export default function MediaPage() {
                             {reviewsData.reviews.map((review: string, index: number) => (
                                 <div key={index} className="p-6 border border-gray-300 rounded-xl border-l-4 border-purple shadow-lg" style={{backgroundColor: 'white'}}>
                                     <p className="text-lg leading-relaxed text-gray-800" style={{ fontFamily: 'Times, "Times New Roman", Palatino, serif' }}>
+                                        <span style={{fontSize: '31.5px', fontFamily: 'Times, "Times New Roman", Palatino, serif', lineHeight: '0.91', verticalAlign: 'baseline'}}>&ldquo;</span>
                                         {review}
+                                        <span style={{fontSize: '31.5px', fontFamily: 'Times, "Times New Roman", Palatino, serif', lineHeight: '0.91', verticalAlign: 'baseline'}}>&rdquo;</span>
                                     </p>
                                 </div>
                             ))}
