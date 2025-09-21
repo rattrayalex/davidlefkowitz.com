@@ -48,7 +48,7 @@ export default function Blog() {
             </section>
 
             {/* Blog Posts */}
-            <section className="pt-12 pb-4">
+            <section className="pt-32 pb-4">
                 <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
                     {posts.length === 0 ? (
                         <div className="text-center py-12">
