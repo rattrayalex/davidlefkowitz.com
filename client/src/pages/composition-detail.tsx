@@ -185,11 +185,11 @@ export default function CompositionDetail() {
                                         
                                         return (
                                             <div className="w-48">
-                                                <h2 className="text-lg text-navy mb-2 whitespace-nowrap" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
+                                                <h2 className="text-lg text-navy mb-2 whitespace-nowrap" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif', lineHeight: '1.0'}}>
                                                     <span className="font-semibold">
                                                         {validRecordings.length > 1 ? 'Recordings' : 'Recording'}
                                                     </span>{' '}
-                                                    <span className="font-normal" style={{fontSize: '1rem', lineHeight: '1.0'}}>
+                                                    <span className="font-normal" style={{fontSize: '1rem'}}>
                                                         (click on image{validRecordings.length > 1 ? 's' : ''}<br />for information and links)
                                                     </span>
                                                 </h2>
@@ -333,11 +333,11 @@ export default function CompositionDetail() {
                                         
                                         return (
                                             <div className="w-48">
-                                                <h2 className="text-lg text-navy mb-2 whitespace-nowrap" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
+                                                <h2 className="text-lg text-navy mb-2 whitespace-nowrap" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif', lineHeight: '1.0'}}>
                                                     <span className="font-semibold">
                                                         {validRecordings.length > 1 ? 'Recordings' : 'Recording'}
                                                     </span>{' '}
-                                                    <span className="font-normal" style={{fontSize: '1rem', lineHeight: '1.0'}}>
+                                                    <span className="font-normal" style={{fontSize: '1rem'}}>
                                                         (click on image{validRecordings.length > 1 ? 's' : ''}<br />for information and links)
                                                     </span>
                                                 </h2>
