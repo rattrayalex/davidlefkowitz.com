@@ -185,7 +185,7 @@ export default function CompositionDetail() {
                                         
                                         return (
                                             <div className="w-48">
-                                                <h2 className="text-lg text-navy mb-2 whitespace-nowrap" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif', lineHeight: '1.0'}}>
+                                                <h2 className="text-lg text-navy mb-2 whitespace-nowrap" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif', lineHeight: '1.2'}}>
                                                     <span className="font-semibold">
                                                         {validRecordings.length > 1 ? 'Recordings' : 'Recording'}
                                                     </span>{' '}
@@ -206,7 +206,7 @@ export default function CompositionDetail() {
                                                                     />
                                                                 </a>
                                                             </Link>
-                                                            <p className="text-gray-600 mt-2 break-words" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif', fontSize: '1rem'}}>
+                                                            <p className="text-gray-600 mt-2 break-words" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif', fontSize: '1rem', lineHeight: '1.2'}}>
                                                                 {recordingInfo.title}
                                                             </p>
                                                         </div>
@@ -333,7 +333,7 @@ export default function CompositionDetail() {
                                         
                                         return (
                                             <div className="w-48">
-                                                <h2 className="text-lg text-navy mb-2 whitespace-nowrap" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif', lineHeight: '1.0'}}>
+                                                <h2 className="text-lg text-navy mb-2 whitespace-nowrap" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif', lineHeight: '1.2'}}>
                                                     <span className="font-semibold">
                                                         {validRecordings.length > 1 ? 'Recordings' : 'Recording'}
                                                     </span>{' '}
@@ -354,7 +354,7 @@ export default function CompositionDetail() {
                                                                     />
                                                                 </a>
                                                             </Link>
-                                                            <p className="text-gray-600 mt-2 break-words" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif', fontSize: '1rem'}}>
+                                                            <p className="text-gray-600 mt-2 break-words" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif', fontSize: '1rem', lineHeight: '1.2'}}>
                                                                 {recordingInfo.title}
                                                             </p>
                                                         </div>
