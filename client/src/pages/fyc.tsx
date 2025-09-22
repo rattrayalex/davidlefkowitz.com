@@ -38,7 +38,7 @@ export default function FYC() {
     }, []);
 
     return (
-        <div className="min-h-screen">
+        <div className="min-h-screen" style={{backgroundColor: '#e5e5ff'}}>
             <div className="max-w-5xl mx-auto p-6">
                 <div className="relative">
                 {/* Header */}
