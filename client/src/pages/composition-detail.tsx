@@ -206,7 +206,7 @@ export default function CompositionDetail() {
                                                                     />
                                                                 </a>
                                                             </Link>
-                                                            <p className="text-gray-600 mt-2 break-words" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif', fontSize: '1rem', lineHeight: '1.2'}}>
+                                                            <p className="text-gray-600 mt-2 break-words" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif', fontSize: '1rem', lineHeight: '1.3'}}>
                                                                 {recordingInfo.title}
                                                             </p>
                                                         </div>
@@ -354,7 +354,7 @@ export default function CompositionDetail() {
                                                                     />
                                                                 </a>
                                                             </Link>
-                                                            <p className="text-gray-600 mt-2 break-words" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif', fontSize: '1rem', lineHeight: '1.2'}}>
+                                                            <p className="text-gray-600 mt-2 break-words" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif', fontSize: '1rem', lineHeight: '1.3'}}>
                                                                 {recordingInfo.title}
                                                             </p>
                                                         </div>
