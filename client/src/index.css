@@ -86,7 +86,6 @@
   position: relative;
   overflow: hidden;
   background: #e5e5ff;
-  /* TEMPORARILY DISABLED - linear gradient
   background: linear-gradient(
     135deg,
     #e5e5ff 0%,
@@ -97,7 +96,6 @@
   );
   background-size: 300% 300%;
   animation: gradientShift 8s ease infinite;
-  */
 }
 
 .fyc-animated-background::before {
