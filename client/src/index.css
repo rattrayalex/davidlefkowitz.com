@@ -101,7 +101,6 @@
 }
 
 .fyc-animated-background::before {
-  /* TEMPORARILY DISABLED - conic gradient
   content: "";
   position: absolute;
   inset: -50%;
@@ -119,7 +118,6 @@
   animation: spinGradient 60s linear infinite;
   will-change: transform;
   pointer-events: none;
-  */
 }
 
 /* Ensure content is above the animated background */
