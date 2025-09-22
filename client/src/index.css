@@ -86,6 +86,7 @@
   position: relative;
   overflow: hidden;
   background: #e5e5ff;
+  /* TEMPORARILY DISABLED - linear gradient
   background: linear-gradient(
     135deg,
     #e5e5ff 0%,
@@ -96,12 +97,14 @@
   );
   background-size: 300% 300%;
   animation: gradientShift 8s ease infinite;
+  */
 }
 
 .fyc-animated-background::before {
+  /* TEMPORARILY DISABLED - conic gradient
   content: "";
   position: absolute;
-  inset: -50%; /* extend beyond viewport to hide edges */
+  inset: -50%;
   z-index: 0;
   background: conic-gradient(
     from 0deg at 50% 50%,
@@ -116,6 +119,7 @@
   animation: spinGradient 60s linear infinite;
   will-change: transform;
   pointer-events: none;
+  */
 }
 
 /* Ensure content is above the animated background */
