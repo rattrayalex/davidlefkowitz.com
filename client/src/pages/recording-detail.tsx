@@ -4,7 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Link } from "wouter";
 import LoadingSpinner from "@/components/ui/loading-spinner";
 import { Recording } from "@shared/schema";
-import { ChevronLeft, ExternalLink } from "lucide-react";
+import { ChevronLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 export default function RecordingDetail() {
@@ -104,7 +104,6 @@ export default function RecordingDetail() {
                                             style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}
                                         >
                                             {recording.label}
-                                            <ExternalLink className="ml-1 h-3 w-3" />
                                         </a>
                                     ) : (
                                         <p className="text-gray-700" data-testid="recording-detail-label" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
