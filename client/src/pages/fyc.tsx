@@ -59,7 +59,7 @@ export default function FYC() {
                 <div>
                     
                     {/* Listen Here Section with vertical links - extends full width behind image */}
-                    <div className="rounded-lg px-6 pt-6" style={{ marginBottom: 0, paddingBottom: 0, minHeight: '24px' }}>
+                    <div className="rounded-lg px-6 pt-6" style={{ marginBottom: 0, paddingBottom: 0, minHeight: '36px' }}>
                         <button 
                             className="text-3xl font-semibold mb-4 hover:opacity-90 transition-opacity" 
                             style={{
