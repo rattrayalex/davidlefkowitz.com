@@ -127,7 +127,25 @@ function richTextToHtml(richTextArray: any[], addLineBreaks = false): string {
     
     // For composition fields with multiple links, add line breaks between them
     if (addLineBreaks) {
-        return processedText.join("<br />");
+        // Filter out segments that are just punctuation/whitespace when adding line breaks
+        // This prevents extra line breaks from comma separators in Notion
+        const contentSegments = [];
+        for (let i = 0; i < processedText.length; i++) {
+            const segment = processedText[i];
+            const plainText = richTextArray[i].plain_text || "";
+            
+            // Skip segments that are just commas or whitespace when between links
+            if (plainText.trim() === "," || plainText.trim() === "") {
+                continue;
+            }
+            
+            // Check if this is a link element or has meaningful content
+            if (segment.includes("<a ") || plainText.trim().length > 1) {
+                contentSegments.push(segment);
+            }
+        }
+        
+        return contentSegments.join("<br />");
     }
     
     return processedText.join(""); // Join without line breaks for normal text
