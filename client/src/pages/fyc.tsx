@@ -58,7 +58,7 @@ export default function FYC() {
                 </div>
                 
                 {/* Sixth Media Photo - positioned at same level as Album Cover */}
-                <div className="block lg:absolute lg:right-0 mb-6 lg:mb-0" style={{ top: '520px', paddingLeft: '24px' }}>
+                <div className="block lg:absolute lg:right-0 mb-6 lg:mb-0" style={{ top: '520px' }}>
                     <div className="w-full lg:w-auto" style={{ maxWidth: '320px', height: '380px' }}>
                         <img 
                             src="/photos/6. Lefkowitz-31.jpg"
@@ -118,7 +118,7 @@ export default function FYC() {
                             Album Details
                         </h2>
                         
-                        <div className="space-y-2 lg:pr-80">
+                        <div className="space-y-2">
                             <div style={{fontFamily: 'Times, "Times New Roman", Palatino, serif', fontSize: '1.125rem'}}>
                                 <span className="font-semibold">Composition:</span> {' '}
                                 <a href={streamingLinks["Preludes and Fugues Book I"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
