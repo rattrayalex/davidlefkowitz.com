@@ -158,46 +158,6 @@ export default function FYC() {
                             </div>
                             
                             <div style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
-                                <span className="font-semibold">Recorded:</span> 20-24 May, 2023
-                            </div>
-                            
-                            <div style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
-                                <span className="font-semibold">Venue:</span> UCLA Ostin Recording Studio
-                            </div>
-                            
-                            <div style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
-                                <span className="font-semibold">Recording Engineers:</span> {' '}
-                                <a href={streamingLinks["Stuart Schenk"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
-                                    Stuart Schenk
-                                </a>
-                                {", "}
-                                <a href={streamingLinks["Benjamin Maas"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
-                                    Benjamin Maas
-                                </a>
-                                {", Matheus Maciel"}
-                            </div>
-                            
-                            <div style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
-                                <span className="font-semibold">Editing and Mastering Engineers:</span> {' '}
-                                <a href={streamingLinks["Steve Kaplan"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
-                                    Steve Kaplan
-                                </a>
-                                {", Sergey Parfenov, with David S. Lefkowitz"}
-                            </div>
-                            
-                            <div style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
-                                <span className="font-semibold">Label:</span> {' '}
-                                <a href={streamingLinks["Bridge Records"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
-                                    Bridge Records
-                                </a>
-                                {", 200 Clinton Ave, New Rochelle, NY  10801"}
-                            </div>
-                            
-                            <div style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
-                                <span className="font-semibold">Cover Image:</span> Casey Siu
-                            </div>
-                            
-                            <div style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
                                 <span className="font-semibold">Music Publisher:</span> {' '}
                                 <a href={streamingLinks["Floating Point Music"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
                                     Floating Point Music
