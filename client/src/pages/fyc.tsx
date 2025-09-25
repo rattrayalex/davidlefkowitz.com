@@ -74,43 +74,6 @@ export default function FYC() {
                         >
                             LISTEN NOW
                         </button>
-                        <div style={{fontFamily: 'Times, "Times New Roman", Palatino, serif', paddingLeft: '24px'}}>
-                            <div style={{ marginBottom: '4px' }}>
-                                <a href={streamingLinks["Amazon Music"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
-                                    Amazon Music
-                                </a>
-                            </div>
-                            <div style={{ marginBottom: '4px' }}>
-                                <a href={streamingLinks["Apple Music"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
-                                    Apple Music
-                                </a>
-                            </div>
-                            <div style={{ marginBottom: '4px' }}>
-                                <a href={streamingLinks["Deezer"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
-                                    Deezer
-                                </a>
-                            </div>
-                            <div style={{ marginBottom: '4px' }}>
-                                <a href={streamingLinks["Pandora"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
-                                    Pandora
-                                </a>
-                            </div>
-                            <div style={{ marginBottom: '4px' }}>
-                                <a href={streamingLinks["Spotify"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
-                                    Spotify
-                                </a>
-                            </div>
-                            <div style={{ marginBottom: '4px' }}>
-                                <a href={streamingLinks["Tidal"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
-                                    Tidal
-                                </a>
-                            </div>
-                            <div style={{ marginBottom: '4px' }}>
-                                <a href={streamingLinks["YouTube"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
-                                    YouTube
-                                </a>
-                            </div>
-                        </div>
                     </div>
                 </div>
 
@@ -124,9 +87,6 @@ export default function FYC() {
                                 <p className="text-muted-foreground mt-1" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
                                     Preludes and Fugues Books I & II, David S. Lefkowitz, Composer, on <em>David S. Lefkowitz, Preludes and Fugues</em> (Bridge Records 9594A/B)
                                 </p>
-                                <p className="text-sm text-muted-foreground mt-1" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
-                                    Submission ID # 1073957
-                                </p>
                             </div>
 
                             <div className="border-l-4 border-primary pl-4">
@@ -136,12 +96,6 @@ export default function FYC() {
                                 <p className="text-muted-foreground mt-1" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
                                     <em>David S. Lefkowitz, Preludes and Fugues</em> (Bridge Records 9594A/B)
                                 </p>
-                                <p className="text-sm text-muted-foreground" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
-                                    David S. Lefkowitz producer, David Starobin and Becky Starobin, Executive Producers
-                                </p>
-                                <p className="text-sm text-muted-foreground mt-1" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
-                                    Submission ID # 1074384
-                                </p>
                             </div>
 
                             <div className="border-l-4 border-primary pl-4">
@@ -150,9 +104,6 @@ export default function FYC() {
                                 </h3>
                                 <p className="text-muted-foreground mt-1" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
                                     David S. Lefkowitz, producer of <em>David S. Lefkowitz, Preludes and Fugues</em> (Bridge Records 9594A/B)
-                                </p>
-                                <p className="text-sm text-muted-foreground mt-1" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
-                                    Submission ID # 74403
                                 </p>
                             </div>
                         </div>
