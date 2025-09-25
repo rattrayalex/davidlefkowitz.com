@@ -38,22 +38,8 @@ export default function FYC() {
     }, []);
 
     return (
-        <div 
-            className="min-h-screen animated-gradient"
-            style={{
-                background: 'linear-gradient(-45deg, #e5e5ff, #f0e5ff, #e5e5ff, #e5f0ff)',
-                backgroundSize: '400% 400%',
-                animation: 'gradient 15s ease infinite'
-            }}
-        >
-            <style>{`
-                @keyframes gradient {
-                    0% { background-position: 0% 50%; }
-                    50% { background-position: 100% 50%; }
-                    100% { background-position: 0% 50%; }
-                }
-            `}</style>
-            <div className="max-w-5xl mx-auto p-6">
+        <div className="py-6">
+            <div className="max-w-5xl mx-auto px-6">
                 <div className="relative">
                 {/* Header */}
                 <h1 className="text-4xl font-bold text-left mb-4" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif', paddingLeft: '24px'}}>
