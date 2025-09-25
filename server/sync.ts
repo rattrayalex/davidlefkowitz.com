@@ -115,33 +115,47 @@ function richTextToHtml(richTextArray: any[], addLineBreaks = false): string {
             
             // Check if this is a line break separator
             if (plainText.includes("\n")) {
-                // Split by newlines
-                const lines = plainText.split("\n");
-                
-                for (let j = 0; j < lines.length; j++) {
-                    const line = lines[j];
-                    
-                    if (line.trim()) {
-                        // If we're starting a new line after content, save current composition
-                        if (j > 0 && currentComposition.length > 0) {
-                            compositions.push({
-                                blocks: currentComposition,
-                                href: lastHref
-                            });
-                            currentComposition = [];
-                            lastHref = null;
-                            hasStartedComposition = false;
-                        }
-                        
-                        // Add this line as a block
-                        currentComposition.push({
-                            ...textBlock,
-                            plain_text: line
+                // If this block contains ONLY newlines (no other text), it's a separator
+                if (plainText.trim() === "") {
+                    // This is a pure newline separator - save current composition if any
+                    if (currentComposition.length > 0) {
+                        compositions.push({
+                            blocks: currentComposition,
+                            href: lastHref
                         });
+                        currentComposition = [];
+                        lastHref = null;
+                        hasStartedComposition = false;
+                    }
+                } else {
+                    // This block has text AND newlines - split by newlines
+                    const lines = plainText.split("\n");
+                    
+                    for (let j = 0; j < lines.length; j++) {
+                        const line = lines[j];
                         
-                        if (href) {
-                            lastHref = href;
-                            hasStartedComposition = true;
+                        if (line.trim()) {
+                            // If we're starting a new line after content, save current composition
+                            if (j > 0 && currentComposition.length > 0) {
+                                compositions.push({
+                                    blocks: currentComposition,
+                                    href: lastHref
+                                });
+                                currentComposition = [];
+                                lastHref = null;
+                                hasStartedComposition = false;
+                            }
+                            
+                            // Add this line as a block
+                            currentComposition.push({
+                                ...textBlock,
+                                plain_text: line
+                            });
+                            
+                            if (href) {
+                                lastHref = href;
+                                hasStartedComposition = true;
+                            }
                         }
                     }
                 }
@@ -890,6 +904,14 @@ export async function syncRecordings() {
                 return null;
             };
 
+            // Debug logging for Harp's Desire issue
+            if (recordingTitle === "Harp's Desire" || recordingTitle.includes("Harp")) {
+                console.log("===== DEBUG: HARP'S DESIRE COMPOSITION DATA =====");
+                console.log("Recording title:", recordingTitle);
+                console.log("Composition rich_text from Notion:", JSON.stringify(compositionProperty?.rich_text, null, 2));
+                console.log("===== END DEBUG =====");
+            }
+            
             const recording: InsertRecording = {
                 title: recordingTitle,
                 slug: slug,
