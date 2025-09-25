@@ -58,12 +58,13 @@ export default function FYC() {
                 </div>
                 
                 {/* Sixth Media Photo - positioned at same level as Album Cover */}
-                <div className="block lg:absolute lg:right-0 mb-6 lg:mb-0" style={{ top: '400px', paddingLeft: '24px' }}>
-                    <div className="w-full lg:w-auto" style={{ maxWidth: '320px', height: '380px' }}>
+                <div className="block lg:absolute mb-6 lg:mb-0" style={{ right: '-24px', top: '400px' }}>
+                    <div className="w-full lg:w-auto" style={{ width: '344px', maxWidth: '344px', height: '380px' }}>
                         <img 
                             src="/photos/6. Lefkowitz-31.jpg"
                             alt="David S. Lefkowitz"
                             className="w-full h-full object-cover rounded-lg shadow-lg"
+                            style={{ marginLeft: '24px', width: '320px' }}
                         />
                     </div>
                 </div>
