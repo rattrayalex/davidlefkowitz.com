@@ -18,8 +18,8 @@ export default function ListenNow() {
                     <img 
                         src="/api/media-cache/recording_26c3907b_2ee6_81cb_9edf_f38464971746_14045b66.jpg"
                         alt="David S. Lefkowitz Preludes and Fugues Album Cover"
-                        className="rounded-lg shadow-lg"
-                        style={{ width: '400px', height: 'auto' }}
+                        className="shadow-lg"
+                        style={{ width: '400px', height: 'auto', borderRadius: '8px' }}
                     />
                 </div>
                 
