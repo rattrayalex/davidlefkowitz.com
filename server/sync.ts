@@ -1164,7 +1164,7 @@ export async function syncLogos() {
                 
                 if (imageUrl) {
                     // Download and cache the logo
-                    const cachedUrl = await downloadImage(imageUrl, `logo_${currentPlatform.toLowerCase().replace(/\s+/g, '-')}`);
+                    const cachedUrl = await downloadImage(imageUrl, `logo_${currentPlatform.toLowerCase().replace(/\s+/g, '_')}`);
                     if (cachedUrl) {
                         logos.push({
                             platform: currentPlatform,

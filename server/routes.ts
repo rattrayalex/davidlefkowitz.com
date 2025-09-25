@@ -971,6 +971,10 @@ Lefkowitz's compositions have been released on more than twenty commercial recor
     let syncMutex = (global as any).syncMutex || { isSyncing: false };
     (global as any).syncMutex = syncMutex;
     
+    // Store logo paths from last sync  
+    let cachedLogoPaths = (global as any).cachedLogoPaths || [];
+    (global as any).cachedLogoPaths = cachedLogoPaths;
+    
     // Individual sync endpoints
     app.get("/api/sync-recordings", requireAdminAuth, async (req, res) => {
         if (syncMutex.isSyncing) {
@@ -1054,6 +1058,11 @@ Lefkowitz's compositions have been released on more than twenty commercial recor
         syncMutex.isSyncing = true;
         try {
             const logos = await syncLogos();
+            // Store the logo paths globally for the API endpoint
+            (global as any).cachedLogoPaths = logos.map(logo => ({
+                platform: logo.platform,
+                path: logo.url
+            }));
             res.json({ success: true, message: "Logos sync completed", logos });
         } catch (error) {
             console.error("Error during logos sync:", error);
@@ -1066,17 +1075,29 @@ Lefkowitz's compositions have been released on more than twenty commercial recor
     // Get synced logos
     app.get("/api/logos", async (req, res) => {
         try {
-            // Store the logo paths after sync
-            const logoData = [
-                { platform: "Amazon Music", path: "/api/media-cache/logo_amazon_music_a07cc601.svg" },
-                { platform: "Apple Music", path: "/api/media-cache/logo_apple_music_babd0930.svg" },
-                { platform: "Deezer", path: "/api/media-cache/logo_deezer_e1cbbf00.svg" },
-                { platform: "Pandora", path: "/api/media-cache/logo_pandora_1257db4c.svg" },
-                { platform: "Spotify", path: "/api/media-cache/logo_spotify_feafab7a.png" },
-                { platform: "YouTube", path: "/api/media-cache/logo_youtube_c7fa6df0.svg" },
-                { platform: "Tidal", path: "/api/media-cache/logo_tidal_7f12bf01.svg" },
+            // Check global cache first
+            const cachedLogos = (global as any).cachedLogoPaths;
+            if (cachedLogos && cachedLogos.length > 0) {
+                console.log(`Returning ${cachedLogos.length} logos from global cache`);
+                res.json(cachedLogos);
+                return;
+            }
+            
+            // If no cached logos, use fallback to the last known good logos
+            // These are the logos that were successfully synced to object storage
+            const fallbackLogos = [
+                { platform: "Amazon Music", path: "/api/media-cache/logo_amazon_music_4f338123.svg" },
+                { platform: "Apple Music", path: "/api/media-cache/logo_apple_music_f4160d4b.svg" },
+                { platform: "Deezer", path: "/api/media-cache/logo_deezer_9e3e94a9.svg" },
+                { platform: "BeMusic", path: "/api/media-cache/logo_bemusic_83b92a23.jpg" },
+                { platform: "Pandora", path: "/api/media-cache/logo_pandora_029eded6.svg" },
+                { platform: "Spotify", path: "/api/media-cache/logo_spotify_440f0ed1.png" },
+                { platform: "YouTube", path: "/api/media-cache/logo_youtube_b4518530.svg" },
+                { platform: "Tidal", path: "/api/media-cache/logo_tidal_4acfa5bf.svg" }
             ];
-            res.json(logoData);
+            
+            console.log(`Returning ${fallbackLogos.length} logos from fallback`);
+            res.json(fallbackLogos);
         } catch (error) {
             console.error("Error fetching logos:", error);
             res.status(500).json({ error: "Failed to fetch logos" });
