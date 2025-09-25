@@ -191,7 +191,7 @@ export default function FYC() {
                         lineHeight: '1.75',
                         backgroundColor: 'white',
                         border: '2px solid #c8b6db',
-                        padding: '1rem',
+                        padding: '2rem',
                         borderRadius: '8px'
                     }}>
                         <p className="mb-4">
