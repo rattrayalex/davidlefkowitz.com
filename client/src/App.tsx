@@ -25,7 +25,7 @@ function Router() {
   return (
     <div className={`min-h-screen flex flex-col ${isFYCPage ? 'fyc-animated-background' : ''}`}>
       <Header />
-      <main>
+      <main className="flex-1">
         <Switch>
           <Route path="/" component={Home} />
           <Route path="/about" component={About} />
