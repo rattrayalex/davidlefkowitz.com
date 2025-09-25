@@ -101,47 +101,87 @@ async function downloadImage(imageUrl: string, mediaId: string): Promise<string>
 function richTextToHtml(richTextArray: any[], addLineBreaks = false): string {
     if (!richTextArray || !Array.isArray(richTextArray)) return "";
     
-    // For composition fields with multiple links, group text blocks by href
+    // For composition fields with multiple links, group by contiguous href
     if (addLineBreaks) {
-        const compositionGroups = [];
-        let currentGroup = [];
-        let currentHref = null;
+        const compositions = [];
+        let currentComposition = [];
+        let lastHref = null;
+        let hasStartedComposition = false;
         
         for (let i = 0; i < richTextArray.length; i++) {
             const textBlock = richTextArray[i];
             const plainText = textBlock.plain_text || "";
             const href = textBlock.href;
             
-            // Skip pure whitespace or comma separators
-            if (plainText.trim() === "," || plainText.trim() === "") {
-                continue;
-            }
-            
-            // If this block has the same href as the previous one, it's part of the same composition
-            if (href && href === currentHref) {
-                currentGroup.push(textBlock);
-            } else {
-                // Start a new group
-                if (currentGroup.length > 0) {
-                    compositionGroups.push(currentGroup);
+            // Check if this is a line break separator
+            if (plainText.includes("\n")) {
+                // Split by newlines
+                const lines = plainText.split("\n");
+                
+                for (let j = 0; j < lines.length; j++) {
+                    const line = lines[j];
+                    
+                    if (line.trim()) {
+                        // If we're starting a new line after content, save current composition
+                        if (j > 0 && currentComposition.length > 0) {
+                            compositions.push({
+                                blocks: currentComposition,
+                                href: lastHref
+                            });
+                            currentComposition = [];
+                            lastHref = null;
+                            hasStartedComposition = false;
+                        }
+                        
+                        // Add this line as a block
+                        currentComposition.push({
+                            ...textBlock,
+                            plain_text: line
+                        });
+                        
+                        if (href) {
+                            lastHref = href;
+                            hasStartedComposition = true;
+                        }
+                    }
                 }
-                currentGroup = [textBlock];
-                currentHref = href;
+            } else if (plainText.trim()) {
+                // Regular text block - check if it's a new composition
+                if (href && href !== lastHref && hasStartedComposition) {
+                    // New href detected, save current composition and start new one
+                    if (currentComposition.length > 0) {
+                        compositions.push({
+                            blocks: currentComposition,
+                            href: lastHref
+                        });
+                        currentComposition = [];
+                    }
+                    lastHref = href;
+                    hasStartedComposition = true;
+                    currentComposition.push(textBlock);
+                } else {
+                    // Continue current composition
+                    currentComposition.push(textBlock);
+                    if (href) {
+                        lastHref = href;
+                        hasStartedComposition = true;
+                    }
+                }
             }
         }
         
-        // Add the last group
-        if (currentGroup.length > 0) {
-            compositionGroups.push(currentGroup);
+        // Don't forget the last composition
+        if (currentComposition.length > 0) {
+            compositions.push({
+                blocks: currentComposition,
+                href: lastHref
+            });
         }
         
-        // Process each group as a single composition
-        const processedGroups = compositionGroups.map(group => {
-            // Check if this group has an href (is a link)
-            const groupHref = group[0].href;
-            
-            // Process all text blocks in this group
-            const groupContent = group.map(textBlock => {
+        // Process each composition
+        const processedCompositions = compositions.map(composition => {
+            // Build the content with formatting
+            const content = composition.blocks.map(textBlock => {
                 let text = textBlock.plain_text || "";
                 
                 // Handle formatting
@@ -158,17 +198,17 @@ function richTextToHtml(richTextArray: any[], addLineBreaks = false): string {
                 }
                 
                 return text;
-            }).join(""); // Join without line breaks within a composition
+            }).join(""); // Join without spaces within a composition
             
-            // Wrap the entire group content in a single link tag if it has an href
-            if (groupHref) {
-                return `<a href="${groupHref}" target="_blank" rel="noopener noreferrer" class="text-purple hover:text-purple-700 underline">${groupContent}</a>`;
+            // Wrap in a single anchor tag if there's an href
+            if (composition.href) {
+                return `<a href="${composition.href}" target="_blank" rel="noopener noreferrer" class="text-purple hover:text-purple-700 underline">${content}</a>`;
             } else {
-                return groupContent;
+                return content;
             }
         });
         
-        return processedGroups.join("<br />");
+        return processedCompositions.join("<br />");
     }
     
     // Normal processing for non-composition fields
