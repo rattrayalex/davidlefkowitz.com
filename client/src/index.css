@@ -89,9 +89,9 @@
   background: linear-gradient(
     135deg,
     #e5e5ff 0%,
-    #a0a8ff 25%,
-    #8090ff 50%,
-    #b0c0ff 75%,
+    #7080ff 25%,
+    #5060ff 50%,
+    #90a0ff 75%,
     #e5e5ff 100%
   );
   background-size: 300% 300%;
@@ -105,15 +105,15 @@
   z-index: 0;
   background: conic-gradient(
     from 0deg at 50% 50%,
-    #c5c8ff 0deg,
-    #d8dbff 90deg,
-    #b5baff 180deg,
-    #dbf0ff 270deg,
-    #c5c8ff 360deg
+    #9598ff 0deg,
+    #b8bbff 90deg,
+    #7580ff 180deg,
+    #a0d0ff 270deg,
+    #9598ff 360deg
   );
-  filter: blur(60px) saturate(1.3);
-  opacity: 0.85;
-  animation: spinGradient 60s linear infinite;
+  filter: blur(40px) saturate(1.5);
+  opacity: 0.95;
+  animation: spinGradient 30s linear infinite;
   will-change: transform;
   pointer-events: none;
 }
