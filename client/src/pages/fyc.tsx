@@ -195,7 +195,7 @@ export default function FYC() {
                 </div>
 
                 {/* Album Description */}
-                <div className="container mx-auto px-4 pt-4">
+                <div className="container mx-auto px-4" style={{ paddingTop: '40px' }}>
                     <div style={{
                         fontFamily: 'Times, "Times New Roman", Palatino, serif', 
                         fontSize: '1.25rem', 
