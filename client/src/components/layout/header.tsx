@@ -23,7 +23,7 @@ export default function Header() {
         return false;
     };
 
-    const isFYCPage = location === '/fyc';
+    const isFYCPage = location === '/fyc' || location === '/fyc/listennow';
     
     return (
         <header className={`relative ${isFYCPage ? '' : 'shadow-sm'}`} style={{backgroundColor: isFYCPage ? 'transparent' : '#e5e5ff'}}>

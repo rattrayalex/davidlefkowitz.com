@@ -16,11 +16,12 @@ import BlogPost from "@/pages/blog-post";
 import Media from "@/pages/media";
 import Contact from "@/pages/contact";
 import FYC from "@/pages/fyc";
+import ListenNow from "@/pages/listennow";
 import NotFound from "@/pages/not-found";
 
 function Router() {
   const [location] = useLocation();
-  const isFYCPage = location === '/fyc';
+  const isFYCPage = location === '/fyc' || location === '/fyc/listennow';
   
   return (
     <div className={`min-h-screen flex flex-col ${isFYCPage ? 'fyc-animated-background' : ''}`}>
@@ -38,6 +39,7 @@ function Router() {
           <Route path="/media" component={Media} />
           <Route path="/contact" component={Contact} />
           <Route path="/fyc" component={FYC} />
+          <Route path="/fyc/listennow" component={ListenNow} />
           <Route component={NotFound} />
         </Switch>
       </main>

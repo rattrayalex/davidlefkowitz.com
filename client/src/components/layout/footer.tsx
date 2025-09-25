@@ -20,7 +20,7 @@ export default function Footer() {
         return true;
     });
 
-    const isFYCPage = location === '/fyc';
+    const isFYCPage = location === '/fyc' || location === '/fyc/listennow';
     
     return (
         <footer className="text-navy py-12" style={{backgroundColor: isFYCPage ? 'transparent' : '#e5e5ff'}}>
