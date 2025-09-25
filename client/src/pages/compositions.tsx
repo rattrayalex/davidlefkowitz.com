@@ -112,7 +112,7 @@ export default function Compositions() {
         if (location !== newPath) {
             setLocation(newPath);
         }
-    }, [selectedCategory, titleSearch, instrumentSearch, sortMode, location, setLocation]);
+    }, [selectedCategory, titleSearch, instrumentSearch, sortMode]);
     
     const { data: compositions = [], isLoading } = useQuery<CompositionResponse[]>({
         queryKey: ["/api/compositions"],
