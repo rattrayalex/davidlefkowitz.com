@@ -84,27 +84,18 @@ export default function FYC() {
                                 <h3 className="font-bold text-lg" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
                                     CONTEMPORARY CLASSICAL COMPOSITION
                                 </h3>
-                                <p className="text-muted-foreground mt-1" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
-                                    Preludes and Fugues Books I & II, David S. Lefkowitz, Composer, on <em>David S. Lefkowitz, Preludes and Fugues</em> (Bridge Records 9594A/B)
-                                </p>
                             </div>
 
                             <div className="border-l-4 border-primary pl-4">
                                 <h3 className="font-bold text-lg" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
                                     CLASSICAL COMPENDIUM
                                 </h3>
-                                <p className="text-muted-foreground mt-1" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
-                                    <em>David S. Lefkowitz, Preludes and Fugues</em> (Bridge Records 9594A/B)
-                                </p>
                             </div>
 
                             <div className="border-l-4 border-primary pl-4">
                                 <h3 className="font-bold text-lg" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
                                     PRODUCER OF THE YEAR, CLASSICAL
                                 </h3>
-                                <p className="text-muted-foreground mt-1" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
-                                    David S. Lefkowitz, producer of <em>David S. Lefkowitz, Preludes and Fugues</em> (Bridge Records 9594A/B)
-                                </p>
                             </div>
                         </div>
                 </div>
@@ -117,7 +108,6 @@ export default function FYC() {
                         
                         <div className="space-y-2">
                             <div style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
-                                <span className="font-semibold">Composition:</span> {' '}
                                 <a href={streamingLinks["Preludes and Fugues Book I"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
                                     Preludes and Fugues Book I
                                 </a>
@@ -128,14 +118,12 @@ export default function FYC() {
                             </div>
                             
                             <div style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
-                                <span className="font-semibold">Composer:</span> {' '}
                                 <a href={streamingLinks["David S. Lefkowitz"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
                                     David S. Lefkowitz
                                 </a>
                             </div>
                             
                             <div style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
-                                <span className="font-semibold">Performers:</span> {' '}
                                 <a href={streamingLinks["Steven Beck"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
                                     Steven Beck
                                 </a>
@@ -147,85 +135,27 @@ export default function FYC() {
                                 <a href={streamingLinks["Michael Mizrahi"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
                                     Michael Mizrahi
                                 </a>
-                                {", & "}
+                                {", "}
                                 <a href={streamingLinks["Mika Sasaki"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
                                     Mika Sasaki
                                 </a>
-                                {", pianos, with "}
+                            </div>
+                            
+                            <div style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
                                 <a href={streamingLinks["Cantor Marcus Feldman"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
                                     Cantor Marcus Feldman
                                 </a>
-                                {", baritone, and "}
-                                <a href={streamingLinks["David S. Lefkowitz"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
-                                    David S. Lefkowitz
-                                </a>
-                                {", whistling, and additional piano and extended piano techniques."}
                             </div>
                             
                             <div style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
-                                <span className="font-semibold">Duration:</span> 2:48:27
-                            </div>
-                            
-                            <div style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
-                                <span className="font-semibold">Recorded:</span> 20-24 May, 2023
-                            </div>
-                            
-                            <div style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
-                                <span className="font-semibold">Venue:</span> UCLA Ostin Recording Studio
-                            </div>
-                            
-                            <div style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
-                                <span className="font-semibold">Recording Engineers:</span> {' '}
-                                <a href={streamingLinks["Stuart Schenk"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
-                                    Stuart Schenk
-                                </a>
-                                {", "}
-                                <a href={streamingLinks["Benjamin Maas"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
-                                    Benjamin Maas
-                                </a>
-                                {", Matheus Maciel"}
-                            </div>
-                            
-                            <div style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
-                                <span className="font-semibold">Editing and Mastering Engineers:</span> {' '}
-                                <a href={streamingLinks["Steve Kaplan"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
-                                    Steve Kaplan
-                                </a>
-                                {", Sergey Parfenov, with David S. Lefkowitz"}
-                            </div>
-                            
-                            <div style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
-                                <span className="font-semibold">Label:</span> {' '}
-                                <a href={streamingLinks["Bridge Records"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
-                                    Bridge Records
-                                </a>
-                                {", 200 Clinton Ave, New Rochelle, NY  10801"}
-                            </div>
-                            
-                            <div style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
-                                <span className="font-semibold">Cover Image:</span> Casey Siu
-                            </div>
-                            
-                            <div style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
-                                <span className="font-semibold">Music Publisher:</span> {' '}
                                 <a href={streamingLinks["Floating Point Music"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
                                     Floating Point Music
                                 </a>
                             </div>
                             
                             <div style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
-                                <span className="font-semibold">David S. Lefkowitz Representation:</span> {' '}
                                 <a href={streamingLinks["Genevieve Spielberg Artists"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
                                     Genevieve Spielberg Artists
-                                </a>
-                            </div>
-                            
-                            <div style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
-                                <a href="https://myemail.constantcontact.com/World-Premiere-Recording-By-Acclaimed-Contemporary-Composer-David-S--Lefkowitz-Preludes-and-Fugues-For-Piano-.html?soid=1103420701115&aid=L6AY6eaeS9M" 
-                                   target="_blank" 
-                                   rel="noopener noreferrer" 
-                                   className="text-primary hover:underline">
-                                    Click for More Information
                                 </a>
                             </div>
                         </div>
