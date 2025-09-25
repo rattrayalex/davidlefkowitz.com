@@ -101,19 +101,8 @@ export default function FYC() {
                             </div>
                     </div>
 
-                    {/* Album Details Section with Photo */}
+                    {/* Album Details Section */}
                     <div className="relative rounded-lg pl-6 pr-6 lg:pr-6 pb-6" style={{ paddingTop: '64px', border: '1px solid red' }}>
-                        {/* Sixth Media Photo - responsive positioning */}
-                        <div className="block lg:absolute lg:right-6 lg:top-16 mb-6 lg:mb-0">
-                            <div className="w-full lg:w-auto mx-auto lg:mx-0" style={{ maxWidth: '320px', height: '380px' }}>
-                                <img 
-                                    src="/photos/6. Lefkowitz-31.jpg"
-                                    alt="David S. Lefkowitz"
-                                    className="w-full h-full object-cover rounded-lg shadow-lg"
-                                />
-                            </div>
-                        </div>
-                        
                         <h2 className="text-2xl font-semibold mb-4" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
                             Album Details
                         </h2>
@@ -189,6 +178,17 @@ export default function FYC() {
                                     (Click for More Information)
                                 </a>
                             </div>
+                        </div>
+                    </div>
+                    
+                    {/* Sixth Media Photo - positioned outside Album Details container */}
+                    <div className="block lg:absolute lg:right-0 lg:top-64 mb-6 lg:mb-0" style={{ paddingTop: '64px' }}>
+                        <div className="w-full lg:w-auto mx-auto lg:mx-0" style={{ maxWidth: '320px', height: '380px' }}>
+                            <img 
+                                src="/photos/6. Lefkowitz-31.jpg"
+                                alt="David S. Lefkowitz"
+                                className="w-full h-full object-cover rounded-lg shadow-lg"
+                            />
                         </div>
                     </div>
                 </div>
