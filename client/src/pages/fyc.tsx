@@ -113,7 +113,7 @@ export default function FYC() {
                     </div>
 
                     {/* Album Details Section */}
-                    <div className="relative rounded-lg pl-6 pr-6 lg:pr-6 pb-6" style={{ paddingTop: '64px', border: '1px solid red' }}>
+                    <div className="relative rounded-lg pl-6 pr-6 lg:pr-6 pb-6" style={{ paddingTop: '64px' }}>
                         <h2 className="text-2xl font-semibold mb-4" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
                             Album Details
                         </h2>
