@@ -23,29 +23,39 @@ export default function ListenNow() {
                     />
                 </div>
                 
-                {/* Streaming Links */}
-                <div className="flex flex-col items-center space-y-4">
-                    <a href={streamingLinks["Amazon Music"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline text-xl" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
-                        Amazon Music
-                    </a>
-                    <a href={streamingLinks["Apple Music"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline text-xl" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
-                        Apple Music
-                    </a>
-                    <a href={streamingLinks["Deezer"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline text-xl" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
-                        Deezer
-                    </a>
-                    <a href={streamingLinks["Pandora"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline text-xl" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
-                        Pandora
-                    </a>
-                    <a href={streamingLinks["Spotify"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline text-xl" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
-                        Spotify
-                    </a>
-                    <a href={streamingLinks["Tidal"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline text-xl" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
-                        Tidal
-                    </a>
-                    <a href={streamingLinks["YouTube"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline text-xl" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
-                        YouTube
-                    </a>
+                {/* Streaming Links Container */}
+                <div className="flex justify-center">
+                    <div style={{
+                        width: '400px',
+                        backgroundColor: 'white',
+                        border: '2px solid #d8b4fe',
+                        borderRadius: '8px',
+                        padding: '30px'
+                    }}>
+                        <div className="flex flex-col items-center space-y-4">
+                            <a href={streamingLinks["Amazon Music"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline text-xl" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
+                                Amazon Music
+                            </a>
+                            <a href={streamingLinks["Apple Music"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline text-xl" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
+                                Apple Music
+                            </a>
+                            <a href={streamingLinks["Deezer"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline text-xl" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
+                                Deezer
+                            </a>
+                            <a href={streamingLinks["Pandora"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline text-xl" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
+                                Pandora
+                            </a>
+                            <a href={streamingLinks["Spotify"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline text-xl" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
+                                Spotify
+                            </a>
+                            <a href={streamingLinks["Tidal"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline text-xl" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
+                                Tidal
+                            </a>
+                            <a href={streamingLinks["YouTube"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline text-xl" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
+                                YouTube
+                            </a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
