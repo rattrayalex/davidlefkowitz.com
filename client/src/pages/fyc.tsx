@@ -81,19 +81,19 @@ export default function FYC() {
                 <div className="rounded-lg px-6 pt-6" style={{ marginBottom: 0, paddingBottom: 0 }}>
                         <div className="space-y-4">
                             <div className="border-l-4 border-primary pl-4">
-                                <h3 className="font-bold" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif', fontSize: '1.375rem', lineHeight: '1.3'}}>
+                                <h3 className="font-bold" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif', fontSize: '1.375rem', lineHeight: '1.4'}}>
                                     CONTEMPORARY CLASSICAL COMPOSITION
                                 </h3>
                             </div>
 
                             <div className="border-l-4 border-primary pl-4">
-                                <h3 className="font-bold" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif', fontSize: '1.375rem', lineHeight: '1.3'}}>
+                                <h3 className="font-bold" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif', fontSize: '1.375rem', lineHeight: '1.4'}}>
                                     CLASSICAL COMPENDIUM
                                 </h3>
                             </div>
 
                             <div className="border-l-4 border-primary pl-4">
-                                <h3 className="font-bold" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif', fontSize: '1.375rem', lineHeight: '1.3'}}>
+                                <h3 className="font-bold" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif', fontSize: '1.375rem', lineHeight: '1.4'}}>
                                     PRODUCER OF THE YEAR, CLASSICAL
                                 </h3>
                             </div>
