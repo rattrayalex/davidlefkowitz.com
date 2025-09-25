@@ -185,9 +185,17 @@ export default function FYC() {
 
                 {/* Album Description */}
                 <div className="container mx-auto px-4 pt-8">
-                    <div style={{fontFamily: 'Times, "Times New Roman", Palatino, serif', fontSize: '1.25rem', lineHeight: '1.75'}}>
+                    <div style={{
+                        fontFamily: 'Times, "Times New Roman", Palatino, serif', 
+                        fontSize: '1.25rem', 
+                        lineHeight: '1.75',
+                        backgroundColor: 'white',
+                        border: '2px solid #c8b6db',
+                        padding: '2rem',
+                        borderRadius: '8px'
+                    }}>
                         <p className="mb-4">
-                            A world premiere recording of works by award-winning contemporary composer David S. Lefkowitz, Preludes and Fugues for Piano features 26 preludes and fugues performed by four leading new music pianists. Lefkowitz's huge musical palette is described as "near-Mahlerian" in this challenging and rewarding cycle that spans three hours. In the words of producer David Starobin, "every once in a while a project comes by which seems so original that I am challenged to re-screw my ears on and such was the case with Lefkowitz's Preludes and Fugues for Piano." The album is now available on Bridge Records (9594A/B) and all leading streaming services. Lefkowitz presents his Preludes and Fugues in two books with Book 1, entitled Expanded Universe, and Book II, Parallel Universes.
+                            A world premiere recording of works by award-winning contemporary composer David S. Lefkowitz, Preludes and Fugues for Piano features 26 preludes and fugues performed by four leading new music pianists. Lefkowitz{'\u2019'}s huge musical palette is described as {'\u201C'}near-Mahlerian{'\u201D'} in this challenging and rewarding cycle that spans three hours. In the words of producer David Starobin, {'\u201C'}every once in a while a project comes by which seems so original that I am challenged to re-screw my ears on and such was the case with Lefkowitz{'\u2019'}s Preludes and Fugues for Piano.{'\u201D'} The album is now available on Bridge Records (9594A/B) and all leading streaming services. Lefkowitz presents his Preludes and Fugues in two books with Book 1, entitled Expanded Universe, and Book II, Parallel Universes.
                         </p>
                         
                         <p className="mb-4">
@@ -199,7 +207,7 @@ export default function FYC() {
                         </p>
                         
                         <p>
-                            Early reviews for the recording include, "an exciting collection….this album is a monumental accomplishment for the genre." In describing the results of his prepared piano, one writer wrote, "the effect is hypnotic—the piano seemingly floats on air and then runs upon the earth as voices converge and then separate."
+                            Early reviews for the recording include, {'\u201C'}an exciting collection….this album is a monumental accomplishment for the genre.{'\u201D'} In describing the results of his prepared piano, one writer wrote, {'\u201C'}the effect is hypnotic—the piano seemingly floats on air and then runs upon the earth as voices converge and then separate.{'\u201D'}
                         </p>
                     </div>
                 </div>
