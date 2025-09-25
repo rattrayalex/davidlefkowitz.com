@@ -1,14 +1,42 @@
 export default function ListenNow() {
     // Same streaming links as on the FYC page
-    const streamingLinks = {
-        "Amazon Music": "https://www.amazon.com/dp/B0F3FMBQVP",
-        "Apple Music": "https://classical.music.apple.com/us/album/1818776381",
-        "Deezer": "https://www.deezer.com/us/album/736897251",
-        "Pandora": "https://www.pandora.com/artist/david-kaplan-mika-sasaki-michael-mizrahi-and-steven-beck/david-s-lefkowitz-preludes-and-fugues-for-piano/ALk9zhjXvZ56VgJ",
-        "Spotify": "https://open.spotify.com/album/1AXDnGNFGtceS4zGvmLn8H",
-        "Tidal": "https://tidal.com/browse/track/427812074/u",
-        "YouTube": "https://youtube.com/playlist?list=PL1WjDUvuhzW9pgsYIJhDD9i374wjGNkKi",
-    };
+    const streamingPlatforms = [
+        {
+            name: "Amazon Music",
+            url: "https://www.amazon.com/dp/B0F3FMBQVP",
+            logo: "/api/logos/amazon-music.png" // Placeholder - will be replaced with Notion logos
+        },
+        {
+            name: "Apple Music", 
+            url: "https://classical.music.apple.com/us/album/1818776381",
+            logo: "/api/logos/apple-music.png"
+        },
+        {
+            name: "Deezer",
+            url: "https://www.deezer.com/us/album/736897251",
+            logo: "/api/logos/deezer.png"
+        },
+        {
+            name: "Pandora",
+            url: "https://www.pandora.com/artist/david-kaplan-mika-sasaki-michael-mizrahi-and-steven-beck/david-s-lefkowitz-preludes-and-fugues-for-piano/ALk9zhjXvZ56VgJ",
+            logo: "/api/logos/pandora.png"
+        },
+        {
+            name: "Spotify",
+            url: "https://open.spotify.com/album/1AXDnGNFGtceS4zGvmLn8H",
+            logo: "/api/logos/spotify.png"
+        },
+        {
+            name: "Tidal",
+            url: "https://tidal.com/browse/track/427812074/u",
+            logo: "/api/logos/tidal.png"
+        },
+        {
+            name: "YouTube",
+            url: "https://youtube.com/playlist?list=PL1WjDUvuhzW9pgsYIJhDD9i374wjGNkKi",
+            logo: "/api/logos/youtube.png"
+        }
+    ];
     
     return (
         <div className="min-h-screen py-8">
@@ -32,28 +60,26 @@ export default function ListenNow() {
                         borderRadius: '8px',
                         padding: '30px'
                     }}>
-                        <div className="flex flex-col items-center space-y-4">
-                            <a href={streamingLinks["Amazon Music"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline text-xl" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
-                                Amazon Music
-                            </a>
-                            <a href={streamingLinks["Apple Music"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline text-xl" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
-                                Apple Music
-                            </a>
-                            <a href={streamingLinks["Deezer"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline text-xl" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
-                                Deezer
-                            </a>
-                            <a href={streamingLinks["Pandora"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline text-xl" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
-                                Pandora
-                            </a>
-                            <a href={streamingLinks["Spotify"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline text-xl" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
-                                Spotify
-                            </a>
-                            <a href={streamingLinks["Tidal"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline text-xl" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
-                                Tidal
-                            </a>
-                            <a href={streamingLinks["YouTube"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline text-xl" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
-                                YouTube
-                            </a>
+                        <div className="grid grid-cols-2 gap-6">
+                            {streamingPlatforms.map((platform) => (
+                                <a 
+                                    key={platform.name}
+                                    href={platform.url} 
+                                    target="_blank" 
+                                    rel="noopener noreferrer" 
+                                    className="flex items-center justify-center p-4 hover:opacity-80 transition-opacity"
+                                    style={{
+                                        backgroundColor: '#f9f9f9',
+                                        borderRadius: '8px',
+                                        minHeight: '80px'
+                                    }}
+                                >
+                                    {/* For now, show platform name as text until logos are available */}
+                                    <span className="text-center text-gray-700" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
+                                        {platform.name}
+                                    </span>
+                                </a>
+                            ))}
                         </div>
                     </div>
                 </div>
