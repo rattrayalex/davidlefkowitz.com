@@ -104,7 +104,7 @@ export default function FYC() {
                     {/* Album Details Section with Photo */}
                     <div className="relative rounded-lg pl-6 pr-6 lg:pr-6 pb-6" style={{ paddingTop: '64px' }}>
                         {/* Sixth Media Photo - responsive positioning */}
-                        <div className="block lg:absolute lg:right-6 lg:top-16 mb-6 lg:mb-0">
+                        <div className="block lg:absolute lg:right-6 lg:top-16 mb-6 lg:mb-0" style={{ border: '1px solid red' }}>
                             <div className="w-full lg:w-auto mx-auto lg:mx-0" style={{ maxWidth: '320px', height: '380px' }}>
                                 <img 
                                     src="/photos/6. Lefkowitz-31.jpg"
