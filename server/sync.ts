@@ -146,9 +146,48 @@ function richTextToHtml(richTextArray: any[], addLineBreaks = false): string {
                     }
                 }
             } else if (plainText.trim()) {
-                // Regular text block - check if it's a new composition
-                if (href && href !== lastHref && hasStartedComposition) {
-                    // New href detected, save current composition and start new one
+                // Check if this looks like the start of a new composition title
+                const looksLikeNewComposition = () => {
+                    if (!hasStartedComposition) return false;
+                    
+                    // Different href is always a new composition
+                    if (href && href !== lastHref) return true;
+                    
+                    // If we have accumulated blocks, check for composition boundaries
+                    if (currentComposition.length > 0) {
+                        const lastBlock = currentComposition[currentComposition.length - 1];
+                        const lastText = lastBlock.plain_text || "";
+                        
+                        // Check if last text ended with common composition title endings
+                        // like closing brackets or parentheses
+                        const endsWithTitlePattern = /[\]\)]$/.test(lastText.trim());
+                        
+                        // Check if current text starts like a new title (capital letter)
+                        const startsLikeTitle = /^[A-Z]/.test(plainText.trim());
+                        
+                        // If last ended with closing bracket/paren AND current starts with capital
+                        // it's likely a new composition
+                        if (endsWithTitlePattern && startsLikeTitle) {
+                            return true;
+                        }
+                        
+                        // Check for specific known patterns that indicate new compositions
+                        // These are common composition title starts
+                        if (plainText.startsWith("With/Without") || 
+                            plainText.startsWith("Ancient Rituals") ||
+                            plainText.startsWith("Before the") ||
+                            plainText.startsWith("Calder")) {
+                            return true;
+                        }
+                    }
+                    
+                    return false;
+                };
+                
+                const isNewComposition = looksLikeNewComposition();
+                
+                if (isNewComposition) {
+                    // Save current composition and start new one
                     if (currentComposition.length > 0) {
                         compositions.push({
                             blocks: currentComposition,
