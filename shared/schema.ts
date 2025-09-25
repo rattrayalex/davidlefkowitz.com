@@ -132,6 +132,19 @@ export const recordings = pgTable("recordings", {
   updated_at: timestamp("updated_at").defaultNow(),
 });
 
+export const aboutContent = pgTable("about_content", {
+  id: varchar("id").primaryKey(), // Use Notion page ID
+  content: text("content").notNull(), // Main about content
+  bio: text("bio").default(""), // Biography section
+  education: text("education").default(""), // Education section
+  awards: text("awards").default(""), // Awards section
+  commissions: text("commissions").default(""), // Commissions section
+  performances: text("performances").default(""), // Notable performances section
+  press: text("press").default(""), // Press quotes section
+  last_synced: timestamp("last_synced").defaultNow(),
+  updated_at: timestamp("updated_at").defaultNow(),
+});
+
 export const media = pgTable("media", {
   id: varchar("id").primaryKey().default(sql`gen_random_uuid()`), // Use UUID for local uploads
   title: text("title").notNull(),
@@ -211,6 +224,12 @@ export const insertProfileSchema = createInsertSchema(profile).omit({
   updated_at: true,
 });
 
+export const insertAboutContentSchema = createInsertSchema(aboutContent).omit({
+  id: true,
+  last_synced: true,
+  updated_at: true,
+});
+
 // Export types
 export type ProfileData = typeof profile.$inferSelect;
 export type InsertProfile = z.infer<typeof insertProfileSchema>;
@@ -226,3 +245,5 @@ export type Contact = typeof contacts.$inferSelect;
 export type InsertContact = z.infer<typeof insertContactSchema>;
 export type InsertUser = z.infer<typeof insertUserSchema>;
 export type User = typeof users.$inferSelect;
+export type AboutContent = typeof aboutContent.$inferSelect;
+export type InsertAboutContent = z.infer<typeof insertAboutContentSchema>;

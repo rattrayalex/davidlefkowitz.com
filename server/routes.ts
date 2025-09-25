@@ -1,7 +1,7 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { notion } from "./notion";
-import { contactFormSchema, blogPosts, compositions, recordings, media, contacts, profile, type BlogPost, type Composition, type Recording, type Media } from "@shared/schema";
+import { contactFormSchema, blogPosts, compositions, recordings, media, contacts, profile, aboutContent, type BlogPost, type Composition, type Recording, type Media } from "@shared/schema";
 import { db } from "./db";
 import { eq, desc, asc, sql, lt, gt, and } from "drizzle-orm";
 import { syncBlogPosts, syncCompositions, syncRecordings, syncMedia, syncAboutPage } from "./sync";
@@ -61,20 +61,20 @@ export async function registerRoutes(app: Express): Promise<Server> {
     // Get profile information
     app.get("/api/profile", async (req, res) => {
         try {
-            // Try to fetch from database first
-            const [profileData] = await db.select().from(profile).limit(1);
+            // Try to fetch from about_content table first
+            const [aboutData] = await db.select().from(aboutContent).limit(1);
             
-            if (profileData) {
-                // Use database data
+            if (aboutData) {
+                // Use about content data
                 const profileResponse = {
-                    name: profileData.name,
-                    title: profileData.title || "Composer, Professor of Music Composition & Theory",
-                    institution: profileData.institution || "UCLA Herb Alpert School of Music",
-                    bio: profileData.bio,
-                    bio_short: profileData.bio_short || "Composer, Theorist, and Professor at UCLA",
-                    photo_url: profileData.photo_url || `/api/media-cache/profile-photo.jpg?v=${Date.now()}`,
-                    email: profileData.email || "lefko at ucla.edu",
-                    cv_url: profileData.cv_url || null
+                    name: "David S. Lefkowitz",
+                    title: "Composer, Professor of Music Composition & Theory",
+                    institution: "UCLA Herb Alpert School of Music",
+                    bio: aboutData.content || aboutData.bio || "Bio content not available",
+                    bio_short: "Composer, Theorist, and Professor at UCLA",
+                    photo_url: `/api/media-cache/profile-photo.jpg?v=${Date.now()}`,
+                    email: "david@lefkowitz.me",
+                    cv_url: null
                 };
                 res.json(profileResponse);
             } else {
@@ -1021,6 +1021,24 @@ Lefkowitz's compositions have been released on more than twenty commercial recor
         } catch (error) {
             console.error("Error during blog posts sync:", error);
             res.status(500).json({ error: "Failed to sync blog posts" });
+        } finally {
+            syncMutex.isSyncing = false;
+        }
+    });
+
+    app.post("/api/sync-about", async (req, res) => {
+        if (syncMutex.isSyncing) {
+            res.json({ success: false, message: "Sync already in progress" });
+            return;
+        }
+        
+        syncMutex.isSyncing = true;
+        try {
+            await syncAboutPage();
+            res.json({ success: true, message: "About page sync completed" });
+        } catch (error) {
+            console.error("Error during about page sync:", error);
+            res.status(500).json({ error: "Failed to sync about page" });
         } finally {
             syncMutex.isSyncing = false;
         }

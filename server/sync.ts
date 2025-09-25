@@ -6,11 +6,13 @@ import {
     recordings,
     media,
     profile,
+    aboutContent,
     type InsertBlogPost,
     type InsertComposition,
     type InsertRecording,
     type InsertMedia,
     type InsertProfile,
+    type InsertAboutContent,
 } from "@shared/schema";
 import { eq } from "drizzle-orm";
 import path from "path";
@@ -758,7 +760,7 @@ export async function syncRecordings() {
                 label_url: labelProperty?.rich_text?.[0]?.href || null,
                 links: richTextToHtml(linksProperty?.rich_text || []),
                 album_cover: cachedAlbumCover,
-                composition: compositionProperty?.rich_text?.map((item: any) => item.plain_text).join("") || "",
+                composition: richTextToHtml(compositionProperty?.rich_text || []),
                 album_track_listing: cachedTrackListings,
             };
 
@@ -919,29 +921,28 @@ export async function syncAboutPage() {
         // Join paragraphs with double newlines to preserve paragraph breaks
         bioContent = contentBlocks.join("\n\n");
         
-        // For now, use the hardcoded profile data but with the synced bio
-        const profileData: InsertProfile = {
-            name: "David S. Lefkowitz",
-            title: "Composer, Professor of Music Composition & Theory",
-            institution: "UCLA Herb Alpert School of Music",
-            bio: bioContent || "Bio content not available",
-            bio_short: "",
-            photo_url: "/api/media-cache/profile-photo.jpg",
-            email: "david@lefkowitz.me",
-            cv_url: null,
+        // Create about content data
+        const aboutContentData: InsertAboutContent = {
+            content: bioContent || "Content not available",
+            bio: bioContent || "", // For now, use the same content as bio
+            education: "", // These can be extracted from specific sections later
+            awards: "",
+            commissions: "",
+            performances: "",
+            press: "",
         };
         
-        // Insert or update the profile
+        // Insert or update the about content
         await db
-            .insert(profile)
+            .insert(aboutContent)
             .values({
-                ...profileData,
+                ...aboutContentData,
                 id: aboutPage.id,
             })
             .onConflictDoUpdate({
-                target: profile.id,
+                target: aboutContent.id,
                 set: {
-                    ...profileData,
+                    ...aboutContentData,
                     updated_at: new Date(),
                 },
             });
