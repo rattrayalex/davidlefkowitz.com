@@ -58,7 +58,7 @@
   --charcoal: hsl(210, 25%, 25%);
 }
 
-/* FYC page animated background - subtle gradient based on #e5e5ff */
+/* FYC page animated background - noticeable gradient based on #e5e5ff */
 @keyframes gradientShift {
   0% { 
     background-position: 0% 50%;
@@ -80,9 +80,9 @@
   background: linear-gradient(
     -45deg,
     #e5e5ff 0%,
-    #ebe8ff 25%,
-    #e8e5ff 50%,
-    #e5e8ff 75%,
+    #d5d0ff 25%,
+    #e5e5ff 50%,
+    #d0d5ff 75%,
     #e5e5ff 100%
   );
   background-size: 400% 400%;
