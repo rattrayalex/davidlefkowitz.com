@@ -58,7 +58,7 @@
   --charcoal: hsl(210, 25%, 25%);
 }
 
-/* FYC page animated background - based on #e5e5ff */
+/* FYC page animated background - subtle gradient based on #e5e5ff */
 @keyframes gradientShift {
   0% { 
     background-position: 0% 50%;
@@ -71,15 +71,6 @@
   }
 }
 
-@keyframes spinGradient {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
-}
-
 .fyc-animated-background {
   min-height: 100vh;
   width: 100%;
@@ -87,35 +78,15 @@
   overflow: hidden;
   background: #e5e5ff;
   background: linear-gradient(
-    135deg,
+    -45deg,
     #e5e5ff 0%,
-    #7080ff 25%,
-    #5060ff 50%,
-    #90a0ff 75%,
+    #ebe8ff 25%,
+    #e8e5ff 50%,
+    #e5e8ff 75%,
     #e5e5ff 100%
   );
-  background-size: 300% 300%;
-  animation: gradientShift 8s ease infinite;
-}
-
-.fyc-animated-background::before {
-  content: "";
-  position: absolute;
-  inset: -50%;
-  z-index: 0;
-  background: conic-gradient(
-    from 0deg at 50% 50%,
-    #9598ff 0deg,
-    #b8bbff 90deg,
-    #7580ff 180deg,
-    #a0d0ff 270deg,
-    #9598ff 360deg
-  );
-  filter: blur(40px) saturate(1.5);
-  opacity: 0.95;
-  animation: spinGradient 30s linear infinite;
-  will-change: transform;
-  pointer-events: none;
+  background-size: 400% 400%;
+  animation: gradientShift 15s ease infinite;
 }
 
 /* Ensure content is above the animated background */
