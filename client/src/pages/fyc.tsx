@@ -60,9 +60,16 @@ export default function FYC() {
                     
                     {/* Listen Here Section with vertical links - extends full width behind image */}
                     <div className="rounded-lg px-6 pt-6" style={{ marginBottom: 0, paddingBottom: 0, minHeight: '280px' }}>
-                        <h2 className="text-2xl font-semibold mb-4" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
-                            LISTEN HERE:
-                        </h2>
+                        <button className="text-2xl font-semibold mb-4" style={{
+                            fontFamily: 'Times, "Times New Roman", Palatino, serif',
+                            backgroundColor: 'white',
+                            border: '2px solid #d8b4fe',
+                            padding: '8px 20px',
+                            borderRadius: '8px',
+                            cursor: 'default'
+                        }}>
+                            LISTEN NOW
+                        </button>
                         <div style={{fontFamily: 'Times, "Times New Roman", Palatino, serif', paddingLeft: '24px'}}>
                             <div style={{ marginBottom: '4px' }}>
                                 <a href={streamingLinks["Amazon Music"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
