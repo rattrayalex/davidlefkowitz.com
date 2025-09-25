@@ -98,10 +98,10 @@ async function downloadImage(imageUrl: string, mediaId: string): Promise<string>
 /**
  * Convert Notion rich text to HTML, preserving links
  */
-function richTextToHtml(richTextArray: any[]): string {
+function richTextToHtml(richTextArray: any[], addLineBreaks = false): string {
     if (!richTextArray || !Array.isArray(richTextArray)) return "";
     
-    return richTextArray.map(textBlock => {
+    const processedText = richTextArray.map(textBlock => {
         let text = textBlock.plain_text || "";
         
         // Handle hyperlinks
@@ -123,7 +123,14 @@ function richTextToHtml(richTextArray: any[]): string {
         }
         
         return text;
-    }).join(""); // Join without line breaks - formatting changes are inline
+    });
+    
+    // For composition fields with multiple links, add line breaks between them
+    if (addLineBreaks) {
+        return processedText.join("<br />");
+    }
+    
+    return processedText.join(""); // Join without line breaks for normal text
 }
 
 /**
@@ -760,7 +767,7 @@ export async function syncRecordings() {
                 label_url: labelProperty?.rich_text?.[0]?.href || null,
                 links: richTextToHtml(linksProperty?.rich_text || []),
                 album_cover: cachedAlbumCover,
-                composition: richTextToHtml(compositionProperty?.rich_text || []).replace(/, /g, '<br />'),
+                composition: richTextToHtml(compositionProperty?.rich_text || [], true),
                 album_track_listing: cachedTrackListings,
             };
 
