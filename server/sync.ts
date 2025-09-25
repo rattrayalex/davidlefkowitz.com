@@ -760,7 +760,7 @@ export async function syncRecordings() {
                 label_url: labelProperty?.rich_text?.[0]?.href || null,
                 links: richTextToHtml(linksProperty?.rich_text || []),
                 album_cover: cachedAlbumCover,
-                composition: richTextToHtml(compositionProperty?.rich_text || []),
+                composition: richTextToHtml(compositionProperty?.rich_text || []).replace(/, /g, '<br />'),
                 album_track_listing: cachedTrackListings,
             };
 
