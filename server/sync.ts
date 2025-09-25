@@ -1129,6 +1129,63 @@ export async function syncAboutPage() {
 }
 
 /**
+ * Sync logo images from Notion Logos page
+ */
+export async function syncLogos() {
+    if (!notion) {
+        throw new Error("Notion client not available");
+    }
+
+    console.log("Syncing logos from Notion...");
+
+    try {
+        // Get the blocks from the Logos page
+        const blocks = await notion.blocks.children.list({
+            block_id: '2793907b-2ee6-80a0-87bb-ee32ad470d62',
+            page_size: 100
+        });
+        
+        let currentPlatform: string | null = null;
+        const logos: { platform: string; url: string }[] = [];
+        
+        for (const block of blocks.results as any[]) {
+            // Check for text blocks (platform names)
+            if (block.type === 'paragraph' && block.paragraph?.rich_text?.length > 0) {
+                currentPlatform = block.paragraph.rich_text[0].plain_text;
+            }
+            // Check for image blocks
+            else if (block.type === 'image' && currentPlatform) {
+                let imageUrl = null;
+                if (block.image?.file?.url) {
+                    imageUrl = block.image.file.url;
+                } else if (block.image?.external?.url) {
+                    imageUrl = block.image.external.url;
+                }
+                
+                if (imageUrl) {
+                    // Download and cache the logo
+                    const cachedUrl = await downloadImage(imageUrl, `logo_${currentPlatform.toLowerCase().replace(/\s+/g, '-')}`);
+                    if (cachedUrl) {
+                        logos.push({
+                            platform: currentPlatform,
+                            url: cachedUrl
+                        });
+                        console.log(`✓ Synced logo for ${currentPlatform}`);
+                    }
+                }
+                currentPlatform = null;
+            }
+        }
+        
+        console.log(`Logos sync completed - synced ${logos.length} logos`);
+        return logos;
+    } catch (error) {
+        console.error("Error syncing logos:", error);
+        throw error;
+    }
+}
+
+/**
  * Sync all data from Notion to local database
  */
 export async function syncAllData() {
@@ -1139,6 +1196,7 @@ export async function syncAllData() {
     await syncCompositions();
     await syncRecordings();
     await syncMedia();
+    await syncLogos();
 
     console.log("Full data sync completed");
 }
