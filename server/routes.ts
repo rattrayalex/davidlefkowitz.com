@@ -4,7 +4,7 @@ import { notion } from "./notion";
 import { contactFormSchema, blogPosts, compositions, recordings, media, contacts, profile, aboutContent, type BlogPost, type Composition, type Recording, type Media } from "@shared/schema";
 import { db } from "./db";
 import { eq, desc, asc, sql, lt, gt, and } from "drizzle-orm";
-import { syncBlogPosts, syncCompositions, syncRecordings, syncMedia, syncAboutPage } from "./sync";
+import { syncBlogPosts, syncCompositions, syncRecordings, syncMedia, syncAboutPage, syncLogos } from "./sync";
 import { getMediaPageReviews } from "./notion";
 import { ObjectStorageService } from "./objectStorage";
 import { z } from "zod";
@@ -1041,6 +1041,46 @@ Lefkowitz's compositions have been released on more than twenty commercial recor
             res.status(500).json({ error: "Failed to sync about page" });
         } finally {
             syncMutex.isSyncing = false;
+        }
+    });
+
+    // Sync logos from Notion
+    app.post("/api/sync-logos", async (req, res) => {
+        if (syncMutex.isSyncing) {
+            res.json({ success: false, message: "Sync already in progress" });
+            return;
+        }
+        
+        syncMutex.isSyncing = true;
+        try {
+            const logos = await syncLogos();
+            res.json({ success: true, message: "Logos sync completed", logos });
+        } catch (error) {
+            console.error("Error during logos sync:", error);
+            res.status(500).json({ error: "Failed to sync logos" });
+        } finally {
+            syncMutex.isSyncing = false;
+        }
+    });
+
+    // Get synced logos
+    app.get("/api/logos", async (req, res) => {
+        try {
+            // Return cached logo paths
+            const logoData = [
+                { platform: "Amazon Music", path: "/api/media-cache/logo_amazon-music" },
+                { platform: "Apple Music", path: "/api/media-cache/logo_apple-music" },
+                { platform: "Deezer", path: "/api/media-cache/logo_deezer" },
+                { platform: "BeMusic", path: "/api/media-cache/logo_bemusic" },
+                { platform: "Pandora", path: "/api/media-cache/logo_pandora" },
+                { platform: "Spotify", path: "/api/media-cache/logo_spotify" },
+                { platform: "YouTube", path: "/api/media-cache/logo_youtube" },
+                { platform: "Tidal", path: "/api/media-cache/logo_tidal" },
+            ];
+            res.json(logoData);
+        } catch (error) {
+            console.error("Error fetching logos:", error);
+            res.status(500).json({ error: "Failed to fetch logos" });
         }
     });
 
