@@ -170,14 +170,12 @@ export default function FYC() {
                                 <a href={streamingLinks["Genevieve Spielberg Artists"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
                                     Genevieve Spielberg Artists
                                 </a>
-                            </div>
-                            
-                            <div style={{fontFamily: 'Times, "Times New Roman", Palatino, serif', fontSize: '1.125rem'}}>
+                                {' '}
                                 <a href="https://myemail.constantcontact.com/World-Premiere-Recording-By-Acclaimed-Contemporary-Composer-David-S--Lefkowitz-Preludes-and-Fugues-For-Piano-.html?soid=1103420701115&aid=L6AY6eaeS9M" 
                                    target="_blank" 
                                    rel="noopener noreferrer" 
                                    className="text-primary hover:underline">
-                                    Click for More Information
+                                    (Click for More Information)
                                 </a>
                             </div>
                         </div>
