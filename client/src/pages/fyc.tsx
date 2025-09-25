@@ -101,13 +101,24 @@ export default function FYC() {
                             </div>
                     </div>
 
-                    {/* Album Details Section */}
-                    <div className="rounded-lg pl-6 pr-6 lg:pr-6 pb-6" style={{ paddingTop: '64px' }}>
+                    {/* Album Details Section with Photo */}
+                    <div className="relative rounded-lg pl-6 pr-6 lg:pr-6 pb-6" style={{ paddingTop: '64px' }}>
+                        {/* Sixth Media Photo - responsive positioning */}
+                        <div className="block lg:absolute lg:right-0 lg:top-16 mb-6 lg:mb-0">
+                            <div className="w-full lg:w-auto mx-auto lg:mx-0" style={{ maxWidth: '320px', height: '380px' }}>
+                                <img 
+                                    src="/photos/6. Lefkowitz-31.jpg"
+                                    alt="David S. Lefkowitz"
+                                    className="w-full h-full object-cover rounded-lg shadow-lg"
+                                />
+                            </div>
+                        </div>
+                        
                         <h2 className="text-2xl font-semibold mb-4" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
                             Album Details
                         </h2>
                         
-                        <div className="space-y-2">
+                        <div className="space-y-2 lg:pr-80">
                             <div style={{fontFamily: 'Times, "Times New Roman", Palatino, serif', fontSize: '1.125rem'}}>
                                 <span className="font-semibold">Composition:</span> {' '}
                                 <a href={streamingLinks["Preludes and Fugues Book I"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
