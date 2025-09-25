@@ -60,7 +60,7 @@ export default function FYC() {
                     
                     {/* Listen Here Section with vertical links - extends full width behind image */}
                     <div className="rounded-lg px-6 pt-6" style={{ marginBottom: 0, paddingBottom: 0, minHeight: '280px' }}>
-                        <button className="text-2xl font-semibold mb-4" style={{
+                        <button className="text-3xl font-semibold mb-4" style={{
                             fontFamily: 'Times, "Times New Roman", Palatino, serif',
                             backgroundColor: 'white',
                             border: '2px solid #d8b4fe',
