@@ -46,20 +46,22 @@ export default function FYC() {
                     For Your Consideration
                 </h1>
                 
-                {/* Album cover image - positioned absolute on the right, aligned with title */}
-                <div className="absolute right-0 top-0 z-10" style={{ width: '320px', height: '380px' }}>
-                    <img 
-                        src="/api/media-cache/recording_26c3907b_2ee6_81cb_9edf_f38464971746_14045b66.jpg"
-                        alt="Preludes and Fugues Album Cover"
-                        className="w-full h-full object-cover rounded-lg shadow-lg"
-                    />
+                {/* Album cover image - responsive positioning */}
+                <div className="block lg:absolute lg:right-0 lg:top-0 lg:z-10 mb-6 lg:mb-0" style={{ paddingLeft: '24px' }}>
+                    <div className="w-full lg:w-auto" style={{ maxWidth: '320px', height: '380px' }}>
+                        <img 
+                            src="/api/media-cache/recording_26c3907b_2ee6_81cb_9edf_f38464971746_14045b66.jpg"
+                            alt="Preludes and Fugues Album Cover"
+                            className="w-full h-full object-cover rounded-lg shadow-lg"
+                        />
+                    </div>
                 </div>
                 
-                {/* Container for streaming links */}
-                <div>
+                {/* Container for streaming links - adjusts layout on narrow screens */}
+                <div className="lg:pr-80">
                     
                     {/* Listen Here Section with vertical links - extends full width behind image */}
-                    <div className="rounded-lg px-6 pt-6" style={{ marginBottom: 0, paddingBottom: 0, minHeight: '36px' }}>
+                    <div className="rounded-lg pl-6 pr-6 lg:pr-6 pt-6" style={{ marginBottom: 0, paddingBottom: 0, minHeight: '36px' }}>
                         <button 
                             className="text-3xl font-semibold mb-4 hover:opacity-90 transition-opacity" 
                             style={{
@@ -75,33 +77,32 @@ export default function FYC() {
                             LISTEN NOW
                         </button>
                     </div>
-                </div>
 
-                {/* Grammy Submissions Section */}
-                <div className="rounded-lg px-6 pt-6" style={{ marginBottom: 0, paddingBottom: 0 }}>
-                        <div className="space-y-4">
-                            <div className="border-l-4 border-primary pl-4">
-                                <h3 className="font-bold" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif', fontSize: '1.375rem', lineHeight: '2.0'}}>
-                                    CONTEMPORARY CLASSICAL COMPOSITION
-                                </h3>
+                    {/* Grammy Submissions Section */}
+                    <div className="rounded-lg pl-6 pr-6 lg:pr-6 pt-6" style={{ marginBottom: 0, paddingBottom: 0 }}>
+                            <div className="space-y-4">
+                                <div className="border-l-4 border-primary pl-4">
+                                    <h3 className="font-bold" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif', fontSize: '1.375rem', lineHeight: '2.0'}}>
+                                        CONTEMPORARY CLASSICAL COMPOSITION
+                                    </h3>
+                                </div>
+
+                                <div className="border-l-4 border-primary pl-4">
+                                    <h3 className="font-bold" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif', fontSize: '1.375rem', lineHeight: '2.0'}}>
+                                        CLASSICAL COMPENDIUM
+                                    </h3>
+                                </div>
+
+                                <div className="border-l-4 border-primary pl-4">
+                                    <h3 className="font-bold" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif', fontSize: '1.375rem', lineHeight: '2.0'}}>
+                                        PRODUCER OF THE YEAR, CLASSICAL
+                                    </h3>
+                                </div>
                             </div>
+                    </div>
 
-                            <div className="border-l-4 border-primary pl-4">
-                                <h3 className="font-bold" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif', fontSize: '1.375rem', lineHeight: '2.0'}}>
-                                    CLASSICAL COMPENDIUM
-                                </h3>
-                            </div>
-
-                            <div className="border-l-4 border-primary pl-4">
-                                <h3 className="font-bold" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif', fontSize: '1.375rem', lineHeight: '2.0'}}>
-                                    PRODUCER OF THE YEAR, CLASSICAL
-                                </h3>
-                            </div>
-                        </div>
-                </div>
-
-                {/* Album Details Section */}
-                <div className="rounded-lg px-6 pb-6" style={{ paddingTop: '64px' }}>
+                    {/* Album Details Section */}
+                    <div className="rounded-lg pl-6 pr-6 lg:pr-6 pb-6" style={{ paddingTop: '64px' }}>
                         <h2 className="text-2xl font-semibold mb-4" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
                             Album Details
                         </h2>
@@ -180,6 +181,7 @@ export default function FYC() {
                                 </a>
                             </div>
                         </div>
+                    </div>
                 </div>
                 </div>
             </div>
