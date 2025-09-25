@@ -1,42 +1,53 @@
+import { useEffect, useState } from 'react';
+
 export default function ListenNow() {
-    // Same streaming links as on the FYC page
+    const [logos, setLogos] = useState<{ [key: string]: string }>({});
+    
+    // Streaming links
     const streamingPlatforms = [
         {
             name: "Amazon Music",
             url: "https://www.amazon.com/dp/B0F3FMBQVP",
-            logo: "/api/logos/amazon-music.png" // Placeholder - will be replaced with Notion logos
         },
         {
             name: "Apple Music", 
             url: "https://classical.music.apple.com/us/album/1818776381",
-            logo: "/api/logos/apple-music.png"
         },
         {
             name: "Deezer",
             url: "https://www.deezer.com/us/album/736897251",
-            logo: "/api/logos/deezer.png"
         },
         {
             name: "Pandora",
             url: "https://www.pandora.com/artist/david-kaplan-mika-sasaki-michael-mizrahi-and-steven-beck/david-s-lefkowitz-preludes-and-fugues-for-piano/ALk9zhjXvZ56VgJ",
-            logo: "/api/logos/pandora.png"
         },
         {
             name: "Spotify",
             url: "https://open.spotify.com/album/1AXDnGNFGtceS4zGvmLn8H",
-            logo: "/api/logos/spotify.png"
         },
         {
             name: "Tidal",
             url: "https://tidal.com/browse/track/427812074/u",
-            logo: "/api/logos/tidal.png"
         },
         {
             name: "YouTube",
             url: "https://youtube.com/playlist?list=PL1WjDUvuhzW9pgsYIJhDD9i374wjGNkKi",
-            logo: "/api/logos/youtube.png"
         }
     ];
+    
+    useEffect(() => {
+        // Fetch logos from API
+        fetch('/api/logos')
+            .then(res => res.json())
+            .then(data => {
+                const logoMap: { [key: string]: string } = {};
+                data.forEach((item: { platform: string, path: string }) => {
+                    logoMap[item.platform] = item.path;
+                });
+                setLogos(logoMap);
+            })
+            .catch(error => console.error("Error fetching logos:", error));
+    }, []);
     
     return (
         <div className="min-h-screen py-8">
@@ -61,25 +72,49 @@ export default function ListenNow() {
                         padding: '30px'
                     }}>
                         <div className="grid grid-cols-2 gap-6">
-                            {streamingPlatforms.map((platform) => (
-                                <a 
-                                    key={platform.name}
-                                    href={platform.url} 
-                                    target="_blank" 
-                                    rel="noopener noreferrer" 
-                                    className="flex items-center justify-center p-4 hover:opacity-80 transition-opacity"
-                                    style={{
-                                        backgroundColor: '#f9f9f9',
-                                        borderRadius: '8px',
-                                        minHeight: '80px'
-                                    }}
-                                >
-                                    {/* For now, show platform name as text until logos are available */}
-                                    <span className="text-center text-gray-700" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
-                                        {platform.name}
-                                    </span>
-                                </a>
-                            ))}
+                            {streamingPlatforms.map((platform) => {
+                                const logoPath = logos[platform.name];
+                                
+                                return (
+                                    <a 
+                                        key={platform.name}
+                                        href={platform.url} 
+                                        target="_blank" 
+                                        rel="noopener noreferrer" 
+                                        className="flex items-center justify-center p-4 hover:opacity-80 transition-opacity"
+                                        style={{
+                                            backgroundColor: '#f9f9f9',
+                                            borderRadius: '8px',
+                                            minHeight: '80px'
+                                        }}
+                                    >
+                                        {logoPath ? (
+                                            <img 
+                                                src={logoPath} 
+                                                alt={`${platform.name} logo`}
+                                                style={{ 
+                                                    maxHeight: '40px', 
+                                                    maxWidth: '100%',
+                                                    objectFit: 'contain'
+                                                }}
+                                                onError={(e) => {
+                                                    // Fallback to text if image fails
+                                                    e.currentTarget.style.display = 'none';
+                                                    const textSpan = document.createElement('span');
+                                                    textSpan.className = 'text-center text-gray-700';
+                                                    textSpan.style.fontFamily = 'Times, "Times New Roman", Palatino, serif';
+                                                    textSpan.textContent = platform.name;
+                                                    e.currentTarget.parentElement?.appendChild(textSpan);
+                                                }}
+                                            />
+                                        ) : (
+                                            <span className="text-center text-gray-700" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
+                                                {platform.name}
+                                            </span>
+                                        )}
+                                    </a>
+                                );
+                            })}
                         </div>
                     </div>
                 </div>

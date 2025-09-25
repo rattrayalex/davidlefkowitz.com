@@ -1066,16 +1066,15 @@ Lefkowitz's compositions have been released on more than twenty commercial recor
     // Get synced logos
     app.get("/api/logos", async (req, res) => {
         try {
-            // Return cached logo paths
+            // Store the logo paths after sync
             const logoData = [
-                { platform: "Amazon Music", path: "/api/media-cache/logo_amazon-music" },
-                { platform: "Apple Music", path: "/api/media-cache/logo_apple-music" },
-                { platform: "Deezer", path: "/api/media-cache/logo_deezer" },
-                { platform: "BeMusic", path: "/api/media-cache/logo_bemusic" },
-                { platform: "Pandora", path: "/api/media-cache/logo_pandora" },
-                { platform: "Spotify", path: "/api/media-cache/logo_spotify" },
-                { platform: "YouTube", path: "/api/media-cache/logo_youtube" },
-                { platform: "Tidal", path: "/api/media-cache/logo_tidal" },
+                { platform: "Amazon Music", path: "/api/media-cache/logo_amazon_music_a07cc601.svg" },
+                { platform: "Apple Music", path: "/api/media-cache/logo_apple_music_babd0930.svg" },
+                { platform: "Deezer", path: "/api/media-cache/logo_deezer_e1cbbf00.svg" },
+                { platform: "Pandora", path: "/api/media-cache/logo_pandora_1257db4c.svg" },
+                { platform: "Spotify", path: "/api/media-cache/logo_spotify_feafab7a.png" },
+                { platform: "YouTube", path: "/api/media-cache/logo_youtube_c7fa6df0.svg" },
+                { platform: "Tidal", path: "/api/media-cache/logo_tidal_7f12bf01.svg" },
             ];
             res.json(logoData);
         } catch (error) {
