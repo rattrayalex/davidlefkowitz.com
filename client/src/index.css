@@ -295,3 +295,17 @@
   padding: 0 !important;
   line-height: 1.5 !important;
 }
+
+/* Recording Compositions - Match the same spacing as streaming links */
+.recording-compositions a {
+  display: block !important;
+  margin-bottom: 0.5rem !important;
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+  line-height: 1.15 !important;
+}
+
+.recording-compositions br {
+  display: none !important; /* Hide the br tags since we're using margin-bottom for spacing */
+}
