@@ -101,6 +101,77 @@ async function downloadImage(imageUrl: string, mediaId: string): Promise<string>
 function richTextToHtml(richTextArray: any[], addLineBreaks = false): string {
     if (!richTextArray || !Array.isArray(richTextArray)) return "";
     
+    // For composition fields with multiple links, group text blocks by href
+    if (addLineBreaks) {
+        const compositionGroups = [];
+        let currentGroup = [];
+        let currentHref = null;
+        
+        for (let i = 0; i < richTextArray.length; i++) {
+            const textBlock = richTextArray[i];
+            const plainText = textBlock.plain_text || "";
+            const href = textBlock.href;
+            
+            // Skip pure whitespace or comma separators
+            if (plainText.trim() === "," || plainText.trim() === "") {
+                continue;
+            }
+            
+            // If this block has the same href as the previous one, it's part of the same composition
+            if (href && href === currentHref) {
+                currentGroup.push(textBlock);
+            } else {
+                // Start a new group
+                if (currentGroup.length > 0) {
+                    compositionGroups.push(currentGroup);
+                }
+                currentGroup = [textBlock];
+                currentHref = href;
+            }
+        }
+        
+        // Add the last group
+        if (currentGroup.length > 0) {
+            compositionGroups.push(currentGroup);
+        }
+        
+        // Process each group as a single composition
+        const processedGroups = compositionGroups.map(group => {
+            // Check if this group has an href (is a link)
+            const groupHref = group[0].href;
+            
+            // Process all text blocks in this group
+            const groupContent = group.map(textBlock => {
+                let text = textBlock.plain_text || "";
+                
+                // Handle formatting
+                if (textBlock.annotations) {
+                    if (textBlock.annotations.bold) {
+                        text = `<strong>${text}</strong>`;
+                    }
+                    if (textBlock.annotations.italic) {
+                        text = `<em>${text}</em>`;
+                    }
+                    if (textBlock.annotations.code) {
+                        text = `<code class="bg-gray-100 px-1 py-0.5 rounded text-sm">${text}</code>`;
+                    }
+                }
+                
+                return text;
+            }).join(""); // Join without line breaks within a composition
+            
+            // Wrap the entire group content in a single link tag if it has an href
+            if (groupHref) {
+                return `<a href="${groupHref}" target="_blank" rel="noopener noreferrer" class="text-purple hover:text-purple-700 underline">${groupContent}</a>`;
+            } else {
+                return groupContent;
+            }
+        });
+        
+        return processedGroups.join("<br />");
+    }
+    
+    // Normal processing for non-composition fields
     const processedText = richTextArray.map(textBlock => {
         let text = textBlock.plain_text || "";
         
@@ -124,29 +195,6 @@ function richTextToHtml(richTextArray: any[], addLineBreaks = false): string {
         
         return text;
     });
-    
-    // For composition fields with multiple links, add line breaks between them
-    if (addLineBreaks) {
-        // Filter out segments that are just punctuation/whitespace when adding line breaks
-        // This prevents extra line breaks from comma separators in Notion
-        const contentSegments = [];
-        for (let i = 0; i < processedText.length; i++) {
-            const segment = processedText[i];
-            const plainText = richTextArray[i].plain_text || "";
-            
-            // Skip segments that are just commas or whitespace when between links
-            if (plainText.trim() === "," || plainText.trim() === "") {
-                continue;
-            }
-            
-            // Check if this is a link element or has meaningful content
-            if (segment.includes("<a ") || plainText.trim().length > 1) {
-                contentSegments.push(segment);
-            }
-        }
-        
-        return contentSegments.join("<br />");
-    }
     
     return processedText.join(""); // Join without line breaks for normal text
 }
