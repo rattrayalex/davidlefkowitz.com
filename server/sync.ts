@@ -1183,27 +1183,6 @@ export async function syncLogos() {
         }
         
         console.log(`Logos sync completed - synced ${logos.length} logos`);
-        
-        // If we're missing the Amazon logo (should be 9 logos total), add it manually
-        const hasAmazon = logos.some(l => l.platform === 'Amazon');
-        const hasAmazonMusic = logos.some(l => l.platform === 'Amazon Music');
-        
-        // If we have Amazon Music but not plain Amazon, we're likely missing the first logo
-        if (!hasAmazon && hasAmazonMusic && logos.length === 8) {
-            // Add Amazon logo at the beginning - use the Amazon Music logo as fallback for now
-            const amazonMusicLogo = logos.find(l => l.platform === 'Amazon Music');
-            if (amazonMusicLogo) {
-                // Create a copy with 'Amazon' as the platform name
-                const amazonLogo = {
-                    platform: 'Amazon',
-                    url: amazonMusicLogo.url.replace('amazon_music', 'amazon')
-                };
-                // Put Amazon first, then the rest
-                logos.unshift(amazonLogo);
-                console.log('Added missing Amazon logo (using Amazon Music logo as fallback)');
-            }
-        }
-        
         return logos;
     } catch (error) {
         console.error("Error syncing logos:", error);
