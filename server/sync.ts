@@ -1148,10 +1148,13 @@ export async function syncLogos() {
         let currentPlatform: string | null = null;
         const logos: { platform: string; url: string }[] = [];
         
+        console.log(`Found ${blocks.results.length} blocks on logos page`);
+        
         for (const block of blocks.results as any[]) {
             // Check for text blocks (platform names)
             if (block.type === 'paragraph' && block.paragraph?.rich_text?.length > 0) {
                 currentPlatform = block.paragraph.rich_text[0].plain_text;
+                console.log(`Found platform name: ${currentPlatform}`);
             }
             // Check for image blocks
             else if (block.type === 'image' && currentPlatform) {
