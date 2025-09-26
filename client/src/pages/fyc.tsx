@@ -122,7 +122,7 @@ export default function FYC() {
                         </h2>
                         
                         <div className="space-y-2">
-                            <div style={{fontFamily: 'Times, "Times New Roman", Palatino, serif', fontSize: '1.125rem'}}>
+                            <div style={{fontFamily: 'Times, "Times New Roman", Palatino, serif', fontSize: '1.375rem'}}>
                                 <span className="font-semibold">Composition:</span> {' '}
                                 <a href={streamingLinks["Preludes and Fugues Book I"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
                                     Preludes and Fugues Book I
@@ -133,14 +133,14 @@ export default function FYC() {
                                 </a>
                             </div>
                             
-                            <div style={{fontFamily: 'Times, "Times New Roman", Palatino, serif', fontSize: '1.125rem'}}>
+                            <div style={{fontFamily: 'Times, "Times New Roman", Palatino, serif', fontSize: '1.375rem'}}>
                                 <span className="font-semibold">Composer:</span> {' '}
                                 <a href={streamingLinks["David S. Lefkowitz"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
                                     David S. Lefkowitz
                                 </a>
                             </div>
                             
-                            <div style={{fontFamily: 'Times, "Times New Roman", Palatino, serif', fontSize: '1.125rem'}}>
+                            <div style={{fontFamily: 'Times, "Times New Roman", Palatino, serif', fontSize: '1.375rem'}}>
                                 <span className="font-semibold">Performers:</span> {' '}
                                 <a href={streamingLinks["Steven Beck"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
                                     Steven Beck
@@ -168,18 +168,18 @@ export default function FYC() {
                                 {", whistling, and additional piano and extended piano techniques."}
                             </div>
                             
-                            <div style={{fontFamily: 'Times, "Times New Roman", Palatino, serif', fontSize: '1.125rem'}}>
+                            <div style={{fontFamily: 'Times, "Times New Roman", Palatino, serif', fontSize: '1.375rem'}}>
                                 <span className="font-semibold">Duration:</span> 2:48:27
                             </div>
                             
-                            <div style={{fontFamily: 'Times, "Times New Roman", Palatino, serif', fontSize: '1.125rem'}}>
+                            <div style={{fontFamily: 'Times, "Times New Roman", Palatino, serif', fontSize: '1.375rem'}}>
                                 <span className="font-semibold">Music Publisher:</span> {' '}
                                 <a href={streamingLinks["Floating Point Music"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
                                     Floating Point Music
                                 </a>
                             </div>
                             
-                            <div style={{fontFamily: 'Times, "Times New Roman", Palatino, serif', fontSize: '1.125rem'}}>
+                            <div style={{fontFamily: 'Times, "Times New Roman", Palatino, serif', fontSize: '1.375rem'}}>
                                 <span className="font-semibold">David S. Lefkowitz Representation:</span> {' '}
                                 <a href={streamingLinks["Genevieve Spielberg Artists"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
                                     Genevieve Spielberg Artists
