@@ -233,6 +233,7 @@ export default function RecordingDetail() {
                                         data-testid="recording-detail-links" 
                                         style={{
                                             paddingLeft: '24px',
+                                            paddingTop: '8px',
                                             display: 'flex',
                                             flexDirection: 'column',
                                             gap: '8px'
