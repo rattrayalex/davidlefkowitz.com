@@ -26,12 +26,10 @@ export default function Header() {
     const isFYCPage = location === '/fyc' || location === '/fyc/listennow';
     
     return (
-        <header 
-            className={`relative ${isFYCPage ? 'fyc-animated-header' : 'shadow-sm'}`} 
-            style={{
-                backgroundColor: isFYCPage ? undefined : '#e5e5ff'
-            }}
-        >
+        <header className={`relative ${isFYCPage ? '' : 'shadow-sm'}`} style={{
+            backgroundColor: isFYCPage ? 'transparent' : '#e5e5ff',
+            zIndex: isFYCPage ? 10 : undefined
+        }}>
             <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex justify-between items-center py-4">
                     {/* Logo/Name */}

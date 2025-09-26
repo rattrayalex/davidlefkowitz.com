@@ -1,7 +1,10 @@
 import { useEffect } from "react";
+import { useLocation } from "wouter";
 import { Card, CardContent } from "@/components/ui/card";
 
 export default function FYC() {
+    const [, setLocation] = useLocation();
+    
     // Hardcoded streaming links for faster loading
     const streamingLinks = {
         "Amazon Music": "https://www.amazon.com/dp/B0F3FMBQVP",
@@ -83,7 +86,7 @@ export default function FYC() {
                                 borderRadius: '0.5rem',
                                 cursor: 'pointer'
                             }}
-                            onClick={() => window.open('https://www.davidlefkowitz.com/fyc/listennow', '_blank')}
+                            onClick={() => setLocation('/fyc/listennow')}
                         >
                             LISTEN NOW
                         </button>
