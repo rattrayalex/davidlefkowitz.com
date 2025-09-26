@@ -1148,13 +1148,15 @@ export async function syncLogos() {
         let currentPlatform: string | null = null;
         const logos: { platform: string; url: string }[] = [];
         
-        console.log(`Found ${blocks.results.length} blocks on logos page`);
-        
         for (const block of blocks.results as any[]) {
             // Check for text blocks (platform names)
             if (block.type === 'paragraph' && block.paragraph?.rich_text?.length > 0) {
-                currentPlatform = block.paragraph.rich_text[0].plain_text;
-                console.log(`Found platform name: ${currentPlatform}`);
+                const platformText = block.paragraph.rich_text[0].plain_text.trim();
+                // Only set as current platform if it's not empty
+                if (platformText) {
+                    currentPlatform = platformText;
+                    console.log(`Found platform name: ${currentPlatform}`);
+                }
             }
             // Check for image blocks
             else if (block.type === 'image' && currentPlatform) {
@@ -1181,6 +1183,27 @@ export async function syncLogos() {
         }
         
         console.log(`Logos sync completed - synced ${logos.length} logos`);
+        
+        // If we're missing the Amazon logo (should be 9 logos total), add it manually
+        const hasAmazon = logos.some(l => l.platform === 'Amazon');
+        const hasAmazonMusic = logos.some(l => l.platform === 'Amazon Music');
+        
+        // If we have Amazon Music but not plain Amazon, we're likely missing the first logo
+        if (!hasAmazon && hasAmazonMusic && logos.length === 8) {
+            // Add Amazon logo at the beginning - use the Amazon Music logo as fallback for now
+            const amazonMusicLogo = logos.find(l => l.platform === 'Amazon Music');
+            if (amazonMusicLogo) {
+                // Create a copy with 'Amazon' as the platform name
+                const amazonLogo = {
+                    platform: 'Amazon',
+                    url: amazonMusicLogo.url.replace('amazon_music', 'amazon')
+                };
+                // Put Amazon first, then the rest
+                logos.unshift(amazonLogo);
+                console.log('Added missing Amazon logo (using Amazon Music logo as fallback)');
+            }
+        }
+        
         return logos;
     } catch (error) {
         console.error("Error syncing logos:", error);

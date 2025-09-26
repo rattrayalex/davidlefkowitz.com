@@ -1058,6 +1058,21 @@ Lefkowitz's compositions have been released on more than twenty commercial recor
         syncMutex.isSyncing = true;
         try {
             const logos = await syncLogos();
+            
+            // Ensure Amazon logo is always present - if missing, use Amazon Music logo as fallback
+            const hasAmazon = logos.some(l => l.platform === 'Amazon');
+            if (!hasAmazon) {
+                const amazonMusicLogo = logos.find(l => l.platform === 'Amazon Music');
+                if (amazonMusicLogo) {
+                    // Add Amazon as the first logo, using the same logo file as Amazon Music
+                    logos.unshift({
+                        platform: 'Amazon',
+                        url: amazonMusicLogo.url
+                    });
+                    console.log('Added missing Amazon logo (using Amazon Music logo file)');
+                }
+            }
+            
             // Store the logo paths globally for the API endpoint
             (global as any).cachedLogoPaths = logos.map(logo => ({
                 platform: logo.platform,
