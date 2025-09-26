@@ -249,10 +249,10 @@ export default function RecordingDetail() {
                                                     rel="noopener noreferrer"
                                                     className="inline-flex items-center hover:opacity-80 transition-opacity"
                                                     style={{
-                                                        backgroundColor: 'white',
+                                                        backgroundColor: '#f9f9f9',
                                                         borderRadius: '6px',
                                                         padding: '3px 12px',
-                                                        border: 'none',
+                                                        border: '1px solid #e5e7eb',
                                                         width: '150px',
                                                         justifyContent: 'center'
                                                     }}
