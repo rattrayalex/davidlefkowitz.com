@@ -1086,6 +1086,7 @@ Lefkowitz's compositions have been released on more than twenty commercial recor
             // If no cached logos, use fallback to the last known good logos
             // These are the logos that were successfully synced to object storage
             const fallbackLogos = [
+                { platform: "Amazon", path: "/api/media-cache/logo_amazon_c29d6f42.svg" },
                 { platform: "Amazon Music", path: "/api/media-cache/logo_amazon_music_4f338123.svg" },
                 { platform: "Apple Music", path: "/api/media-cache/logo_apple_music_f4160d4b.svg" },
                 { platform: "Deezer", path: "/api/media-cache/logo_deezer_9e3e94a9.svg" },

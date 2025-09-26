@@ -77,8 +77,13 @@ export default function RecordingDetail() {
                 let platformName = text.trim();
                 
                 // Handle various text variations
-                if (text.toLowerCase().includes('amazon')) {
+                // Check for Amazon Music specifically first, then plain Amazon
+                if (text.toLowerCase().includes('amazon music')) {
                     platformName = 'Amazon Music';
+                } else if (text.toLowerCase() === 'amazon' || text.toLowerCase() === 'amazon.com') {
+                    platformName = 'Amazon';
+                } else if (text.toLowerCase().includes('amazon')) {
+                    platformName = 'Amazon';  // Default to Amazon (not Amazon Music) for other Amazon links
                 } else if (text.toLowerCase().includes('apple')) {
                     platformName = 'Apple Music';
                 } else if (text.toLowerCase().includes('spotify')) {
@@ -246,9 +251,10 @@ export default function RecordingDetail() {
                                                     style={{
                                                         backgroundColor: '#f9f9f9',
                                                         borderRadius: '6px',
-                                                        padding: '6px 12px',
+                                                        padding: '3px 12px',
                                                         border: '1px solid #e5e7eb',
-                                                        width: 'fit-content'
+                                                        width: '150px',
+                                                        justifyContent: 'center'
                                                     }}
                                                 >
                                                     {logoPath ? (
