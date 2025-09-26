@@ -262,9 +262,11 @@ export default function RecordingDetail() {
                                                             src={logoPath} 
                                                             alt={`${platform.name} logo`}
                                                             style={{ 
-                                                                height: '24px', 
+                                                                height: platform.name === 'Amazon Music' ? '28px' : '24px', 
                                                                 maxWidth: '120px',
-                                                                objectFit: 'contain'
+                                                                objectFit: 'contain',
+                                                                transform: platform.name === 'Amazon Music' ? 'scaleX(1.15)' : 'none',
+                                                                transformOrigin: 'center'
                                                             }}
                                                             onError={(e) => {
                                                                 // Fallback to text if image fails
