@@ -255,7 +255,8 @@ export default function RecordingDetail() {
                                                         padding: '3px 12px',
                                                         border: '1px solid #e5e7eb',
                                                         width: '150px',
-                                                        justifyContent: 'center'
+                                                        justifyContent: 'center',
+                                                        overflow: platform.name === 'BeMusic' ? 'hidden' : 'visible'
                                                     }}
                                                 >
                                                     {logoPath ? (
