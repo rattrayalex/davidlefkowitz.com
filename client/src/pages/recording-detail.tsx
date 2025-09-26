@@ -268,7 +268,7 @@ export default function RecordingDetail() {
                                                                 maxWidth: '120px',
                                                                 objectFit: platform.name === 'BeMusic' ? 'cover' : 'contain',
                                                                 objectPosition: platform.name === 'BeMusic' ? 'center center' : 'center',
-                                                                transform: platform.name === 'Amazon Music' ? 'scaleX(1.075)' : platform.name === 'BeMusic' ? 'scale(3.0)' : 'none',
+                                                                transform: platform.name === 'Amazon Music' ? 'scaleX(1.075)' : platform.name === 'BeMusic' ? 'scale(4.0)' : 'none',
                                                                 transformOrigin: 'center'
                                                             }}
                                                             onError={(e) => {
