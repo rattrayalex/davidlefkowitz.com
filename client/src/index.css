@@ -102,22 +102,10 @@
   }
 }
 
-/* Header-specific animated gradient (without min-height) */
-.fyc-animated-header {
-  width: 100%;
-  position: relative;
-  overflow: hidden;
-  background: #e5e5ff;
-  background: linear-gradient(
-    -45deg,
-    #e5e5ff 0%,
-    #d5d0ff 25%,
-    #e5e5ff 50%,
-    #d0d5ff 75%,
-    #e5e5ff 100%
-  );
-  background-size: 400% 400%;
-  animation: gradientShift 15s ease infinite;
+/* Ensure header is transparent on FYC pages to show the animated background through */
+.fyc-animated-background header {
+  background: transparent !important;
+  background-color: transparent !important;
 }
 
 .dark {
