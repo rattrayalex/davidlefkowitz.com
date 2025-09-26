@@ -251,7 +251,7 @@ export default function RecordingDetail() {
                                                     style={{
                                                         backgroundColor: '#f9f9f9',
                                                         borderRadius: '6px',
-                                                        padding: platform.name === 'Pandora' ? '1px 12px' : '3px 12px',
+                                                        padding: '3px 12px',
                                                         border: '1px solid #e5e7eb',
                                                         width: '150px',
                                                         justifyContent: 'center'
@@ -262,7 +262,7 @@ export default function RecordingDetail() {
                                                             src={logoPath} 
                                                             alt={`${platform.name} logo`}
                                                             style={{ 
-                                                                height: platform.name === 'Amazon Music' ? '26px' : '24px', 
+                                                                height: platform.name === 'Amazon Music' ? '26px' : platform.name === 'Pandora' ? '28px' : '24px', 
                                                                 maxWidth: '120px',
                                                                 objectFit: 'contain',
                                                                 transform: platform.name === 'Amazon Music' ? 'scaleX(1.075)' : 'none',
