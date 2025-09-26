@@ -1095,7 +1095,8 @@ Lefkowitz's compositions have been released on more than twenty commercial recor
                 { platform: "Pandora", path: "/api/media-cache/logo_pandora_67f5b889.svg" },
                 { platform: "Spotify", path: "/api/media-cache/logo_spotify_ddb7a2a0.png" },
                 { platform: "YouTube", path: "/api/media-cache/logo_youtube_4b24d04b.svg" },
-                { platform: "Tidal", path: "/api/media-cache/logo_tidal_53e4408f.svg" }
+                { platform: "Tidal", path: "/api/media-cache/logo_tidal_53e4408f.svg" },
+                { platform: "Naxos", path: "/api/media-cache/logo_naxos_fca4239f.png" }
             ];
             
             console.log(`Returning ${fallbackLogos.length} logos from fallback`);
