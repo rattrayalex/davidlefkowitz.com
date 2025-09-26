@@ -263,11 +263,11 @@ export default function RecordingDetail() {
                                                             src={logoPath} 
                                                             alt={`${platform.name} logo`}
                                                             style={{ 
-                                                                height: platform.name === 'Amazon Music' ? '26px' : platform.name === 'Pandora' ? '28px' : platform.name === 'BeMusic' ? '40px' : '24px', 
+                                                                height: platform.name === 'Amazon Music' ? '26px' : platform.name === 'Pandora' ? '28px' : platform.name === 'BeMusic' ? '24px' : '24px', 
                                                                 maxWidth: '120px',
                                                                 objectFit: platform.name === 'BeMusic' ? 'cover' : 'contain',
-                                                                objectPosition: platform.name === 'BeMusic' ? 'center 50%' : 'center',
-                                                                transform: platform.name === 'Amazon Music' ? 'scaleX(1.075)' : platform.name === 'BeMusic' ? 'scale(1.3)' : 'none',
+                                                                objectPosition: platform.name === 'BeMusic' ? 'center center' : 'center',
+                                                                transform: platform.name === 'Amazon Music' ? 'scaleX(1.075)' : platform.name === 'BeMusic' ? 'scale(1.5) scaleY(2)' : 'none',
                                                                 transformOrigin: 'center'
                                                             }}
                                                             onError={(e) => {
