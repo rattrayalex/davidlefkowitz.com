@@ -1087,15 +1087,15 @@ Lefkowitz's compositions have been released on more than twenty commercial recor
             // If no cached logos, use fallback to the last known good logos
             // These are the logos that were successfully synced to object storage
             const fallbackLogos = [
-                { platform: "Amazon", path: "/api/media-cache/logo_amazon_c29d6f42.svg" },
-                { platform: "Amazon Music", path: "/api/media-cache/logo_amazon_music_4f338123.svg" },
-                { platform: "Apple Music", path: "/api/media-cache/logo_apple_music_f4160d4b.svg" },
-                { platform: "Deezer", path: "/api/media-cache/logo_deezer_9e3e94a9.svg" },
-                { platform: "BeMusic", path: "/api/media-cache/logo_bemusic_83b92a23.jpg" },
-                { platform: "Pandora", path: "/api/media-cache/logo_pandora_029eded6.svg" },
-                { platform: "Spotify", path: "/api/media-cache/logo_spotify_440f0ed1.png" },
-                { platform: "YouTube", path: "/api/media-cache/logo_youtube_b4518530.svg" },
-                { platform: "Tidal", path: "/api/media-cache/logo_tidal_4acfa5bf.svg" }
+                { platform: "Amazon", path: "/api/media-cache/logo_amazon_30bd78e5.svg" },
+                { platform: "Amazon Music", path: "/api/media-cache/logo_amazon_music_dd85eb97.svg" },
+                { platform: "Apple Music", path: "/api/media-cache/logo_apple_music_8cb4e244.svg" },
+                { platform: "Deezer", path: "/api/media-cache/logo_deezer_205302b9.svg" },
+                { platform: "BeMusic", path: "/api/media-cache/logo_bemusic_804c5fc2.jpg" },
+                { platform: "Pandora", path: "/api/media-cache/logo_pandora_67f5b889.svg" },
+                { platform: "Spotify", path: "/api/media-cache/logo_spotify_ddb7a2a0.png" },
+                { platform: "YouTube", path: "/api/media-cache/logo_youtube_4b24d04b.svg" },
+                { platform: "Tidal", path: "/api/media-cache/logo_tidal_53e4408f.svg" }
             ];
             
             console.log(`Returning ${fallbackLogos.length} logos from fallback`);
