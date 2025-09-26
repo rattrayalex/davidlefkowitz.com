@@ -82,8 +82,8 @@ export default function FYC() {
                                 fontFamily: 'Times, "Times New Roman", Palatino, serif',
                                 backgroundColor: 'white',
                                 border: '2px solid #d8b4fe',
-                                padding: '8px 20px',
-                                borderRadius: '0.5rem',
+                                padding: '12px 20px 4px 20px',
+                                borderRadius: '1rem',
                                 cursor: 'pointer'
                             }}
                             onClick={() => setLocation('/fyc/listennow')}
