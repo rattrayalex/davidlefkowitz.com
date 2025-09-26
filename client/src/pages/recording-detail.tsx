@@ -262,10 +262,10 @@ export default function RecordingDetail() {
                                                             src={logoPath} 
                                                             alt={`${platform.name} logo`}
                                                             style={{ 
-                                                                height: platform.name === 'Amazon Music' ? '28px' : '24px', 
+                                                                height: platform.name === 'Amazon Music' ? '26px' : '24px', 
                                                                 maxWidth: '120px',
                                                                 objectFit: 'contain',
-                                                                transform: platform.name === 'Amazon Music' ? 'scaleX(1.15)' : 'none',
+                                                                transform: platform.name === 'Amazon Music' ? 'scaleX(1.075)' : 'none',
                                                                 transformOrigin: 'center'
                                                             }}
                                                             onError={(e) => {
