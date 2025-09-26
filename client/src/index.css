@@ -79,14 +79,14 @@
   background: #e5e5ff;
   background: linear-gradient(
     -45deg,
-    #e5e5ff 0%,
-    #d5d0ff 25%,
-    #e5e5ff 50%,
-    #d0d5ff 75%,
-    #e5e5ff 100%
+    #e8e8ff 0%,
+    #c8c0ff 25%,
+    #e8e8ff 50%,
+    #c0c8ff 75%,
+    #e8e8ff 100%
   );
-  background-size: 400% 400%;
-  animation: gradientShift 15s ease infinite;
+  background-size: 500% 500%;
+  animation: gradientShift 12s ease infinite;
 }
 
 /* Ensure content is above the animated background */
