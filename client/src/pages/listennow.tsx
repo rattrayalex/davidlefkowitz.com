@@ -27,7 +27,7 @@ export default function ListenNow() {
         },
         {
             name: "Tidal",
-            url: "https://tidal.com/browse/track/427812074/u",
+            url: "https://tidal.com/browse/track/427812074",
         },
         {
             name: "YouTube",
