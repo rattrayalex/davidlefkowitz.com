@@ -206,7 +206,7 @@ export default function FYC() {
                         backgroundColor: 'white',
                         border: '2px solid #c8b6db',
                         padding: '2rem',
-                        borderRadius: '0.5rem'
+                        borderRadius: '1rem'
                     }}>
                         <p className="mb-4">
                             A world premiere recording of works by award-winning contemporary composer <span style={{fontWeight: 'bold', color: '#DC143C'}}>David S. Lefkowitz</span>, Preludes and Fugues for Piano features 26 preludes and fugues performed by four leading new music pianists. Lefkowitz{'\u2019'}s huge musical palette is described as {'\u201C'}near-Mahlerian{'\u201D'} in this challenging and rewarding cycle that spans three hours. In the words of producer David Starobin, {'\u201C'}every once in a while a project comes by which seems so original that I am challenged to re-screw my ears on and such was the case with Lefkowitz{'\u2019'}s Preludes and Fugues for Piano.{'\u201D'} The album is now available on Bridge Records (9594A/B) and all leading streaming services. Lefkowitz presents his Preludes and Fugues in two books with Book 1, entitled Expanded Universe, and Book II, Parallel Universes.
