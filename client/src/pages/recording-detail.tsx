@@ -251,7 +251,7 @@ export default function RecordingDetail() {
                                                     style={{
                                                         backgroundColor: '#f9f9f9',
                                                         borderRadius: '6px',
-                                                        padding: '3px 12px',
+                                                        padding: platform.name === 'Pandora' ? '1px 12px' : '3px 12px',
                                                         border: '1px solid #e5e7eb',
                                                         width: '150px',
                                                         justifyContent: 'center'
