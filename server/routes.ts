@@ -105,24 +105,41 @@ Lefkowitz's compositions have been released on more than twenty commercial recor
         }
     });
 
-    // Get all compositions from local database with pagination support
+    // Get all compositions from local database with conditional pagination support
     app.get("/api/compositions", async (req, res) => {
         try {
+            // Check if we should fetch all results (no pagination)
+            const fetchAll = req.query.all === 'true';
             const page = parseInt(req.query.page as string) || 1;
             const limit = parseInt(req.query.limit as string) || 50;
             const offset = (page - 1) * limit;
 
-            // Get total count for pagination
-            const [{ count }] = await db
-                .select({ count: sql`count(*)::int` })
-                .from(compositions);
+            let compositionsData;
+            let count;
 
-            const compositionsData = await db
-                .select()
-                .from(compositions)
-                .orderBy(desc(compositions.year))
-                .limit(limit)
-                .offset(offset);
+            if (fetchAll) {
+                // Fetch all compositions without pagination
+                compositionsData = await db
+                    .select()
+                    .from(compositions)
+                    .orderBy(desc(compositions.year));
+                
+                count = compositionsData.length;
+            } else {
+                // Get total count for pagination
+                const countResult = await db
+                    .select({ count: sql`count(*)::int` })
+                    .from(compositions);
+                count = countResult[0].count;
+
+                // Fetch paginated compositions
+                compositionsData = await db
+                    .select()
+                    .from(compositions)
+                    .orderBy(desc(compositions.year))
+                    .limit(limit)
+                    .offset(offset);
+            }
 
             const formattedCompositions = compositionsData.map((comp: Composition) => ({
                 id: comp.id,
@@ -138,13 +155,14 @@ Lefkowitz's compositions have been released on more than twenty commercial recor
                 recording: comp.recording || "",
             }));
 
+            // Return consistent response shape for both modes
             res.json({
                 compositions: formattedCompositions,
                 pagination: {
                     total: count,
-                    page,
-                    limit,
-                    totalPages: Math.ceil(count / limit)
+                    page: fetchAll ? 1 : page,
+                    limit: fetchAll ? count : limit,
+                    totalPages: fetchAll ? 1 : Math.ceil(count / limit)
                 }
             });
         } catch (error) {
