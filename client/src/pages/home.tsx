@@ -21,14 +21,20 @@ export default function Home() {
     });
 
 
-    const { data: compositions = [], isLoading: compositionsLoading } = useQuery<Composition[]>({
-        queryKey: ["/api/compositions"],
+    const { data: compositionData, isLoading: compositionsLoading } = useQuery<{ compositions: Composition[], pagination: any }>({
+        queryKey: ["/api/compositions", 1],
+        queryFn: async () => {
+            const response = await fetch("/api/compositions?page=1&limit=50");
+            if (!response.ok) throw new Error('Network response was not ok');
+            return response.json();
+        },
     });
 
     const { data: posts = [], isLoading: postsLoading } = useQuery<BlogPost[]>({
         queryKey: ["/api/blog-posts"],
     });
 
+    const compositions = compositionData?.compositions || [];
     const featuredCompositions = compositions.slice(0, 3);
     const recentPosts = posts.slice(0, 2);
 
