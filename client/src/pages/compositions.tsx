@@ -107,8 +107,18 @@ export default function Compositions() {
         setTitleSearch(searchParams.get('title') || "");
         setInstrumentSearch(searchParams.get('instrument') || "");
         setSortMode((searchParams.get('sort') as "Chronological" | "Alphabetical") || "Chronological");
+        
+        // Restore page number from URL
+        const page = parseInt(searchParams.get('page') || '1', 10);
+        setCurrentPage(Number.isFinite(page) && page > 0 ? page : 1);
     }, [location]);
     
+    const [currentPage, setCurrentPage] = useState(1);
+    const itemsPerPage = 50;
+
+    // Determine if we're in "All" mode (no filters applied)
+    const isAllMode = selectedCategory === "All" && !titleSearch && !instrumentSearch;
+
     // Update URL when filters change (but skip on initial mount)
     useEffect(() => {
         // Skip on initial mount to prevent overwriting URL params
@@ -123,6 +133,11 @@ export default function Compositions() {
         if (instrumentSearch) params.set('instrument', instrumentSearch);
         if (sortMode !== "Chronological") params.set('sort', sortMode);
         
+        // Include page parameter only in "All" mode
+        if (isAllMode && currentPage > 1) {
+            params.set('page', String(currentPage));
+        }
+        
         const queryString = params.toString();
         const newPath = queryString ? `/compositions?${queryString}` : '/compositions';
         
@@ -130,13 +145,7 @@ export default function Compositions() {
         if (location !== newPath) {
             setLocation(newPath, { replace: true });
         }
-    }, [selectedCategory, titleSearch, instrumentSearch, sortMode]);
-    
-    const [currentPage, setCurrentPage] = useState(1);
-    const itemsPerPage = 50;
-
-    // Determine if we're in "All" mode (no filters applied)
-    const isAllMode = selectedCategory === "All" && !titleSearch && !instrumentSearch;
+    }, [selectedCategory, titleSearch, instrumentSearch, sortMode, currentPage, isAllMode]);
 
     // Reset page when switching between modes
     useEffect(() => {
