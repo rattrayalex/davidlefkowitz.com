@@ -11,8 +11,9 @@ export default function RecordingDetail() {
     const { id } = useParams();
     const [logos, setLogos] = useState<{ [key: string]: string }>({});
     
-    const { data: recordings = [], isLoading } = useQuery<Recording[]>({
-        queryKey: ["/api/recordings"],
+    const { data: recording, isLoading, error } = useQuery<Recording>({
+        queryKey: ["/api/recordings", id],
+        enabled: !!id,
     });
 
     useEffect(() => {
@@ -37,9 +38,7 @@ export default function RecordingDetail() {
         );
     }
 
-    const recording = recordings.find(r => r.id === id || r.slug === id);
-
-    if (!recording) {
+    if (!recording || error) {
         return (
             <div className="min-h-screen" style={{backgroundColor: '#e5e5ff'}}>
                 <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
