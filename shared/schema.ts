@@ -179,6 +179,14 @@ export const users = pgTable("users", {
   password: text("password").notNull(),
 });
 
+// Simple analytics tracking table
+export const analytics = pgTable("analytics", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  event_type: text("event_type").notNull(), // 'fyc_visit', 'listen_now_click', 'streaming_link_click'
+  event_data: text("event_data"), // Optional data like which streaming link was clicked
+  created_at: timestamp("created_at").defaultNow(),
+});
+
 // Create insert and select schemas
 export const insertBlogPostSchema = createInsertSchema(blogPosts).omit({
   id: true,
@@ -230,6 +238,11 @@ export const insertAboutContentSchema = createInsertSchema(aboutContent).omit({
   updated_at: true,
 });
 
+export const insertAnalyticsSchema = createInsertSchema(analytics).omit({
+  id: true,
+  created_at: true,
+});
+
 // Export types
 export type ProfileData = typeof profile.$inferSelect;
 export type InsertProfile = z.infer<typeof insertProfileSchema>;
@@ -247,3 +260,5 @@ export type InsertUser = z.infer<typeof insertUserSchema>;
 export type User = typeof users.$inferSelect;
 export type AboutContent = typeof aboutContent.$inferSelect;
 export type InsertAboutContent = z.infer<typeof insertAboutContentSchema>;
+export type Analytics = typeof analytics.$inferSelect;
+export type InsertAnalytics = z.infer<typeof insertAnalyticsSchema>;

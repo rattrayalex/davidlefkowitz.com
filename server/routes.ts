@@ -1,7 +1,7 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { notion } from "./notion";
-import { contactFormSchema, blogPosts, compositions, recordings, media, contacts, profile, aboutContent, type BlogPost, type Composition, type Recording, type Media } from "@shared/schema";
+import { contactFormSchema, blogPosts, compositions, recordings, media, contacts, profile, aboutContent, analytics, type BlogPost, type Composition, type Recording, type Media } from "@shared/schema";
 import { db } from "./db";
 import { eq, desc, asc, sql, lt, gt, and } from "drizzle-orm";
 import { syncBlogPosts, syncCompositions, syncRecordings, syncMedia, syncAboutPage, syncLogos } from "./sync";
@@ -932,6 +932,46 @@ Lefkowitz's compositions have been released on more than twenty commercial recor
             }
             console.error("Error processing contact form:", error);
             res.status(500).json({ error: "Failed to send message" });
+        }
+    });
+
+    // Simple analytics tracking endpoint
+    app.post("/api/track", async (req, res) => {
+        try {
+            const { event_type, event_data } = req.body;
+            
+            // Only track specific events
+            if (!['fyc_visit', 'listen_now_click', 'streaming_link_click'].includes(event_type)) {
+                return res.status(400).json({ error: "Invalid event type" });
+            }
+            
+            // Insert the event into the analytics table
+            await db.insert(analytics).values({
+                event_type,
+                event_data: event_data || null
+            });
+            
+            res.json({ success: true });
+        } catch (error) {
+            console.error("Error tracking event:", error);
+            res.status(500).json({ error: "Failed to track event" });
+        }
+    });
+
+    // Get analytics summary (optional endpoint to view the data)
+    app.get("/api/analytics-summary", async (req, res) => {
+        try {
+            const summary = await db.select({
+                event_type: analytics.event_type,
+                count: sql<number>`count(*)::int`
+            })
+            .from(analytics)
+            .groupBy(analytics.event_type);
+            
+            res.json(summary);
+        } catch (error) {
+            console.error("Error getting analytics summary:", error);
+            res.status(500).json({ error: "Failed to get analytics" });
         }
     });
 

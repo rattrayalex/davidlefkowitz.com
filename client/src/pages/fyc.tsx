@@ -35,6 +35,13 @@ export default function FYC() {
         // Set the browser window title for this page
         document.title = "FYC 2025: DAVID S. LEFKOWITZ PRELUDES AND FUGUES";
         
+        // Track FYC page visit
+        fetch('/api/track', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ event_type: 'fyc_visit' })
+        }).catch(() => {}); // Silent fail - don't break the page
+        
         // Reset to default title when leaving the page
         return () => {
             document.title = "David S. Lefkowitz";
@@ -76,7 +83,15 @@ export default function FYC() {
                                 borderRadius: '1rem',
                                 cursor: 'pointer'
                             }}
-                            onClick={() => setLocation('/fyc/listennow')}
+                            onClick={() => {
+                                // Track Listen Now button click
+                                fetch('/api/track', {
+                                    method: 'POST',
+                                    headers: { 'Content-Type': 'application/json' },
+                                    body: JSON.stringify({ event_type: 'listen_now_click' })
+                                }).catch(() => {}); // Silent fail
+                                setLocation('/fyc/listennow');
+                            }}
                         >
                             LISTEN NOW
                         </button>

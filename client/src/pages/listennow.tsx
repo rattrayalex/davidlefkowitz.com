@@ -87,6 +87,17 @@ export default function ListenNow() {
                                             borderRadius: '8px',
                                             minHeight: '80px'
                                         }}
+                                        onClick={() => {
+                                            // Track streaming link click
+                                            fetch('/api/track', {
+                                                method: 'POST',
+                                                headers: { 'Content-Type': 'application/json' },
+                                                body: JSON.stringify({ 
+                                                    event_type: 'streaming_link_click',
+                                                    event_data: platform.name
+                                                })
+                                            }).catch(() => {}); // Silent fail
+                                        }}
                                     >
                                         {logoPath ? (
                                             <img 
