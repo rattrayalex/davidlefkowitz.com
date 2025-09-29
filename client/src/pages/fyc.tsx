@@ -121,7 +121,7 @@ export default function FYC() {
                     </div>
 
                     {/* Sixth Media Photo - positioned after Grammy sections on narrow screens */}
-                    <div className="block lg:absolute lg:right-0 mb-6 lg:mb-0" style={{ top: '424px', paddingLeft: '12px' }}>
+                    <div className="block lg:absolute lg:right-0 mt-6 mb-6 lg:mt-0 lg:mb-0" style={{ top: '424px', paddingLeft: '12px' }}>
                         <div className="w-full lg:w-auto" style={{ maxWidth: '320px', height: '380px' }}>
                             <LazyImage 
                                 src="/photos/6. Lefkowitz-31.jpg"
@@ -132,7 +132,7 @@ export default function FYC() {
                     </div>
 
                     {/* Album Details Section */}
-                    <div className="relative rounded-lg pl-6 pr-6 lg:pr-6 pb-6" style={{ paddingTop: '64px' }}>
+                    <div className="relative rounded-lg pl-6 pr-6 lg:pr-6 pb-6 pt-0 lg:pt-16">
                         <h2 className="text-2xl font-semibold mb-4" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
                             Album Details
                         </h2>
