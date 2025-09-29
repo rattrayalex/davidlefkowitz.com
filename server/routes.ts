@@ -884,8 +884,8 @@ Lefkowitz's compositions have been released on more than twenty commercial recor
         try {
             const objectStorageService = new ObjectStorageService();
             
-            // Search for the file in public object storage paths (media-cache folder)
-            const file = await objectStorageService.searchPublicObject(`media-cache/${filename}`);
+            // Search for the file in public object storage paths (public/media-cache folder)
+            const file = await objectStorageService.searchPublicObject(`public/media-cache/${filename}`);
             
             if (file) {
                 // Stream the file from object storage
