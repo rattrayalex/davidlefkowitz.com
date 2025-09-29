@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { ExternalLink, Music, Calendar, ChevronDown, Search } from "lucide-react";
 import LoadingSpinner from "@/components/ui/loading-spinner";
@@ -91,6 +91,9 @@ const categoryStructure = {
 export default function Compositions() {
     const [location, setLocation] = useLocation();
     
+    // Track if component has mounted to prevent URL reset on initial load
+    const hasMounted = useRef(false);
+    
     // Initialize state
     const [selectedCategory, setSelectedCategory] = useState<string>("All");
     const [titleSearch, setTitleSearch] = useState<string>("");
@@ -106,8 +109,14 @@ export default function Compositions() {
         setSortMode((searchParams.get('sort') as "Chronological" | "Alphabetical") || "Chronological");
     }, [location]);
     
-    // Update URL when filters change
+    // Update URL when filters change (but skip on initial mount)
     useEffect(() => {
+        // Skip on initial mount to prevent overwriting URL params
+        if (!hasMounted.current) {
+            hasMounted.current = true;
+            return;
+        }
+        
         const params = new URLSearchParams();
         if (selectedCategory !== "All") params.set('category', selectedCategory);
         if (titleSearch) params.set('title', titleSearch);
@@ -119,7 +128,7 @@ export default function Compositions() {
         
         // Only update URL if it's different to avoid infinite loops
         if (location !== newPath) {
-            setLocation(newPath);
+            setLocation(newPath, { replace: true });
         }
     }, [selectedCategory, titleSearch, instrumentSearch, sortMode]);
     
