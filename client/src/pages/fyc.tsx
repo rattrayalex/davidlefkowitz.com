@@ -60,17 +60,6 @@ export default function FYC() {
                     </div>
                 </div>
                 
-                {/* Sixth Media Photo - positioned at same level as Album Cover */}
-                <div className="block lg:absolute lg:right-0 mb-6 lg:mb-0" style={{ top: '412px', paddingLeft: '12px' }}>
-                    <div className="w-full lg:w-auto" style={{ maxWidth: '320px', height: '380px' }}>
-                        <img 
-                            src="/photos/6. Lefkowitz-31.jpg"
-                            alt="David S. Lefkowitz"
-                            className="w-full h-full object-cover rounded-lg shadow-lg"
-                        />
-                    </div>
-                </div>
-                
                 {/* Container for streaming links - adjusts layout on narrow screens */}
                 <div className="lg:pr-80">
                     
@@ -113,6 +102,17 @@ export default function FYC() {
                                     </h3>
                                 </div>
                             </div>
+                    </div>
+
+                    {/* Sixth Media Photo - positioned after Grammy sections on narrow screens */}
+                    <div className="block lg:absolute lg:right-0 mb-6 lg:mb-0" style={{ top: '424px', paddingLeft: '12px' }}>
+                        <div className="w-full lg:w-auto" style={{ maxWidth: '320px', height: '380px' }}>
+                            <img 
+                                src="/photos/6. Lefkowitz-31.jpg"
+                                alt="David S. Lefkowitz"
+                                className="w-full h-full object-cover rounded-lg shadow-lg"
+                            />
+                        </div>
                     </div>
 
                     {/* Album Details Section */}
