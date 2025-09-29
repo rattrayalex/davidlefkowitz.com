@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useLocation } from "wouter";
 import { Card, CardContent } from "@/components/ui/card";
+import LazyImage from "@/components/ui/lazy-image";
 
 export default function FYC() {
     const [, setLocation] = useLocation();
@@ -52,7 +53,7 @@ export default function FYC() {
                 {/* Album cover image - responsive positioning */}
                 <div className="block lg:absolute lg:right-0 lg:top-0 lg:z-10 mb-6 lg:mb-0" style={{ paddingLeft: '24px' }}>
                     <div className="w-full lg:w-auto" style={{ maxWidth: '320px', height: '380px' }}>
-                        <img 
+                        <LazyImage 
                             src="/api/media-cache/recording_26c3907b_2ee6_81cb_9edf_f38464971746_14045b66.jpg"
                             alt="Preludes and Fugues Album Cover"
                             className="w-full h-full object-cover rounded-lg shadow-lg"
@@ -107,7 +108,7 @@ export default function FYC() {
                     {/* Sixth Media Photo - positioned after Grammy sections on narrow screens */}
                     <div className="block lg:absolute lg:right-0 mb-6 lg:mb-0" style={{ top: '424px', paddingLeft: '12px' }}>
                         <div className="w-full lg:w-auto" style={{ maxWidth: '320px', height: '380px' }}>
-                            <img 
+                            <LazyImage 
                                 src="/photos/6. Lefkowitz-31.jpg"
                                 alt="David S. Lefkowitz"
                                 className="w-full h-full object-cover rounded-lg shadow-lg"
