@@ -369,7 +369,16 @@ export default function Compositions() {
                     ) : (
                         <div className="space-y-2">
                             {filteredCompositions.map((composition) => {
-                                const detailUrl = `/compositions/${composition.slug || generateCompositionSlug(composition.title)}${location.includes('?') ? location.substring(location.indexOf('?')) : ''}`;
+                                // Build search params from current filter state
+                                const params = new URLSearchParams();
+                                if (selectedCategory !== "All") params.set('category', selectedCategory);
+                                if (titleSearch) params.set('title', titleSearch);
+                                if (instrumentSearch) params.set('instrument', instrumentSearch);
+                                if (sortMode !== "Chronological") params.set('sort', sortMode);
+                                if (isAllMode && currentPage > 1) params.set('page', String(currentPage));
+                                const queryString = params.toString();
+                                
+                                const detailUrl = `/compositions/${composition.slug || generateCompositionSlug(composition.title)}${queryString ? `?${queryString}` : ''}`;
                                 return (
                                     <Link 
                                         key={composition.id}
