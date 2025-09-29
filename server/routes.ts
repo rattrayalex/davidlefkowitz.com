@@ -105,13 +105,24 @@ Lefkowitz's compositions have been released on more than twenty commercial recor
         }
     });
 
-    // Get all compositions from local database
+    // Get all compositions from local database with pagination support
     app.get("/api/compositions", async (req, res) => {
         try {
+            const page = parseInt(req.query.page as string) || 1;
+            const limit = parseInt(req.query.limit as string) || 50;
+            const offset = (page - 1) * limit;
+
+            // Get total count for pagination
+            const [{ count }] = await db
+                .select({ count: sql`count(*)::int` })
+                .from(compositions);
+
             const compositionsData = await db
                 .select()
                 .from(compositions)
-                .orderBy(desc(compositions.year));
+                .orderBy(desc(compositions.year))
+                .limit(limit)
+                .offset(offset);
 
             const formattedCompositions = compositionsData.map((comp: Composition) => ({
                 id: comp.id,
@@ -127,7 +138,15 @@ Lefkowitz's compositions have been released on more than twenty commercial recor
                 recording: comp.recording || "",
             }));
 
-            res.json(formattedCompositions);
+            res.json({
+                compositions: formattedCompositions,
+                pagination: {
+                    total: count,
+                    page,
+                    limit,
+                    totalPages: Math.ceil(count / limit)
+                }
+            });
         } catch (error) {
             console.error("Error fetching compositions:", error);
             res.status(500).json({ error: "Failed to fetch compositions" });

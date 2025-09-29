@@ -132,9 +132,19 @@ export default function Compositions() {
         }
     }, [selectedCategory, titleSearch, instrumentSearch, sortMode]);
     
-    const { data: compositions = [], isLoading } = useQuery<CompositionResponse[]>({
-        queryKey: ["/api/compositions"],
+    const [currentPage, setCurrentPage] = useState(1);
+    const itemsPerPage = 50;
+
+    const { data: response, isLoading } = useQuery<{ compositions: CompositionResponse[], pagination: { total: number, page: number, limit: number, totalPages: number } }>({
+        queryKey: ["/api/compositions", currentPage],
+        queryFn: async () => {
+            const res = await fetch(`/api/compositions?page=${currentPage}&limit=${itemsPerPage}`);
+            if (!res.ok) throw new Error('Failed to fetch');
+            return res.json();
+        },
     });
+    
+    const compositions = response?.compositions || [];
     
     // Updated filtering logic combining category, title, and instrument search
     const filteredCompositions = compositions
@@ -380,6 +390,33 @@ export default function Compositions() {
                                     </Link>
                                 );
                             })}
+                        </div>
+                    )}
+                    
+                    {/* Pagination Controls */}
+                    {response && response.pagination && response.pagination.totalPages > 1 && (
+                        <div className="mt-12 flex items-center justify-center gap-2">
+                            <button
+                                onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
+                                disabled={currentPage === 1}
+                                className="px-4 py-2 rounded-md bg-purple text-white disabled:opacity-50 disabled:cursor-not-allowed"
+                                data-testid="pagination-prev"
+                            >
+                                Previous
+                            </button>
+                            
+                            <span className="px-4 py-2 text-gray-700">
+                                Page {currentPage} of {response.pagination.totalPages}
+                            </span>
+                            
+                            <button
+                                onClick={() => setCurrentPage(prev => Math.min(response.pagination.totalPages, prev + 1))}
+                                disabled={currentPage === response.pagination.totalPages}
+                                className="px-4 py-2 rounded-md bg-purple text-white disabled:opacity-50 disabled:cursor-not-allowed"
+                                data-testid="pagination-next"
+                            >
+                                Next
+                            </button>
                         </div>
                     )}
                 </div>
