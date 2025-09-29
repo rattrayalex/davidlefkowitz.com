@@ -323,8 +323,8 @@ Lefkowitz's compositions have been released on more than twenty commercial recor
                 label: rec.label || "",
                 label_url: rec.label_url || null,
                 links: rec.links || "",
-                album_cover: rec.album_cover ? `/api/media-cache/${rec.album_cover}` : null,
-                album_track_listing: rec.album_track_listing ? rec.album_track_listing.map((img: string) => `/api/media-cache/${img}`) : [],
+                album_cover: rec.album_cover || null,
+                album_track_listing: rec.album_track_listing || [],
                 // For frontend compatibility
                 audio_url: rec.links || "",
                 video_url: "",
@@ -364,8 +364,8 @@ Lefkowitz's compositions have been released on more than twenty commercial recor
                 label: rec.label || "",  // Now a text field, not array
                 label_url: rec.label_url || null,
                 links: rec.links || "",
-                album_cover: rec.album_cover ? `/api/media-cache/${rec.album_cover}` : null,
-                album_track_listing: rec.album_track_listing ? rec.album_track_listing.map((img: string) => `/api/media-cache/${img}`) : [],  // Add track listing images
+                album_cover: rec.album_cover || null,
+                album_track_listing: rec.album_track_listing || [],  // Add track listing images
                 // For frontend compatibility
                 audio_url: rec.links || "",
                 video_url: "",
@@ -884,8 +884,8 @@ Lefkowitz's compositions have been released on more than twenty commercial recor
         try {
             const objectStorageService = new ObjectStorageService();
             
-            // Search for the file in public object storage paths (public/media-cache folder)
-            const file = await objectStorageService.searchPublicObject(`public/media-cache/${filename}`);
+            // Search for the file in public object storage paths (media-cache folder)
+            const file = await objectStorageService.searchPublicObject(`media-cache/${filename}`);
             
             if (file) {
                 // Stream the file from object storage
