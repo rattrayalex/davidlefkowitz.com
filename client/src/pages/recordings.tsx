@@ -2,6 +2,7 @@ import React, { useRef, useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useLocation } from "wouter";
 import LoadingSpinner from "@/components/ui/loading-spinner";
+import LazyImage from "@/components/ui/lazy-image";
 import { Recording } from "@shared/schema";
 import twelvePointStarSvg from "@/assets/12_point_curved.svg";
 
@@ -124,7 +125,7 @@ function RecordingTile({ recording }: { recording: Recording }) {
                             ref={imageContainerRef}
                             className="aspect-square bg-gradient-to-br from-purple-100 to-blue-100 relative overflow-hidden rounded-lg w-full"
                         >
-                            <img 
+                            <LazyImage 
                                 src={recording.album_cover}
                                 alt={recording.title}
                                 className="w-full h-full object-cover"

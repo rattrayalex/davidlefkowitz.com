@@ -3,6 +3,7 @@ import { useParams } from "wouter";
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "wouter";
 import LoadingSpinner from "@/components/ui/loading-spinner";
+import LazyImage from "@/components/ui/lazy-image";
 import { Recording } from "@shared/schema";
 import { ChevronLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -124,7 +125,7 @@ export default function RecordingDetail() {
                             <div className="md:w-1/2">
                                 {/* Album Cover */}
                                 {recording.album_cover && (
-                                    <img 
+                                    <LazyImage 
                                         src={recording.album_cover}
                                         alt={recording.title}
                                         className="w-full object-cover mb-4"
