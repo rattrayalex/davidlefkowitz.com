@@ -135,10 +135,29 @@ export default function Compositions() {
     const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 50;
 
+    // Determine if we're in "All" mode (no filters applied)
+    const isAllMode = selectedCategory === "All" && !titleSearch && !instrumentSearch;
+
+    // Reset page when switching between modes
+    useEffect(() => {
+        if (!isAllMode) {
+            setCurrentPage(1);
+        }
+    }, [isAllMode]);
+
     const { data: response, isLoading } = useQuery<{ compositions: CompositionResponse[], pagination: { total: number, page: number, limit: number, totalPages: number } }>({
-        queryKey: ["/api/compositions", currentPage],
+        queryKey: ["/api/compositions", { 
+            mode: isAllMode ? "paged" : "all",
+            page: currentPage,
+            category: selectedCategory,
+            title: titleSearch,
+            instrument: instrumentSearch 
+        }],
         queryFn: async () => {
-            const res = await fetch(`/api/compositions?page=${currentPage}&limit=${itemsPerPage}`);
+            const url = isAllMode 
+                ? `/api/compositions?page=${currentPage}&limit=${itemsPerPage}`
+                : `/api/compositions?all=true`;
+            const res = await fetch(url);
             if (!res.ok) throw new Error('Failed to fetch');
             return res.json();
         },
@@ -393,8 +412,8 @@ export default function Compositions() {
                         </div>
                     )}
                     
-                    {/* Pagination Controls */}
-                    {response && response.pagination && response.pagination.totalPages > 1 && (
+                    {/* Pagination Controls - Only show in "All" mode */}
+                    {isAllMode && response && response.pagination && response.pagination.totalPages > 1 && (
                         <div className="mt-12 flex items-center justify-center gap-2">
                             <button
                                 onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
