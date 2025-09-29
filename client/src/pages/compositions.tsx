@@ -50,7 +50,10 @@ const categoryStructure = {
         "Debussy Trio",
         "Harp Quartet",
         "Voice and Ensemble",
-        "Voice and Mixed Chamber Ensemble"
+        "Voice and Mixed Chamber Ensemble",
+        "Piano Trio",
+        "Woodwind Quintet",
+        "Voice and Pierrot Ensemble"
     ],
     "Solo or Duo": [
         "Piano Solo",
@@ -58,7 +61,10 @@ const categoryStructure = {
         "Solos",
         "Solo Instrument & Piano",
         "String Duo",
-        "Other Duos"
+        "Other Duos",
+        "Duo",
+        "Clarinet Duo",
+        "Marimba Duo"
     ],
     "Choir/Vocal": [
         "Choral",
@@ -67,7 +73,9 @@ const categoryStructure = {
         "Children's Choir",
         "Voice and Keyboard",
         "Voice and Ensemble",
-        "Voice and Mixed Chamber Ensemble"
+        "Voice and Mixed Chamber Ensemble",
+        "Voice and Orchestra",
+        "Voice and Pierrot Ensemble"
     ],
     "Large Ensemble": [
         "Orchestra",
@@ -75,7 +83,8 @@ const categoryStructure = {
         "Choir and Orchestra",
         "Brass Ensemble", 
         "Percussion Ensemble",
-        "Wind Ensemble"
+        "Wind Ensemble",
+        "Voice and Orchestra"
     ]
 };
 
