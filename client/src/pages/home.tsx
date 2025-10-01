@@ -97,9 +97,9 @@ export default function Home() {
                         </div>
                         
                         {/* Spotify and YouTube MiniButtons - positioned below 12-pointed star */}
-                        <div className="flex justify-center items-center gap-8" style={{ marginTop: '120px' }}>
+                        <div className="flex justify-center items-center gap-8" style={{ marginTop: '144px' }}>
                             <a 
-                                href="https://open.spotify.com/album/1AXDnGNFGtceS4zGvmLn8H" 
+                                href="https://open.spotify.com/playlist/6RDB9qiiRD1BR753a953Dx" 
                                 target="_blank" 
                                 rel="noopener noreferrer"
                                 className="hover:opacity-80 transition-opacity"
@@ -111,7 +111,7 @@ export default function Home() {
                                 />
                             </a>
                             <a 
-                                href="https://youtube.com/playlist?list=PL1WjDUvuhzW9pgsYIJhDD9i374wjGNkKi" 
+                                href="https://www.youtube.com/channel/UCD3hPTS-8nSSXptFcXsnEAw" 
                                 target="_blank" 
                                 rel="noopener noreferrer"
                                 className="hover:opacity-80 transition-opacity"
