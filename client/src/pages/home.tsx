@@ -96,8 +96,8 @@ export default function Home() {
                             </p>
                         </div>
                         
-                        {/* Spotify and YouTube MiniButtons */}
-                        <div className="flex justify-center items-center gap-8 mt-6">
+                        {/* Spotify and YouTube MiniButtons - positioned below 12-pointed star */}
+                        <div className="flex justify-center items-center gap-8" style={{ marginTop: '120px' }}>
                             <a 
                                 href="https://open.spotify.com/album/1AXDnGNFGtceS4zGvmLn8H" 
                                 target="_blank" 
@@ -107,7 +107,7 @@ export default function Home() {
                                 <img 
                                     src="/api/media-cache/logo_spotify_minibutton_bdf3c836.png" 
                                     alt="Listen on Spotify" 
-                                    className="h-12 w-auto"
+                                    className="h-10 w-auto"
                                 />
                             </a>
                             <a 
