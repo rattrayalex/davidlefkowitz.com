@@ -99,7 +99,7 @@ export default function Home() {
                     </div>
                 </div>
                 {/* Spotify and YouTube MiniButtons - positioned absolutely to not affect layout */}
-                <div className="absolute left-1/2 transform -translate-x-1/2 flex items-center gap-8" style={{ bottom: '-24px' }}>
+                <div className="absolute left-1/2 transform -translate-x-1/2 flex items-center gap-8" style={{ bottom: '-36px' }}>
                     <a 
                         href="https://open.spotify.com/playlist/6RDB9qiiRD1BR753a953Dx" 
                         target="_blank" 
