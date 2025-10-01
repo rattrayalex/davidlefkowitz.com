@@ -97,7 +97,7 @@ export default function Home() {
                         </div>
                         
                         {/* Spotify and YouTube MiniButtons */}
-                        <div className="flex justify-center items-center gap-8 mt-6">
+                        <div className="flex justify-center items-center gap-8" style={{ marginTop: '60px' }}>
                             <a 
                                 href="https://open.spotify.com/playlist/6RDB9qiiRD1BR753a953Dx" 
                                 target="_blank" 
