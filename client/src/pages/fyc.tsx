@@ -78,7 +78,7 @@ export default function FYC() {
                             style={{
                                 fontFamily: 'Times, "Times New Roman", Palatino, serif',
                                 backgroundColor: 'white',
-                                border: '2px solid #d8b4fe',
+                                border: '3px solid #d8b4fe',
                                 padding: '11px 20px 5px 20px',
                                 borderRadius: '1rem',
                                 cursor: 'pointer'
