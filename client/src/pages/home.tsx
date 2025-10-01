@@ -96,6 +96,34 @@ export default function Home() {
                             </p>
                         </div>
                         
+                        {/* Spotify and YouTube MiniButtons */}
+                        <div className="flex justify-center items-center gap-8 mt-6">
+                            <a 
+                                href="https://open.spotify.com/album/1AXDnGNFGtceS4zGvmLn8H" 
+                                target="_blank" 
+                                rel="noopener noreferrer"
+                                className="hover:opacity-80 transition-opacity"
+                            >
+                                <img 
+                                    src="/api/media-cache/logo_spotify_minibutton_bdf3c836.png" 
+                                    alt="Listen on Spotify" 
+                                    className="h-12 w-auto"
+                                />
+                            </a>
+                            <a 
+                                href="https://youtube.com/playlist?list=PL1WjDUvuhzW9pgsYIJhDD9i374wjGNkKi" 
+                                target="_blank" 
+                                rel="noopener noreferrer"
+                                className="hover:opacity-80 transition-opacity"
+                            >
+                                <img 
+                                    src="/api/media-cache/logo_youtube_minibutton_811dfb93.png" 
+                                    alt="Listen on YouTube" 
+                                    className="h-12 w-auto"
+                                />
+                            </a>
+                        </div>
+                        
                     </div>
                 </div>
             </section>
