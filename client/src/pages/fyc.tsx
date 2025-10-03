@@ -59,7 +59,8 @@ export default function FYC() {
                 
                 {/* Subtitle */}
                 <h2 className="font-bold mb-4" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif', fontSize: '1.375rem', paddingLeft: '24px'}}>
-                    DAVID S. LEFKOWITZ PRELUDES AND FUGUES FOR PIANO
+                    DAVID S. LEFKOWITZ<br/>
+                    PRELUDES AND FUGUES FOR PIANO
                 </h2>
                 
                 {/* Album cover image - responsive positioning */}
