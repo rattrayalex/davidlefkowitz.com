@@ -29,6 +29,7 @@ export default function MediaPage() {
     const [editingTitle, setEditingTitle] = useState<string | null>(null);
     const [editTitleValue, setEditTitleValue] = useState('');
     const [activeSection, setActiveSection] = useState<'photos' | 'reviews'>('photos');
+    const [photosFullyScrolled, setPhotosFullyScrolled] = useState(false);
     
     // Check if we're in Replit development mode
     const isReplitDev = import.meta.env.DEV && (
@@ -56,6 +57,7 @@ export default function MediaPage() {
 
     const scrollToPhotos = () => {
         setActiveSection('photos');
+        setPhotosFullyScrolled(false);
         photosRef.current?.scrollIntoView({ behavior: 'smooth' });
     };
 
@@ -237,6 +239,16 @@ export default function MediaPage() {
             });
 
             setCurrentImageIndex(visibleIndex);
+            
+            // Check if we've scrolled to the last photo
+            const scrollHeight = container.scrollHeight;
+            const maxScroll = scrollHeight - containerHeight;
+            const isAtBottom = scrollTop >= maxScroll - 10; // 10px threshold
+            const isLastPhoto = visibleIndex === mediaItems.length - 1;
+            
+            if (isAtBottom || isLastPhoto) {
+                setPhotosFullyScrolled(true);
+            }
         };
 
         const container = containerRef.current;
@@ -334,7 +346,7 @@ export default function MediaPage() {
             </div>
 
             {/* Media Gallery with Snap Scroll */}
-            <section className="relative" ref={photosRef}>
+            <section className="relative h-screen" ref={photosRef} style={{position: activeSection === 'photos' && !photosFullyScrolled ? 'sticky' : 'relative', top: 0}}>
 
                 {/* Scrollable Image Container */}
                 <div 
@@ -414,6 +426,7 @@ export default function MediaPage() {
             </section>
 
             {/* Reviews Section - integrated into main scroll */}
+            {(activeSection === 'reviews' || photosFullyScrolled) && (
             <div ref={reviewsRef} className="px-4 py-6" style={{backgroundColor: '#e5e5ff', border: '2px solid purple'}}>
                 <div className="max-w-3xl mx-auto">
                     {reviewsData?.reviews ? (
@@ -452,6 +465,7 @@ export default function MediaPage() {
                     )}
                 </div>
             </div>
+            )}
         </div>
     );
 }
