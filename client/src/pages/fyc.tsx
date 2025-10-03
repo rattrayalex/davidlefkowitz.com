@@ -222,7 +222,7 @@ export default function FYC() {
                         fontWeight: 525,
                         backgroundColor: 'white',
                         border: '2px solid #c8b6db',
-                        padding: '2rem',
+                        padding: '2rem 2.5rem',
                         borderRadius: '1rem'
                     }}>
                         <p className="mb-4">
