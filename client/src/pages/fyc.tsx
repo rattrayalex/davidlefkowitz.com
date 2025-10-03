@@ -64,7 +64,7 @@ export default function FYC() {
                 </h2>
                 
                 {/* Album cover image - responsive positioning */}
-                <div className="block lg:absolute lg:right-0 lg:z-10 mb-6 lg:mb-0" style={{ paddingLeft: '24px', top: '48px' }}>
+                <div className="block lg:absolute lg:right-0 lg:z-10 mb-6 lg:mb-0" style={{ paddingLeft: '24px', top: '64px' }}>
                     <div className="w-full lg:w-auto" style={{ maxWidth: '320px', height: '380px' }}>
                         <LazyImage 
                             src="/api/media-cache/recording_26c3907b_2ee6_81cb_9edf_f38464971746_14045b66.jpg"
@@ -127,7 +127,7 @@ export default function FYC() {
                     </div>
 
                     {/* Sixth Media Photo - positioned after Grammy sections on narrow screens */}
-                    <div className="block lg:absolute lg:right-0 mt-6 mb-6 lg:mt-0 lg:mb-0" style={{ top: '472px', paddingLeft: '12px' }}>
+                    <div className="block lg:absolute lg:right-0 mt-6 mb-6 lg:mt-0 lg:mb-0" style={{ top: '488px', paddingLeft: '12px' }}>
                         <div className="w-full lg:w-auto" style={{ maxWidth: '320px', height: '380px' }}>
                             <LazyImage 
                                 src="/photos/6. Lefkowitz-31.jpg"
