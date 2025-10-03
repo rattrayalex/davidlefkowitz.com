@@ -258,7 +258,7 @@ export default function MediaPage() {
     return (
         <div className="min-h-screen" style={{backgroundColor: '#e5e5ff'}}>
             {/* Hero Section */}
-            <section className="py-20 relative" style={{backgroundColor: '#e5e5ff'}}>
+            <section className="py-20 relative" style={{backgroundColor: '#e5e5ff', border: '2px solid red'}}>
                 {/* 12-pointed star decoration */}
                 <div 
                     className="absolute -top-0 right-4 opacity-100 pointer-events-none hidden md:block"
@@ -340,7 +340,7 @@ export default function MediaPage() {
                 <div 
                     ref={containerRef}
                     className="h-screen overflow-y-auto snap-y snap-mandatory"
-                    style={{scrollbarWidth: 'none', msOverflowStyle: 'none'}}
+                    style={{scrollbarWidth: 'none', msOverflowStyle: 'none', border: '3px solid blue'}}
                 >
                     <style>{`
                         .h-screen::-webkit-scrollbar {
@@ -365,7 +365,7 @@ export default function MediaPage() {
                                 } ${
                                     draggedOver === item.id ? 'bg-blue-50' : ''
                                 }`}
-                                style={{ minHeight: '100vh', paddingTop: '2px', paddingBottom: '8px' }}
+                                style={{ minHeight: '100vh', paddingTop: '2px', paddingBottom: '8px', border: '2px solid green' }}
                                 data-testid={`media-item-${index}`}
                                 draggable={mediaItems.length > 1}
                                 onDragStart={(e) => handleDragStart(e, item.id)}
@@ -374,7 +374,7 @@ export default function MediaPage() {
                                 onDrop={(e) => handleDrop(e, item.id)}
                                 onDragEnd={handleDragEnd}
                             >
-                                <div className="max-w-6xl mx-auto flex flex-col justify-center min-h-full items-center">
+                                <div className="max-w-6xl mx-auto flex flex-col justify-center min-h-full items-center" style={{border: '2px solid orange'}}>
                                     {/* Image and credit wrapper */}
                                     <div className="relative inline-block">
                                         <img
@@ -414,7 +414,7 @@ export default function MediaPage() {
             </section>
 
             {/* Reviews Section - integrated into main scroll */}
-            <div ref={reviewsRef} className="px-4 py-6" style={{backgroundColor: '#e5e5ff'}}>
+            <div ref={reviewsRef} className="px-4 py-6" style={{backgroundColor: '#e5e5ff', border: '2px solid purple'}}>
                 <div className="max-w-3xl mx-auto">
                     {reviewsData?.reviews ? (
                         <div className="space-y-8">
