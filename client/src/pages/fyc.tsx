@@ -58,7 +58,7 @@ export default function FYC() {
                 </h1>
                 
                 {/* Subtitle */}
-                <h2 className="font-bold mb-4" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif', fontSize: '1.375rem', paddingLeft: '24px'}}>
+                <h2 className="font-bold mb-4" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif', fontSize: '1.375rem', paddingLeft: '24px', color: '#7A0C1C'}}>
                     DAVID S. LEFKOWITZ<br/>
                     PRELUDES AND FUGUES FOR PIANO
                 </h2>
