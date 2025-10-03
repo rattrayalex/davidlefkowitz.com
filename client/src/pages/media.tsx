@@ -424,7 +424,7 @@ export default function MediaPage() {
                                 let quoteCount = 0;
                                 
                                 return (
-                                    <div key={index} className="p-6 border border-gray-300 rounded-xl border-l-4 border-purple shadow-lg" style={{backgroundColor: index === 0 ? '#f7f7ff' : 'white'}}>
+                                    <div key={index} className="p-6 border border-gray-300 rounded-xl border-l-4 border-purple shadow-lg" style={{backgroundColor: 'white'}}>
                                         <p className="text-lg leading-relaxed text-gray-800" style={{ fontFamily: 'Times, "Times New Roman", Palatino, serif' }}>
                                             {parts.map((part, i) => {
                                                 if (part === '"') {
