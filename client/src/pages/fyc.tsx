@@ -57,6 +57,11 @@ export default function FYC() {
                     For Your Consideration
                 </h1>
                 
+                {/* Subtitle */}
+                <h2 className="font-bold mb-4" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif', fontSize: '1.375rem', paddingLeft: '24px'}}>
+                    David S. Lefkowitz Preludes and Fugues for Piano
+                </h2>
+                
                 {/* Album cover image - responsive positioning */}
                 <div className="block lg:absolute lg:right-0 lg:top-0 lg:z-10 mb-6 lg:mb-0" style={{ paddingLeft: '24px' }}>
                     <div className="w-full lg:w-auto" style={{ maxWidth: '320px', height: '380px' }}>
