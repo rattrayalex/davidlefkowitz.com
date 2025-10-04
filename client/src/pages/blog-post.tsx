@@ -129,16 +129,18 @@ export default function BlogPostPage() {
                     </div>
 
                     {/* Title */}
-                    <h1 
-                        className={`text-4xl lg:text-5xl font-playfair font-bold text-navy ${post.title.toLowerCase().includes('an explainer') ? 'italic' : ''}`} 
-                        data-testid="post-title" 
-                        style={{
-                            fontFamily: 'Times, "Times New Roman", Palatino, serif',
-                            lineHeight: '1.25',
-                            border: '2px solid red'
-                        }}>
-                        {post.title}
-                    </h1>
+                    <div className="md:pr-[340px]">
+                        <h1 
+                            className={`text-4xl lg:text-5xl font-playfair font-bold text-navy ${post.title.toLowerCase().includes('an explainer') ? 'italic' : ''}`} 
+                            data-testid="post-title" 
+                            style={{
+                                fontFamily: 'Times, "Times New Roman", Palatino, serif',
+                                lineHeight: '1.25',
+                                border: '2px solid red'
+                            }}>
+                            {post.title}
+                        </h1>
+                    </div>
 
                     {/* Tags */}
                     {post.tags && post.tags.length > 0 && (
