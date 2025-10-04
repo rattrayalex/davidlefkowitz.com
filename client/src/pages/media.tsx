@@ -424,7 +424,7 @@ export default function MediaPage() {
     return (
         <div className="min-h-screen" style={{backgroundColor: '#e5e5ff'}}>
             {/* Hero Section */}
-            <section className="pt-20 pb-8 relative" style={{backgroundColor: '#e5e5ff', border: '2px solid red'}}>
+            <section className="pt-20 pb-8 relative" style={{backgroundColor: '#e5e5ff'}}>
                 {/* 12-pointed star decoration */}
                 <div 
                     className="absolute -top-0 right-4 opacity-100 pointer-events-none hidden md:block"
@@ -547,7 +547,7 @@ export default function MediaPage() {
                                 } ${
                                     draggedOver === item.id ? 'bg-blue-50' : ''
                                 }`}
-                                style={{ minHeight: '100vh', paddingTop: '2px', paddingBottom: '8px', border: '2px solid green' }}
+                                style={{ minHeight: '100vh', paddingTop: '2px', paddingBottom: '8px' }}
                                 data-testid={`media-item-${index}`}
                                 draggable={mediaItems.length > 1}
                                 onDragStart={(e) => handleDragStart(e, item.id)}
@@ -556,7 +556,7 @@ export default function MediaPage() {
                                 onDrop={(e) => handleDrop(e, item.id)}
                                 onDragEnd={handleDragEnd}
                             >
-                                <div className="max-w-6xl mx-auto flex flex-col justify-center min-h-full items-center" style={{border: '2px solid orange'}}>
+                                <div className="max-w-6xl mx-auto flex flex-col justify-center min-h-full items-center">
                                     {/* Image and credit wrapper */}
                                     <div className="relative inline-block">
                                         <img
@@ -597,7 +597,7 @@ export default function MediaPage() {
 
             {/* Reviews Section - integrated into main scroll */}
             {(activeSection === 'reviews' || photosFullyScrolled) && (
-            <div ref={reviewsRef} className="px-4 py-6" style={{backgroundColor: '#e5e5ff', border: '2px solid purple'}}>
+            <div ref={reviewsRef} className="px-4 py-6" style={{backgroundColor: '#e5e5ff'}}>
                 <div className="max-w-3xl mx-auto">
                     {reviewsData?.reviews ? (
                         <div className="space-y-8">
