@@ -308,6 +308,7 @@ export default function MediaPage() {
     useEffect(() => {
         let lastScrollTop = 0;
         let hasBeenInReviews = false;
+        let hasResetPhotoScroll = false;
         
         const handlePageScroll = () => {
             const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
@@ -328,18 +329,18 @@ export default function MediaPage() {
                     const reviewRect = reviewsRef.current.getBoundingClientRect();
                     if (reviewRect.top < window.innerHeight * 0.8) {
                         hasBeenInReviews = true;
+                        hasResetPhotoScroll = false; // Reset flag when entering reviews
                     }
                 }
                 
-                // If we've been in reviews and now scrolling up into photos
-                if (hasBeenInReviews && isScrollingUp && photoRect.bottom > 0) {
+                // If we've been in reviews, scrolling up, and photo section bottom is now visible
+                if (hasBeenInReviews && isScrollingUp && photoRect.bottom >= window.innerHeight) {
                     setScrollingUpFromReviews(true);
-                    // Ensure photo container is at bottom when entering from reviews
-                    if (containerRef.current && photoRect.top >= -10) {
+                    // Reset photo container to bottom only once when photo section comes into view
+                    if (containerRef.current && !hasResetPhotoScroll) {
                         const maxScroll = containerRef.current.scrollHeight - containerRef.current.clientHeight;
-                        if (containerRef.current.scrollTop < maxScroll - 10) {
-                            containerRef.current.scrollTop = maxScroll;
-                        }
+                        containerRef.current.scrollTop = maxScroll;
+                        hasResetPhotoScroll = true;
                     }
                 }
                 
@@ -347,6 +348,7 @@ export default function MediaPage() {
                 if (photoRect.top > 0) {
                     setScrollingUpFromReviews(false);
                     hasBeenInReviews = false;
+                    hasResetPhotoScroll = false;
                 }
             }
             
