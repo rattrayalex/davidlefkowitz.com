@@ -80,7 +80,7 @@ export default function BlogPostPage() {
                     }}
                 ></div>
                 
-                <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 md:mr-[340px] relative z-10">
+                <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
                     {/* Navigation Links at Top */}
                     <div className="mb-8 flex items-center gap-6">
                         <Link href="/blog">
@@ -130,7 +130,7 @@ export default function BlogPostPage() {
 
                     {/* Title */}
                     <h1 
-                        className={`text-4xl lg:text-5xl font-playfair font-bold text-navy ${post.title.toLowerCase().includes('an explainer') ? 'italic' : ''}`} 
+                        className={`text-4xl lg:text-5xl font-playfair font-bold text-navy md:pr-12 lg:pr-16 xl:pr-20 ${post.title.toLowerCase().includes('an explainer') ? 'italic' : ''}`} 
                         data-testid="post-title" 
                         style={{
                             fontFamily: 'Times, "Times New Roman", Palatino, serif',
