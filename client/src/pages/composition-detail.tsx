@@ -146,6 +146,15 @@ export default function CompositionDetail() {
                                         </div>
                                     )}
 
+                                    {/* No soundfiles message */}
+                                    {!composition.streaming_links && 
+                                     (!composition.recording_info || 
+                                      (Array.isArray(composition.recording_info) && composition.recording_info.length === 0)) && (
+                                        <div className="text-gray-600" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
+                                            (No soundfiles currently available)
+                                        </div>
+                                    )}
+
                                     {/* Publisher */}
                                     {composition.publisher && (
                                         Array.isArray(composition.publisher) ? composition.publisher.length > 0 : composition.publisher
@@ -315,6 +324,15 @@ export default function CompositionDetail() {
                                             <span className="text-gray-700" data-testid="composition-duration" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
                                                 {composition.duration}
                                             </span>
+                                        </div>
+                                    )}
+
+                                    {/* No soundfiles message */}
+                                    {!composition.streaming_links && 
+                                     (!composition.recording_info || 
+                                      (Array.isArray(composition.recording_info) && composition.recording_info.length === 0)) && (
+                                        <div className="text-gray-600" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
+                                            (No soundfiles currently available)
                                         </div>
                                     )}
 
