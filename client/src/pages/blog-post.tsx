@@ -135,7 +135,7 @@ export default function BlogPostPage() {
                     className="h-12 mb-4"
                     style={{
                         border: '2px solid blue',
-                        marginLeft: 'calc((100vw - 768px) / 2)'
+                        marginLeft: 'calc((100vw - 768px) / 2 + 24px)'
                     }}>
                 </div>
                 
