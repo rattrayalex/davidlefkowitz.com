@@ -312,14 +312,15 @@ export default function MediaPage() {
                 // Check if reviews are still visible on screen
                 if (reviewsRef.current) {
                     const reviewRect = reviewsRef.current.getBoundingClientRect();
-                    // If reviews are still visible (top is less than viewport height), scroll them off first
-                    if (reviewRect.top < window.innerHeight) {
-                        // Don't prevent default - let the page scroll naturally to push reviews off
+                    // Add buffer to ensure reviews are COMPLETELY off screen (50px buffer)
+                    // Reviews must be scrolled at least 50px below the viewport before photo scrolling starts
+                    if (reviewRect.top < window.innerHeight + 50) {
+                        // Don't prevent default - let the page scroll naturally to push reviews completely off
                         return;
                     }
                 }
                 
-                // Reviews are off screen, now handle photo scrolling
+                // Reviews are completely off screen, now handle photo scrolling
                 e.preventDefault();
                 
                 const isAtFirstPhoto = container.scrollTop <= 0;
