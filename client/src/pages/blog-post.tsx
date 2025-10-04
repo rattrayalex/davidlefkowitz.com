@@ -130,18 +130,9 @@ export default function BlogPostPage() {
                     
                 </div>
                 
-                {/* Test container outside centered wrapper */}
-                <div 
-                    className="h-12 mb-4 mr-4 sm:mr-6 md:mr-[324px]"
-                    style={{
-                        border: '2px solid blue',
-                        marginLeft: 'max(16px, calc((100vw - 768px) / 2 + 24px))'
-                    }}>
-                </div>
-                
                 {/* Title outside centered wrapper with same calculations */}
                 <h1 
-                    className={`text-4xl lg:text-5xl font-playfair font-bold text-navy mt-16 mb-4 mr-4 sm:mr-6 md:mr-[324px] ${post.title.toLowerCase().includes('an explainer') ? 'italic' : ''}`} 
+                    className={`text-4xl lg:text-5xl font-playfair font-bold text-navy mt-8 mb-4 mr-4 sm:mr-6 md:mr-[324px] ${post.title.toLowerCase().includes('an explainer') ? 'italic' : ''}`} 
                     data-testid="post-title" 
                     style={{
                         fontFamily: 'Times, "Times New Roman", Palatino, serif',
