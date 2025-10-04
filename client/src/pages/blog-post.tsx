@@ -64,7 +64,7 @@ export default function BlogPostPage() {
     return (
         <div className="min-h-screen" style={{backgroundColor: '#e5e5ff'}}>
             {/* Header */}
-            <section className="py-12 relative md:pr-[calc(300px+1.5rem)] lg:pr-[calc(260px+1.5rem)] xl:pr-[calc(220px+1.5rem)] 2xl:pr-12" style={{backgroundColor: '#e5e5ff'}}>
+            <section className="py-12 relative" style={{backgroundColor: '#e5e5ff'}}>
                 {/* 12-pointed star decoration */}
                 <div 
                     className="absolute -top-0 right-4 opacity-100 pointer-events-none hidden md:block"
@@ -80,7 +80,7 @@ export default function BlogPostPage() {
                     }}
                 ></div>
                 
-                <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+                <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 md:mr-80 lg:mr-64 xl:mr-48 2xl:mr-12 relative z-10">
                     {/* Navigation Links at Top */}
                     <div className="mb-8 flex items-center gap-6">
                         <Link href="/blog">
