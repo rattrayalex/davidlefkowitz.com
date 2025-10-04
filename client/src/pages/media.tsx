@@ -309,18 +309,7 @@ export default function MediaPage() {
             
             // Scrolling up from reviews: force ALL upward scrolling through photos
             if (scrollingUpFromReviews && e.deltaY < 0) {
-                // Check if reviews are still visible on screen
-                if (reviewsRef.current) {
-                    const reviewRect = reviewsRef.current.getBoundingClientRect();
-                    // Add buffer to ensure reviews are COMPLETELY off screen (50px buffer)
-                    // Reviews must be scrolled at least 50px below the viewport before photo scrolling starts
-                    if (reviewRect.top < window.innerHeight + 50) {
-                        // Don't prevent default - let the page scroll naturally to push reviews completely off
-                        return;
-                    }
-                }
-                
-                // Reviews are completely off screen, now handle photo scrolling
+                // Always prevent page scroll and handle photo scrolling
                 e.preventDefault();
                 
                 const isAtFirstPhoto = container.scrollTop <= 0;
@@ -607,7 +596,7 @@ export default function MediaPage() {
             </section>
 
             {/* Reviews Section - integrated into main scroll */}
-            {(activeSection === 'reviews' || photosFullyScrolled) && (
+            {(activeSection === 'reviews' || photosFullyScrolled) && !scrollingUpFromReviews && (
             <div ref={reviewsRef} className="px-4 py-6" style={{backgroundColor: '#e5e5ff'}}>
                 <div className="max-w-3xl mx-auto">
                     {reviewsData?.reviews ? (
