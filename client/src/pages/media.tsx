@@ -283,6 +283,35 @@ export default function MediaPage() {
         }
     }, [mediaItems.length]);
     
+    // Prevent photo scrolling when hero section is still visible
+    useEffect(() => {
+        const handleWheel = (e: WheelEvent) => {
+            if (!containerRef.current || !photosRef.current) return;
+            
+            const photoRect = photosRef.current.getBoundingClientRect();
+            
+            // If photo section hasn't reached the top, prevent photo scrolling
+            if (photoRect.top > 0) {
+                // Check if the mouse is over the photo container
+                const container = containerRef.current;
+                const containerRect = container.getBoundingClientRect();
+                
+                if (e.clientX >= containerRect.left && 
+                    e.clientX <= containerRect.right && 
+                    e.clientY >= containerRect.top && 
+                    e.clientY <= containerRect.bottom) {
+                    e.preventDefault();
+                    // Scroll the page instead
+                    window.scrollBy(0, e.deltaY);
+                }
+            }
+        };
+        
+        // Add wheel event listener with passive: false to allow preventDefault
+        document.addEventListener('wheel', handleWheel, { passive: false });
+        return () => document.removeEventListener('wheel', handleWheel);
+    }, []);
+    
     // Hide/show footer and manage page scrolling
     useEffect(() => {
         const footer = document.querySelector('footer');
@@ -371,7 +400,7 @@ export default function MediaPage() {
     return (
         <div className="min-h-screen" style={{backgroundColor: '#e5e5ff'}}>
             {/* Hero Section */}
-            <section className="py-20 relative" style={{backgroundColor: '#e5e5ff', border: '2px solid red'}}>
+            <section className="pt-20 pb-8 relative" style={{backgroundColor: '#e5e5ff', border: '2px solid red'}}>
                 {/* 12-pointed star decoration */}
                 <div 
                     className="absolute -top-0 right-4 opacity-100 pointer-events-none hidden md:block"
