@@ -132,11 +132,10 @@ export default function BlogPostPage() {
                 
                 {/* Test container outside centered wrapper */}
                 <div 
-                    className="h-12 mb-4"
+                    className="h-12 mb-4 mr-[calc((100vw-768px)/2)] md:mr-[324px]"
                     style={{
                         border: '2px solid blue',
-                        marginLeft: 'calc((100vw - 768px) / 2 + 24px)',
-                        marginRight: '324px'
+                        marginLeft: 'calc((100vw - 768px) / 2 + 24px)'
                     }}>
                 </div>
                 
