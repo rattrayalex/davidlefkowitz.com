@@ -31,6 +31,7 @@ export default function MediaPage() {
     const [activeSection, setActiveSection] = useState<'photos' | 'reviews'>('photos');
     const [photosFullyScrolled, setPhotosFullyScrolled] = useState(false);
     const [photoSectionInView, setPhotoSectionInView] = useState(false);
+    const [scrollingUpFromReviews, setScrollingUpFromReviews] = useState(false);
     
     // Check if we're in Replit development mode
     const isReplitDev = import.meta.env.DEV && (
@@ -268,9 +269,10 @@ export default function MediaPage() {
                 setPhotosFullyScrolled(true);
             }
             
-            // Reset when scrolled back to top
+            // Reset when scrolled back to top of first photo
             if (scrollTop < 50 && visibleIndex === 0) {
                 setPhotosFullyScrolled(false);
+                setScrollingUpFromReviews(false);
             }
         };
 
@@ -302,18 +304,53 @@ export default function MediaPage() {
         };
     }, [activeSection, photosFullyScrolled]);
     
-    // Track when photo section comes into view
+    // Track when photo section comes into view and handle upward scrolling from reviews
     useEffect(() => {
+        let lastScrollTop = 0;
+        let hasBeenInReviews = false;
+        
         const handlePageScroll = () => {
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            const isScrollingUp = scrollTop < lastScrollTop;
+            
             if (photosRef.current) {
-                const rect = photosRef.current.getBoundingClientRect();
+                const photoRect = photosRef.current.getBoundingClientRect();
+                
                 // Check if photo section has reached the top of viewport
-                if (rect.top <= 0 && rect.bottom > 0) {
+                if (photoRect.top <= 0 && photoRect.bottom > 0) {
                     setPhotoSectionInView(true);
                 } else {
                     setPhotoSectionInView(false);
                 }
+                
+                // Check if we're in reviews section
+                if (reviewsRef.current) {
+                    const reviewRect = reviewsRef.current.getBoundingClientRect();
+                    if (reviewRect.top < window.innerHeight * 0.8) {
+                        hasBeenInReviews = true;
+                    }
+                }
+                
+                // If we've been in reviews and now scrolling up into photos
+                if (hasBeenInReviews && isScrollingUp && photoRect.bottom > 0) {
+                    setScrollingUpFromReviews(true);
+                    // Ensure photo container is at bottom when entering from reviews
+                    if (containerRef.current && photoRect.top >= -10) {
+                        const maxScroll = containerRef.current.scrollHeight - containerRef.current.clientHeight;
+                        if (containerRef.current.scrollTop < maxScroll - 10) {
+                            containerRef.current.scrollTop = maxScroll;
+                        }
+                    }
+                }
+                
+                // If we've scrolled back above photos, reset everything
+                if (photoRect.top > 0) {
+                    setScrollingUpFromReviews(false);
+                    hasBeenInReviews = false;
+                }
             }
+            
+            lastScrollTop = scrollTop;
         };
         
         window.addEventListener('scroll', handlePageScroll);
@@ -418,9 +455,12 @@ export default function MediaPage() {
                 className="h-screen" 
                 ref={photosRef}
                 style={{
-                    position: photoSectionInView && activeSection === 'photos' && !photosFullyScrolled ? 'sticky' : 'relative',
-                    top: photoSectionInView && activeSection === 'photos' && !photosFullyScrolled ? 0 : 'auto',
-                    zIndex: photoSectionInView && activeSection === 'photos' && !photosFullyScrolled ? 10 : 'auto'
+                    position: (photoSectionInView && activeSection === 'photos' && !photosFullyScrolled) || 
+                              (photoSectionInView && scrollingUpFromReviews) ? 'sticky' : 'relative',
+                    top: (photoSectionInView && activeSection === 'photos' && !photosFullyScrolled) || 
+                         (photoSectionInView && scrollingUpFromReviews) ? 0 : 'auto',
+                    zIndex: (photoSectionInView && activeSection === 'photos' && !photosFullyScrolled) || 
+                            (photoSectionInView && scrollingUpFromReviews) ? 10 : 'auto'
                 }}>
 
                 {/* Scrollable Image Container */}
