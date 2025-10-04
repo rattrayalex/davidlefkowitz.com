@@ -128,13 +128,17 @@ export default function BlogPostPage() {
                         </div>
                     </div>
                     
-                    {/* Test container */}
-                    <div 
-                        className="h-12 mb-4"
-                        style={{
-                            border: '2px solid blue'
-                        }}>
-                    </div>
+                </div>
+                
+                {/* Test container outside centered wrapper */}
+                <div 
+                    className="h-12 mb-4 ml-4 md:ml-[calc(50vw-368px)]"
+                    style={{
+                        border: '2px solid blue'
+                    }}>
+                </div>
+                
+                <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
                     
                     {/* Title */}
                     <h1 
