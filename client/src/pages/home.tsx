@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "wouter";
 import { ArrowRight, Trophy, GraduationCap, Music } from "lucide-react";
@@ -7,6 +7,8 @@ import { Composition, Recording, BlogPost, Profile } from "@shared/schema";
 import twelvePointStarSvg from "@/assets/12_point_curved.svg";
 
 export default function Home() {
+    const [logos, setLogos] = useState<{ [key: string]: string }>({});
+    
     const { data: profile, isLoading: profileLoading } = useQuery({
         queryKey: ["/api/profile"],
         queryFn: async () => {
@@ -37,6 +39,20 @@ export default function Home() {
     const compositions = compositionData?.compositions || [];
     const featuredCompositions = compositions.slice(0, 3);
     const recentPosts = posts.slice(0, 2);
+    
+    useEffect(() => {
+        // Fetch logos from API
+        fetch('/api/logos')
+            .then(res => res.json())
+            .then(data => {
+                const logoMap: { [key: string]: string } = {};
+                data.forEach((item: { platform: string, path: string }) => {
+                    logoMap[item.platform] = item.path;
+                });
+                setLogos(logoMap);
+            })
+            .catch(error => console.error("Error fetching logos:", error));
+    }, []);
 
     if (profileLoading) {
         return (
@@ -127,6 +143,88 @@ export default function Home() {
                 </div>
             </section>
 
+            {/* Latest Release Box - Below mini buttons */}
+            <section className="py-16" style={{backgroundColor: '#e5e5ff'}}>
+                <div className="flex justify-center px-4">
+                    <div style={{
+                        backgroundColor: 'white',
+                        border: '2.5px solid hsl(262.1, 83.3%, 57.8%)',
+                        borderRadius: '1rem',
+                        padding: '30px',
+                        maxWidth: '500px',
+                        textAlign: 'center'
+                    }}>
+                        {/* Title */}
+                        <h3 className="text-xl font-semibold mb-6" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
+                            Listen to the Latest Release:<br/>
+                            Preludes and Fugues for Piano/Prepared Piano
+                        </h3>
+                        
+                        {/* Streaming Links */}
+                        <div className="flex justify-center gap-6">
+                            {/* Spotify Link */}
+                            <a 
+                                href="https://open.spotify.com/album/1AXDnGNFGtceS4zGvmLn8H"
+                                target="_blank" 
+                                rel="noopener noreferrer"
+                                className="flex items-center justify-center p-4 hover:opacity-80 transition-opacity"
+                                style={{
+                                    backgroundColor: '#f9f9f9',
+                                    borderRadius: '8px',
+                                    width: '150px',
+                                    minHeight: '80px'
+                                }}
+                            >
+                                {logos["Spotify"] ? (
+                                    <img 
+                                        src={logos["Spotify"]} 
+                                        alt="Spotify logo"
+                                        style={{ 
+                                            maxHeight: '40px', 
+                                            maxWidth: '100%',
+                                            objectFit: 'contain'
+                                        }}
+                                    />
+                                ) : (
+                                    <span className="text-center text-gray-700" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
+                                        Spotify
+                                    </span>
+                                )}
+                            </a>
+                            
+                            {/* YouTube Link */}
+                            <a 
+                                href="https://youtube.com/playlist?list=PL1WjDUvuhzW9pgsYIJhDD9i374wjGNkKi"
+                                target="_blank" 
+                                rel="noopener noreferrer"
+                                className="flex items-center justify-center p-4 hover:opacity-80 transition-opacity"
+                                style={{
+                                    backgroundColor: '#f9f9f9',
+                                    borderRadius: '8px',
+                                    width: '150px',
+                                    minHeight: '80px'
+                                }}
+                            >
+                                {logos["YouTube"] ? (
+                                    <img 
+                                        src={logos["YouTube"]} 
+                                        alt="YouTube logo"
+                                        style={{ 
+                                            maxHeight: '40px', 
+                                            maxWidth: '100%',
+                                            objectFit: 'contain'
+                                        }}
+                                    />
+                                ) : (
+                                    <span className="text-center text-gray-700" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
+                                        YouTube
+                                    </span>
+                                )}
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </section>
 
         </div>
     );
