@@ -30,6 +30,7 @@ export default function MediaPage() {
     const [editTitleValue, setEditTitleValue] = useState('');
     const [activeSection, setActiveSection] = useState<'photos' | 'reviews'>('photos');
     const [photosFullyScrolled, setPhotosFullyScrolled] = useState(false);
+    const [photoSectionInView, setPhotoSectionInView] = useState(false);
     
     // Check if we're in Replit development mode
     const isReplitDev = import.meta.env.DEV && (
@@ -264,21 +265,16 @@ export default function MediaPage() {
         }
     }, [mediaItems.length]);
     
-    // Hide/show footer and prevent page scrolling based on state
+    // Hide/show footer and manage page scrolling
     useEffect(() => {
         const footer = document.querySelector('footer');
-        const body = document.body;
         
         if (activeSection === 'photos' && !photosFullyScrolled) {
-            // Hide footer and prevent page scrolling when viewing photos
+            // Hide footer when viewing photos
             if (footer) footer.style.display = 'none';
-            body.style.overflow = 'hidden';
-            body.style.height = '100vh';
         } else {
-            // Show footer and allow normal scrolling
+            // Show footer
             if (footer) footer.style.display = '';
-            body.style.overflow = '';
-            body.style.height = '';
         }
         
         // Clean up on unmount
@@ -287,10 +283,26 @@ export default function MediaPage() {
             if (footer) {
                 footer.style.display = '';
             }
-            body.style.overflow = '';
-            body.style.height = '';
         };
     }, [activeSection, photosFullyScrolled]);
+    
+    // Track when photo section comes into view
+    useEffect(() => {
+        const handlePageScroll = () => {
+            if (photosRef.current) {
+                const rect = photosRef.current.getBoundingClientRect();
+                // Check if photo section has reached the top of viewport
+                if (rect.top <= 0 && rect.bottom > 0) {
+                    setPhotoSectionInView(true);
+                } else {
+                    setPhotoSectionInView(false);
+                }
+            }
+        };
+        
+        window.addEventListener('scroll', handlePageScroll);
+        return () => window.removeEventListener('scroll', handlePageScroll);
+    }, []);
 
 
     if (isLoading) {
@@ -302,7 +314,7 @@ export default function MediaPage() {
     }
 
     return (
-        <div className={`min-h-screen ${activeSection === 'photos' && !photosFullyScrolled ? 'h-screen overflow-hidden' : ''}`} style={{backgroundColor: '#e5e5ff'}}>
+        <div className="min-h-screen" style={{backgroundColor: '#e5e5ff'}}>
             {/* Hero Section */}
             <section className="py-20 relative" style={{backgroundColor: '#e5e5ff', border: '2px solid red'}}>
                 {/* 12-pointed star decoration */}
@@ -386,7 +398,14 @@ export default function MediaPage() {
             </div>
 
             {/* Media Gallery with Snap Scroll */}
-            <section className="relative h-screen" ref={photosRef}>
+            <section 
+                className="h-screen" 
+                ref={photosRef}
+                style={{
+                    position: photoSectionInView && activeSection === 'photos' && !photosFullyScrolled ? 'sticky' : 'relative',
+                    top: photoSectionInView && activeSection === 'photos' && !photosFullyScrolled ? 0 : 'auto',
+                    zIndex: photoSectionInView && activeSection === 'photos' && !photosFullyScrolled ? 10 : 'auto'
+                }}>
 
                 {/* Scrollable Image Container */}
                 <div 
