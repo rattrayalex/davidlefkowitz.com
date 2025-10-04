@@ -139,19 +139,20 @@ export default function BlogPostPage() {
                     }}>
                 </div>
                 
+                {/* Title outside centered wrapper with same calculations */}
+                <h1 
+                    className={`text-4xl lg:text-5xl font-playfair font-bold text-navy mt-16 mb-4 mr-4 sm:mr-6 md:mr-[324px] ${post.title.toLowerCase().includes('an explainer') ? 'italic' : ''}`} 
+                    data-testid="post-title" 
+                    style={{
+                        fontFamily: 'Times, "Times New Roman", Palatino, serif',
+                        lineHeight: '1.25',
+                        border: '2px solid red',
+                        marginLeft: 'max(16px, calc((100vw - 768px) / 2 + 24px))'
+                    }}>
+                    {post.title}
+                </h1>
+                
                 <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-                    
-                    {/* Title */}
-                    <h1 
-                        className={`text-4xl lg:text-5xl font-playfair font-bold text-navy md:pr-24 mt-16 ${post.title.toLowerCase().includes('an explainer') ? 'italic' : ''}`} 
-                        data-testid="post-title" 
-                        style={{
-                            fontFamily: 'Times, "Times New Roman", Palatino, serif',
-                            lineHeight: '1.25',
-                            border: '2px solid red'
-                        }}>
-                        {post.title}
-                    </h1>
 
                     {/* Tags */}
                     {post.tags && post.tags.length > 0 && (
