@@ -87,7 +87,8 @@ export default function FYC() {
                                 border: '2.5px solid hsl(262.1, 83.3%, 57.8%)',
                                 padding: '11px 20px 5px 20px',
                                 borderRadius: '1rem',
-                                cursor: 'pointer'
+                                cursor: 'pointer',
+                                boxShadow: '0 4px 6px rgba(0, 0, 0, 0.2)'
                             }}
                             onClick={() => {
                                 // Track Listen Now button click
