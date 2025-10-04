@@ -155,7 +155,7 @@ export default function Home() {
                         textAlign: 'center'
                     }}>
                         {/* Title */}
-                        <h3 className="text-xl font-semibold mb-6" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
+                        <h3 className="font-semibold mb-6" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif', fontSize: '1.75rem'}}>
                             Listen to the Latest Release:<br/>
                             Preludes and Fugues for Piano/Prepared Piano
                         </h3>
