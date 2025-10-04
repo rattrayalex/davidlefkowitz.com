@@ -129,7 +129,7 @@ export default function BlogPostPage() {
                     </div>
 
                     {/* Title */}
-                    <div className="md:pr-[340px]">
+                    <div className="md:pr-48 lg:pr-40 xl:pr-32 2xl:pr-24">
                         <h1 
                             className={`text-4xl lg:text-5xl font-playfair font-bold text-navy ${post.title.toLowerCase().includes('an explainer') ? 'italic' : ''}`} 
                             data-testid="post-title" 
