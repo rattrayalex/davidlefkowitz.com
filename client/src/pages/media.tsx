@@ -283,25 +283,44 @@ export default function MediaPage() {
         }
     }, [mediaItems.length]);
     
-    // Prevent photo scrolling when hero section is still visible
+    // Prevent photo scrolling when hero section is still visible (scrolling down)
+    // and force all upward scrolling through photos when coming from reviews
     useEffect(() => {
         const handleWheel = (e: WheelEvent) => {
             if (!containerRef.current || !photosRef.current) return;
             
             const photoRect = photosRef.current.getBoundingClientRect();
+            const container = containerRef.current;
+            const containerRect = container.getBoundingClientRect();
             
-            // If photo section hasn't reached the top, prevent photo scrolling
-            if (photoRect.top > 0) {
-                // Check if the mouse is over the photo container
-                const container = containerRef.current;
-                const containerRect = container.getBoundingClientRect();
+            // Check if mouse is over the photo container
+            const isOverContainer = e.clientX >= containerRect.left && 
+                                   e.clientX <= containerRect.right && 
+                                   e.clientY >= containerRect.top && 
+                                   e.clientY <= containerRect.bottom;
+            
+            // Scrolling down: prevent photo scrolling if hero section is still visible
+            if (photoRect.top > 0 && isOverContainer && e.deltaY > 0) {
+                e.preventDefault();
+                // Scroll the page instead
+                window.scrollBy(0, e.deltaY);
+                return;
+            }
+            
+            // Scrolling up from reviews: force ALL upward scrolling through photos
+            if (scrollingUpFromReviews && e.deltaY < 0) {
+                // Always prevent page scroll when scrolling up from reviews
+                e.preventDefault();
                 
-                if (e.clientX >= containerRect.left && 
-                    e.clientX <= containerRect.right && 
-                    e.clientY >= containerRect.top && 
-                    e.clientY <= containerRect.bottom) {
-                    e.preventDefault();
-                    // Scroll the page instead
+                const isAtFirstPhoto = container.scrollTop <= 0;
+                
+                if (!isAtFirstPhoto) {
+                    // Scroll the photo container upward
+                    container.scrollBy({ top: e.deltaY });
+                } else {
+                    // At first photo, clear flag and allow page scroll
+                    setScrollingUpFromReviews(false);
+                    // Scroll the page to show hero
                     window.scrollBy(0, e.deltaY);
                 }
             }
@@ -310,7 +329,7 @@ export default function MediaPage() {
         // Add wheel event listener with passive: false to allow preventDefault
         document.addEventListener('wheel', handleWheel, { passive: false });
         return () => document.removeEventListener('wheel', handleWheel);
-    }, []);
+    }, [scrollingUpFromReviews]);
     
     // Hide/show footer and manage page scrolling
     useEffect(() => {
@@ -364,12 +383,17 @@ export default function MediaPage() {
                 
                 // If we've been in reviews, scrolling up, and photo section bottom is now visible
                 if (hasBeenInReviews && isScrollingUp && photoRect.bottom >= window.innerHeight) {
-                    setScrollingUpFromReviews(true);
-                    // Reset photo container to bottom only once when photo section comes into view
-                    if (containerRef.current && !hasResetPhotoScroll) {
-                        const maxScroll = containerRef.current.scrollHeight - containerRef.current.clientHeight;
-                        containerRef.current.scrollTop = maxScroll;
-                        hasResetPhotoScroll = true;
+                    if (!scrollingUpFromReviews) {
+                        setScrollingUpFromReviews(true);
+                        // Snap to photo section and position container at last photo
+                        if (photosRef.current && containerRef.current && !hasResetPhotoScroll) {
+                            // Ensure photo section is at viewport top
+                            photosRef.current.scrollIntoView({ behavior: 'instant', block: 'start' });
+                            // Position photo container at last photo
+                            const maxScroll = containerRef.current.scrollHeight - containerRef.current.clientHeight;
+                            containerRef.current.scrollTop = maxScroll;
+                            hasResetPhotoScroll = true;
+                        }
                     }
                 }
                 
