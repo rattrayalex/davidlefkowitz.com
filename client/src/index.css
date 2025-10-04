@@ -92,7 +92,7 @@
     #c8c0ff 50%,
     #e8e8ff 100%
   );
-  animation: gradientShift 30s ease-in-out infinite;
+  animation: gradientShift 15s ease-in-out infinite;
   will-change: transform;
   transform: translateZ(0); /* Force GPU acceleration */
   backface-visibility: hidden; /* Prevent flickering */
