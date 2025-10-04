@@ -144,7 +144,7 @@ export default function Home() {
             </section>
 
             {/* Latest Release Box - Below mini buttons */}
-            <section className="py-16" style={{backgroundColor: '#e5e5ff'}}>
+            <section className="pb-16" style={{backgroundColor: '#e5e5ff', paddingTop: '92px'}}>
                 <div className="flex justify-center px-4">
                     <div style={{
                         backgroundColor: 'white',
