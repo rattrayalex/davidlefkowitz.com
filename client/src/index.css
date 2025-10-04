@@ -58,16 +58,16 @@
   --charcoal: hsl(210, 25%, 25%);
 }
 
-/* FYC page animated background - noticeable gradient based on #e5e5ff */
+/* FYC page animated background - optimized for performance */
 @keyframes gradientShift {
   0% { 
-    background-position: 0% 50%;
+    transform: translateX(0) translateY(0);
   }
   50% { 
-    background-position: 100% 50%;
+    transform: translateX(-10%) translateY(-5%);
   }
   100% { 
-    background-position: 0% 50%;
+    transform: translateX(0) translateY(0);
   }
 }
 
@@ -77,16 +77,25 @@
   position: relative;
   overflow: hidden;
   background: #e5e5ff;
+}
+
+.fyc-animated-background::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
   background: linear-gradient(
-    -45deg,
+    135deg,
     #e8e8ff 0%,
-    #c8c0ff 25%,
-    #e8e8ff 50%,
-    #c0c8ff 75%,
+    #c8c0ff 50%,
     #e8e8ff 100%
   );
-  background-size: 500% 500%;
-  animation: gradientShift 12s ease infinite;
+  animation: gradientShift 30s ease-in-out infinite;
+  will-change: transform;
+  transform: translateZ(0); /* Force GPU acceleration */
+  backface-visibility: hidden; /* Prevent flickering */
 }
 
 /* Ensure content is above the animated background */
