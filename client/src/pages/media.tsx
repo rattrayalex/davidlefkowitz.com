@@ -63,6 +63,7 @@ export default function MediaPage() {
 
     const scrollToReviews = () => {
         setActiveSection('reviews');
+        setPhotosFullyScrolled(true); // Allow scrolling when reviews are clicked
         // Scroll to the reviews section at the bottom
         reviewsRef.current?.scrollIntoView({ 
             behavior: 'smooth',
@@ -249,6 +250,11 @@ export default function MediaPage() {
             if (isAtBottom || isLastPhoto) {
                 setPhotosFullyScrolled(true);
             }
+            
+            // Reset when scrolled back to top
+            if (scrollTop < 50 && visibleIndex === 0) {
+                setPhotosFullyScrolled(false);
+            }
         };
 
         const container = containerRef.current;
@@ -258,15 +264,21 @@ export default function MediaPage() {
         }
     }, [mediaItems.length]);
     
-    // Hide/show footer based on scroll state
+    // Hide/show footer and prevent page scrolling based on state
     useEffect(() => {
         const footer = document.querySelector('footer');
-        if (footer) {
-            if (activeSection === 'photos' && !photosFullyScrolled) {
-                footer.style.display = 'none';
-            } else {
-                footer.style.display = '';
-            }
+        const body = document.body;
+        
+        if (activeSection === 'photos' && !photosFullyScrolled) {
+            // Hide footer and prevent page scrolling when viewing photos
+            if (footer) footer.style.display = 'none';
+            body.style.overflow = 'hidden';
+            body.style.height = '100vh';
+        } else {
+            // Show footer and allow normal scrolling
+            if (footer) footer.style.display = '';
+            body.style.overflow = '';
+            body.style.height = '';
         }
         
         // Clean up on unmount
@@ -275,6 +287,8 @@ export default function MediaPage() {
             if (footer) {
                 footer.style.display = '';
             }
+            body.style.overflow = '';
+            body.style.height = '';
         };
     }, [activeSection, photosFullyScrolled]);
 
@@ -288,7 +302,7 @@ export default function MediaPage() {
     }
 
     return (
-        <div className="min-h-screen" style={{backgroundColor: '#e5e5ff'}}>
+        <div className={`min-h-screen ${activeSection === 'photos' && !photosFullyScrolled ? 'h-screen overflow-hidden' : ''}`} style={{backgroundColor: '#e5e5ff'}}>
             {/* Hero Section */}
             <section className="py-20 relative" style={{backgroundColor: '#e5e5ff', border: '2px solid red'}}>
                 {/* 12-pointed star decoration */}
@@ -321,6 +335,9 @@ export default function MediaPage() {
                                         ? 'bg-navy text-white' 
                                         : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
                                 }`}
+                                style={{
+                                    border: activeSection === 'photos' ? '1.5px solid white' : '1.5px solid black'
+                                }}
                                 data-testid="photos-button"
                             >
                                 Photos
@@ -332,6 +349,9 @@ export default function MediaPage() {
                                         ? 'bg-navy text-white' 
                                         : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
                                 }`}
+                                style={{
+                                    border: activeSection === 'reviews' ? '1.5px solid white' : '1.5px solid black'
+                                }}
                                 data-testid="reviews-button"
                             >
                                 Reviews
@@ -366,7 +386,7 @@ export default function MediaPage() {
             </div>
 
             {/* Media Gallery with Snap Scroll */}
-            <section className="relative h-screen" ref={photosRef} style={{position: activeSection === 'photos' && !photosFullyScrolled ? 'sticky' : 'relative', top: 0}}>
+            <section className="relative h-screen" ref={photosRef}>
 
                 {/* Scrollable Image Container */}
                 <div 
