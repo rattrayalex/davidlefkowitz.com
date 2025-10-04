@@ -128,9 +128,17 @@ export default function BlogPostPage() {
                         </div>
                     </div>
                     
+                    {/* Test container */}
+                    <div 
+                        className="h-12 mb-4"
+                        style={{
+                            border: '2px solid blue'
+                        }}>
+                    </div>
+                    
                     {/* Title */}
                     <h1 
-                        className={`text-4xl lg:text-5xl font-playfair font-bold text-navy md:pr-24 ${post.title.toLowerCase().includes('an explainer') ? 'italic' : ''}`} 
+                        className={`text-4xl lg:text-5xl font-playfair font-bold text-navy md:pr-24 mt-16 ${post.title.toLowerCase().includes('an explainer') ? 'italic' : ''}`} 
                         data-testid="post-title" 
                         style={{
                             fontFamily: 'Times, "Times New Roman", Palatino, serif',
