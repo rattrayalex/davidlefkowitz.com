@@ -309,7 +309,17 @@ export default function MediaPage() {
             
             // Scrolling up from reviews: force ALL upward scrolling through photos
             if (scrollingUpFromReviews && e.deltaY < 0) {
-                // Always prevent page scroll when scrolling up from reviews
+                // Check if reviews are still visible on screen
+                if (reviewsRef.current) {
+                    const reviewRect = reviewsRef.current.getBoundingClientRect();
+                    // If reviews are still visible (top is less than viewport height), scroll them off first
+                    if (reviewRect.top < window.innerHeight) {
+                        // Don't prevent default - let the page scroll naturally to push reviews off
+                        return;
+                    }
+                }
+                
+                // Reviews are off screen, now handle photo scrolling
                 e.preventDefault();
                 
                 const isAtFirstPhoto = container.scrollTop <= 0;
