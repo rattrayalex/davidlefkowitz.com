@@ -381,9 +381,11 @@ export default function MediaPage() {
                     }
                 }
                 
-                // If we've been in reviews, scrolling up, and photo section bottom is now visible
-                if (hasBeenInReviews && isScrollingUp && photoRect.bottom >= window.innerHeight) {
-                    if (!scrollingUpFromReviews) {
+                // If we've been in reviews, scrolling up, and reviews are completely off screen
+                if (hasBeenInReviews && isScrollingUp && reviewsRef.current) {
+                    const reviewRect = reviewsRef.current.getBoundingClientRect();
+                    // Only trigger when reviews are COMPLETELY below the viewport
+                    if (reviewRect.top >= window.innerHeight && !scrollingUpFromReviews) {
                         setScrollingUpFromReviews(true);
                         // Snap to photo section and position container at last photo
                         if (photosRef.current && containerRef.current && !hasResetPhotoScroll) {
@@ -596,7 +598,7 @@ export default function MediaPage() {
             </section>
 
             {/* Reviews Section - integrated into main scroll */}
-            {(activeSection === 'reviews' || photosFullyScrolled) && !scrollingUpFromReviews && (
+            {(activeSection === 'reviews' || photosFullyScrolled) && (
             <div ref={reviewsRef} className="px-4 py-6" style={{backgroundColor: '#e5e5ff'}}>
                 <div className="max-w-3xl mx-auto">
                     {reviewsData?.reviews ? (
