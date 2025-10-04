@@ -64,7 +64,7 @@ export default function BlogPostPage() {
     return (
         <div className="min-h-screen" style={{backgroundColor: '#e5e5ff'}}>
             {/* Header */}
-            <section className="py-12 relative" style={{backgroundColor: '#e5e5ff'}}>
+            <section className="py-12 relative md:pr-[calc(300px+1.5rem)] lg:pr-[calc(260px+1.5rem)] xl:pr-[calc(220px+1.5rem)] 2xl:pr-12" style={{backgroundColor: '#e5e5ff'}}>
                 {/* 12-pointed star decoration */}
                 <div 
                     className="absolute -top-0 right-4 opacity-100 pointer-events-none hidden md:block"
@@ -130,7 +130,7 @@ export default function BlogPostPage() {
 
                     {/* Title */}
                     <h1 
-                        className={`text-4xl lg:text-5xl font-playfair font-bold text-navy md:pr-80 lg:pr-72 xl:pr-64 2xl:pr-12 ${post.title.toLowerCase().includes('an explainer') ? 'italic' : ''}`} 
+                        className={`text-4xl lg:text-5xl font-playfair font-bold text-navy ${post.title.toLowerCase().includes('an explainer') ? 'italic' : ''}`} 
                         data-testid="post-title" 
                         style={{
                             fontFamily: 'Times, "Times New Roman", Palatino, serif',
