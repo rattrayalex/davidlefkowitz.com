@@ -522,7 +522,7 @@ export default function MediaPage() {
                 <div 
                     ref={containerRef}
                     className="h-screen overflow-y-auto snap-y snap-mandatory"
-                    style={{scrollbarWidth: 'none', msOverflowStyle: 'none', border: '3px solid blue'}}
+                    style={{scrollbarWidth: 'none', msOverflowStyle: 'none'}}
                 >
                     <style>{`
                         .h-screen::-webkit-scrollbar {
