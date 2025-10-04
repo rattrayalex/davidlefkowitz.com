@@ -257,6 +257,26 @@ export default function MediaPage() {
             return () => container.removeEventListener('scroll', handleScroll);
         }
     }, [mediaItems.length]);
+    
+    // Hide/show footer based on scroll state
+    useEffect(() => {
+        const footer = document.querySelector('footer');
+        if (footer) {
+            if (activeSection === 'photos' && !photosFullyScrolled) {
+                footer.style.display = 'none';
+            } else {
+                footer.style.display = '';
+            }
+        }
+        
+        // Clean up on unmount
+        return () => {
+            const footer = document.querySelector('footer');
+            if (footer) {
+                footer.style.display = '';
+            }
+        };
+    }, [activeSection, photosFullyScrolled]);
 
 
     if (isLoading) {
