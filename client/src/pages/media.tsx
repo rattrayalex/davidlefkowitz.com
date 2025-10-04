@@ -59,17 +59,33 @@ export default function MediaPage() {
     const scrollToPhotos = () => {
         setActiveSection('photos');
         setPhotosFullyScrolled(false);
-        photosRef.current?.scrollIntoView({ behavior: 'smooth' });
+        // Use setTimeout to ensure state updates before scrolling
+        setTimeout(() => {
+            photosRef.current?.scrollIntoView({ 
+                behavior: 'smooth',
+                block: 'start'
+            });
+        }, 10);
     };
 
     const scrollToReviews = () => {
         setActiveSection('reviews');
         setPhotosFullyScrolled(true); // Allow scrolling when reviews are clicked
-        // Scroll to the reviews section at the bottom
-        reviewsRef.current?.scrollIntoView({ 
-            behavior: 'smooth',
-            block: 'start'
-        });
+        // Use setTimeout to ensure state updates and reviews render before scrolling
+        setTimeout(() => {
+            if (reviewsRef.current) {
+                reviewsRef.current.scrollIntoView({ 
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            } else {
+                // If reviews aren't rendered yet, scroll to bottom
+                window.scrollTo({
+                    top: document.documentElement.scrollHeight,
+                    behavior: 'smooth'
+                });
+            }
+        }, 50);
     };
 
     const handleUploadComplete = (result: { url: string; fileName: string }) => {
