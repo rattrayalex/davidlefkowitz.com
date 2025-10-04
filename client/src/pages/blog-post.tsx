@@ -130,7 +130,7 @@ export default function BlogPostPage() {
 
                     {/* Title */}
                     <h1 
-                        className={`text-4xl lg:text-5xl font-playfair font-bold text-navy md:pr-48 lg:pr-40 xl:pr-24 ${post.title.toLowerCase().includes('an explainer') ? 'italic' : ''}`} 
+                        className={`text-4xl lg:text-5xl font-playfair font-bold text-navy md:max-w-[calc(100vw-340px)] ${post.title.toLowerCase().includes('an explainer') ? 'italic' : ''}`} 
                         data-testid="post-title" 
                         style={{
                             fontFamily: 'Times, "Times New Roman", Palatino, serif',
