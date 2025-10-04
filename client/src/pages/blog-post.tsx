@@ -136,7 +136,7 @@ export default function BlogPostPage() {
                     style={{
                         border: '2px solid blue',
                         marginLeft: 'calc((100vw - 768px) / 2 + 24px)',
-                        marginRight: '340px'
+                        marginRight: '324px'
                     }}>
                 </div>
                 
