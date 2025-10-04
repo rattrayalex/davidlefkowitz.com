@@ -127,18 +127,25 @@ export default function BlogPostPage() {
                             </span>
                         </div>
                     </div>
-
-                    {/* Title */}
-                    <h1 
-                        className={`text-4xl lg:text-5xl font-playfair font-bold text-navy md:max-w-[calc(100vw-340px)] ${post.title.toLowerCase().includes('an explainer') ? 'italic' : ''}`} 
-                        data-testid="post-title" 
-                        style={{
-                            fontFamily: 'Times, "Times New Roman", Palatino, serif',
-                            lineHeight: '1.25',
-                            border: '2px solid red'
-                        }}>
-                        {post.title}
-                    </h1>
+                </div>
+                
+                {/* Title wrapper with absolute right margin */}
+                <div className="md:mr-[340px]">
+                    <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+                        <h1 
+                            className={`text-4xl lg:text-5xl font-playfair font-bold text-navy ${post.title.toLowerCase().includes('an explainer') ? 'italic' : ''}`} 
+                            data-testid="post-title" 
+                            style={{
+                                fontFamily: 'Times, "Times New Roman", Palatino, serif',
+                                lineHeight: '1.25',
+                                border: '2px solid red'
+                            }}>
+                            {post.title}
+                        </h1>
+                    </div>
+                </div>
+                
+                <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
 
                     {/* Tags */}
                     {post.tags && post.tags.length > 0 && (
