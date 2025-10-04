@@ -132,9 +132,10 @@ export default function BlogPostPage() {
                 
                 {/* Test container outside centered wrapper */}
                 <div 
-                    className="h-12 mb-4 ml-4 md:ml-[calc(50vw-368px)]"
+                    className="h-12 mb-4"
                     style={{
-                        border: '2px solid blue'
+                        border: '2px solid blue',
+                        marginLeft: 'calc((100vw - 768px) / 2)'
                     }}>
                 </div>
                 
