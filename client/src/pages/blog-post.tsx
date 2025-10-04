@@ -137,7 +137,6 @@ export default function BlogPostPage() {
                     style={{
                         fontFamily: 'Times, "Times New Roman", Palatino, serif',
                         lineHeight: '1.25',
-                        border: '2px solid red',
                         marginLeft: 'max(16px, calc((100vw - 768px) / 2 + 24px))'
                     }}>
                     {post.title}
