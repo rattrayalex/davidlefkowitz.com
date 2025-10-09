@@ -363,9 +363,15 @@ export async function getMediaPageReviews(): Promise<string[]> {
                 
                 if (paragraphText.trim()) {
                     // Add any non-empty paragraph in the Review Excerpts section
-                    // Look for reviews that start with quotes or specific phrases like "Genuinely fascinating"
-                    reviews.push(paragraphText.trim());
-                    console.log(`Found review: "${paragraphText.substring(0, 50)}..."`);
+                    // Convert smart quotes to regular quotes so the frontend formatting works
+                    const normalizedText = paragraphText.trim()
+                        .replace(/"/g, '"')  // Left smart quote to regular
+                        .replace(/"/g, '"')  // Right smart quote to regular
+                        .replace(/'/g, "'")  // Left smart single quote
+                        .replace(/'/g, "'"); // Right smart single quote
+                    
+                    reviews.push(normalizedText);
+                    console.log(`Found review: "${normalizedText.substring(0, 50)}..."`);
                 }
             }
         }
