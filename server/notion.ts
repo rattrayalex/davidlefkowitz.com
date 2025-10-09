@@ -364,11 +364,22 @@ export async function getMediaPageReviews(): Promise<string[]> {
                 if (paragraphText.trim()) {
                     // Add any non-empty paragraph in the Review Excerpts section
                     // Convert smart quotes to regular quotes so the frontend formatting works
-                    const normalizedText = paragraphText.trim()
+                    let normalizedText = paragraphText.trim()
                         .replace(/"/g, '"')  // Left smart quote to regular
                         .replace(/"/g, '"')  // Right smart quote to regular
                         .replace(/'/g, "'")  // Left smart single quote
                         .replace(/'/g, "'"); // Right smart single quote
+                    
+                    // Debug: Check what we have before fixing
+                    console.log(`Before fix: First 10 chars: ${JSON.stringify(normalizedText.substring(0, 10))}`);
+                    
+                    // Remove duplicate quotes at the beginning (Notion sometimes has "")
+                    // Check for different types of double quotes (regular "", curly "", etc)
+                    if (normalizedText.startsWith('""') || normalizedText.startsWith('"')) {
+                        // Just ensure there's only one quote at the beginning
+                        normalizedText = normalizedText.replace(/^["""]+/, '"');
+                        console.log(`Fixed quotes at beginning`);
+                    }
                     
                     reviews.push(normalizedText);
                     console.log(`Found review: "${normalizedText.substring(0, 50)}..."`);
