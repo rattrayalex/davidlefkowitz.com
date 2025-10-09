@@ -1,5 +1,5 @@
 import { Client } from "@notionhq/client";
-import { db } from '@db';
+import { db } from './db';
 import { mediaReviews } from '@shared/schema';
 
 // Initialize Notion client
