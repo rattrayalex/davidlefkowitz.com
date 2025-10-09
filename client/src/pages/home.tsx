@@ -143,7 +143,7 @@ export default function Home() {
                                 href="https://open.spotify.com/album/1AXDnGNFGtceS4zGvmLn8H"
                                 target="_blank" 
                                 rel="noopener noreferrer"
-                                className="flex items-center justify-center p-4 hover:opacity-80 transition-opacity"
+                                className="flex flex-col items-center justify-center p-4 hover:opacity-80 transition-opacity"
                                 style={{
                                     backgroundColor: '#e8e8ff',
                                     border: '2.5px solid hsl(262.1, 83.3%, 57.8%)',
@@ -152,12 +152,20 @@ export default function Home() {
                                     minHeight: '80px'
                                 }}
                             >
+                                <span className="text-center" style={{
+                                    fontFamily: 'Times, "Times New Roman", Palatino, serif',
+                                    fontSize: '1.75rem',
+                                    lineHeight: '1',
+                                    marginBottom: '4px'
+                                }}>
+                                    Listen on
+                                </span>
                                 {logos["Spotify"] ? (
                                     <img 
                                         src={logos["Spotify"]} 
                                         alt="Spotify logo"
                                         style={{ 
-                                            maxHeight: '40px', 
+                                            maxHeight: '30px', 
                                             maxWidth: '100%',
                                             objectFit: 'contain'
                                         }}
@@ -174,7 +182,7 @@ export default function Home() {
                                 href="https://youtube.com/playlist?list=PL1WjDUvuhzW9pgsYIJhDD9i374wjGNkKi"
                                 target="_blank" 
                                 rel="noopener noreferrer"
-                                className="flex items-center justify-center p-4 hover:opacity-80 transition-opacity"
+                                className="flex flex-col items-center justify-center p-4 hover:opacity-80 transition-opacity"
                                 style={{
                                     backgroundColor: '#e8e8ff',
                                     border: '2.5px solid hsl(262.1, 83.3%, 57.8%)',
@@ -183,12 +191,20 @@ export default function Home() {
                                     minHeight: '80px'
                                 }}
                             >
+                                <span className="text-center" style={{
+                                    fontFamily: 'Times, "Times New Roman", Palatino, serif',
+                                    fontSize: '1.75rem',
+                                    lineHeight: '1',
+                                    marginBottom: '4px'
+                                }}>
+                                    Listen on
+                                </span>
                                 {logos["YouTube"] ? (
                                     <img 
                                         src={logos["YouTube"]} 
                                         alt="YouTube logo"
                                         style={{ 
-                                            maxHeight: '40px', 
+                                            maxHeight: '30px', 
                                             maxWidth: '100%',
                                             objectFit: 'contain'
                                         }}
