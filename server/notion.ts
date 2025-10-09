@@ -328,15 +328,29 @@ export async function getMediaPageReviews(): Promise<string[]> {
             page_size: 100,
         });
         
-        // Extract review paragraphs from the top of the page
+        // Extract review paragraphs that are under the "Review Excerpts" heading
         const reviews: string[] = [];
+        let foundReviewSection = false;
         
         for (const block of blocks.results) {
             // Type guard to check if block has type property
             if (!("type" in block)) continue;
             
-            // Only get paragraphs at the beginning
-            if (block.type === "paragraph") {
+            // Look for the "Review Excerpts" heading
+            if (block.type === "heading_1" || block.type === "heading_2" || block.type === "heading_3") {
+                const headingText = (block as any)[block.type]?.rich_text
+                    ?.map((text: any) => text.plain_text || '')
+                    ?.join('') || '';
+                
+                if (headingText.toLowerCase().includes('review') && headingText.toLowerCase().includes('excerpt')) {
+                    foundReviewSection = true;
+                    console.log(`Found Review Excerpts section: "${headingText}"`);
+                } else if (foundReviewSection) {
+                    // We've hit another heading after the Review Excerpts section, stop
+                    console.log(`Reached end of reviews section at heading: "${headingText}"`);
+                    break;
+                }
+            } else if (foundReviewSection && block.type === "paragraph") {
                 // Extract plain text from rich text array
                 const richTextArray = (block as any).paragraph?.rich_text || [];
                 let paragraphText = '';
@@ -348,20 +362,10 @@ export async function getMediaPageReviews(): Promise<string[]> {
                 }
                 
                 if (paragraphText.trim()) {
-                    // Reviews typically contain quotation marks and are substantial in length
-                    if (paragraphText.includes('"') && paragraphText.length > 50) {
-                        reviews.push(paragraphText.trim());
-                    }
-                } else {
-                    // Empty paragraph might indicate end of reviews section
-                    if (reviews.length > 0) {
-                        break;
-                    }
-                }
-            } else if (block.type === "heading_1" || block.type === "heading_2" || block.type === "heading_3") {
-                // Stop when we hit a heading (likely start of a different section)
-                if (reviews.length > 0) {
-                    break;
+                    // Add any non-empty paragraph in the Review Excerpts section
+                    // Look for reviews that start with quotes or specific phrases like "Genuinely fascinating"
+                    reviews.push(paragraphText.trim());
+                    console.log(`Found review: "${paragraphText.substring(0, 50)}..."`);
                 }
             }
         }
