@@ -152,7 +152,7 @@ export default function Home() {
                                     minHeight: '80px'
                                 }}
                             >
-                                <span className="text-center" style={{
+                                <span className="text-center font-semibold" style={{
                                     fontFamily: 'Times, "Times New Roman", Palatino, serif',
                                     fontSize: '1.75rem',
                                     lineHeight: '1',
@@ -191,7 +191,7 @@ export default function Home() {
                                     minHeight: '80px'
                                 }}
                             >
-                                <span className="text-center" style={{
+                                <span className="text-center font-semibold" style={{
                                     fontFamily: 'Times, "Times New Roman", Palatino, serif',
                                     fontSize: '1.75rem',
                                     lineHeight: '1',
