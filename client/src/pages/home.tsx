@@ -65,7 +65,7 @@ export default function Home() {
     return (
         <div className="min-h-screen">
             {/* Spotify and YouTube MiniButtons - Below header, aligned with "David S. Lefkowitz" text */}
-            <section style={{backgroundColor: '#e5e5ff', paddingTop: '20px', paddingBottom: '20px'}}>
+            <section style={{backgroundColor: '#e5e5ff', paddingTop: '0px', paddingBottom: '0px'}}>
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex items-center gap-8" style={{
                         border: '2.5px solid hsl(262.1, 83.3%, 57.8%)',
