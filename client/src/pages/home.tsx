@@ -70,7 +70,7 @@ export default function Home() {
                     <div className="flex items-center gap-8" style={{
                         border: '2.5px solid hsl(262.1, 83.3%, 57.8%)',
                         borderRadius: '0.5rem',
-                        padding: '12px 20px',
+                        padding: '0px 20px',
                         width: 'fit-content',
                         backgroundColor: 'white'
                     }}>
