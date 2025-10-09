@@ -145,7 +145,8 @@ export default function Home() {
                                 rel="noopener noreferrer"
                                 className="flex items-center justify-center p-4 hover:opacity-80 transition-opacity"
                                 style={{
-                                    backgroundColor: '#d0d0ff',
+                                    backgroundColor: '#e8e8ff',
+                                    border: '2.5px solid hsl(262.1, 83.3%, 57.8%)',
                                     borderRadius: '8px',
                                     width: '150px',
                                     minHeight: '80px'
@@ -175,7 +176,8 @@ export default function Home() {
                                 rel="noopener noreferrer"
                                 className="flex items-center justify-center p-4 hover:opacity-80 transition-opacity"
                                 style={{
-                                    backgroundColor: '#d0d0ff',
+                                    backgroundColor: '#e8e8ff',
+                                    border: '2.5px solid hsl(262.1, 83.3%, 57.8%)',
                                     borderRadius: '8px',
                                     width: '150px',
                                     minHeight: '80px'
