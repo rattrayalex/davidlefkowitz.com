@@ -1,7 +1,7 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { notion } from "./notion";
-import { contactFormSchema, blogPosts, compositions, recordings, media, contacts, profile, aboutContent, analytics, type BlogPost, type Composition, type Recording, type Media } from "@shared/schema";
+import { contactFormSchema, blogPosts, compositions, recordings, media, mediaReviews, contacts, profile, aboutContent, analytics, type BlogPost, type Composition, type Recording, type Media } from "@shared/schema";
 import { db } from "./db";
 import { eq, desc, asc, sql, lt, gt, and } from "drizzle-orm";
 import { syncBlogPosts, syncCompositions, syncRecordings, syncMedia, syncAboutPage, syncLogos } from "./sync";
@@ -594,8 +594,20 @@ Lefkowitz's compositions have been released on more than twenty commercial recor
     // Get review content from Notion Media page
     app.get("/api/media/reviews", async (req, res) => {
         try {
-            const reviews = await getMediaPageReviews();
-            res.json({ reviews });
+            // First, try to get reviews from database cache
+            const cachedReviews = await db.select()
+                .from(mediaReviews)
+                .orderBy(mediaReviews.order_index);
+            
+            if (cachedReviews.length > 0) {
+                // Serve from cache for fastest response
+                const reviews = cachedReviews.map(r => r.review_text);
+                res.json({ reviews });
+            } else {
+                // If cache is empty, fetch from Notion and cache will be populated
+                const reviews = await getMediaPageReviews();
+                res.json({ reviews });
+            }
         } catch (error) {
             console.error("Error fetching media reviews:", error);
             res.status(500).json({ error: "Failed to fetch reviews" });

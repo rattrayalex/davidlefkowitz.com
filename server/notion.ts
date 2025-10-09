@@ -1,4 +1,6 @@
 import { Client } from "@notionhq/client";
+import { db } from '@db';
+import { mediaReviews } from '@shared/schema';
 
 // Initialize Notion client
 export const notion = new Client({
@@ -399,6 +401,25 @@ export async function getMediaPageReviews(): Promise<string[]> {
         }
         
         console.log(`Found ${reviews.length} reviews from Media page`);
+        
+        // Save reviews to database for persistent caching
+        if (reviews.length > 0) {
+            try {
+                // Clear existing reviews
+                await db.delete(mediaReviews);
+                
+                // Insert new reviews with proper order
+                const reviewsToInsert = reviews.map((review, index) => ({
+                    review_text: review,
+                    order_index: index
+                }));
+                await db.insert(mediaReviews).values(reviewsToInsert);
+                console.log(`Saved ${reviews.length} reviews to database cache`);
+            } catch (dbError) {
+                console.error('Error saving reviews to database:', dbError);
+                // Continue even if database save fails
+            }
+        }
         
         // Return the fetched reviews, or fallback if none found
         return reviews.length > 0 ? reviews : fallbackReviews;

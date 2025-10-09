@@ -110,6 +110,15 @@ export const compositions = pgTable("compositions", {
   updated_at: timestamp("updated_at").defaultNow(),
 });
 
+// Media reviews cache table
+export const mediaReviews = pgTable("media_reviews", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  review_text: text("review_text").notNull(),
+  order_index: integer("order_index").notNull(), // To maintain review order
+  last_synced: timestamp("last_synced").defaultNow(),
+  created_at: timestamp("created_at").defaultNow(),
+});
+
 export const recordings = pgTable("recordings", {
   id: varchar("id").primaryKey(), // Use Notion page ID
   title: text("title").notNull(),
