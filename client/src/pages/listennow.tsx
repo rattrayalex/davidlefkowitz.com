@@ -64,14 +64,10 @@ export default function ListenNow() {
                     />
                 </div>
                 
-                {/* Streaming Links Container */}
+                {/* Streaming Links Grid */}
                 <div className="flex justify-center">
                     <div style={{
-                        width: '400px',
-                        backgroundColor: 'white',
-                        border: '2px solid #d8b4fe',
-                        borderRadius: '8px',
-                        padding: '30px'
+                        width: '400px'
                     }}>
                         <div className="grid grid-cols-2 gap-6">
                             {streamingPlatforms.map((platform) => {
