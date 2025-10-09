@@ -68,7 +68,7 @@ export default function ListenNow() {
                 <div className="flex justify-center">
                     <div style={{
                         width: '400px',
-                        backgroundColor: '#e5e5ff',
+                        backgroundColor: 'white',
                         border: '2px solid #d8b4fe',
                         borderRadius: '8px',
                         padding: '30px'
