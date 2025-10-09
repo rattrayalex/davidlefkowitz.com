@@ -317,29 +317,14 @@ export async function getMediaPageReviews(): Promise<string[]> {
     ];
     
     try {
-        // Get all child pages from the main Notion page
-        const childPages = await getNotionPages();
+        // The Media page ID from Notion (confirmed by API to be a page, not a database)
+        const mediaPageId = '2633907b-2ee6-802a-a8a5-c99e17695b28';
         
-        // Log available pages for debugging
-        console.log("Available Notion pages:", childPages.map(p => p.title));
-        
-        // Find the Media page
-        const mediaPage = childPages.find(page => 
-            page.title.toLowerCase() === "media" || 
-            page.title.toLowerCase().includes("media")
-        );
-        
-        if (!mediaPage) {
-            console.log("Media page not found in Notion, returning fallback reviews");
-            console.log("Searched for 'media' in:", childPages.map(p => p.title));
-            return fallbackReviews;
-        }
-        
-        console.log(`Found Media page: ${mediaPage.title} (${mediaPage.id})`);
+        console.log(`Fetching reviews from Media page: ${mediaPageId}`);
         
         // Get the page content
         const blocks = await notion.blocks.children.list({
-            block_id: mediaPage.id,
+            block_id: mediaPageId,
             page_size: 100,
         });
         
