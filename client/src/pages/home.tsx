@@ -92,11 +92,22 @@ export default function Home() {
                             rel="noopener noreferrer"
                             className="hover:opacity-80 transition-opacity"
                         >
-                            <img 
-                                src="/api/media-cache/logo_youtube_minibutton_811dfb93.png" 
-                                alt="Listen on YouTube" 
-                                className="h-14 w-auto"
-                            />
+                            <div style={{
+                                height: '40px',
+                                overflow: 'hidden',
+                                display: 'flex',
+                                alignItems: 'center'
+                            }}>
+                                <img 
+                                    src="/api/media-cache/logo_youtube_minibutton_811dfb93.png" 
+                                    alt="Listen on YouTube" 
+                                    className="h-14 w-auto"
+                                    style={{
+                                        marginTop: '-8px',
+                                        marginBottom: '-8px'
+                                    }}
+                                />
+                            </div>
                         </a>
                     </div>
                 </div>
