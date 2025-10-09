@@ -67,7 +67,13 @@ export default function Home() {
             {/* Spotify and YouTube MiniButtons - Below header, aligned with "David S. Lefkowitz" text */}
             <section style={{backgroundColor: '#e5e5ff', paddingTop: '20px', paddingBottom: '20px'}}>
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="flex items-center gap-8">
+                    <div className="flex items-center gap-8" style={{
+                        border: '2.5px solid hsl(262.1, 83.3%, 57.8%)',
+                        borderRadius: '0.5rem',
+                        padding: '12px 20px',
+                        width: 'fit-content',
+                        backgroundColor: 'white'
+                    }}>
                         <a 
                             href="https://open.spotify.com/playlist/6RDB9qiiRD1BR753a953Dx" 
                             target="_blank" 
