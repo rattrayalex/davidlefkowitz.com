@@ -245,7 +245,7 @@ export default function FYC() {
                         </p>
                         
                         <p>
-                            Early reviews for the recording include, {'\u201C'}an exciting collection….this album is a monumental accomplishment for the genre.{'\u201D'} In describing the results of his prepared piano, one writer wrote, {'\u201C'}the effect is hypnotic—the piano seemingly floats on air and then runs upon the earth as voices converge and then separate.{'\u201D'}
+                            Early reviews for the recording include, {'\u201C'}an exciting collection….this album is a monumental accomplishment for the genre.{'\u201D'} In describing the results of his prepared piano, one writer wrote, {'\u201C'}the effect is hypnotic—the piano seemingly floats on air and then runs upon the earth as voices converge and then separate.{'\u201D'} Another writer called the music {'\u201C'}genuinely fascinating … this set of 26 works is as contemporary in approach, outlook and sound as was Bach{'\u2019'}s work in its day. … [Lefkowitz{'\u2019'}s] strong sense of rhythm and willingness to combine and juxtapose disparate elements of keyboard writing frequently lead to music that is enjoyable and often surprising.{'\u201D'}
                         </p>
                     </div>
                 </div>
