@@ -320,6 +320,9 @@ export async function getMediaPageReviews(): Promise<string[]> {
         // Get all child pages from the main Notion page
         const childPages = await getNotionPages();
         
+        // Log available pages for debugging
+        console.log("Available Notion pages:", childPages.map(p => p.title));
+        
         // Find the Media page
         const mediaPage = childPages.find(page => 
             page.title.toLowerCase() === "media" || 
@@ -328,6 +331,7 @@ export async function getMediaPageReviews(): Promise<string[]> {
         
         if (!mediaPage) {
             console.log("Media page not found in Notion, returning fallback reviews");
+            console.log("Searched for 'media' in:", childPages.map(p => p.title));
             return fallbackReviews;
         }
         

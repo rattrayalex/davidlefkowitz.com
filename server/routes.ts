@@ -601,6 +601,18 @@ Lefkowitz's compositions have been released on more than twenty commercial recor
             res.status(500).json({ error: "Failed to fetch reviews" });
         }
     });
+    
+    // Debug endpoint to check available Notion pages
+    app.get("/api/debug/notion-pages", async (req, res) => {
+        try {
+            const { getNotionPages } = await import("./notion");
+            const pages = await getNotionPages();
+            res.json({ pages });
+        } catch (error) {
+            console.error("Error fetching Notion pages:", error);
+            res.status(500).json({ error: "Failed to fetch Notion pages" });
+        }
+    });
 
     // Media upload endpoints
     app.post("/api/media/upload-url", async (req, res) => {
