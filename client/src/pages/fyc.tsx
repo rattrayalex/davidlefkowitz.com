@@ -85,7 +85,7 @@ export default function FYC() {
                                 fontFamily: 'Times, "Times New Roman", Palatino, serif',
                                 backgroundColor: 'white',
                                 border: '3.5px solid hsl(262.1, 83.3%, 57.8%)',
-                                outline: '2.0px solid hsl(262.1, 83.3%, 57.8%)',
+                                outline: '1.5px solid hsl(262.1, 83.3%, 57.8%)',
                                 outlineOffset: '2.0px',
                                 padding: '11px 20px 5px 20px',
                                 borderRadius: '1rem',
