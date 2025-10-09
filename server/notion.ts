@@ -363,26 +363,37 @@ export async function getMediaPageReviews(): Promise<string[]> {
                 
                 if (paragraphText.trim()) {
                     // Add any non-empty paragraph in the Review Excerpts section
-                    // Convert smart quotes to regular quotes so the frontend formatting works
+                    // First, convert all smart quotes to regular quotes
                     let normalizedText = paragraphText.trim()
                         .replace(/"/g, '"')  // Left smart quote to regular
                         .replace(/"/g, '"')  // Right smart quote to regular
                         .replace(/'/g, "'")  // Left smart single quote
                         .replace(/'/g, "'"); // Right smart single quote
                     
-                    // Debug: Check what we have before fixing
-                    console.log(`Before fix: First 10 chars: ${JSON.stringify(normalizedText.substring(0, 10))}`);
+                    // Check if the review already has quotes (straight quotes from Notion)
+                    const hasOpeningQuote = normalizedText.startsWith('"');
+                    const hasClosingQuote = normalizedText.includes('"') && normalizedText.indexOf('"') > 0;
                     
-                    // Remove duplicate quotes at the beginning (Notion sometimes has "")
-                    // Check for different types of double quotes (regular "", curly "", etc)
-                    if (normalizedText.startsWith('""') || normalizedText.startsWith('"')) {
-                        // Just ensure there's only one quote at the beginning
-                        normalizedText = normalizedText.replace(/^["""]+/, '"');
-                        console.log(`Fixed quotes at beginning`);
+                    if (!hasOpeningQuote && !hasClosingQuote) {
+                        // No quotes at all - need to add both
+                        // Look for a pattern with two or more spaces which typically separates review from attribution
+                        const doubleSpaceIndex = normalizedText.indexOf('  ');
+                        
+                        if (doubleSpaceIndex > 0) {
+                            // Found double space - likely separates review from attribution
+                            normalizedText = '"' + normalizedText.substring(0, doubleSpaceIndex) + '"  ' + normalizedText.substring(doubleSpaceIndex + 2).trim();
+                        } else {
+                            // No clear separator - just wrap the whole thing in quotes
+                            normalizedText = '"' + normalizedText + '"';
+                        }
+                    } else if (!hasOpeningQuote) {
+                        // Missing opening quote only
+                        normalizedText = '"' + normalizedText;
                     }
+                    // If it already has quotes (like the third review), leave it as-is
                     
                     reviews.push(normalizedText);
-                    console.log(`Found review: "${normalizedText.substring(0, 50)}..."`);
+                    console.log(`Processed review: "${normalizedText.substring(0, 50)}..."`);
                 }
             }
         }
