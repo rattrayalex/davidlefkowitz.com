@@ -64,6 +64,38 @@ export default function Home() {
 
     return (
         <div className="min-h-screen">
+            {/* Spotify and YouTube MiniButtons - Below header, aligned with "David S. Lefkowitz" text */}
+            <section style={{backgroundColor: '#e5e5ff', paddingTop: '20px', paddingBottom: '20px'}}>
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div className="flex items-center gap-8">
+                        <a 
+                            href="https://open.spotify.com/playlist/6RDB9qiiRD1BR753a953Dx" 
+                            target="_blank" 
+                            rel="noopener noreferrer"
+                            className="hover:opacity-80 transition-opacity"
+                        >
+                            <img 
+                                src="/api/media-cache/logo_spotify_minibutton_bdf3c836.png" 
+                                alt="Listen on Spotify" 
+                                className="h-10 w-auto"
+                            />
+                        </a>
+                        <a 
+                            href="https://www.youtube.com/channel/UCD3hPTS-8nSSXptFcXsnEAw" 
+                            target="_blank" 
+                            rel="noopener noreferrer"
+                            className="hover:opacity-80 transition-opacity"
+                        >
+                            <img 
+                                src="/api/media-cache/logo_youtube_minibutton_811dfb93.png" 
+                                alt="Listen on YouTube" 
+                                className="h-12 w-auto"
+                            />
+                        </a>
+                    </div>
+                </div>
+            </section>
+
             {/* Hero Section */}
             <section className="relative overflow-visible pt-16 pb-8" style={{backgroundColor: '#e5e5ff', minHeight: '800px'}}>
                 {/* Twelve-pointed star background from production website */}
