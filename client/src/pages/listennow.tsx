@@ -86,6 +86,7 @@ export default function ListenNow() {
                                         className="flex items-center justify-center p-4 hover:opacity-80 transition-opacity"
                                         style={{
                                             backgroundColor: '#f9f9f9',
+                                            border: '1.5px solid hsl(262.1, 83.3%, 57.8%)',
                                             borderRadius: '8px',
                                             minHeight: '80px'
                                         }}
@@ -139,6 +140,7 @@ export default function ListenNow() {
                                 className="flex items-center justify-center p-4 hover:opacity-80 transition-opacity"
                                 style={{
                                     backgroundColor: '#f9f9f9',
+                                    border: '1.5px solid hsl(262.1, 83.3%, 57.8%)',
                                     borderRadius: '8px',
                                     width: '150px',
                                     minHeight: '80px'
