@@ -155,13 +155,19 @@ export default function Home() {
                         textAlign: 'center'
                     }}>
                         {/* Title */}
-                        <h3 className="font-semibold my-4" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif', fontSize: '1.75rem'}}>
+                        <h3 className="font-semibold my-4" style={{
+                            fontFamily: 'Times, "Times New Roman", Palatino, serif', 
+                            fontSize: '1.75rem',
+                            border: '2px solid red'  // DEBUG: Red border for h3
+                        }}>
                             Listen to the Latest Release:<br/>
                             Preludes and Fugues for Piano/Prepared Piano
                         </h3>
                         
                         {/* Streaming Links */}
-                        <div className="flex justify-center gap-6">
+                        <div className="flex justify-center gap-6" style={{
+                            border: '2px solid green'  // DEBUG: Green border for streaming links container
+                        }}>
                             {/* Spotify Link */}
                             <a 
                                 href="https://open.spotify.com/album/1AXDnGNFGtceS4zGvmLn8H"
@@ -172,7 +178,8 @@ export default function Home() {
                                     backgroundColor: '#f9f9f9',
                                     borderRadius: '8px',
                                     width: '150px',
-                                    minHeight: '80px'
+                                    minHeight: '80px',
+                                    border: '2px solid blue'  // DEBUG: Blue border for Spotify box
                                 }}
                             >
                                 {logos["Spotify"] ? (
@@ -202,7 +209,8 @@ export default function Home() {
                                     backgroundColor: '#f9f9f9',
                                     borderRadius: '8px',
                                     width: '150px',
-                                    minHeight: '80px'
+                                    minHeight: '80px',
+                                    border: '2px solid orange'  // DEBUG: Orange border for YouTube box
                                 }}
                             >
                                 {logos["YouTube"] ? (
