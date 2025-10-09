@@ -103,7 +103,7 @@ export default function Home() {
             </section>
 
             {/* Hero Section */}
-            <section className="relative overflow-visible pt-0 pb-8" style={{backgroundColor: '#e5e5ff', minHeight: '800px'}}>
+            <section className="relative overflow-visible pt-16 pb-8" style={{backgroundColor: '#e5e5ff', minHeight: '800px'}}>
                 {/* Twelve-pointed star background from production website */}
                 <div 
                     className="absolute inset-0 opacity-20 pointer-events-none"
