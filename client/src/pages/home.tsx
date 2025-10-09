@@ -155,7 +155,7 @@ export default function Home() {
                         textAlign: 'center'
                     }}>
                         {/* Title */}
-                        <h3 className="font-semibold my-4" style={{
+                        <h3 className="font-semibold mb-4" style={{
                             fontFamily: 'Times, "Times New Roman", Palatino, serif', 
                             fontSize: '1.75rem',
                             border: '2px solid red'  // DEBUG: Red border for h3
