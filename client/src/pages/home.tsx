@@ -95,7 +95,7 @@ export default function Home() {
                             <img 
                                 src="/api/media-cache/logo_youtube_minibutton_811dfb93.png" 
                                 alt="Listen on YouTube" 
-                                className="h-12 w-auto"
+                                className="h-10 w-auto"
                             />
                         </a>
                     </div>
