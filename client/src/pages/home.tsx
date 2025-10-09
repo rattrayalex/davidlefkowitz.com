@@ -150,7 +150,7 @@ export default function Home() {
                         backgroundColor: 'white',
                         border: '2.5px solid hsl(262.1, 83.3%, 57.8%)',
                         borderRadius: '1rem',
-                        padding: '30px',
+                        padding: '12px 30px',
                         maxWidth: '500px',
                         textAlign: 'center'
                     }}>
