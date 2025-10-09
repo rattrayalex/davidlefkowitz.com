@@ -297,9 +297,8 @@ export async function getRecordings(recordingsDatabaseId: string) {
 
 // Get review content from the Notion Media page
 export async function getMediaPageReviews(): Promise<string[]> {
-    // Return the known 8 review excerpts from the Media page
-    // These are curated professional reviews that appear under "Review Excerpts" section
-    return [
+    // Fallback reviews for when Notion fetch fails
+    const fallbackReviews = [
         "\"David Lefkowitz...has a unique voice to present, and it is worth listening to. The subtitle for the CD is Music of Contradictions, and he makes these words meaningful via the constant use of tension in his writing. This gives much of his music an energetic sense of motion, which takes on a programmable value in a work such as The Chase Through Escher's Metamorphosen. ...Elsewhere, Lefkowitz continues to show off a fascination with the nature of movement in music, incorporating devices that are both diverse and connected, from the baroque and before to contemporary minimalism. … It is a complement to the composer that style and technique are not ends in themselves, but rather tools to be used in the larger conceptions of the music. … In all, this CD is a fine omnibus to introduce a talented and compelling young composer.\"  Peter Burwasser",
         
         "\"The most virtuosic composing and greatest breadth was achieved by California composer David Lefkowitz's A Surfer's Guide for the Perplexed (or: Jonah on the Raging Sea), which proved to be a rich contemporary tone poem.\"  Jim Lowe",
@@ -316,4 +315,74 @@ export async function getMediaPageReviews(): Promise<string[]> {
         
         "\"…who write on clouds… is mysterious and evocative… I began to see the texture as a metaphor for loneliness in the midst of abundance, and also as a meditation on the fragility of communication.\"  David DeBoor Canfield"
     ];
+    
+    try {
+        // Get all child pages from the main Notion page
+        const childPages = await getNotionPages();
+        
+        // Find the Media page
+        const mediaPage = childPages.find(page => 
+            page.title.toLowerCase() === "media" || 
+            page.title.toLowerCase().includes("media")
+        );
+        
+        if (!mediaPage) {
+            console.log("Media page not found in Notion, returning fallback reviews");
+            return fallbackReviews;
+        }
+        
+        console.log(`Found Media page: ${mediaPage.title} (${mediaPage.id})`);
+        
+        // Get the page content
+        const blocks = await notion.blocks.children.list({
+            block_id: mediaPage.id,
+            page_size: 100,
+        });
+        
+        // Extract review paragraphs from the top of the page
+        const reviews: string[] = [];
+        
+        for (const block of blocks.results) {
+            // Type guard to check if block has type property
+            if (!("type" in block)) continue;
+            
+            // Only get paragraphs at the beginning
+            if (block.type === "paragraph") {
+                // Extract plain text from rich text array
+                const richTextArray = (block as any).paragraph?.rich_text || [];
+                let paragraphText = '';
+                
+                if (Array.isArray(richTextArray)) {
+                    paragraphText = richTextArray
+                        .map((textBlock: any) => textBlock.plain_text || '')
+                        .join('');
+                }
+                
+                if (paragraphText.trim()) {
+                    // Reviews typically contain quotation marks and are substantial in length
+                    if (paragraphText.includes('"') && paragraphText.length > 50) {
+                        reviews.push(paragraphText.trim());
+                    }
+                } else {
+                    // Empty paragraph might indicate end of reviews section
+                    if (reviews.length > 0) {
+                        break;
+                    }
+                }
+            } else if (block.type === "heading_1" || block.type === "heading_2" || block.type === "heading_3") {
+                // Stop when we hit a heading (likely start of a different section)
+                if (reviews.length > 0) {
+                    break;
+                }
+            }
+        }
+        
+        console.log(`Found ${reviews.length} reviews from Media page`);
+        
+        // Return the fetched reviews, or fallback if none found
+        return reviews.length > 0 ? reviews : fallbackReviews;
+    } catch (error) {
+        console.error("Error fetching Media page reviews from Notion:", error);
+        return fallbackReviews;
+    }
 }
