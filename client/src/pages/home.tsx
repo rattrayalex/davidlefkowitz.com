@@ -132,8 +132,7 @@ export default function Home() {
                             fontFamily: 'Times, "Times New Roman", Palatino, serif', 
                             fontSize: '1.75rem'
                         }}>
-                            Preludes and Fugues for Piano<br/>
-                            Listen to the Latest Release:
+                            Preludes and Fugues for Piano
                         </h3>
                         
                         {/* Streaming Links */}
