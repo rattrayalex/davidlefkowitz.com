@@ -67,7 +67,7 @@ export default function Home() {
             {/* Spotify and YouTube MiniButtons - Below header, aligned with "David S. Lefkowitz" text */}
             <section style={{backgroundColor: '#e5e5ff', paddingTop: '0px', paddingBottom: '0px'}}>
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="flex items-center gap-8" style={{
+                    <div className="flex items-center gap-8 ml-2" style={{
                         border: '2.5px solid hsl(262.1, 83.3%, 57.8%)',
                         borderRadius: '0.5rem',
                         padding: '0px 20px',
