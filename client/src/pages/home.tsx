@@ -114,37 +114,10 @@ export default function Home() {
                         
                     </div>
                 </div>
-                {/* Spotify and YouTube MiniButtons - positioned absolutely to not affect layout */}
-                <div className="absolute left-1/2 transform -translate-x-1/2 flex items-center gap-8" style={{ bottom: '-60px' }}>
-                    <a 
-                        href="https://open.spotify.com/playlist/6RDB9qiiRD1BR753a953Dx" 
-                        target="_blank" 
-                        rel="noopener noreferrer"
-                        className="hover:opacity-80 transition-opacity"
-                    >
-                        <img 
-                            src="/api/media-cache/logo_spotify_minibutton_bdf3c836.png" 
-                            alt="Listen on Spotify" 
-                            className="h-10 w-auto"
-                        />
-                    </a>
-                    <a 
-                        href="https://www.youtube.com/channel/UCD3hPTS-8nSSXptFcXsnEAw" 
-                        target="_blank" 
-                        rel="noopener noreferrer"
-                        className="hover:opacity-80 transition-opacity"
-                    >
-                        <img 
-                            src="/api/media-cache/logo_youtube_minibutton_811dfb93.png" 
-                            alt="Listen on YouTube" 
-                            className="h-12 w-auto"
-                        />
-                    </a>
-                </div>
             </section>
 
-            {/* Latest Release Box - Below mini buttons */}
-            <section className="pb-4" style={{backgroundColor: '#e5e5ff', paddingTop: '92px'}}>
+            {/* Latest Release Box - Above mini buttons */}
+            <section className="pb-4" style={{backgroundColor: '#e5e5ff', paddingTop: '30px'}}>
                 <div className="flex justify-center px-4">
                     <div style={{
                         backgroundColor: 'white',
@@ -226,6 +199,36 @@ export default function Home() {
                             </a>
                         </div>
                     </div>
+                </div>
+            </section>
+
+            {/* Spotify and YouTube MiniButtons - Below Latest Release */}
+            <section style={{backgroundColor: '#e5e5ff', paddingTop: '30px', paddingBottom: '60px'}}>
+                <div className="flex justify-center items-center gap-8">
+                    <a 
+                        href="https://open.spotify.com/playlist/6RDB9qiiRD1BR753a953Dx" 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        className="hover:opacity-80 transition-opacity"
+                    >
+                        <img 
+                            src="/api/media-cache/logo_spotify_minibutton_bdf3c836.png" 
+                            alt="Listen on Spotify" 
+                            className="h-10 w-auto"
+                        />
+                    </a>
+                    <a 
+                        href="https://www.youtube.com/channel/UCD3hPTS-8nSSXptFcXsnEAw" 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        className="hover:opacity-80 transition-opacity"
+                    >
+                        <img 
+                            src="/api/media-cache/logo_youtube_minibutton_811dfb93.png" 
+                            alt="Listen on YouTube" 
+                            className="h-12 w-auto"
+                        />
+                    </a>
                 </div>
             </section>
 
