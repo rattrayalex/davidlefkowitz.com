@@ -133,7 +133,7 @@ export default function Home() {
                             fontSize: '1.75rem'
                         }}>
                             Listen to the Latest Release:<br/>
-                            Preludes and Fugues for Piano/Prepared Piano
+                            Preludes and Fugues for Piano
                         </h3>
                         
                         {/* Streaming Links */}
