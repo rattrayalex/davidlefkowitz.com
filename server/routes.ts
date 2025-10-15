@@ -6,10 +6,11 @@ import { db } from "./db";
 import { eq, desc, asc, sql, lt, gt, and } from "drizzle-orm";
 import { syncBlogPosts, syncCompositions, syncRecordings, syncMedia, syncAboutPage, syncLogos } from "./sync";
 import { getMediaPageReviews } from "./notion";
-import { ObjectStorageService } from "./objectStorage";
+import { ObjectStorageService, objectStorageClient } from "./objectStorage";
 import { z } from "zod";
 import * as fs from "fs";
 import { promises as fsPromises } from 'fs';
+import formidable from 'formidable';
 import * as path from 'path';
 
 // Load database schemas
@@ -935,6 +936,63 @@ Lefkowitz's compositions have been released on more than twenty commercial recor
                     res.status(404).json({ error: "Cached media not found" });
                 }
             });
+        }
+    });
+
+    // Upload image directly to object storage media-cache
+    app.post("/api/media-cache/upload", async (req, res) => {
+        try {
+            // Parse form data
+            const form = formidable({
+                maxFileSize: 13 * 1024 * 1024, // 13MB limit
+                keepExtensions: true
+            });
+            
+            const [fields, files] = await form.parse(req);
+            
+            const file = Array.isArray(files.file) ? files.file[0] : files.file;
+            const photoCredits = Array.isArray(fields.photoCredits) ? fields.photoCredits[0] : fields.photoCredits;
+            
+            if (!file) {
+                return res.status(400).json({ error: "No file provided" });
+            }
+            
+            // Use original filename
+            const originalFilename = file.originalFilename || file.newFilename;
+            
+            // Read the file
+            const fileBuffer = await fsPromises.readFile(file.filepath);
+            
+            // Upload to object storage
+            const objectStorageService = new ObjectStorageService();
+            const bucketName = process.env.DEFAULT_OBJECT_STORAGE_BUCKET_ID || "replit-objstore-2036f845-9133-4980-ad50-29c551f1ef47";
+            const objectPath = `public/media-cache/${originalFilename}`;
+            
+            const bucket = objectStorageClient.bucket(bucketName);
+            const fileObject = bucket.file(objectPath);
+            
+            await fileObject.save(fileBuffer, {
+                metadata: {
+                    contentType: file.mimetype || 'image/jpeg',
+                    cacheControl: 'public, max-age=86400',
+                    metadata: {
+                        photoCredits: photoCredits || ''
+                    }
+                }
+            });
+            
+            // Clean up temp file
+            await fsPromises.unlink(file.filepath);
+            
+            res.json({ 
+                success: true, 
+                filename: originalFilename,
+                url: `/api/media-cache/${originalFilename}`
+            });
+            
+        } catch (error) {
+            console.error("Error uploading to media cache:", error);
+            res.status(500).json({ error: "Failed to upload image" });
         }
     });
 
