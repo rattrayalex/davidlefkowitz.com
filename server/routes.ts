@@ -4,7 +4,7 @@ import { notion } from "./notion";
 import { contactFormSchema, blogPosts, compositions, recordings, media, mediaReviews, contacts, profile, aboutContent, analytics, type BlogPost, type Composition, type Recording, type Media } from "@shared/schema";
 import { db } from "./db";
 import { eq, desc, asc, sql, lt, gt, and } from "drizzle-orm";
-import { syncBlogPosts, syncCompositions, syncRecordings, syncMedia, syncAboutContent } from "./sync";
+import { syncBlogPosts, syncCompositions, syncRecordings, syncMedia, syncAboutPage, syncLogos } from "./sync";
 import { getMediaPageReviews } from "./notion";
 import { ObjectStorageService } from "./objectStorage";
 import { z } from "zod";
@@ -526,105 +526,68 @@ Lefkowitz's compositions have been released on more than twenty commercial recor
         }
     });
 
-    // Get all media items from photos folder - ONLY THE ORIGINAL 8
+    // Get all media items from photos folder
     app.get("/api/media", async (req, res) => {
         try {
-            // Define the exact 8 photos we want to show with their correct credits
-            const mediaItems = [
-                {
-                    id: "1. Lefkowitz 1370",
-                    title: "1. Lefkowitz 1370",
-                    description: "",
-                    image_url: "/photos/1. Lefkowitz 1370.jpg",
-                    alt_text: "1. Lefkowitz 1370",
-                    category: "photo",
-                    date_taken: "",
-                    photo_credits: "Photo: Laura R. Lefkowitz",
-                    display_order: 0
-                },
-                {
-                    id: "2. Lefkowitz 1312",
-                    title: "2. Lefkowitz 1312",
-                    description: "",
-                    image_url: "/photos/2. Lefkowitz 1312.jpg",
-                    alt_text: "2. Lefkowitz 1312",
-                    category: "photo",
-                    date_taken: "",
-                    photo_credits: "Photo: Laura R. Lefkowitz",
-                    display_order: 1
-                },
-                {
-                    id: "3. Lefkowitz 1351",
-                    title: "3. Lefkowitz 1351",
-                    description: "",
-                    image_url: "/photos/3. Lefkowitz 1351.jpg",
-                    alt_text: "3. Lefkowitz 1351",
-                    category: "photo",
-                    date_taken: "",
-                    photo_credits: "Photo: Laura R. Lefkowitz",
-                    display_order: 2
-                },
-                {
-                    id: "4. Lefkowitz-17",
-                    title: "4. Lefkowitz-17",
-                    description: "",
-                    image_url: "/photos/4. Lefkowitz-17.jpg",
-                    alt_text: "4. Lefkowitz-17",
-                    category: "photo",
-                    date_taken: "",
-                    photo_credits: "Photo: Rob H. Baker",
-                    display_order: 3
-                },
-                {
-                    id: "5. Lefkowitz-30",
-                    title: "5. Lefkowitz-30",
-                    description: "",
-                    image_url: "/photos/5. Lefkowitz-30.jpg",
-                    alt_text: "5. Lefkowitz-30",
-                    category: "photo",
-                    date_taken: "",
-                    photo_credits: "Photo: Rob H. Baker",
-                    display_order: 4
-                },
-                {
-                    id: "6. Lefkowitz-31",
-                    title: "6. Lefkowitz-31",
-                    description: "",
-                    image_url: "/photos/6. Lefkowitz-31.jpg",
-                    alt_text: "6. Lefkowitz-31",
-                    category: "photo",
-                    date_taken: "",
-                    photo_credits: "Photo: Rob H. Baker",
-                    display_order: 5
-                },
-                {
-                    id: "7. David Lefkowitz Summer 2013",
-                    title: "7. David Lefkowitz Summer 2013",
-                    description: "",
-                    image_url: "/photos/7. David Lefkowitz Summer 2013.jpg",
-                    alt_text: "7. David Lefkowitz Summer 2013",
-                    category: "photo",
-                    date_taken: "",
-                    photo_credits: "Photo: David Waldorf",
-                    display_order: 6
-                },
-                {
-                    id: "8. DavidSLefkowitz Hi-Res",
-                    title: "8. DavidSLefkowitz Hi-Res",
-                    description: "",
-                    image_url: "/photos/8. DavidSLefkowitz Hi-Res.jpg",
-                    alt_text: "8. DavidSLefkowitz Hi-Res",
-                    category: "photo",
-                    date_taken: "",
-                    photo_credits: "Photo: Laura R. Lefkowitz",
-                    display_order: 7
-                }
+            const photosDir = path.join(process.cwd(), 'photos');
+            const files = await fsPromises.readdir(photosDir);
+            
+            // Filter for image files and create media objects
+            const imageFiles = files.filter(file => 
+                /\.(jpg|jpeg|png|gif|webp)$/i.test(file)
+            );
+            
+            // Custom order matching the previous database order
+            const customOrder = [
+                "Lefkowitz 1370.jpg",
+                "Lefkowitz 1312.jpg", 
+                "Lefkowitz 1351.jpg",
+                "Lefkowitz-17.jpg",
+                "Lefkowitz-30.jpg",
+                "Lefkowitz-31.jpg",
+                "David Lefkowitz Summer 2013.jpg",
+                "DavidSLefkowitz Hi-Res.jpg"
             ];
+            
+            // Sort files according to custom order
+            const sortedFiles = [...imageFiles].sort((a, b) => {
+                const indexA = customOrder.indexOf(a);
+                const indexB = customOrder.indexOf(b);
+                if (indexA === -1 && indexB === -1) return a.localeCompare(b);
+                if (indexA === -1) return 1;
+                if (indexB === -1) return -1;
+                return indexA - indexB;
+            });
+            
+            const mediaItems = sortedFiles.map((file, index) => {
+                // Assign individual photo credits based on position (1-indexed)
+                let photoCredit = "";
+                const position = index + 1;
+                if ([1, 2, 3, 8].includes(position)) {
+                    photoCredit = "Photo: Laura R. Lefkowitz";
+                } else if ([4, 5, 6].includes(position)) {
+                    photoCredit = "Photo: Rob H. Baker";
+                } else if (position === 7) {
+                    photoCredit = "Photo: David Waldorf";
+                }
+                
+                return {
+                    id: file.replace(/\.[^/.]+$/, ""), // Remove file extension for ID
+                    title: file.replace(/\.[^/.]+$/, ""), // Remove file extension for title
+                    description: "",
+                    image_url: `/photos/${file}`,
+                    alt_text: file.replace(/\.[^/.]+$/, ""),
+                    category: "photo",
+                    date_taken: "",
+                    photo_credits: photoCredit,
+                    display_order: index
+                };
+            });
             
             res.json(mediaItems);
         } catch (error) {
-            console.error("Error returning media items:", error);
-            res.status(500).json({ error: "Failed to fetch media" });
+            console.error("Error reading photos folder:", error);
+            res.status(500).json({ error: "Failed to fetch photos" });
         }
     });
 
@@ -802,24 +765,6 @@ Lefkowitz's compositions have been released on more than twenty commercial recor
         } catch (error) {
             console.error("Error fetching media debug info:", error);
             res.status(500).json({ error: "Failed to fetch media debug info" });
-        }
-    });
-    
-    // Temporary endpoint to get Notion databases
-    app.get("/api/notion/databases", async (req, res) => {
-        try {
-            const { getNotionDatabases } = await import("./notion.js");
-            const databases = await getNotionDatabases();
-            const formattedDatabases = databases.map(db => ({
-                id: db.id,
-                title: db.title?.[0]?.plain_text || "Untitled",
-                url: db.url
-            }));
-            console.log("Found databases:", formattedDatabases);
-            res.json(formattedDatabases);
-        } catch (error) {
-            console.error("Error getting Notion databases:", error);
-            res.status(500).json({ error: "Failed to get Notion databases" });
         }
     });
 
@@ -1194,7 +1139,7 @@ Lefkowitz's compositions have been released on more than twenty commercial recor
         
         syncMutex.isSyncing = true;
         try {
-            await syncAboutContent();
+            await syncAboutPage();
             res.json({ success: true, message: "About page sync completed" });
         } catch (error) {
             console.error("Error during about page sync:", error);
@@ -1204,33 +1149,8 @@ Lefkowitz's compositions have been released on more than twenty commercial recor
         }
     });
 
-    // Sync logos from Notion - disabled until syncLogos function is implemented
-    // app.post("/api/sync-logos", async (req, res) => {
-    //     if (syncMutex.isSyncing) {
-    //         res.json({ success: false, message: "Sync already in progress" });
-    //         return;
-    //     }
-        
-    //     syncMutex.isSyncing = true;
-    //     try {
-    //         const logos = await syncLogos();
-            
-    //         // Store the logo paths globally for the API endpoint
-    //         (global as any).cachedLogoPaths = logos.map(logo => ({
-    //             platform: logo.platform,
-    //             path: logo.url
-    //         }));
-    //         res.json({ success: true, message: "Logos sync completed", logos });
-    //     } catch (error) {
-    //         console.error("Error during logos sync:", error);
-    //         res.status(500).json({ error: "Failed to sync logos" });
-    //     } finally {
-    //         syncMutex.isSyncing = false;
-    //     }
-    // });
-
-    // Media sync endpoint
-    app.post("/api/sync/media", async (req, res) => {
+    // Sync logos from Notion
+    app.post("/api/sync-logos", async (req, res) => {
         if (syncMutex.isSyncing) {
             res.json({ success: false, message: "Sync already in progress" });
             return;
@@ -1238,11 +1158,17 @@ Lefkowitz's compositions have been released on more than twenty commercial recor
         
         syncMutex.isSyncing = true;
         try {
-            await syncMedia();
-            res.json({ success: true, message: "Media sync completed" });
+            const logos = await syncLogos();
+            
+            // Store the logo paths globally for the API endpoint
+            (global as any).cachedLogoPaths = logos.map(logo => ({
+                platform: logo.platform,
+                path: logo.url
+            }));
+            res.json({ success: true, message: "Logos sync completed", logos });
         } catch (error) {
-            console.error("Error during media sync:", error);
-            res.status(500).json({ error: "Failed to sync media" });
+            console.error("Error during logos sync:", error);
+            res.status(500).json({ error: "Failed to sync logos" });
         } finally {
             syncMutex.isSyncing = false;
         }

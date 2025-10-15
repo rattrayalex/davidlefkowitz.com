@@ -1,5 +1,5 @@
 import { db } from "./db";
-import { notion } from "./notion";
+import { notion, getNotionPages } from "./notion";
 import {
     blogPosts,
     compositions,
@@ -53,25 +53,19 @@ async function downloadImage(imageUrl: string, mediaId: string): Promise<string>
         const urlPath = new URL(imageUrl).pathname;
         const extension = path.extname(urlPath) || ".jpg";
         
-        // Generate a unique filename using media ID and content hash
-        const hash = createHash('md5').update(imageUrl).digest('hex').substring(0, 8);
-        const fileName = `media_${mediaId.replace(/-/g, '_')}_${hash}${extension}`;
-        const objectKey = `public/media-cache/${fileName}`;
+        // Generate filename using media ID and hash of URL for uniqueness
+        const hash = createHash('md5').update(imageUrl).digest('hex').slice(0, 8);
+        const filename = `${mediaId.replace(/[^a-zA-Z0-9]/g, '_')}_${hash}${extension}`;
+        const objectPath = `public/media-cache/${filename}`;
         
-        // Check if the file already exists in object storage
-        try {
-            await objectStorageClient.headObject({
-                Bucket: bucketName,
-                Key: objectKey,
-            });
-            
-            console.log(`Image already cached: ${objectKey}`);
-            return `/api/media-cache/${fileName}`;
-        } catch (headError: any) {
-            // File doesn't exist, proceed with download
-            if (headError.name !== 'NotFound') {
-                console.error('Error checking object existence:', headError);
-            }
+        const bucket = objectStorageClient.bucket(bucketName);
+        const file = bucket.file(objectPath);
+        
+        // Check if file already exists in object storage
+        const [exists] = await file.exists();
+        if (exists) {
+            console.log(`Image already cached in object storage: ${objectPath}`);
+            return `/api/media-cache/${filename}`;
         }
         
         // Download the image
@@ -81,201 +75,226 @@ async function downloadImage(imageUrl: string, mediaId: string): Promise<string>
             throw new Error(`Failed to download image: ${response.status} ${response.statusText}`);
         }
         
-        const arrayBuffer = await response.arrayBuffer();
-        const buffer = Buffer.from(arrayBuffer);
-        
-        // Determine content type
-        let contentType = 'image/jpeg';
-        if (extension.toLowerCase() === '.png') {
-            contentType = 'image/png';
-        } else if (extension.toLowerCase() === '.gif') {
-            contentType = 'image/gif';
-        } else if (extension.toLowerCase() === '.webp') {
-            contentType = 'image/webp';
-        }
-        
         // Upload to object storage
-        await objectStorageClient.putObject({
-            Bucket: bucketName,
-            Key: objectKey,
-            Body: buffer,
-            ContentType: contentType,
+        const buffer = Buffer.from(await response.arrayBuffer());
+        await file.save(buffer, {
+            metadata: {
+                contentType: response.headers.get('content-type') || 'image/jpeg',
+                cacheControl: 'public, max-age=86400', // Cache for 24 hours
+            },
         });
         
-        console.log(`Image uploaded to object storage: ${objectKey}`);
+        // Don't need to make public explicitly - Replit handles permissions
         
-        // Return the URL path that will be served by our API
-        return `/api/media-cache/${fileName}`;
+        console.log(`Image uploaded to object storage: ${objectPath}`);
+        return `/api/media-cache/${filename}`;
     } catch (error) {
-        console.error(`Error downloading/caching image: ${error}`);
+        console.error(`Failed to download image from ${imageUrl}:`, error);
         // Return original URL as fallback
         return imageUrl;
     }
 }
 
 /**
- * Convert Notion rich text to HTML
+ * Convert Notion rich text to HTML, preserving links
  */
-function richTextToHtml(richText: any[], includeLinks = false): string {
-    if (!richText || !Array.isArray(richText)) return "";
-
-    const htmlSegments: string[] = [];
-
-    for (const segment of richText) {
-        if (!segment.plain_text) continue;
-
-        let html = segment.plain_text;
-
-        // Escape HTML entities
-        html = html
-            .replace(/&/g, "&amp;")
-            .replace(/</g, "&lt;")
-            .replace(/>/g, "&gt;")
-            .replace(/"/g, "&quot;")
-            .replace(/'/g, "&#039;");
-
-        // Apply formatting - order matters!
-        if (segment.annotations?.code) {
-            html = `<code>${html}</code>`;
-        }
-        if (segment.annotations?.bold) {
-            html = `<strong>${html}</strong>`;
-        }
-        if (segment.annotations?.italic) {
-            html = `<em>${html}</em>`;
-        }
-        if (segment.annotations?.strikethrough) {
-            html = `<s>${html}</s>`;
-        }
-        if (segment.annotations?.underline) {
-            html = `<u>${html}</u>`;
-        }
-
-        // Handle links
-        if (includeLinks && segment.href) {
-            html = `<a href="${segment.href}">${html}</a>`;
-        } else if (segment.text?.link?.url) {
-            // Extract URL for composition links
-            html = segment.text.link.url;
-        }
-
-        htmlSegments.push(html);
-    }
-
-    // Join segments and replace newlines with <br> tags
-    const result = htmlSegments.join("").replace(/\n/g, "<br>");
-    return result;
-}
-
-/**
- * Extract a value from a Notion property with flexible type handling
- */
-function extractPropertyValue(property: any, fieldName?: string): any {
-    if (!property) return null;
-
-    // Direct access for known property types
-    if (property.type === "number") return property.number;
-    if (property.type === "checkbox") return property.checkbox;
-    if (property.type === "date") return property.date?.start;
-    if (property.type === "rich_text") return property.rich_text?.[0]?.plain_text || "";
-    if (property.type === "title") return property.title?.[0]?.plain_text || "";
-    if (property.type === "select") return property.select?.name || "";
-    if (property.type === "multi_select") return property.multi_select || [];
-    if (property.type === "files") return property.files || [];
-
-    // Attempt property-less extraction for special fields
-    if (property.number !== undefined) return property.number;
-    if (property.checkbox !== undefined) return property.checkbox;
-    if (property.date !== undefined) return property.date?.start;
-    if (property.rich_text !== undefined) return property.rich_text?.[0]?.plain_text || "";
-    if (property.title !== undefined) return property.title?.[0]?.plain_text || "";
-    if (property.select !== undefined) return property.select?.name || "";
-    if (property.multi_select !== undefined) return property.multi_select || [];
-    if (property.files !== undefined) return property.files || [];
-
-    // Log for debugging if we couldn't extract
-    if (fieldName) {
-        console.log(`Could not extract value for field: ${fieldName}`, property);
-    }
-
-    return null;
-}
-
-/**
- * Sync blog posts from Notion to local database
- */
-export async function syncBlogPosts() {
-    if (!notion) {
-        throw new Error("Notion client not available");
-    }
-
-    console.log("Syncing blog posts from Notion...");
-
-    try {
-        // Query the blog database directly with Published filter
-        const response = await notion.databases.query({
-            database_id: schemaData.databases.blog.id,
-            filter: {
-                property: "Status",
-                status: {
-                    equals: "Published"
+function richTextToHtml(richTextArray: any[], addLineBreaks = false): string {
+    if (!richTextArray || !Array.isArray(richTextArray)) return "";
+    
+    // For composition fields with multiple links, group by contiguous href
+    if (addLineBreaks) {
+        const compositions = [];
+        let currentComposition = [];
+        let lastHref = null;
+        let hasStartedComposition = false;
+        
+        for (let i = 0; i < richTextArray.length; i++) {
+            const textBlock = richTextArray[i];
+            const plainText = textBlock.plain_text || "";
+            const href = textBlock.href;
+            
+            // Check if this is a line break separator
+            if (plainText.includes("\n")) {
+                // If this block contains ONLY newlines (no other text), it's a separator
+                if (plainText.trim() === "") {
+                    // This is a pure newline separator - save current composition if any
+                    if (currentComposition.length > 0) {
+                        compositions.push({
+                            blocks: currentComposition,
+                            href: lastHref
+                        });
+                        currentComposition = [];
+                        lastHref = null;
+                        hasStartedComposition = false;
+                    }
+                } else {
+                    // This block has text AND newlines - split by newlines
+                    const lines = plainText.split("\n");
+                    
+                    for (let j = 0; j < lines.length; j++) {
+                        const line = lines[j];
+                        
+                        if (line.trim()) {
+                            // If we're starting a new line after content, save current composition
+                            if (j > 0 && currentComposition.length > 0) {
+                                compositions.push({
+                                    blocks: currentComposition,
+                                    href: lastHref
+                                });
+                                currentComposition = [];
+                                lastHref = null;
+                                hasStartedComposition = false;
+                            }
+                            
+                            // Add this line as a block
+                            currentComposition.push({
+                                ...textBlock,
+                                plain_text: line
+                            });
+                            
+                            if (href) {
+                                lastHref = href;
+                                hasStartedComposition = true;
+                            }
+                        }
+                    }
                 }
+            } else if (plainText.trim()) {
+                // Check if this looks like the start of a new composition title
+                const looksLikeNewComposition = () => {
+                    if (!hasStartedComposition) return false;
+                    
+                    // Different href is always a new composition
+                    if (href && href !== lastHref) return true;
+                    
+                    // If we have accumulated blocks, check for composition boundaries
+                    if (currentComposition.length > 0) {
+                        const lastBlock = currentComposition[currentComposition.length - 1];
+                        const lastText = lastBlock.plain_text || "";
+                        
+                        // Check if last text ended with common composition title endings
+                        // like closing brackets or parentheses
+                        const endsWithTitlePattern = /[\]\)]$/.test(lastText.trim());
+                        
+                        // Check if current text starts like a new title (capital letter)
+                        const startsLikeTitle = /^[A-Z]/.test(plainText.trim());
+                        
+                        // If last ended with closing bracket/paren AND current starts with capital
+                        // it's likely a new composition
+                        if (endsWithTitlePattern && startsLikeTitle) {
+                            return true;
+                        }
+                        
+                        // Check for specific known patterns that indicate new compositions
+                        // These are common composition title starts
+                        if (plainText.startsWith("With/Without") || 
+                            plainText.startsWith("Ancient Rituals") ||
+                            plainText.startsWith("Before the") ||
+                            plainText.startsWith("Calder")) {
+                            return true;
+                        }
+                    }
+                    
+                    return false;
+                };
+                
+                const isNewComposition = looksLikeNewComposition();
+                
+                if (isNewComposition) {
+                    // Save current composition and start new one
+                    if (currentComposition.length > 0) {
+                        compositions.push({
+                            blocks: currentComposition,
+                            href: lastHref
+                        });
+                        currentComposition = [];
+                    }
+                    lastHref = href;
+                    hasStartedComposition = true;
+                    currentComposition.push(textBlock);
+                } else {
+                    // Continue current composition
+                    currentComposition.push(textBlock);
+                    if (href) {
+                        lastHref = href;
+                        hasStartedComposition = true;
+                    }
+                }
+            }
+        }
+        
+        // Don't forget the last composition
+        if (currentComposition.length > 0) {
+            compositions.push({
+                blocks: currentComposition,
+                href: lastHref
+            });
+        }
+        
+        // Process each composition
+        const processedCompositions = compositions.map(composition => {
+            // Build the content with formatting
+            const content = composition.blocks.map(textBlock => {
+                let text = textBlock.plain_text || "";
+                
+                // Handle formatting
+                if (textBlock.annotations) {
+                    if (textBlock.annotations.bold) {
+                        text = `<strong>${text}</strong>`;
+                    }
+                    if (textBlock.annotations.italic) {
+                        text = `<em>${text}</em>`;
+                    }
+                    if (textBlock.annotations.code) {
+                        text = `<code class="bg-gray-100 px-1 py-0.5 rounded text-sm">${text}</code>`;
+                    }
+                }
+                
+                return text;
+            }).join(""); // Join without spaces within a composition
+            
+            // Wrap in a single anchor tag if there's an href
+            if (composition.href) {
+                return `<a href="${composition.href}" target="_blank" rel="noopener noreferrer" class="text-purple hover:text-purple-700 underline">${content}</a>`;
+            } else {
+                return content;
             }
         });
         
-        const pages = response.results;
-        console.log(`Found ${pages.length} published blog posts`);
-
-        // Clear all existing blog posts
-        await db.delete(blogPosts);
-
-        for (const page of pages) {
-            if (!("properties" in page)) continue;
-
-            const properties = page.properties;
-            const titleProperty = properties["Post Title"] || properties.Name;
-            const dateProperty = properties["Publication Date"] || properties.Date;
-            const compositionProperty = properties.Composition;
-
-            const title = titleProperty?.title?.[0]?.plain_text || "Untitled";
-
-            console.log(`Extracting content for: ${title}`);
-
-            // Extract the content and purple box text
-            const extractedContent = await extractContentAndPurpleBox(page.id, false);
-
-            // Generate slug from title
-            const slug = generateSlug(title);
-
-            const blogPost: InsertBlogPost = {
-                title,
-                published_date: dateProperty?.date?.start ? new Date(dateProperty.date.start) : new Date(), // Use current date as fallback
-                content: extractedContent.content,
-                purple_box_text: extractedContent.purpleBoxText,
-                composition_id: compositionProperty?.relation?.[0]?.id || null,
-                slug,
-            };
-
-            // Insert the blog post (no need for conflict handling since we cleared all records)
-            await db
-                .insert(blogPosts)
-                .values({
-                    ...blogPost,
-                    id: page.id,
-                });
-
-            console.log(`✓ Synced blog post: ${blogPost.title}`);
-        }
-
-        console.log("Blog sync completed");
-    } catch (error) {
-        console.error("Error syncing blog posts:", error);
-        throw error;
+        return processedCompositions.join("<br />");
     }
+    
+    // Normal processing for non-composition fields
+    const processedText = richTextArray.map(textBlock => {
+        let text = textBlock.plain_text || "";
+        
+        // Handle hyperlinks
+        if (textBlock.href) {
+            text = `<a href="${textBlock.href}" target="_blank" rel="noopener noreferrer" class="text-purple hover:text-purple-700 underline">${text}</a>`;
+        }
+        
+        // Handle formatting
+        if (textBlock.annotations) {
+            if (textBlock.annotations.bold) {
+                text = `<strong>${text}</strong>`;
+            }
+            if (textBlock.annotations.italic) {
+                text = `<em>${text}</em>`;
+            }
+            if (textBlock.annotations.code) {
+                text = `<code class="bg-gray-100 px-1 py-0.5 rounded text-sm">${text}</code>`;
+            }
+        }
+        
+        return text;
+    });
+    
+    return processedText.join(""); // Join without line breaks for normal text
 }
 
 /**
  * Extract content and purple box text from a Notion page
+ * Uses last paragraph for purple box and excludes it from content for all posts
  */
 async function extractContentAndPurpleBox(
     pageId: string,
@@ -343,87 +362,83 @@ async function extractContentAndPurpleBox(
                 case "quote":
                     const quoteText = richTextToHtml(block.quote?.rich_text || []);
                     if (quoteText.trim()) {
-                        contentBlocks.push(
-                            `<blockquote class="border-l-4 border-gray-300 pl-4 italic my-4">${quoteText}</blockquote>`,
-                        );
+                        contentBlocks.push(`<blockquote class="border-l-4 border-gray-300 pl-4 italic text-gray-600">${quoteText}</blockquote>`);
                     }
                     break;
 
                 case "code":
                     const codeText = richTextToHtml(block.code?.rich_text || []);
                     if (codeText.trim()) {
-                        contentBlocks.push(`<pre class="bg-gray-100 p-4 rounded my-4"><code>${codeText}</code></pre>`);
+                        contentBlocks.push(`<pre class="bg-gray-100 p-4 rounded overflow-x-auto"><code>${codeText}</code></pre>`);
                     }
                     break;
+            }
+        }
 
-                case "image":
-                    // Download and cache the image
-                    let imageUrl = "";
-                    if (block.image.type === "file") {
-                        imageUrl = block.image.file?.url || "";
-                    } else if (block.image.type === "external") {
-                        imageUrl = block.image.external?.url || "";
-                    }
+        // For all posts: extract last paragraph for purple box if content exists
+        if (contentBlocks.length > 0) {
+            // Filter out any empty blocks first
+            const nonEmptyBlocks = contentBlocks.filter(
+                (block) => block.trim().length > 0,
+            );
+
+            if (nonEmptyBlocks.length > 0) {
+                // Look for incomplete final paragraphs that need to be combined
+                let purpleBoxText = "";
+                let contentWithoutLast = [...nonEmptyBlocks];
+                
+                // Take the last block
+                const lastBlock = nonEmptyBlocks[nonEmptyBlocks.length - 1];
+                
+                // Check if we need to combine fragments for a complete sentence
+                if (nonEmptyBlocks.length >= 2) {
+                    const secondToLast = nonEmptyBlocks[nonEmptyBlocks.length - 2];
                     
-                    if (imageUrl) {
-                        const localImageUrl = await downloadImage(imageUrl, `blog_${pageId}_${block.id.substring(0, 8)}`);
+                    // If the second-to-last block ends with incomplete text (ellipsis, comma, or doesn't end with punctuation)
+                    // and the last block looks like a continuation, combine them
+                    if ((secondToLast.endsWith('…') || secondToLast.endsWith(',') || 
+                         !secondToLast.match(/[.!?]$/)) && 
+                        (lastBlock.startsWith(',') || lastBlock.length < 100)) {
                         
-                        // Get caption if available
-                        let caption = "";
-                        if (block.image.caption && Array.isArray(block.image.caption)) {
-                            caption = richTextToHtml(block.image.caption);
-                        }
-                        
-                        // Add image with caption
-                        if (caption) {
-                            contentBlocks.push(
-                                `<figure class="my-6">
-                                    <img src="${localImageUrl}" alt="${caption}" class="w-full rounded-lg" />
-                                    <figcaption class="text-sm text-gray-600 mt-2 text-center">${caption}</figcaption>
-                                </figure>`
-                            );
-                        } else {
-                            contentBlocks.push(
-                                `<img src="${localImageUrl}" alt="" class="w-full rounded-lg my-6" />`
-                            );
-                        }
+                        purpleBoxText = secondToLast + " " + lastBlock;
+                        contentWithoutLast = nonEmptyBlocks.slice(0, -2);
+                    } else {
+                        purpleBoxText = lastBlock;
+                        contentWithoutLast = nonEmptyBlocks.slice(0, -1);
                     }
-                    break;
-
-                // Add other block types as needed
-            }
-        }
-
-        // Join all content blocks
-        content = contentBlocks.join("\n");
-
-        // Extract purple box text (last paragraph or specific content)
-        let purpleBoxText = "";
-        if (extractLastParagraph && contentBlocks.length > 0) {
-            // Find the last paragraph (not heading or other element)
-            for (let i = contentBlocks.length - 1; i >= 0; i--) {
-                const block = contentBlocks[i];
-                // Check if it's a paragraph (doesn't start with HTML tags for headings, lists, etc.)
-                if (block && !block.startsWith("<h") && !block.startsWith("<li") && !block.startsWith("<blockquote") && !block.startsWith("<pre")) {
-                    purpleBoxText = block;
-                    // Remove this paragraph from the main content
-                    contentBlocks.splice(i, 1);
-                    content = contentBlocks.join("\n");
-                    break;
+                } else {
+                    purpleBoxText = lastBlock;
+                    contentWithoutLast = nonEmptyBlocks.slice(0, -1);
                 }
+
+                // Add tab indent to ALL paragraphs (including first)
+                const indentedContent = contentWithoutLast.map((block) => {
+                    // Only add tab to regular paragraphs (not headings, lists, quotes, code)
+                    if (
+                        !block.startsWith("#") &&
+                        !block.startsWith("•") &&
+                        !block.startsWith("1.") &&
+                        !block.startsWith(">") &&
+                        !block.startsWith("```")
+                    ) {
+                        // Remove existing tab if present, then add a new one for consistency
+                        const cleanBlock = block.startsWith("\t")
+                            ? block.substring(1)
+                            : block;
+                        return "\t" + cleanBlock;
+                    }
+                    return block;
+                });
+
+                content = indentedContent.join("\n");
+                return {
+                    content: content.trim(),
+                    purpleBoxText: purpleBoxText.trim(),
+                };
             }
         }
 
-        // Wrap list items in proper list containers
-        content = content.replace(/(<li.*?<\/li>\n?)+/g, (match) => {
-            if (match.includes("•")) {
-                return `<ul class="list-none space-y-1 my-4">${match}</ul>`;
-            } else {
-                return `<ol class="list-none space-y-1 my-4">${match}</ol>`;
-            }
-        });
-
-        return { content: content.trim(), purpleBoxText: purpleBoxText.trim() };
+        return { content: "", purpleBoxText: "" };
     } catch (error) {
         console.error(`Error extracting content for page ${pageId}:`, error);
         return { content: "", purpleBoxText: "" };
@@ -431,271 +446,187 @@ async function extractContentAndPurpleBox(
 }
 
 /**
- * Extract content from a Notion page
+ * Calculate estimated reading time based on content
  */
-async function extractAboutContent(pageId: string): Promise<string> {
+function calculateReadingTime(content: string): number {
+    const wordsPerMinute = 200;
+    const wordCount = content.split(/\s+/).length;
+    const minutes = Math.ceil(wordCount / wordsPerMinute);
+    return Math.max(1, minutes); // At least 1 minute
+}
+
+/**
+ * Sync all blog posts from Notion to local database
+ */
+export async function syncBlogPosts() {
     if (!notion) {
         throw new Error("Notion client not available");
     }
 
+    console.log("Syncing blog posts from Notion...");
+
     try {
-        const blocks = await notion.blocks.children.list({
-            block_id: pageId,
-        });
+        // Implement proper pagination to get ALL published blog posts
+        let allResults: any[] = [];
+        let hasMore = true;
+        let nextCursor: string | null = null;
 
-        const contentParts = [];
-
-        for (const block of blocks.results) {
-            if (!("type" in block)) continue;
-
-            if (block.type === "paragraph") {
-                const text = block.paragraph?.rich_text
-                    ?.map((t: any) => t.plain_text)
-                    .join("");
-                if (text?.trim()) {
-                    contentParts.push(text);
-                }
+        while (hasMore) {
+            const requestBody: any = {
+                database_id: schemaData.databases.blog.id,
+                page_size: 100, // Use maximum page size
+                filter: {
+                    property: "Status",
+                    status: {
+                        equals: "Published",
+                    },
+                },
+            };
+            
+            if (nextCursor) {
+                requestBody.start_cursor = nextCursor;
             }
+
+            const response = await notion.databases.query(requestBody);
+            
+            allResults = allResults.concat(response.results);
+            hasMore = response.has_more;
+            nextCursor = response.next_cursor;
+            
+            console.log(`Retrieved ${response.results.length} blog posts, has_more: ${hasMore}`);
         }
 
-        return contentParts.join("\n\n");
+        console.log(`Found ${allResults.length} published blog posts`);
+
+        for (const page of allResults) {
+            if (!("properties" in page)) continue;
+
+            const properties = page.properties;
+            const titleProperty = properties["Post Title"] as any;
+            // Concatenate all rich text parts to get the full title
+            const rawTitle =
+                titleProperty?.title
+                    ?.map((part: any) => part.plain_text)
+                    .join("") || "";
+            // Clean the title by removing newlines and trimming whitespace
+            const title = rawTitle.replace(/\n/g, ' ').trim();
+
+            // Skip posts with missing or invalid titles
+            if (!title || title.trim() === "" || title.trim().length < 2) {
+                console.log(
+                    `Skipping post ${page.id} with invalid title: "${title}"`,
+                );
+                continue;
+            }
+
+            const commentProperty = properties["Comment"] as any;
+            const nameOfPageProperty = properties["Name of Page"] as any;
+            const compositionProperty = properties["Composition"] as any; // Get the Composition column
+
+            const publicationDateProperty = properties[
+                "Publication Date"
+            ] as any;
+            const dateProperty = properties.Date as any;
+            const publishedDate =
+                publicationDateProperty?.date?.start ||
+                dateProperty?.date?.start;
+            if (!publishedDate) {
+                console.log(`Skipping post ${page.id} with no published date`);
+                continue;
+            }
+
+            // Extract content and purple box text
+            console.log(`Extracting content for: ${title}`);
+            const { content, purpleBoxText } = await extractContentAndPurpleBox(
+                page.id,
+                true,
+            );
+            const readTime = calculateReadingTime(content);
+
+            // Use purple box text if available, otherwise fall back to comment property
+            const comment =
+                purpleBoxText ||
+                commentProperty?.rich_text
+                    ?.map((part: any) => part.plain_text)
+                    .join("") ||
+                "";
+
+            // Create excerpt from first paragraph or first 150 chars
+            const excerpt = content.split("\n\n")[0]?.substring(0, 150) || "";
+
+            // Parse date carefully to avoid timezone issues - use local timezone
+            const [year, month, day] = publishedDate.split("-");
+            const dateObj = new Date(
+                parseInt(year),
+                parseInt(month) - 1,
+                parseInt(day),
+            ); // Month is 0-indexed
+
+            // Use "Name of Page" from Notion for the slug
+            const nameOfPage = nameOfPageProperty?.rich_text
+                ?.map((part: any) => part.plain_text)
+                .join("") || "";
+            const slug = nameOfPage || generateSlug(title);
+            
+            // Extract related compositions from the Composition column (relation field)
+            const relatedCompositionIds = compositionProperty?.relation?.map((r: any) => r.id) || [];
+            
+            // Map the old Notion IDs to the correct composition IDs in our database
+            // These are hardcoded mappings for the known Preludes and Fugues books
+            const compositionIdMapping: { [key: string]: string } = {
+                // Book I (Expanded Universe) - old Notion ID -> new ID
+                "22f3907b-2ee6-8197-97ba-e86cb4dee864": "2653907b-2ee6-81a8-b453-eb1e7fa8749b",
+                // Book II (Parallel Universes) - old Notion ID -> new ID  
+                "22f3907b-2ee6-811b-b72e-cf2abb394b9a": "2653907b-2ee6-8126-a1c5-f99f41bb9abb",
+            };
+            
+            // Map the Notion IDs to our database IDs
+            const mappedCompositionIds = relatedCompositionIds.map((id: string) => 
+                compositionIdMapping[id] || id // Use mapping if available, otherwise keep original
+            );
+
+            const blogPost: InsertBlogPost = {
+                title: title.trim(),
+                slug: slug,
+                content: content,
+                excerpt: excerpt + (excerpt.length >= 150 ? "..." : ""),
+                comment: comment,
+                published_date: dateObj,
+                published: true,
+                tags: [], // No tags in current schema, but ready for future
+                read_time: readTime,
+                notion_url: `https://www.notion.so/${page.id.replace(/-/g, "")}`,
+                related_compositions: mappedCompositionIds, // Store the mapped composition IDs
+            };
+
+            // Insert or update the blog post
+            await db
+                .insert(blogPosts)
+                .values({
+                    ...blogPost,
+                    id: page.id,
+                })
+                .onConflictDoUpdate({
+                    target: blogPosts.id,
+                    set: {
+                        ...blogPost,
+                        updated_at: new Date(),
+                        last_synced: new Date(),
+                    },
+                });
+
+            console.log(`✓ Synced blog post: ${title}`);
+        }
+
+        console.log("Blog posts sync completed");
     } catch (error) {
-        console.error(`Error extracting about content for page ${pageId}:`, error);
+        console.error("Error syncing blog posts:", error);
         throw error;
     }
 }
 
 /**
- * Look for a photo in the current block, following blocks, or columns
- */
-async function findCompositionPhoto(blockId: string): Promise<string | null> {
-    if (!notion) return null;
-    
-    try {
-        const blocks = await notion.blocks.children.list({
-            block_id: blockId,
-            page_size: 10, // Look at a few following blocks
-        });
-
-        for (const block of blocks.results) {
-            if (!("type" in block)) continue;
-
-            // Direct image block
-            if (block.type === "image") {
-                let imageUrl = "";
-                if (block.image.type === "file") {
-                    imageUrl = block.image.file?.url || "";
-                } else if (block.image.type === "external") {
-                    imageUrl = block.image.external?.url || "";
-                }
-                if (imageUrl) {
-                    console.log(`Found photo in block: ${imageUrl.substring(0, 50)}...`);
-                    return imageUrl;
-                }
-            }
-
-            // Check column blocks
-            if (block.type === "column_list" && block.has_children) {
-                const columnBlocks = await notion.blocks.children.list({
-                    block_id: block.id,
-                });
-
-                for (const column of columnBlocks.results) {
-                    if (!("type" in column) || column.type !== "column") continue;
-                    if (!column.has_children) continue;
-
-                    const columnContents = await notion.blocks.children.list({
-                        block_id: column.id,
-                    });
-
-                    for (const content of columnContents.results) {
-                        if (!("type" in content)) continue;
-                        
-                        if (content.type === "image") {
-                            let imageUrl = "";
-                            if (content.image.type === "file") {
-                                imageUrl = content.image.file?.url || "";
-                            } else if (content.image.type === "external") {
-                                imageUrl = content.image.external?.url || "";
-                            }
-                            if (imageUrl) {
-                                console.log(`Found photo in column: ${imageUrl.substring(0, 50)}...`);
-                                return imageUrl;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    } catch (error) {
-        console.error("Error finding composition photo:", error);
-    }
-
-    return null;
-}
-
-/**
- * Extract content from a composition page including images and formatted text
- */
-async function extractCompositionContent(pageId: string): Promise<{ 
-    description: string; 
-    reviews: string;
-    reviews_purple: string;
-    photo: string | null;
-}> {
-    if (!notion) {
-        throw new Error("Notion client not available");
-    }
-
-    const debugTitle = pageId; // For debug logging
-
-    try {
-        const blocks = await notion.blocks.children.list({
-            block_id: pageId,
-            page_size: 100,
-        });
-
-        let description = "";
-        let reviews = "";
-        let reviews_purple = "";
-        let photo: string | null = null;
-        let foundReviewHeading = false;
-        let captureNextAsPurple = false;
-
-        const descriptionParts: string[] = [];
-        const reviewParts: string[] = [];
-        const purpleBoxParts: string[] = [];
-
-        for (const block of blocks.results) {
-            if (!("type" in block)) continue;
-
-            const blockType = block.type;
-            const blockId = block.id;
-
-            // Check for Review/Praise heading
-            if ((blockType === "heading_2" || blockType === "heading_3" || blockType === "heading_1") && 
-                block[blockType]?.rich_text) {
-                const headingText = block[blockType].rich_text
-                    .map((t: any) => t.plain_text)
-                    .join("")
-                    .toLowerCase();
-                
-                if (headingText.includes("review") || headingText.includes("praise") || headingText.includes("press")) {
-                    foundReviewHeading = true;
-                    captureNextAsPurple = true;
-                    console.log(`Found review section in ${debugTitle}: "${headingText}"`);
-                    continue;
-                }
-            }
-
-            // Handle paragraphs
-            if (blockType === "paragraph" && block.paragraph?.rich_text) {
-                const text = richTextToHtml(block.paragraph.rich_text);
-                if (text.trim()) {
-                    if (foundReviewHeading) {
-                        if (captureNextAsPurple) {
-                            // First paragraph after review heading goes to purple box
-                            purpleBoxParts.push(text);
-                            captureNextAsPurple = false;
-                            console.log(`Added to purple box: ${text.substring(0, 50)}...`);
-                        } else {
-                            // Subsequent paragraphs go to reviews
-                            reviewParts.push(text);
-                            console.log(`Added to reviews: ${text.substring(0, 50)}...`);
-                        }
-                    } else {
-                        descriptionParts.push(text);
-                    }
-                }
-            }
-
-            // Handle quotes (always go to reviews if found after review heading)
-            if (blockType === "quote" && block.quote?.rich_text) {
-                const quoteText = richTextToHtml(block.quote.rich_text);
-                if (quoteText.trim()) {
-                    const formattedQuote = `<blockquote class="border-l-4 border-purple-500 pl-4 italic">${quoteText}</blockquote>`;
-                    
-                    if (foundReviewHeading) {
-                        reviewParts.push(formattedQuote);
-                        console.log(`Added quote to reviews: ${quoteText.substring(0, 50)}...`);
-                    } else {
-                        descriptionParts.push(formattedQuote);
-                    }
-                }
-            }
-
-            // Handle lists
-            if (blockType === "bulleted_list_item" && block.bulleted_list_item?.rich_text) {
-                const text = richTextToHtml(block.bulleted_list_item.rich_text);
-                if (text.trim()) {
-                    const listItem = `• ${text}`;
-                    if (foundReviewHeading) {
-                        reviewParts.push(listItem);
-                    } else {
-                        descriptionParts.push(listItem);
-                    }
-                }
-            }
-
-            // Look for photo - only if we haven't found one yet
-            if (!photo && blockType === "image") {
-                let imageUrl = "";
-                if (block.image.type === "file") {
-                    imageUrl = block.image.file?.url || "";
-                } else if (block.image.type === "external") {
-                    imageUrl = block.image.external?.url || "";
-                }
-                if (imageUrl) {
-                    photo = imageUrl;
-                    console.log(`Found photo for ${debugTitle}: ${imageUrl.substring(0, 50)}...`);
-                }
-            }
-
-            // Check column_list blocks for images
-            if (!photo && blockType === "column_list" && block.has_children) {
-                const foundPhoto = await findCompositionPhoto(blockId);
-                if (foundPhoto) {
-                    photo = foundPhoto;
-                }
-            }
-        }
-
-        // Join the parts with appropriate spacing
-        description = descriptionParts.join("\n");
-        reviews = reviewParts.join("\n");
-        reviews_purple = purpleBoxParts.join("\n");
-
-        // Add some default structure to reviews if empty but purple box has content
-        if (!reviews && reviews_purple) {
-            reviews = reviews_purple;
-            reviews_purple = "";
-        }
-
-        console.log(`Extracted for ${debugTitle}:`);
-        console.log(`  - Description: ${description.length} chars`);
-        console.log(`  - Reviews: ${reviews.length} chars`);
-        console.log(`  - Purple box: ${reviews_purple.length} chars`);
-        console.log(`  - Photo: ${photo ? "Found" : "Not found"}`);
-
-        return { 
-            description: description.trim(), 
-            reviews: reviews.trim(),
-            reviews_purple: reviews_purple.trim(),
-            photo
-        };
-    } catch (error) {
-        console.error(`Error extracting composition content for ${pageId}:`, error);
-        return { 
-            description: "", 
-            reviews: "",
-            reviews_purple: "",
-            photo: null
-        };
-    }
-}
-
-/**
- * Sync compositions from Notion to local database
+ * Sync all compositions from Notion to local database
  */
 export async function syncCompositions() {
     if (!notion) {
@@ -704,95 +635,170 @@ export async function syncCompositions() {
 
     console.log("Syncing compositions from Notion...");
 
-    try {
-        console.log(`Querying compositions database: ${schemaData.databases.compositions.id}`);
-        
-        // Query the compositions database directly with Published filter
-        const response = await notion.databases.query({
+    // Implement proper pagination to get ALL compositions
+    let allResults: any[] = [];
+    let hasMore = true;
+    let nextCursor: string | null = null;
+
+    while (hasMore) {
+        const requestBody: any = {
             database_id: schemaData.databases.compositions.id,
-            filter: {
-                property: "Published",
-                checkbox: {
-                    equals: true
-                }
-            }
-        });
+            page_size: 100, // Use maximum page size
+        };
         
-        const pages = response.results;
-        console.log(`API returned ${response.results.length} results`);
-        console.log(`Found ${pages.length} published compositions`);
-
-        // Clear all existing compositions
-        await db.delete(compositions);
-
-        for (const page of pages) {
-            if (!("properties" in page)) continue;
-
-            const properties = page.properties;
-            const titleProperty = properties.Name || properties["Name of Page"];
-            const yearProperty = properties["Year ©"];
-            const durationProperty = properties.Duration;
-            const ensembleProperty = properties.Ensemble;
-            const publisherProperty = properties.Publisher;
-            const instrumentationProperty = properties["Instrumentation Text"];
-            const dateOfPremierProperty = properties["Date of premier"];
-            const recordingProperty = properties.Recording;
-            const rankingProperty = properties["Ranking within year"];
-
-            const title = titleProperty?.title?.[0]?.plain_text || "Untitled";
-
-            // Extract the ranking value using flexible extraction
-            const rankingValue = extractPropertyValue(rankingProperty, "Ranking within year");
-
-            console.log(`Extracting content for composition: ${title}`);
-
-            // Extract extended content including reviews and photo
-            const extractedContent = await extractCompositionContent(page.id);
-            
-            // Cache the photo if found
-            let cachedPhoto = null;
-            if (extractedContent.photo) {
-                cachedPhoto = await downloadImage(extractedContent.photo, `comp_${page.id}`);
-            }
-
-            const composition: InsertComposition = {
-                title,
-                year: yearProperty?.number || null,
-                duration: durationProperty?.rich_text?.[0]?.plain_text || "",
-                ensemble: ensembleProperty?.multi_select?.map((e: any) => e.name).join(", ") || "",
-                publisher: publisherProperty?.multi_select?.map((p: any) => p.name).join(", ") || "",
-                instrumentation_text: instrumentationProperty?.rich_text?.[0]?.plain_text || "",
-                date_of_premier: dateOfPremierProperty?.date?.start
-                    ? new Date(dateOfPremierProperty.date.start)
-                    : null,
-                recording_info: recordingProperty?.rich_text?.[0]?.plain_text || "",
-                description: extractedContent.description,
-                reviews: extractedContent.reviews,
-                reviews_purple: extractedContent.reviews_purple,
-                photo: cachedPhoto,
-                ranking_within_year: rankingValue,
-            };
-
-            // Insert the composition (no need for conflict handling since we cleared all records)
-            await db
-                .insert(compositions)
-                .values({
-                    ...composition,
-                    id: page.id,
-                });
-
-            console.log(`✓ Synced composition: ${composition.title}`);
+        if (nextCursor) {
+            requestBody.start_cursor = nextCursor;
         }
 
-        console.log("Compositions sync completed");
-    } catch (error) {
-        console.error("Error syncing compositions:", error);
-        throw error;
+        const response = await notion.databases.query(requestBody);
+        
+        allResults = allResults.concat(response.results);
+        hasMore = response.has_more;
+        nextCursor = response.next_cursor;
+        
+        console.log(`Retrieved ${response.results.length} compositions, has_more: ${hasMore}`);
     }
+
+    console.log(
+        `Found ${allResults.length} total compositions in Notion database`,
+    );
+
+    for (const page of allResults) {
+        if (!("properties" in page)) continue;
+
+        const properties = page.properties;
+
+        const nameProperty = properties.Name as any;
+        const instrumentationProperty = properties["Instrumentation Text"] as any;
+        const ensembleProperty = properties.Ensemble as any;
+        const yearProperty = properties["Year ©"] as any;
+        const durationProperty = properties.Duration as any;
+        const publisherProperty = properties["Publisher Better Links"] as any; // Changed to use Publisher Better Links
+        const premiereProperty = properties["Date of premier"] as any;
+        const recordingProperty = properties.Recording as any;
+        const streamingLinksProperty = properties["Additional Streaming Links"] as any;
+        const programNoteProperty = properties["Program Note"] as any;
+        const nameOfPageProperty = properties["Name of Page"] as any;
+        const blogProperty = properties["Blog"] as any; // Get the Blog column
+
+        // Parse year - trust Notion to provide a number
+        const year = yearProperty?.number || null;
+
+        // Use "Name of Page" from Notion for the slug
+        const title = nameProperty?.title?.[0]?.plain_text || "";
+        const nameOfPage = nameOfPageProperty?.rich_text
+            ?.map((part: any) => part.plain_text)
+            .join("") || "";
+        
+        // Process nameOfPage through slug generation to make it URL-safe
+        // Use the original nameOfPage if it exists, but convert spaces/special chars
+        const slug = nameOfPage ? nameOfPage.replace(/\s+/g, '_').replace(/[^a-zA-Z0-9_-]/g, '') : generateSlug(title);
+
+        const composition: InsertComposition = {
+            slug: slug,
+            title: title,
+            instrumentation: instrumentationProperty?.rich_text?.[0]?.plain_text ? [instrumentationProperty.rich_text[0].plain_text] : [],
+            ensemble:
+                (ensembleProperty?.multi_select?.map(
+                    (item: any) => item.name,
+                ) as string[]) || [],
+            year: year,
+            duration: durationProperty?.rich_text?.[0]?.plain_text || "",
+            publisher: (() => {
+                const richText = publisherProperty?.rich_text;
+                if (!richText || richText.length === 0) return [];
+                
+                // Build complete HTML from rich text segments
+                const htmlContent = richText
+                    .map((part: any) => {
+                        const text = part.plain_text || "";
+                        // If this segment has a link
+                        if (part.href) {
+                            return `<a href="${part.href}" target="_blank" rel="noopener noreferrer">${text}</a>`;
+                        }
+                        return text;
+                    })
+                    .join("");
+                
+                // Split by common separators and clean up
+                return htmlContent
+                    .split(/[,;]/)
+                    .map((p: string) => p.trim())
+                    .filter((p: string) => p.length > 0);
+            })(),
+            premiere_info: premiereProperty?.date?.start || "",
+            recording: recordingProperty?.rich_text
+                ?.map((part: any) => part.plain_text?.trim())
+                .filter((r: string) => r && r.length > 0) || [],
+            streaming_links: (() => {
+                const richText = streamingLinksProperty?.rich_text;
+                if (!richText || richText.length === 0) return "";
+                
+                // Build HTML from rich text segments
+                return richText
+                    .map((part: any) => {
+                        const text = part.plain_text || "";
+                        // If this segment has a link
+                        if (part.href) {
+                            return `<a href="${part.href}" target="_blank" rel="noopener noreferrer">${text}</a>`;
+                        }
+                        return text;
+                    })
+                    .join("");
+            })(),
+            program_note: programNoteProperty?.rich_text?.map((part: any) => part.plain_text).join("") || "",
+            published: true,
+        };
+
+        // Extract related blog posts from the Blog column (relation field)
+        const relatedBlogIds = blogProperty?.relation?.map((r: any) => r.id) || [];
+
+        // Insert or update the composition
+        await db
+            .insert(compositions)
+            .values({
+                id: page.id,
+                ...composition,
+            })
+            .onConflictDoUpdate({
+                target: compositions.id,
+                set: {
+                    slug: composition.slug,
+                    title: composition.title,
+                    instrumentation: composition.instrumentation,
+                    ensemble: composition.ensemble,
+                    year: composition.year,
+                    duration: composition.duration,
+                    publisher: composition.publisher,
+                    premiere_info: composition.premiere_info,
+                    recording: composition.recording,
+                    streaming_links: composition.streaming_links,
+                    program_note: composition.program_note,
+                    published: composition.published,
+                    updated_at: new Date(),
+                    last_synced: new Date(),
+                },
+            });
+
+        console.log(`✓ Synced composition: ${composition.title}`);
+    }
+
+    // Delete compositions that no longer exist in Notion
+    const notionIds = allResults.map(page => page.id);
+    const localCompositions = await db.select({ id: compositions.id }).from(compositions);
+    
+    for (const localComp of localCompositions) {
+        if (!notionIds.includes(localComp.id)) {
+            await db.delete(compositions).where(eq(compositions.id, localComp.id));
+            console.log(`✗ Deleted composition: ${localComp.id} (no longer in Notion)`);
+        }
+    }
+
+    console.log("Compositions sync completed");
 }
 
 /**
- * Sync recordings from Notion to local database
+ * Sync all recordings from Notion to local database
  */
 export async function syncRecordings() {
     if (!notion) {
@@ -802,90 +808,130 @@ export async function syncRecordings() {
     console.log("Syncing recordings from Notion...");
 
     try {
-        // Query the recordings database directly (no Published filter for recordings)
-        const response = await notion.databases.query({
-            database_id: schemaData.databases.recordings.id
-        });
-        
-        const pages = response.results;
-        console.log(`Found ${pages.length} recordings`);
-
-        // Clear all existing recordings
+        // First, delete all existing recordings to avoid duplicates
         await db.delete(recordings);
+        console.log("Cleared existing recordings");
 
-        for (const page of pages) {
+        const response = await notion.databases.query({
+            database_id: schemaData.databases.recordings.id,
+        });
+
+        console.log(`Found ${response.results.length} recordings`);
+
+        for (const page of response.results) {
             if (!("properties" in page)) continue;
 
             const properties = page.properties;
-            const titleProperty = properties["Name of Album"];
-            const yearProperty = properties["Year ©"];
-            const labelProperty = properties.Label;
-            const performersProperty = properties.Performers;
-            const ensembleProperty = properties.Ensemble;
-            const instrumentationProperty = properties.Instrumentation;
-            const durationProperty = properties.Duration;
-            const linksProperty = properties["Streaming Links"];
-            const albumCoverProperty = properties["Album Cover"];
-            const compositionProperty = properties.Composition;
-            const albumTrackListingProperty = properties["Album Track Listing"];
+            
 
-            const title = titleProperty?.title?.[0]?.plain_text || "Untitled";
+            const nameOfAlbumProperty = properties["Name of Album"] as any;
+            const performersProperty = properties.Performers as any;
+            const ensembleProperty = properties.Ensemble as any;
+            const instrumentationProperty = properties.Instrumentation as any;
+            const yearProperty = properties["Year ©"] as any;
+            const durationProperty = properties.Duration as any;
+            const labelProperty = properties.Label as any;
+            const linksProperty = properties["Streaming Links"] as any;
+            const albumCoverProperty = properties["Album Cover"] as any;
+            const compositionProperty = properties.Composition as any;
+            const albumTrackListingProperty = properties["Album Track Listing"] as any;
+            const nameOfPageProperty = properties["Name of Page"] as any;
+            const rankingWithinYearProperty = properties["Ranking within year"] as any;
 
-            console.log(`===== DEBUG: HARP'S DESIRE COMPOSITION DATA =====`);
-            console.log(`Recording title: ${title}`);
-            if (title.includes("Harp") || title.includes("Prix de Fukui")) {
-                console.log("Composition rich_text from Notion:", JSON.stringify(compositionProperty?.rich_text, null, 2));
-            }
-            console.log(`===== END DEBUG =====`);
-
-            // Generate slug from title - replace spaces and special characters with underscores
-            const slug = title
-                .replace(/[^a-zA-Z0-9\s&]/g, '')  // Remove special chars except & and spaces
-                .replace(/\s+/g, '_')              // Replace spaces with underscores
-                .replace(/_+/g, '_')               // Replace multiple underscores with single
-                .replace(/^_+|_+$/g, '');          // Remove leading/trailing underscores
-
-            // Handle album cover
+            // Download and cache album cover if it exists
             let cachedAlbumCover = null;
-            if (albumCoverProperty?.files && Array.isArray(albumCoverProperty.files) && albumCoverProperty.files.length > 0) {
-                const file = albumCoverProperty.files[0];
-                let imageUrl = "";
-                if (file.type === "file") {
-                    imageUrl = file.file?.url || "";
-                } else if (file.type === "external") {
-                    imageUrl = file.external?.url || "";
-                }
-                if (imageUrl) {
-                    cachedAlbumCover = await downloadImage(imageUrl, `recording_${page.id}`);
-                }
+            const albumCoverUrl = albumCoverProperty?.files?.[0]?.file?.url || albumCoverProperty?.files?.[0]?.external?.url;
+            if (albumCoverUrl) {
+                cachedAlbumCover = await downloadImage(albumCoverUrl, `recording_${page.id}`);
             }
 
-            // Handle album track listings (multiple images)
-            const cachedTrackListings = [];
-            if (albumTrackListingProperty?.files && Array.isArray(albumTrackListingProperty.files)) {
+            // Download and cache album track listing images
+            const cachedTrackListings: string[] = [];
+            if (albumTrackListingProperty?.files) {
                 for (let i = 0; i < albumTrackListingProperty.files.length; i++) {
                     const file = albumTrackListingProperty.files[i];
-                    let imageUrl = "";
-                    if (file.type === "file") {
-                        imageUrl = file.file?.url || "";
-                    } else if (file.type === "external") {
-                        imageUrl = file.external?.url || "";
-                    }
-                    if (imageUrl) {
-                        const cachedUrl = await downloadImage(imageUrl, `recording_${page.id}_tracklist_${i}`);
-                        cachedTrackListings.push(cachedUrl);
+                    const trackListingUrl = file?.file?.url || file?.external?.url;
+                    if (trackListingUrl) {
+                        const cachedUrl = await downloadImage(trackListingUrl, `recording_${page.id}_tracklist_${i}`);
+                        if (cachedUrl) {
+                            cachedTrackListings.push(cachedUrl);
+                        }
                     }
                 }
             }
 
+            // Clean the title by removing newlines and trimming whitespace
+            const rawTitle = nameOfAlbumProperty?.title?.[0]?.plain_text || "";
+            const recordingTitle = rawTitle.replace(/\n/g, ' ').trim();
+            
+            // Use "Name of Page" from Notion for the slug
+            const nameOfPage = nameOfPageProperty?.rich_text
+                ?.map((part: any) => part.plain_text)
+                .join("") || "";
+            const slug = nameOfPage || generateSlug(recordingTitle);
+            
+            // Extract ranking from various possible property types
+            const extractRanking = (): number | null => {
+                if (!rankingWithinYearProperty) return null;
+                
+                // Try direct number property
+                if (rankingWithinYearProperty.number !== undefined) {
+                    return rankingWithinYearProperty.number;
+                }
+                
+                // Try formula property
+                if (rankingWithinYearProperty.formula?.number !== undefined) {
+                    return rankingWithinYearProperty.formula.number;
+                }
+                
+                // Try rollup property
+                if (rankingWithinYearProperty.rollup?.number !== undefined) {
+                    return rankingWithinYearProperty.rollup.number;
+                }
+                
+                // Try select property
+                if (rankingWithinYearProperty.select?.name) {
+                    const num = parseInt(rankingWithinYearProperty.select.name, 10);
+                    return Number.isFinite(num) ? num : null;
+                }
+                
+                // Try rich text property
+                if (rankingWithinYearProperty.rich_text?.[0]?.plain_text) {
+                    const num = parseInt(rankingWithinYearProperty.rich_text[0].plain_text, 10);
+                    return Number.isFinite(num) ? num : null;
+                }
+                
+                return null;
+            };
+
+            // Debug logging for Harp's Desire issue
+            if (recordingTitle === "Harp's Desire" || recordingTitle.includes("Harp")) {
+                console.log("===== DEBUG: HARP'S DESIRE COMPOSITION DATA =====");
+                console.log("Recording title:", recordingTitle);
+                console.log("Composition rich_text from Notion:", JSON.stringify(compositionProperty?.rich_text, null, 2));
+                console.log("===== END DEBUG =====");
+            }
+            
             const recording: InsertRecording = {
-                title,
+                title: recordingTitle,
+                slug: slug,
+                composer: "David S. Lefkowitz",
+                performers:
+                    performersProperty?.rich_text?.map((item: any) => item.plain_text).join("") || "",
+                ensemble:
+                    (ensembleProperty?.multi_select?.map(
+                        (item: any) => item.name,
+                    ) as string[]) || [],
+                instrumentation:
+                    (instrumentationProperty?.multi_select?.map(
+                        (item: any) => item.name,
+                    ) as string[]) || [],
                 year: yearProperty?.number || null,
-                label: labelProperty?.rich_text?.[0]?.plain_text || "",
-                performers: performersProperty?.rich_text?.[0]?.plain_text || "",
-                ensemble: ensembleProperty?.multi_select?.map((e: any) => e.name).join(", ") || "",
-                instrumentation: instrumentationProperty?.multi_select?.map((i: any) => i.name).join(", ") || "",
+                ranking_within_year: extractRanking(),
                 duration: durationProperty?.rich_text?.[0]?.plain_text || "",
+                label:
+                    labelProperty?.rich_text?.map((item: any) => item.plain_text).join("") || "",
+                label_url: labelProperty?.rich_text?.[0]?.href || null,
                 links: richTextToHtml(linksProperty?.rich_text || []),
                 album_cover: cachedAlbumCover,
                 composition: richTextToHtml(compositionProperty?.rich_text || [], true),
@@ -918,114 +964,80 @@ export async function syncMedia() {
         throw new Error("Notion client not available");
     }
 
-    console.log("Syncing media from Notion Media page...");
+    console.log("Syncing media from Notion...");
 
     try {
-        // The Media page contains both reviews and photos as blocks
-        // We need to extract the photo blocks from the page
-        const mediaPageId = schemaData.databases.media.id;
-        
-        // Get all blocks from the Media page
-        const response = await notion.blocks.children.list({
-            block_id: mediaPageId,
-            page_size: 100,
+        const response = await notion.databases.query({
+            database_id: schemaData.databases.media.id,
         });
 
-        console.log(`Found ${response.results.length} blocks in Media page`);
-        
-        const mediaItems: InsertMedia[] = [];
-        let imageCount = 0;
+        console.log(`Found ${response.results.length} media items`);
 
-        for (const block of response.results) {
-            if (!("type" in block)) continue;
+        for (const page of response.results) {
+            if (!("properties" in page)) continue;
 
-            // Process all image blocks from the page
-            if (block.type === "image") {
-                imageCount++;
-                console.log(`Found image block #${imageCount}`);
-                
-                // Extract image URL
-                let imageUrl = "";
-                let caption = "";
-                
-                if (block.image.type === "file") {
-                    imageUrl = block.image.file?.url || "";
-                } else if (block.image.type === "external") {
-                    imageUrl = block.image.external?.url || "";
+            const properties = page.properties;
+
+            const titleProperty = properties.Title as any;
+            const descriptionProperty = properties.Description as any;
+            const imageProperty = properties.Image as any;
+            const altTextProperty = properties["Alt Text"] as any;
+            const categoryProperty = properties.Category as any;
+            const dateTakenProperty = properties["Date Taken"] as any;
+            const photoCreditsProperty = properties["Photo Credits"] as any;
+            const publishedProperty = properties.Published as any;
+
+            // Extract image URL from files property
+            let imageUrl = "";
+            if (imageProperty?.files && Array.isArray(imageProperty.files) && imageProperty.files.length > 0) {
+                const file = imageProperty.files[0];
+                if (file.type === "file") {
+                    imageUrl = file.file?.url || "";
+                } else if (file.type === "external") {
+                    imageUrl = file.external?.url || "";
                 }
-                
-                // Extract caption if available
-                if (block.image.caption && Array.isArray(block.image.caption)) {
-                    caption = block.image.caption.map((text: any) => text.plain_text).join(" ");
-                }
-                
-                if (!imageUrl) {
-                    console.log(`Skipping image block without URL`);
-                    continue;
-                }
-                
-                // Download and cache the image locally
-                const localImageUrl = await downloadImage(imageUrl, block.id);
-                
-                // Create media item from image block
-                // Extract photo credit from caption if it contains "Photo:" or "Credit:"
-                let photoCredits = "";
-                if (caption) {
-                    const creditMatch = caption.match(/(?:Photo|Credit):\s*(.+)/i);
-                    if (creditMatch) {
-                        photoCredits = creditMatch[1].trim();
-                        // Remove the credit from the caption for the title
-                        caption = caption.replace(creditMatch[0], "").trim();
-                    }
-                }
-                
-                const mediaItem: InsertMedia = {
-                    title: caption || `Photo ${imageCount}`,
-                    description: caption || "",
-                    image_url: localImageUrl,
-                    alt_text: caption || "",
-                    category: "Photo",
-                    date_taken: null,
-                    photo_credits: photoCredits, // Don't default to any specific credit
-                    published: true,
-                };
-                
-                mediaItems.push(mediaItem);
-                console.log(`✓ Found media photo: ${mediaItem.title}`);
             }
-        }
 
-        if (mediaItems.length > 0) {
-            // Clear existing media items
-            await db.delete(media);
-            
-            // Insert all new media items with proper display order
-            for (let i = 0; i < mediaItems.length; i++) {
-                await db.insert(media).values({
-                    ...mediaItems[i],
-                    id: `media_photo_${i + 1}_${Date.now()}`,
-                    display_order: i + 1,
+            // Skip if no image URL
+            if (!imageUrl) {
+                console.log(`Skipping media item without image: ${titleProperty?.title?.[0]?.plain_text || "Untitled"}`);
+                continue;
+            }
+
+            // Download and cache the image locally
+            const localImageUrl = await downloadImage(imageUrl, page.id);
+
+            const mediaItem: InsertMedia = {
+                title: titleProperty?.title?.[0]?.plain_text || "",
+                description: descriptionProperty?.rich_text?.[0]?.plain_text || "",
+                image_url: localImageUrl, // Use local cached URL instead of Notion URL
+                alt_text: altTextProperty?.rich_text?.[0]?.plain_text || "",
+                category: categoryProperty?.select?.name || "",
+                date_taken: dateTakenProperty?.date?.start ? new Date(dateTakenProperty.date.start) : null,
+                photo_credits: photoCreditsProperty?.rich_text?.[0]?.plain_text || "",
+                published: publishedProperty?.checkbox || false,
+            };
+
+            // Insert or update the media item
+            await db
+                .insert(media)
+                .values({
+                    ...mediaItem,
+                    id: page.id,
+                })
+                .onConflictDoUpdate({
+                    target: media.id,
+                    set: {
+                        ...mediaItem,
+                        updated_at: new Date(),
+                        last_synced: new Date(),
+                    },
                 });
-            }
-            
-            console.log(`Media sync completed: synced ${mediaItems.length} photos`);
-        } else {
-            console.log("No photos found in Media page");
+
+            console.log(`✓ Synced media: ${mediaItem.title}`);
         }
-        
-        // After syncing, handle reordering if needed
-        const allMediaItems = await db
-            .select()
-            .from(media)
-            .orderBy(media.display_order);
-        
-        // Check if we have new photos to reorder
-        if (allMediaItems.length >= 4) {
-            console.log(`Total media items: ${allMediaItems.length}`);
-            
-            // The reordering logic can be adjusted based on specific needs
-            // For now, we keep the natural order from Notion
-        }
+
+        console.log("Media sync completed");
     } catch (error) {
         console.error("Error syncing media:", error);
         throw error;
@@ -1035,226 +1047,161 @@ export async function syncMedia() {
 /**
  * Sync About page content from Notion
  */
-export async function syncAboutContent() {
+export async function syncAboutPage() {
     if (!notion) {
         throw new Error("Notion client not available");
     }
 
-    console.log("Syncing about content from Notion...");
+    console.log("Syncing About page from Notion...");
 
     try {
-        const aboutPageId = "2683907b-2ee6-80f0-9a5f-c4cadbafae36";
-
-        const content = await extractAboutContent(aboutPageId);
-
-        // Clear existing about content
-        await db.delete(aboutContent);
-
-        // Insert new about content
-        await db.insert(aboutContent).values({
-            id: aboutPageId,
-            content,
+        // Get all child pages from the main Notion page
+        const childPages = await getNotionPages();
+        
+        // Find the About page
+        const aboutPage = childPages.find(page => 
+            page.title.toLowerCase() === "about" || 
+            page.title.toLowerCase().includes("about")
+        );
+        
+        if (!aboutPage) {
+            console.log("About page not found in Notion");
+            return;
+        }
+        
+        console.log(`Found About page: ${aboutPage.title} (${aboutPage.id})`);
+        
+        // Get the page content
+        const blocks = await notion.blocks.children.list({
+            block_id: aboutPage.id,
+            page_size: 100,
         });
-
-        console.log("About content sync completed");
+        
+        // Extract text content from blocks
+        let bioContent = "";
+        const contentBlocks = [];
+        
+        for (const block of blocks.results) {
+            if (!("type" in block)) continue;
+            
+            if (block.type === "paragraph") {
+                const paragraphText = richTextToHtml(block.paragraph?.rich_text || []);
+                if (paragraphText.trim()) {
+                    contentBlocks.push(paragraphText);
+                }
+            }
+        }
+        
+        // Join paragraphs with double newlines to preserve paragraph breaks
+        bioContent = contentBlocks.join("\n\n");
+        
+        // Create about content data
+        const aboutContentData: InsertAboutContent = {
+            content: bioContent || "Content not available",
+            bio: bioContent || "", // For now, use the same content as bio
+            education: "", // These can be extracted from specific sections later
+            awards: "",
+            commissions: "",
+            performances: "",
+            press: "",
+        };
+        
+        // Insert or update the about content
+        await db
+            .insert(aboutContent)
+            .values({
+                ...aboutContentData,
+                id: aboutPage.id,
+            })
+            .onConflictDoUpdate({
+                target: aboutContent.id,
+                set: {
+                    ...aboutContentData,
+                    updated_at: new Date(),
+                },
+            });
+        
+        console.log("✓ Synced About page content");
     } catch (error) {
-        console.error("Error syncing about content:", error);
+        console.error("Error syncing About page:", error);
         throw error;
     }
 }
 
 /**
- * Sync profile content from Notion
+ * Sync logo images from Notion Logos page
  */
-export async function syncProfile() {
+export async function syncLogos() {
     if (!notion) {
         throw new Error("Notion client not available");
     }
 
-    console.log("Syncing profile from Notion...");
+    console.log("Syncing logos from Notion...");
 
     try {
-        // Extract content from Home page (contains bio)
-        const homePageId = "2343907b-2ee6-8077-b74f-f2bc7cfca7d0";
-        const homeContent = await extractContentAndPurpleBox(homePageId, true);
-
-        // Clear existing profile
-        await db.delete(profile);
-
-        // Insert new profile
-        await db.insert(profile).values({
-            id: "default",
-            name: "David S. Lefkowitz",
-            title: "Composer",
-            bio: homeContent.content,
-            purple_box_text: homeContent.purpleBoxText,
-            email: "",
-            social_links: {},
+        // Get the blocks from the Logos page
+        const blocks = await notion.blocks.children.list({
+            block_id: '2793907b-2ee6-80a0-87bb-ee32ad470d62',
+            page_size: 100
         });
-
-        console.log("Profile sync completed");
+        
+        let currentPlatform: string | null = null;
+        const logos: { platform: string; url: string }[] = [];
+        
+        for (const block of blocks.results as any[]) {
+            // Check for text blocks (platform names)
+            if (block.type === 'paragraph' && block.paragraph?.rich_text?.length > 0) {
+                const platformText = block.paragraph.rich_text[0].plain_text.trim();
+                // Only set as current platform if it's not empty
+                if (platformText) {
+                    currentPlatform = platformText;
+                    console.log(`Found platform name: ${currentPlatform}`);
+                }
+            }
+            // Check for image blocks
+            else if (block.type === 'image' && currentPlatform) {
+                let imageUrl = null;
+                if (block.image?.file?.url) {
+                    imageUrl = block.image.file.url;
+                } else if (block.image?.external?.url) {
+                    imageUrl = block.image.external.url;
+                }
+                
+                if (imageUrl) {
+                    // Download and cache the logo
+                    const cachedUrl = await downloadImage(imageUrl, `logo_${currentPlatform.toLowerCase().replace(/\s+/g, '_')}`);
+                    if (cachedUrl) {
+                        logos.push({
+                            platform: currentPlatform,
+                            url: cachedUrl
+                        });
+                        console.log(`✓ Synced logo for ${currentPlatform}`);
+                    }
+                }
+                currentPlatform = null;
+            }
+        }
+        
+        console.log(`Logos sync completed - synced ${logos.length} logos`);
+        return logos;
     } catch (error) {
-        console.error("Error syncing profile:", error);
+        console.error("Error syncing logos:", error);
         throw error;
     }
 }
 
 /**
- * Download and process blog images
+ * Sync all data from Notion to local database
  */
-export async function downloadBlogImages() {
-    console.log("Starting image download process...");
-    
-    try {
-        // Get all blog posts
-        const posts = await db.select().from(blogPosts);
-        console.log(`Found ${posts.length} blog posts to check for images`);
-        
-        let totalImages = 0;
-        
-        for (const post of posts) {
-            if (!post.content) continue;
-            
-            // Find all img tags in the content
-            const imgRegex = /<img[^>]+src="([^"]+)"[^>]*>/g;
-            const matches = [...post.content.matchAll(imgRegex)];
-            
-            if (matches.length > 0) {
-                console.log(`Found ${matches.length} images in blog post: ${post.title}`);
-                
-                let updatedContent = post.content;
-                
-                for (const match of matches) {
-                    const originalUrl = match[1];
-                    
-                    // Skip if already cached
-                    if (originalUrl.startsWith('/api/media-cache/')) {
-                        console.log(`Image already cached: ${originalUrl}`);
-                        continue;
-                    }
-                    
-                    // Download and cache the image
-                    const cachedUrl = await downloadImage(originalUrl, `blog_${post.id}_${totalImages}`);
-                    
-                    // Replace the URL in content
-                    updatedContent = updatedContent.replace(originalUrl, cachedUrl);
-                    totalImages++;
-                }
-                
-                // Update the blog post with cached image URLs
-                if (updatedContent !== post.content) {
-                    await db
-                        .update(blogPosts)
-                        .set({ content: updatedContent })
-                        .where(eq(blogPosts.id, post.id));
-                    
-                    console.log(`Updated blog post with cached images: ${post.title}`);
-                }
-            }
-        }
-        
-        // Also check compositions for images
-        const comps = await db.select().from(compositions);
-        console.log(`Found ${comps.length} compositions to check for images`);
-        
-        for (const comp of comps) {
-            // Check description
-            if (comp.description) {
-                const imgRegex = /<img[^>]+src="([^"]+)"[^>]*>/g;
-                const matches = [...comp.description.matchAll(imgRegex)];
-                
-                if (matches.length > 0) {
-                    console.log(`Found ${matches.length} images in composition: ${comp.title}`);
-                    
-                    let updatedDescription = comp.description;
-                    
-                    for (const match of matches) {
-                        const originalUrl = match[1];
-                        
-                        // Skip if already cached
-                        if (originalUrl.startsWith('/api/media-cache/')) {
-                            console.log(`Image already cached: ${originalUrl}`);
-                            continue;
-                        }
-                        
-                        // Download and cache the image
-                        const cachedUrl = await downloadImage(originalUrl, `comp_desc_${comp.id}_${totalImages}`);
-                        
-                        // Replace the URL in content
-                        updatedDescription = updatedDescription.replace(originalUrl, cachedUrl);
-                        totalImages++;
-                    }
-                    
-                    // Update the composition with cached image URLs
-                    if (updatedDescription !== comp.description) {
-                        await db
-                            .update(compositions)
-                            .set({ description: updatedDescription })
-                            .where(eq(compositions.id, comp.id));
-                        
-                        console.log(`Updated composition description with cached images: ${comp.title}`);
-                    }
-                }
-            }
-            
-            // Check reviews
-            if (comp.reviews) {
-                const imgRegex = /<img[^>]+src="([^"]+)"[^>]*>/g;
-                const matches = [...comp.reviews.matchAll(imgRegex)];
-                
-                if (matches.length > 0) {
-                    let updatedReviews = comp.reviews;
-                    
-                    for (const match of matches) {
-                        const originalUrl = match[1];
-                        
-                        if (originalUrl.startsWith('/api/media-cache/')) {
-                            continue;
-                        }
-                        
-                        const cachedUrl = await downloadImage(originalUrl, `comp_review_${comp.id}_${totalImages}`);
-                        updatedReviews = updatedReviews.replace(originalUrl, cachedUrl);
-                        totalImages++;
-                    }
-                    
-                    if (updatedReviews !== comp.reviews) {
-                        await db
-                            .update(compositions)
-                            .set({ reviews: updatedReviews })
-                            .where(eq(compositions.id, comp.id));
-                    }
-                }
-            }
-        }
-        
-        console.log(`✅ Image download completed! Downloaded ${totalImages} images total.`);
-        
-    } catch (error) {
-        console.error("Error downloading images:", error);
-    }
-}
+export async function syncAllData() {
+    console.log("Starting full data sync from Notion...");
 
-/**
- * Main sync function
- */
-export async function syncAllContent(options?: { skipImages?: boolean }) {
-    console.log("Starting Notion sync...");
+    await syncAboutPage();
+    await syncBlogPosts();
+    await syncCompositions();
+    await syncRecordings();
+    await syncMedia();
+    await syncLogos();
 
-    try {
-        await syncProfile();
-        await syncBlogPosts();
-        await syncCompositions();
-        await syncAboutContent();
-        await syncRecordings();
-        
-        // Download images unless explicitly skipped
-        if (!options?.skipImages) {
-            await downloadBlogImages();
-        }
-
-        console.log("✅ Notion sync completed successfully!");
-    } catch (error) {
-        console.error("❌ Error during Notion sync:", error);
-        throw error;
-    }
+    console.log("Full data sync completed");
 }

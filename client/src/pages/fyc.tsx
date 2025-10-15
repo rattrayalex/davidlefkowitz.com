@@ -99,7 +99,7 @@ export default function FYC() {
                                     headers: { 'Content-Type': 'application/json' },
                                     body: JSON.stringify({ event_type: 'listen_now_click' })
                                 }).catch(() => {}); // Silent fail
-                                window.open('/fyc/listennow', '_blank');
+                                setLocation('/fyc/listennow');
                             }}
                         >
                             LISTEN NOW
