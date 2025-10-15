@@ -526,68 +526,92 @@ Lefkowitz's compositions have been released on more than twenty commercial recor
         }
     });
 
-    // Get all media items from photos folder
+    // Get all media items - hybrid approach: database + filesystem
     app.get("/api/media", async (req, res) => {
         try {
+            // First, get all media from database
+            const dbMedia = await db
+                .select()
+                .from(media)
+                .where(eq(media.published, true))
+                .orderBy(media.display_order);
+            
+            // Then, check filesystem for any photos not in database
             const photosDir = path.join(process.cwd(), 'photos');
             const files = await fsPromises.readdir(photosDir);
             
-            // Filter for image files and create media objects
+            // Filter for image files
             const imageFiles = files.filter(file => 
                 /\.(jpg|jpeg|png|gif|webp)$/i.test(file)
             );
             
-            // Custom order matching the previous database order
-            const customOrder = [
-                "Lefkowitz 1370.jpg",
-                "Lefkowitz 1312.jpg", 
-                "Lefkowitz 1351.jpg",
-                "Lefkowitz-17.jpg",
-                "Lefkowitz-30.jpg",
-                "Lefkowitz-31.jpg",
-                "David Lefkowitz Summer 2013.jpg",
-                "DavidSLefkowitz Hi-Res.jpg"
-            ];
+            // Get filenames that are already in database
+            const dbFileNames = new Set(dbMedia.map(m => m.file_name).filter(Boolean));
             
-            // Sort files according to custom order
-            const sortedFiles = [...imageFiles].sort((a, b) => {
-                const indexA = customOrder.indexOf(a);
-                const indexB = customOrder.indexOf(b);
-                if (indexA === -1 && indexB === -1) return a.localeCompare(b);
-                if (indexA === -1) return 1;
-                if (indexB === -1) return -1;
-                return indexA - indexB;
-            });
+            // Find photos in filesystem but not in database
+            const newFiles = imageFiles.filter(file => !dbFileNames.has(file));
             
-            const mediaItems = sortedFiles.map((file, index) => {
-                // Assign individual photo credits based on position (1-indexed)
-                let photoCredit = "";
-                const position = index + 1;
-                if ([1, 2, 3, 8].includes(position)) {
-                    photoCredit = "Photo: Laura R. Lefkowitz";
-                } else if ([4, 5, 6].includes(position)) {
-                    photoCredit = "Photo: Rob H. Baker";
-                } else if (position === 7) {
-                    photoCredit = "Photo: David Waldorf";
-                }
+            // Predefined photo credits for legacy files
+            const legacyPhotoCredits: { [key: string]: string } = {
+                "1. Lefkowitz 1370.jpg": "Photo: Laura R. Lefkowitz",
+                "2. Lefkowitz 1312.jpg": "Photo: Laura R. Lefkowitz",
+                "3. Lefkowitz 1351.jpg": "Photo: Laura R. Lefkowitz",
+                "4. Lefkowitz-17.jpg": "Photo: Rob H. Baker",
+                "5. Lefkowitz-30.jpg": "Photo: Rob H. Baker",
+                "6. Lefkowitz-31.jpg": "Photo: Rob H. Baker",
+                "7. David Lefkowitz Summer 2013.jpg": "Photo: David Waldorf",
+                "8. DavidSLefkowitz Hi-Res.jpg": "Photo: Laura R. Lefkowitz"
+            };
+            
+            // Add any new files to database
+            for (const file of newFiles) {
+                const photoCredit = legacyPhotoCredits[file] || "";
                 
-                return {
-                    id: file.replace(/\.[^/.]+$/, ""), // Remove file extension for ID
-                    title: file.replace(/\.[^/.]+$/, ""), // Remove file extension for title
+                // Get next display order
+                const maxOrderResult = await db
+                    .select({ maxOrder: sql<number>`COALESCE(MAX(${media.display_order}), 0)` })
+                    .from(media);
+                const nextOrder = (maxOrderResult[0]?.maxOrder || 0) + 1;
+                
+                // Insert into database
+                await db.insert(media).values({
+                    title: file.replace(/\.[^/.]+$/, "").replace(/^\d+\.\s*/, ''),
                     description: "",
                     image_url: `/photos/${file}`,
-                    alt_text: file.replace(/\.[^/.]+$/, ""),
-                    category: "photo",
-                    date_taken: "",
+                    alt_text: file.replace(/\.[^/.]+$/, "").replace(/^\d+\.\s*/, ''),
                     photo_credits: photoCredit,
-                    display_order: index
-                };
-            });
+                    category: "photo",
+                    file_name: file,
+                    published: true,
+                    display_order: nextOrder,
+                    date_taken: new Date(),
+                });
+            }
+            
+            // Re-fetch all media from database after adding new files
+            const allMedia = await db
+                .select()
+                .from(media)
+                .where(eq(media.published, true))
+                .orderBy(media.display_order);
+            
+            // Map to API response format
+            const mediaItems = allMedia.map(item => ({
+                id: item.id,
+                title: item.title || "",
+                description: item.description || "",
+                image_url: item.image_url,
+                alt_text: item.alt_text || "",
+                category: item.category || "photo",
+                date_taken: item.date_taken ? item.date_taken.toISOString() : "",
+                photo_credits: item.photo_credits || "",
+                display_order: item.display_order || 0
+            }));
             
             res.json(mediaItems);
         } catch (error) {
-            console.error("Error reading photos folder:", error);
-            res.status(500).json({ error: "Failed to fetch photos" });
+            console.error("Error fetching media:", error);
+            res.status(500).json({ error: "Failed to fetch media" });
         }
     });
 
@@ -664,20 +688,32 @@ Lefkowitz's compositions have been released on more than twenty commercial recor
         try {
             const { title, description, alt_text, photo_credits, category, image_url, file_name, file_size, content_type } = req.body;
             
-            // For photos directory, just return success
-            res.json({ 
-                id: title || file_name,
+            // Get the next display order
+            const maxOrderResult = await db
+                .select({ maxOrder: sql<number>`COALESCE(MAX(${media.display_order}), 0)` })
+                .from(media);
+            const nextOrder = (maxOrderResult[0]?.maxOrder || 0) + 1;
+            
+            // Save metadata to database
+            const [newMedia] = await db.insert(media).values({
                 title: title || file_name,
                 description: description || "",
-                alt_text: alt_text || "",
+                alt_text: alt_text || title || file_name,
                 photo_credits: photo_credits || "",
-                category: category || "",
+                category: category || "photo",
                 image_url: image_url || `/photos/${file_name}`,
-                success: true 
-            });
+                file_name: file_name,
+                file_size: file_size,
+                content_type: content_type,
+                published: true,
+                display_order: nextOrder,
+                date_taken: new Date(),
+            }).returning();
+            
+            res.json(newMedia);
         } catch (error) {
-            console.error("Error processing media:", error);
-            res.status(500).json({ error: "Failed to process media" });
+            console.error("Error saving media metadata:", error);
+            res.status(500).json({ error: "Failed to save media metadata" });
         }
     });
 
