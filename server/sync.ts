@@ -475,12 +475,6 @@ export async function syncBlogPosts() {
             const requestBody: any = {
                 database_id: schemaData.databases.blog.id,
                 page_size: 100, // Use maximum page size
-                filter: {
-                    property: "Status",
-                    status: {
-                        equals: "Published",
-                    },
-                },
             };
             
             if (nextCursor) {
@@ -812,13 +806,33 @@ export async function syncRecordings() {
         await db.delete(recordings);
         console.log("Cleared existing recordings");
 
-        const response = await notion.databases.query({
-            database_id: schemaData.databases.recordings.id,
-        });
+        // Implement proper pagination to get ALL recordings
+        let allResults: any[] = [];
+        let hasMore = true;
+        let nextCursor: string | null = null;
 
-        console.log(`Found ${response.results.length} recordings`);
+        while (hasMore) {
+            const requestBody: any = {
+                database_id: schemaData.databases.recordings.id,
+                page_size: 100, // Use maximum page size
+            };
+            
+            if (nextCursor) {
+                requestBody.start_cursor = nextCursor;
+            }
 
-        for (const page of response.results) {
+            const response = await notion.databases.query(requestBody);
+            
+            allResults = allResults.concat(response.results);
+            hasMore = response.has_more;
+            nextCursor = response.next_cursor;
+            
+            console.log(`Retrieved ${response.results.length} recordings, has_more: ${hasMore}`);
+        }
+
+        console.log(`Found ${allResults.length} total recordings`);
+
+        for (const page of allResults) {
             if (!("properties" in page)) continue;
 
             const properties = page.properties;
