@@ -5,6 +5,10 @@ import LoadingSpinner from "@/components/ui/loading-spinner";
 import { Media } from "@shared/schema";
 import { ObjectUploader } from "@/components/ObjectUploader";
 import twelvePointStarSvg from "@/assets/12_point_curved.svg";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Button } from "@/components/ui/button";
 
 // Define the API response type for media
 interface MediaResponse {
@@ -33,6 +37,12 @@ export default function MediaPage() {
     const [photoSectionInView, setPhotoSectionInView] = useState(false);
     const [scrollingUpFromReviews, setScrollingUpFromReviews] = useState(false);
     
+    // State for double-click edit modal
+    const [editingPhoto, setEditingPhoto] = useState<MediaResponse | null>(null);
+    const [editPhotoTitle, setEditPhotoTitle] = useState('');
+    const [editPhotoCredits, setEditPhotoCredits] = useState('');
+    const [saving, setSaving] = useState(false);
+    
     // Check if we're in Replit development mode
     const isReplitDev = import.meta.env.DEV && (
         window.location.hostname.includes('.replit.dev') || 
@@ -43,9 +53,12 @@ export default function MediaPage() {
     const { data: mediaItems = [], isLoading } = useQuery<MediaResponse[]>({
         queryKey: ["/api/media"],
         select: (data: MediaResponse[]) => {
-            // Filter out photos with "profile" in the title, keep database display_order
-            return [...data]
-                .filter(item => !item.title.toLowerCase().includes('profile'));
+            // Filter out photos with "profile" in the title and sort alphabetically
+            const sorted = [...data]
+                .filter(item => !item.title.toLowerCase().includes('profile'))
+                .sort((a, b) => a.title.localeCompare(b.title));
+            console.log('Media items sorted:', sorted.map(item => ({ id: item.id, title: item.title })));
+            return sorted;
         }
     });
 
@@ -95,7 +108,6 @@ export default function MediaPage() {
     };
 
     const handleDragStart = (e: React.DragEvent, itemId: string) => {
-        console.log('Drag started for item:', itemId);
         setDraggedItem(itemId);
         e.dataTransfer.effectAllowed = 'move';
         e.dataTransfer.setData('text/html', itemId);
@@ -114,7 +126,6 @@ export default function MediaPage() {
 
     const handleDrop = async (e: React.DragEvent, targetId: string) => {
         e.preventDefault();
-        console.log('Drop handler called. Dragged:', draggedItem, 'Target:', targetId);
         
         if (!draggedItem || draggedItem === targetId) {
             setDraggedItem(null);
@@ -125,25 +136,19 @@ export default function MediaPage() {
         // Find the indices of the dragged and target items
         const draggedIndex = mediaItems.findIndex(item => item.id === draggedItem);
         const targetIndex = mediaItems.findIndex(item => item.id === targetId);
-
-        console.log('Indices - Dragged:', draggedIndex, 'Target:', targetIndex);
         
         if (draggedIndex === -1 || targetIndex === -1) return;
 
         // Determine if we need to move up or down
         if (draggedIndex < targetIndex) {
             // Moving down - call move-down multiple times
-            console.log(`Moving item down from position ${draggedIndex} to ${targetIndex}`);
             for (let i = draggedIndex; i < targetIndex; i++) {
-                const response = await fetch(`/api/media/${draggedItem}/move-down`, { method: 'PUT' });
-                console.log(`Move down response for step ${i}:`, response.status);
+                await fetch(`/api/media/${draggedItem}/move-down`, { method: 'PUT' });
             }
         } else {
             // Moving up - call move-up multiple times  
-            console.log(`Moving item up from position ${draggedIndex} to ${targetIndex}`);
             for (let i = draggedIndex; i > targetIndex; i--) {
-                const response = await fetch(`/api/media/${draggedItem}/move-up`, { method: 'PUT' });
-                console.log(`Move up response for step ${i}:`, response.status);
+                await fetch(`/api/media/${draggedItem}/move-up`, { method: 'PUT' });
             }
         }
 
@@ -235,6 +240,49 @@ export default function MediaPage() {
         } else {
             setEditingTitle(null);
             setEditTitleValue('');
+        }
+    };
+
+    // Handle double-click on photo to open edit modal
+    const handlePhotoDoubleClick = (item: MediaResponse) => {
+        console.log('Opening edit dialog for:', { id: item.id, title: item.title });
+        setEditingPhoto(item);
+        setEditPhotoTitle(item.title);
+        setEditPhotoCredits(item.photo_credits || '');
+    };
+
+    // Save edited photo details
+    const savePhotoDetails = async () => {
+        if (!editingPhoto) return;
+        
+        console.log('Saving photo details for:', { 
+            id: editingPhoto.id, 
+            title: editPhotoTitle, 
+            credits: editPhotoCredits 
+        });
+        
+        setSaving(true);
+        try {
+            const response = await fetch(`/api/media/${editingPhoto.id}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    title: editPhotoTitle,
+                    photo_credits: editPhotoCredits
+                })
+            });
+            
+            if (response.ok) {
+                queryClient.invalidateQueries({ queryKey: ["/api/media"] });
+                setEditingPhoto(null);
+            } else {
+                alert('Failed to save photo details. Please try again.');
+            }
+        } catch (error) {
+            console.error('Error saving photo details:', error);
+            alert('Error saving photo details. Please try again.');
+        } finally {
+            setSaving(false);
         }
     };
 
@@ -500,8 +548,8 @@ export default function MediaPage() {
                             </div>
                         )}
                         
-                        {isReplitDev && mediaItems.length > 1 && (
-                            <p className="mt-4 text-gray-600 text-sm">Click photo titles to edit them • Drag photos to reorder</p>
+                        {isReplitDev && mediaItems.length > 0 && (
+                            <p className="mt-4 text-gray-600 text-sm">Double-click photos to edit title and photo credits</p>
                         )}
                     </div>
                 </div>
@@ -558,12 +606,6 @@ export default function MediaPage() {
                                 }`}
                                 style={{ minHeight: '100vh', paddingTop: '2px', paddingBottom: '8px' }}
                                 data-testid={`media-item-${index}`}
-                                draggable={mediaItems.length > 1}
-                                onDragStart={(e) => handleDragStart(e, item.id)}
-                                onDragOver={(e) => handleDragOver(e, item.id)}
-                                onDragLeave={handleDragLeave}
-                                onDrop={(e) => handleDrop(e, item.id)}
-                                onDragEnd={handleDragEnd}
                             >
                                 <div className="max-w-6xl mx-auto flex flex-col justify-center min-h-full items-center">
                                     {/* Image and credit wrapper */}
@@ -571,12 +613,13 @@ export default function MediaPage() {
                                         <img
                                             src={item.image_url}
                                             alt={item.alt_text || item.title}
-                                            className="max-w-full object-contain rounded-lg shadow-lg pointer-events-none"
+                                            className="max-w-full object-contain rounded-lg shadow-lg cursor-pointer"
                                             style={{ 
                                                 maxHeight: 'calc(100vh - 120px)',
                                                 marginTop: '8px',
                                                 marginBottom: '8px'
                                             }}
+                                            onDoubleClick={() => handlePhotoDoubleClick(item)}
                                             data-testid={`media-image-${index}`}
                                         />
                                         
@@ -645,6 +688,53 @@ export default function MediaPage() {
                 </div>
             </div>
             )}
+
+            {/* Edit Photo Modal */}
+            <Dialog open={!!editingPhoto} onOpenChange={(open) => !open && setEditingPhoto(null)}>
+                <DialogContent aria-describedby="edit-photo-description">
+                    <DialogHeader>
+                        <DialogTitle>Edit Photo Details</DialogTitle>
+                        <DialogDescription id="edit-photo-description">
+                            Edit the title and photo credits for this image.
+                        </DialogDescription>
+                    </DialogHeader>
+                    <div className="space-y-4">
+                        <div>
+                            <Label htmlFor="edit-title">Title</Label>
+                            <Input
+                                id="edit-title"
+                                value={editPhotoTitle}
+                                onChange={(e) => setEditPhotoTitle(e.target.value)}
+                                placeholder="Enter photo title"
+                            />
+                        </div>
+                        <div>
+                            <Label htmlFor="edit-credits">Photo Credits</Label>
+                            <Input
+                                id="edit-credits"
+                                value={editPhotoCredits}
+                                onChange={(e) => setEditPhotoCredits(e.target.value)}
+                                placeholder="e.g., Photo: John Smith"
+                            />
+                        </div>
+                        <div className="flex justify-end gap-2">
+                            <Button
+                                variant="outline"
+                                onClick={() => setEditingPhoto(null)}
+                                disabled={saving}
+                            >
+                                Cancel
+                            </Button>
+                            <Button
+                                onClick={savePhotoDetails}
+                                disabled={saving || !editPhotoTitle.trim()}
+                            >
+                                {saving ? 'Saving...' : 'Save'}
+                            </Button>
+                        </div>
+                    </div>
+                </DialogContent>
+            </Dialog>
         </div>
     );
 }

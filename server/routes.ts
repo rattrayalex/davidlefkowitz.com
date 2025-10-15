@@ -921,6 +921,36 @@ Lefkowitz's compositions have been released on more than twenty commercial recor
         }
     });
 
+    // Update media item title and photo credits
+    app.put("/api/media/:id", async (req, res) => {
+        try {
+            const { id } = req.params;
+            const { title, photo_credits } = req.body;
+            
+            if (!title || title.trim() === '') {
+                return res.status(400).json({ error: "Title is required" });
+            }
+            
+            const [updated] = await db
+                .update(media)
+                .set({ 
+                    title: title.trim(),
+                    photo_credits: photo_credits ? photo_credits.trim() : ""
+                })
+                .where(eq(media.id, id))
+                .returning();
+            
+            if (!updated) {
+                return res.status(404).json({ error: "Media item not found" });
+            }
+            
+            res.json(updated);
+        } catch (error) {
+            console.error("Error updating media item:", error);
+            res.status(500).json({ error: "Failed to update media item" });
+        }
+    });
+
     // Serve photos directly from photos folder
     app.get("/photos/:filename", (req, res) => {
         const filename = req.params.filename;
