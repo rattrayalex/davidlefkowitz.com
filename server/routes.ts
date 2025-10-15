@@ -526,32 +526,68 @@ Lefkowitz's compositions have been released on more than twenty commercial recor
         }
     });
 
-    // Get all media items from database
+    // Get all media items from photos folder
     app.get("/api/media", async (req, res) => {
         try {
-            // Read from database instead of filesystem
-            const mediaItems = await db
-                .select()
-                .from(media)
-                .orderBy(media.display_order);
+            const photosDir = path.join(process.cwd(), 'photos');
+            const files = await fsPromises.readdir(photosDir);
             
-            // Format the response to match the expected structure
-            const formattedItems = mediaItems.map((item) => ({
-                id: item.id,
-                title: item.title,
-                description: item.description || "",
-                image_url: item.image_url,
-                alt_text: item.alt_text || item.title,
-                category: item.category || "photo",
-                date_taken: item.date_taken ? item.date_taken.toISOString() : "",
-                photo_credits: item.photo_credits ? `Photo: ${item.photo_credits}` : "",
-                display_order: item.display_order
-            }));
+            // Filter for image files and create media objects
+            const imageFiles = files.filter(file => 
+                /\.(jpg|jpeg|png|gif|webp)$/i.test(file)
+            );
             
-            res.json(formattedItems);
+            // Custom order matching the previous database order
+            const customOrder = [
+                "1. Lefkowitz 1370.jpg",
+                "2. Lefkowitz 1312.jpg", 
+                "3. Lefkowitz 1351.jpg",
+                "4. Lefkowitz-17.jpg",
+                "5. Lefkowitz-30.jpg",
+                "6. Lefkowitz-31.jpg",
+                "7. David Lefkowitz Summer 2013.jpg",
+                "8. DavidSLefkowitz Hi-Res.jpg"
+            ];
+            
+            // Sort files according to custom order
+            const sortedFiles = [...imageFiles].sort((a, b) => {
+                const indexA = customOrder.indexOf(a);
+                const indexB = customOrder.indexOf(b);
+                if (indexA === -1 && indexB === -1) return a.localeCompare(b);
+                if (indexA === -1) return 1;
+                if (indexB === -1) return -1;
+                return indexA - indexB;
+            });
+            
+            const mediaItems = sortedFiles.map((file, index) => {
+                // Assign individual photo credits based on position (1-indexed)
+                let photoCredit = "";
+                const position = index + 1;
+                if ([1, 2, 3, 8].includes(position)) {
+                    photoCredit = "Photo: Laura R. Lefkowitz";
+                } else if ([4, 5, 6].includes(position)) {
+                    photoCredit = "Photo: Rob H. Baker";
+                } else if (position === 7) {
+                    photoCredit = "Photo: David Waldorf";
+                }
+                
+                return {
+                    id: file.replace(/\.[^/.]+$/, ""), // Remove file extension for ID
+                    title: file.replace(/\.[^/.]+$/, ""), // Remove file extension for title
+                    description: "",
+                    image_url: `/photos/${file}`,
+                    alt_text: file.replace(/\.[^/.]+$/, ""),
+                    category: "photo",
+                    date_taken: "",
+                    photo_credits: photoCredit,
+                    display_order: index
+                };
+            });
+            
+            res.json(mediaItems);
         } catch (error) {
-            console.error("Error fetching media from database:", error);
-            res.status(500).json({ error: "Failed to fetch media" });
+            console.error("Error reading photos folder:", error);
+            res.status(500).json({ error: "Failed to fetch photos" });
         }
     });
 
