@@ -249,7 +249,7 @@ export async function syncBlogPosts() {
 
             const blogPost: InsertBlogPost = {
                 title,
-                date: dateProperty?.date?.start ? new Date(dateProperty.date.start) : null,
+                published_date: dateProperty?.date?.start ? new Date(dateProperty.date.start) : new Date(), // Use current date as fallback
                 content: extractedContent.content,
                 purple_box_text: extractedContent.purpleBoxText,
                 composition_id: compositionProperty?.relation?.[0]?.id || null,
@@ -705,6 +705,8 @@ export async function syncCompositions() {
     console.log("Syncing compositions from Notion...");
 
     try {
+        console.log(`Querying compositions database: ${schemaData.databases.compositions.id}`);
+        
         // Query the compositions database directly with Published filter
         const response = await notion.databases.query({
             database_id: schemaData.databases.compositions.id,
@@ -717,6 +719,7 @@ export async function syncCompositions() {
         });
         
         const pages = response.results;
+        console.log(`API returned ${response.results.length} results`);
         console.log(`Found ${pages.length} published compositions`);
 
         // Clear all existing compositions
