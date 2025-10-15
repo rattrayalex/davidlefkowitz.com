@@ -54,11 +54,9 @@ export default function MediaPage() {
         queryKey: ["/api/media"],
         select: (data: MediaResponse[]) => {
             // Filter out photos with "profile" in the title and sort alphabetically
-            const sorted = [...data]
+            return [...data]
                 .filter(item => !item.title.toLowerCase().includes('profile'))
                 .sort((a, b) => a.title.localeCompare(b.title));
-            console.log('Media items sorted:', sorted.map(item => ({ id: item.id, title: item.title })));
-            return sorted;
         }
     });
 
@@ -245,7 +243,6 @@ export default function MediaPage() {
 
     // Handle double-click on photo to open edit modal
     const handlePhotoDoubleClick = (item: MediaResponse) => {
-        console.log('Opening edit dialog for:', { id: item.id, title: item.title });
         setEditingPhoto(item);
         setEditPhotoTitle(item.title);
         setEditPhotoCredits(item.photo_credits || '');
@@ -254,12 +251,6 @@ export default function MediaPage() {
     // Save edited photo details
     const savePhotoDetails = async () => {
         if (!editingPhoto) return;
-        
-        console.log('Saving photo details for:', { 
-            id: editingPhoto.id, 
-            title: editPhotoTitle, 
-            credits: editPhotoCredits 
-        });
         
         setSaving(true);
         try {
@@ -613,13 +604,13 @@ export default function MediaPage() {
                                         <img
                                             src={item.image_url}
                                             alt={item.alt_text || item.title}
-                                            className="max-w-full object-contain rounded-lg shadow-lg cursor-pointer"
+                                            className={`max-w-full object-contain rounded-lg shadow-lg ${isReplitDev ? 'cursor-pointer' : 'pointer-events-none'}`}
                                             style={{ 
                                                 maxHeight: 'calc(100vh - 120px)',
                                                 marginTop: '8px',
                                                 marginBottom: '8px'
                                             }}
-                                            onDoubleClick={() => handlePhotoDoubleClick(item)}
+                                            onDoubleClick={isReplitDev ? () => handlePhotoDoubleClick(item) : undefined}
                                             data-testid={`media-image-${index}`}
                                         />
                                         
@@ -689,52 +680,54 @@ export default function MediaPage() {
             </div>
             )}
 
-            {/* Edit Photo Modal */}
-            <Dialog open={!!editingPhoto} onOpenChange={(open) => !open && setEditingPhoto(null)}>
-                <DialogContent aria-describedby="edit-photo-description">
-                    <DialogHeader>
-                        <DialogTitle>Edit Photo Details</DialogTitle>
-                        <DialogDescription id="edit-photo-description">
-                            Edit the title and photo credits for this image.
-                        </DialogDescription>
-                    </DialogHeader>
-                    <div className="space-y-4">
-                        <div>
-                            <Label htmlFor="edit-title">Title</Label>
-                            <Input
-                                id="edit-title"
-                                value={editPhotoTitle}
-                                onChange={(e) => setEditPhotoTitle(e.target.value)}
-                                placeholder="Enter photo title"
-                            />
+            {/* Edit Photo Modal - Only in dev mode */}
+            {isReplitDev && (
+                <Dialog open={!!editingPhoto} onOpenChange={(open) => !open && setEditingPhoto(null)}>
+                    <DialogContent aria-describedby="edit-photo-description">
+                        <DialogHeader>
+                            <DialogTitle>Edit Photo Details</DialogTitle>
+                            <DialogDescription id="edit-photo-description">
+                                Edit the title and photo credits for this image.
+                            </DialogDescription>
+                        </DialogHeader>
+                        <div className="space-y-4">
+                            <div>
+                                <Label htmlFor="edit-title">Title</Label>
+                                <Input
+                                    id="edit-title"
+                                    value={editPhotoTitle}
+                                    onChange={(e) => setEditPhotoTitle(e.target.value)}
+                                    placeholder="Enter photo title"
+                                />
+                            </div>
+                            <div>
+                                <Label htmlFor="edit-credits">Photo Credits</Label>
+                                <Input
+                                    id="edit-credits"
+                                    value={editPhotoCredits}
+                                    onChange={(e) => setEditPhotoCredits(e.target.value)}
+                                    placeholder="e.g., Photo: John Smith"
+                                />
+                            </div>
+                            <div className="flex justify-end gap-2">
+                                <Button
+                                    variant="outline"
+                                    onClick={() => setEditingPhoto(null)}
+                                    disabled={saving}
+                                >
+                                    Cancel
+                                </Button>
+                                <Button
+                                    onClick={savePhotoDetails}
+                                    disabled={saving || !editPhotoTitle.trim()}
+                                >
+                                    {saving ? 'Saving...' : 'Save'}
+                                </Button>
+                            </div>
                         </div>
-                        <div>
-                            <Label htmlFor="edit-credits">Photo Credits</Label>
-                            <Input
-                                id="edit-credits"
-                                value={editPhotoCredits}
-                                onChange={(e) => setEditPhotoCredits(e.target.value)}
-                                placeholder="e.g., Photo: John Smith"
-                            />
-                        </div>
-                        <div className="flex justify-end gap-2">
-                            <Button
-                                variant="outline"
-                                onClick={() => setEditingPhoto(null)}
-                                disabled={saving}
-                            >
-                                Cancel
-                            </Button>
-                            <Button
-                                onClick={savePhotoDetails}
-                                disabled={saving || !editPhotoTitle.trim()}
-                            >
-                                {saving ? 'Saving...' : 'Save'}
-                            </Button>
-                        </div>
-                    </div>
-                </DialogContent>
-            </Dialog>
+                    </DialogContent>
+                </Dialog>
+            )}
         </div>
     );
 }
