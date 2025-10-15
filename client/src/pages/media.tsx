@@ -3,7 +3,7 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Upload } from "lucide-react";
 import LoadingSpinner from "@/components/ui/loading-spinner";
 import { Media } from "@shared/schema";
-import { MediaCacheUploader } from "@/components/MediaCacheUploader";
+import { ObjectUploader } from "@/components/ObjectUploader";
 import twelvePointStarSvg from "@/assets/12_point_curved.svg";
 
 // Define the API response type for media
@@ -483,13 +483,13 @@ export default function MediaPage() {
                         {/* Upload Button - Only show in Replit dev mode */}
                         {isReplitDev && (
                             <div className="flex justify-center">
-                                <MediaCacheUploader
-                                    onComplete={() => window.location.reload()}
+                                <ObjectUploader
+                                    onComplete={handleUploadComplete}
                                     buttonClassName="bg-navy hover:bg-navy-dark text-white px-6 py-3 rounded-lg font-medium transition-colors"
                                 >
                                     <Upload className="w-4 h-4 mr-2" />
                                     Upload Image
-                                </MediaCacheUploader>
+                                </ObjectUploader>
                             </div>
                         )}
                         
