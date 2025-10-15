@@ -526,68 +526,105 @@ Lefkowitz's compositions have been released on more than twenty commercial recor
         }
     });
 
-    // Get all media items from photos folder
+    // Get all media items from photos folder - ONLY THE ORIGINAL 8
     app.get("/api/media", async (req, res) => {
         try {
-            const photosDir = path.join(process.cwd(), 'photos');
-            const files = await fsPromises.readdir(photosDir);
-            
-            // Filter for image files and create media objects
-            const imageFiles = files.filter(file => 
-                /\.(jpg|jpeg|png|gif|webp)$/i.test(file)
-            );
-            
-            // Custom order matching the previous database order
-            const customOrder = [
-                "1. Lefkowitz 1370.jpg",
-                "2. Lefkowitz 1312.jpg", 
-                "3. Lefkowitz 1351.jpg",
-                "4. Lefkowitz-17.jpg",
-                "5. Lefkowitz-30.jpg",
-                "6. Lefkowitz-31.jpg",
-                "7. David Lefkowitz Summer 2013.jpg",
-                "8. DavidSLefkowitz Hi-Res.jpg"
-            ];
-            
-            // Sort files according to custom order
-            const sortedFiles = [...imageFiles].sort((a, b) => {
-                const indexA = customOrder.indexOf(a);
-                const indexB = customOrder.indexOf(b);
-                if (indexA === -1 && indexB === -1) return a.localeCompare(b);
-                if (indexA === -1) return 1;
-                if (indexB === -1) return -1;
-                return indexA - indexB;
-            });
-            
-            const mediaItems = sortedFiles.map((file, index) => {
-                // Assign individual photo credits based on position (1-indexed)
-                let photoCredit = "";
-                const position = index + 1;
-                if ([1, 2, 3, 8].includes(position)) {
-                    photoCredit = "Photo: Laura R. Lefkowitz";
-                } else if ([4, 5, 6].includes(position)) {
-                    photoCredit = "Photo: Rob H. Baker";
-                } else if (position === 7) {
-                    photoCredit = "Photo: David Waldorf";
-                }
-                
-                return {
-                    id: file.replace(/\.[^/.]+$/, ""), // Remove file extension for ID
-                    title: file.replace(/\.[^/.]+$/, ""), // Remove file extension for title
+            // Define the exact 8 photos we want to show with their correct credits
+            const mediaItems = [
+                {
+                    id: "1. Lefkowitz 1370",
+                    title: "1. Lefkowitz 1370",
                     description: "",
-                    image_url: `/photos/${file}`,
-                    alt_text: file.replace(/\.[^/.]+$/, ""),
+                    image_url: "/photos/1. Lefkowitz 1370.jpg",
+                    alt_text: "1. Lefkowitz 1370",
                     category: "photo",
                     date_taken: "",
-                    photo_credits: photoCredit,
-                    display_order: index
-                };
-            });
+                    photo_credits: "Photo: Laura R. Lefkowitz",
+                    display_order: 0
+                },
+                {
+                    id: "2. Lefkowitz 1312",
+                    title: "2. Lefkowitz 1312",
+                    description: "",
+                    image_url: "/photos/2. Lefkowitz 1312.jpg",
+                    alt_text: "2. Lefkowitz 1312",
+                    category: "photo",
+                    date_taken: "",
+                    photo_credits: "Photo: Laura R. Lefkowitz",
+                    display_order: 1
+                },
+                {
+                    id: "3. Lefkowitz 1351",
+                    title: "3. Lefkowitz 1351",
+                    description: "",
+                    image_url: "/photos/3. Lefkowitz 1351.jpg",
+                    alt_text: "3. Lefkowitz 1351",
+                    category: "photo",
+                    date_taken: "",
+                    photo_credits: "Photo: Laura R. Lefkowitz",
+                    display_order: 2
+                },
+                {
+                    id: "4. Lefkowitz-17",
+                    title: "4. Lefkowitz-17",
+                    description: "",
+                    image_url: "/photos/4. Lefkowitz-17.jpg",
+                    alt_text: "4. Lefkowitz-17",
+                    category: "photo",
+                    date_taken: "",
+                    photo_credits: "Photo: Rob H. Baker",
+                    display_order: 3
+                },
+                {
+                    id: "5. Lefkowitz-30",
+                    title: "5. Lefkowitz-30",
+                    description: "",
+                    image_url: "/photos/5. Lefkowitz-30.jpg",
+                    alt_text: "5. Lefkowitz-30",
+                    category: "photo",
+                    date_taken: "",
+                    photo_credits: "Photo: Rob H. Baker",
+                    display_order: 4
+                },
+                {
+                    id: "6. Lefkowitz-31",
+                    title: "6. Lefkowitz-31",
+                    description: "",
+                    image_url: "/photos/6. Lefkowitz-31.jpg",
+                    alt_text: "6. Lefkowitz-31",
+                    category: "photo",
+                    date_taken: "",
+                    photo_credits: "Photo: Rob H. Baker",
+                    display_order: 5
+                },
+                {
+                    id: "7. David Lefkowitz Summer 2013",
+                    title: "7. David Lefkowitz Summer 2013",
+                    description: "",
+                    image_url: "/photos/7. David Lefkowitz Summer 2013.jpg",
+                    alt_text: "7. David Lefkowitz Summer 2013",
+                    category: "photo",
+                    date_taken: "",
+                    photo_credits: "Photo: David Waldorf",
+                    display_order: 6
+                },
+                {
+                    id: "8. DavidSLefkowitz Hi-Res",
+                    title: "8. DavidSLefkowitz Hi-Res",
+                    description: "",
+                    image_url: "/photos/8. DavidSLefkowitz Hi-Res.jpg",
+                    alt_text: "8. DavidSLefkowitz Hi-Res",
+                    category: "photo",
+                    date_taken: "",
+                    photo_credits: "Photo: Laura R. Lefkowitz",
+                    display_order: 7
+                }
+            ];
             
             res.json(mediaItems);
         } catch (error) {
-            console.error("Error reading photos folder:", error);
-            res.status(500).json({ error: "Failed to fetch photos" });
+            console.error("Error returning media items:", error);
+            res.status(500).json({ error: "Failed to fetch media" });
         }
     });
 
