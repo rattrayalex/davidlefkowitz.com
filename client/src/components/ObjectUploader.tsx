@@ -77,6 +77,16 @@ export function ObjectUploader({
         reader.readAsDataURL(selectedFile);
       });
 
+      // Get the upload URL first (dummy step for compatibility)
+      const urlResponse = await fetch('/api/media/upload-url', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' }
+      });
+      
+      if (!urlResponse.ok) {
+        throw new Error('Failed to get upload URL');
+      }
+      
       // Upload file to photos directory
       const uploadResponse = await fetch('/api/media/upload-to-photos', {
         method: 'POST',
