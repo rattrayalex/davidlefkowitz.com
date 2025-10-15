@@ -1,5 +1,5 @@
 import { db } from "./db";
-import { notion, getNotionPages } from "./notion";
+import { notion } from "./notion";
 import {
     blogPosts,
     compositions,
@@ -212,7 +212,18 @@ export async function syncBlogPosts() {
     console.log("Syncing blog posts from Notion...");
 
     try {
-        const pages = await getNotionPages(schemaData.databases.blog.id);
+        // Query the blog database directly with Published filter
+        const response = await notion.databases.query({
+            database_id: schemaData.databases.blog.id,
+            filter: {
+                property: "Status",
+                status: {
+                    equals: "Published"
+                }
+            }
+        });
+        
+        const pages = response.results;
         console.log(`Found ${pages.length} published blog posts`);
 
         // Clear all existing blog posts
@@ -694,7 +705,18 @@ export async function syncCompositions() {
     console.log("Syncing compositions from Notion...");
 
     try {
-        const pages = await getNotionPages(schemaData.databases.compositions.id);
+        // Query the compositions database directly with Published filter
+        const response = await notion.databases.query({
+            database_id: schemaData.databases.compositions.id,
+            filter: {
+                property: "Published",
+                checkbox: {
+                    equals: true
+                }
+            }
+        });
+        
+        const pages = response.results;
         console.log(`Found ${pages.length} published compositions`);
 
         // Clear all existing compositions
@@ -777,7 +799,12 @@ export async function syncRecordings() {
     console.log("Syncing recordings from Notion...");
 
     try {
-        const pages = await getNotionPages(schemaData.databases.recordings.id);
+        // Query the recordings database directly (no Published filter for recordings)
+        const response = await notion.databases.query({
+            database_id: schemaData.databases.recordings.id
+        });
+        
+        const pages = response.results;
         console.log(`Found ${pages.length} recordings`);
 
         // Clear all existing recordings
