@@ -628,13 +628,35 @@ Lefkowitz's compositions have been released on more than twenty commercial recor
 
     // Media upload endpoints
     app.post("/api/media/upload-url", async (req, res) => {
+        // Return a dummy URL since we'll be uploading to filesystem
+        res.json({ uploadURL: "/api/media/upload-to-photos" });
+    });
+
+    app.post("/api/media/upload-to-photos", async (req, res) => {
         try {
-            const objectStorageService = new ObjectStorageService();
-            const uploadURL = await objectStorageService.getMediaUploadURL();
-            res.json({ uploadURL });
+            const { fileContent, fileName } = req.body;
+            
+            if (!fileContent || !fileName) {
+                return res.status(400).json({ error: "File content and name are required" });
+            }
+            
+            // Ensure photos directory exists
+            const photosDir = path.join(process.cwd(), 'photos');
+            await fsPromises.mkdir(photosDir, { recursive: true });
+            
+            // Save file to photos directory
+            const filePath = path.join(photosDir, fileName);
+            const buffer = Buffer.from(fileContent, 'base64');
+            await fsPromises.writeFile(filePath, buffer);
+            
+            res.json({ 
+                success: true, 
+                url: `/photos/${fileName}`,
+                fileName: fileName
+            });
         } catch (error) {
-            console.error("Error getting upload URL:", error);
-            res.status(500).json({ error: "Failed to get upload URL" });
+            console.error("Error saving photo to directory:", error);
+            res.status(500).json({ error: "Failed to save photo" });
         }
     });
 
@@ -642,35 +664,20 @@ Lefkowitz's compositions have been released on more than twenty commercial recor
         try {
             const { title, description, alt_text, photo_credits, category, image_url, file_name, file_size, content_type } = req.body;
             
-            if (!title || !image_url) {
-                return res.status(400).json({ error: "Title and image URL are required" });
-            }
-
-            // Get the next display order
-            const maxOrderResult = await db
-                .select({ maxOrder: sql<number>`COALESCE(MAX(${media.display_order}), 0)` })
-                .from(media);
-            const nextOrder = (maxOrderResult[0]?.maxOrder || 0) + 1;
-
-            const [newMedia] = await db.insert(media).values({
-                title,
+            // For photos directory, just return success
+            res.json({ 
+                id: title || file_name,
+                title: title || file_name,
                 description: description || "",
                 alt_text: alt_text || "",
                 photo_credits: photo_credits || "",
                 category: category || "",
-                image_url,
-                file_name,
-                file_size,
-                content_type,
-                published: true,
-                date_taken: new Date(),
-                display_order: nextOrder,
-            }).returning();
-
-            res.json(newMedia);
+                image_url: image_url || `/photos/${file_name}`,
+                success: true 
+            });
         } catch (error) {
-            console.error("Error saving media metadata:", error);
-            res.status(500).json({ error: "Failed to save media metadata" });
+            console.error("Error processing media:", error);
+            res.status(500).json({ error: "Failed to process media" });
         }
     });
 

@@ -66,30 +66,32 @@ export function ObjectUploader({
 
     setUploading(true);
     try {
-      // Get upload URL
-      const uploadResponse = await fetch('/api/media/upload-url', {
+      // Convert file to base64
+      const reader = new FileReader();
+      const fileContent = await new Promise<string>((resolve, reject) => {
+        reader.onload = () => {
+          const base64 = (reader.result as string).split(',')[1];
+          resolve(base64);
+        };
+        reader.onerror = reject;
+        reader.readAsDataURL(selectedFile);
+      });
+
+      // Upload file to photos directory
+      const uploadResponse = await fetch('/api/media/upload-to-photos', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' }
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          fileContent,
+          fileName: selectedFile.name
+        })
       });
       
       if (!uploadResponse.ok) {
-        throw new Error('Failed to get upload URL');
-      }
-      
-      const { uploadURL } = await uploadResponse.json();
-
-      // Upload file
-      const fileResponse = await fetch(uploadURL, {
-        method: 'PUT',
-        body: selectedFile,
-        headers: {
-          'Content-Type': selectedFile.type,
-        }
-      });
-
-      if (!fileResponse.ok) {
         throw new Error('Failed to upload file');
       }
+      
+      const { url, fileName } = await uploadResponse.json();
 
       // Save metadata
       const metadataResponse = await fetch('/api/media', {
@@ -101,8 +103,8 @@ export function ObjectUploader({
           alt_text: altText,
           photo_credits: photoCredits,
           category,
-          image_url: uploadURL.split('?')[0], // Remove query params
-          file_name: selectedFile.name,
+          image_url: url,
+          file_name: fileName,
           file_size: selectedFile.size,
           content_type: selectedFile.type,
         })
@@ -113,8 +115,8 @@ export function ObjectUploader({
       }
 
       onComplete?.({
-        url: uploadURL.split('?')[0],
-        fileName: selectedFile.name
+        url: url,
+        fileName: fileName
       });
 
       resetForm();
