@@ -938,7 +938,17 @@ export async function syncMedia() {
                 const localImageUrl = await downloadImage(imageUrl, block.id);
                 
                 // Create media item from image block
-                // Default photo credits to "Laura R. Lefkowitz"
+                // Extract photo credit from caption if it contains "Photo:" or "Credit:"
+                let photoCredits = "";
+                if (caption) {
+                    const creditMatch = caption.match(/(?:Photo|Credit):\s*(.+)/i);
+                    if (creditMatch) {
+                        photoCredits = creditMatch[1].trim();
+                        // Remove the credit from the caption for the title
+                        caption = caption.replace(creditMatch[0], "").trim();
+                    }
+                }
+                
                 const mediaItem: InsertMedia = {
                     title: caption || `Photo ${imageCount}`,
                     description: caption || "",
@@ -946,7 +956,7 @@ export async function syncMedia() {
                     alt_text: caption || "",
                     category: "Photo",
                     date_taken: null,
-                    photo_credits: "Laura R. Lefkowitz",
+                    photo_credits: photoCredits, // Don't default to any specific credit
                     published: true,
                 };
                 
