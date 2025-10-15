@@ -1007,6 +1007,10 @@ export async function syncMedia() {
             // Download and cache the image locally
             const localImageUrl = await downloadImage(imageUrl, page.id);
 
+            // Extract photo credits, defaulting to "Laura R. Lefkowitz" if empty
+            const photoCredits = photoCreditsProperty?.rich_text?.[0]?.plain_text || "";
+            const defaultCredit = photoCredits || "Laura R. Lefkowitz";
+
             const mediaItem: InsertMedia = {
                 title: titleProperty?.title?.[0]?.plain_text || "",
                 description: descriptionProperty?.rich_text?.[0]?.plain_text || "",
@@ -1014,7 +1018,7 @@ export async function syncMedia() {
                 alt_text: altTextProperty?.rich_text?.[0]?.plain_text || "",
                 category: categoryProperty?.select?.name || "",
                 date_taken: dateTakenProperty?.date?.start ? new Date(dateTakenProperty.date.start) : null,
-                photo_credits: photoCreditsProperty?.rich_text?.[0]?.plain_text || "",
+                photo_credits: defaultCredit,
                 published: publishedProperty?.checkbox || false,
             };
 
@@ -1038,6 +1042,54 @@ export async function syncMedia() {
         }
 
         console.log("Media sync completed");
+        
+        // After syncing, reorder media items
+        // Get all media items ordered by current display_order
+        const allMediaItems = await db
+            .select()
+            .from(media)
+            .orderBy(media.display_order);
+        
+        // Identify new photos (those with "Laura R. Lefkowitz" credit that were just added)
+        // These should be the most recent 4 items
+        const newPhotos = allMediaItems.filter(item => 
+            item.photo_credits === "Laura R. Lefkowitz"
+        ).slice(-4); // Get the last 4 items with this credit
+        
+        if (newPhotos.length === 4) {
+            console.log("Found 4 new photos to reorder");
+            
+            // Get existing photos that need to be reordered
+            const existingPhotos = allMediaItems.filter(item => 
+                !newPhotos.some(newPhoto => newPhoto.id === item.id)
+            );
+            
+            // Create new ordering:
+            // Items 1-6 stay as is
+            // New photos become 7-10
+            // Old 7-8 become 11-12
+            // Remaining items stay in their relative order
+            
+            const first6 = existingPhotos.slice(0, 6);
+            const oldItems7Plus = existingPhotos.slice(6);
+            
+            // Rebuild the order
+            const reorderedItems = [
+                ...first6,           // Items 1-6
+                ...newPhotos,        // New items 7-10
+                ...oldItems7Plus     // Old items 7+ become 11+
+            ];
+            
+            // Update display_order for all items
+            for (let i = 0; i < reorderedItems.length; i++) {
+                await db
+                    .update(media)
+                    .set({ display_order: i + 1 })
+                    .where(eq(media.id, reorderedItems[i].id));
+            }
+            
+            console.log("Media items reordered successfully");
+        }
     } catch (error) {
         console.error("Error syncing media:", error);
         throw error;

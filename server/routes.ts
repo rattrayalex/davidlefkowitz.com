@@ -767,6 +767,24 @@ Lefkowitz's compositions have been released on more than twenty commercial recor
             res.status(500).json({ error: "Failed to fetch media debug info" });
         }
     });
+    
+    // Temporary endpoint to get Notion databases
+    app.get("/api/notion/databases", async (req, res) => {
+        try {
+            const { getNotionDatabases } = await import("./notion.js");
+            const databases = await getNotionDatabases();
+            const formattedDatabases = databases.map(db => ({
+                id: db.id,
+                title: db.title?.[0]?.plain_text || "Untitled",
+                url: db.url
+            }));
+            console.log("Found databases:", formattedDatabases);
+            res.json(formattedDatabases);
+        } catch (error) {
+            console.error("Error getting Notion databases:", error);
+            res.status(500).json({ error: "Failed to get Notion databases" });
+        }
+    });
 
     // Set custom order for media items
     app.put("/api/media/set-order", async (req, res) => {
@@ -1169,6 +1187,25 @@ Lefkowitz's compositions have been released on more than twenty commercial recor
         } catch (error) {
             console.error("Error during logos sync:", error);
             res.status(500).json({ error: "Failed to sync logos" });
+        } finally {
+            syncMutex.isSyncing = false;
+        }
+    });
+
+    // Media sync endpoint
+    app.post("/api/sync/media", async (req, res) => {
+        if (syncMutex.isSyncing) {
+            res.json({ success: false, message: "Sync already in progress" });
+            return;
+        }
+        
+        syncMutex.isSyncing = true;
+        try {
+            await syncMedia();
+            res.json({ success: true, message: "Media sync completed" });
+        } catch (error) {
+            console.error("Error during media sync:", error);
+            res.status(500).json({ error: "Failed to sync media" });
         } finally {
             syncMutex.isSyncing = false;
         }
