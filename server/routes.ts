@@ -732,7 +732,7 @@ Lefkowitz's compositions have been released on more than twenty commercial recor
             const [itemAbove] = await db
                 .select()
                 .from(media)
-                .where(lt(media.display_order, currentItem.display_order))
+                .where(sql`${media.display_order} < ${currentItem.display_order}`)
                 .orderBy(desc(media.display_order))
                 .limit(1);
 
@@ -769,7 +769,7 @@ Lefkowitz's compositions have been released on more than twenty commercial recor
             const [itemBelow] = await db
                 .select()
                 .from(media)
-                .where(gt(media.display_order, currentItem.display_order))
+                .where(sql`${media.display_order} > ${currentItem.display_order}`)
                 .orderBy(media.display_order)
                 .limit(1);
 

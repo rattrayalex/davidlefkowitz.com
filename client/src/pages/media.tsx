@@ -43,10 +43,9 @@ export default function MediaPage() {
     const { data: mediaItems = [], isLoading } = useQuery<MediaResponse[]>({
         queryKey: ["/api/media"],
         select: (data: MediaResponse[]) => {
-            // Filter out photos with "profile" in the title and sort by title
+            // Filter out photos with "profile" in the title, keep database display_order
             return [...data]
-                .filter(item => !item.title.toLowerCase().includes('profile'))
-                .sort((a, b) => a.title.localeCompare(b.title));
+                .filter(item => !item.title.toLowerCase().includes('profile'));
         }
     });
 
