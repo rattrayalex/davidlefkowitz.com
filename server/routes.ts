@@ -4,7 +4,7 @@ import { notion } from "./notion";
 import { contactFormSchema, blogPosts, compositions, recordings, media, mediaReviews, contacts, profile, aboutContent, analytics, type BlogPost, type Composition, type Recording, type Media } from "@shared/schema";
 import { db } from "./db";
 import { eq, desc, asc, sql, lt, gt, and } from "drizzle-orm";
-import { syncBlogPosts, syncCompositions, syncRecordings, syncMedia, syncAboutPage, syncLogos } from "./sync";
+import { syncBlogPosts, syncCompositions, syncRecordings, syncMedia, syncAboutContent } from "./sync";
 import { getMediaPageReviews } from "./notion";
 import { ObjectStorageService } from "./objectStorage";
 import { z } from "zod";
@@ -1157,7 +1157,7 @@ Lefkowitz's compositions have been released on more than twenty commercial recor
         
         syncMutex.isSyncing = true;
         try {
-            await syncAboutPage();
+            await syncAboutContent();
             res.json({ success: true, message: "About page sync completed" });
         } catch (error) {
             console.error("Error during about page sync:", error);
@@ -1167,30 +1167,30 @@ Lefkowitz's compositions have been released on more than twenty commercial recor
         }
     });
 
-    // Sync logos from Notion
-    app.post("/api/sync-logos", async (req, res) => {
-        if (syncMutex.isSyncing) {
-            res.json({ success: false, message: "Sync already in progress" });
-            return;
-        }
+    // Sync logos from Notion - disabled until syncLogos function is implemented
+    // app.post("/api/sync-logos", async (req, res) => {
+    //     if (syncMutex.isSyncing) {
+    //         res.json({ success: false, message: "Sync already in progress" });
+    //         return;
+    //     }
         
-        syncMutex.isSyncing = true;
-        try {
-            const logos = await syncLogos();
+    //     syncMutex.isSyncing = true;
+    //     try {
+    //         const logos = await syncLogos();
             
-            // Store the logo paths globally for the API endpoint
-            (global as any).cachedLogoPaths = logos.map(logo => ({
-                platform: logo.platform,
-                path: logo.url
-            }));
-            res.json({ success: true, message: "Logos sync completed", logos });
-        } catch (error) {
-            console.error("Error during logos sync:", error);
-            res.status(500).json({ error: "Failed to sync logos" });
-        } finally {
-            syncMutex.isSyncing = false;
-        }
-    });
+    //         // Store the logo paths globally for the API endpoint
+    //         (global as any).cachedLogoPaths = logos.map(logo => ({
+    //             platform: logo.platform,
+    //             path: logo.url
+    //         }));
+    //         res.json({ success: true, message: "Logos sync completed", logos });
+    //     } catch (error) {
+    //         console.error("Error during logos sync:", error);
+    //         res.status(500).json({ error: "Failed to sync logos" });
+    //     } finally {
+    //         syncMutex.isSyncing = false;
+    //     }
+    // });
 
     // Media sync endpoint
     app.post("/api/sync/media", async (req, res) => {

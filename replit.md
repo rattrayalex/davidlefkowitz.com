@@ -2,6 +2,11 @@
 
 This is a composer's portfolio website for David S. Lefkowitz, built as a full-stack web application. The site showcases compositions, recordings, blog posts, and provides contact functionality. It integrates with Notion as a headless CMS for content management, allowing the composer to manage their portfolio content through familiar Notion interfaces while presenting it through a polished, professional web presence.
 
+## Recent Updates (October 15, 2025)
+- **Media Page Photo Sync**: Implemented successful extraction and syncing of photos from Notion Media page using blocks API. The Media page is a single Notion page containing both reviews (top) and photos (bottom), requiring block-level extraction rather than database queries. Photos are now properly synced with correct attribution (defaulting to "Laura R. Lefkowitz" when no specific credit is provided)
+- **Album Image Optimization**: Completed optimization with reversible backup system, reducing "Preludes and Fugues" album images from ~70MB to ~4.6MB
+- **FYC LISTEN NOW Button**: Modified to open /listennow page in new tab using window.open() for better user experience
+
 ## Recent Updates (September 19, 2025)
 - **FYC (For Your Consideration) Page**: Added Grammy awards campaign page at `/fyc` featuring "Preludes and Fugues Books I & II" submissions with streaming links and detailed album information
 - **Unique URL Fix for Compositions**: Fixed critical navigation bug where multiple compositions with same title (e.g., three Calder's Closet versions) were generating duplicate slugs. Now properly uses "Name of Page" field from Notion to create unique URL-safe slugs for each composition variant
