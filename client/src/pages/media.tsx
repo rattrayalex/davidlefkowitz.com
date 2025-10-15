@@ -95,6 +95,7 @@ export default function MediaPage() {
     };
 
     const handleDragStart = (e: React.DragEvent, itemId: string) => {
+        console.log('Drag started for item:', itemId);
         setDraggedItem(itemId);
         e.dataTransfer.effectAllowed = 'move';
         e.dataTransfer.setData('text/html', itemId);
@@ -113,6 +114,7 @@ export default function MediaPage() {
 
     const handleDrop = async (e: React.DragEvent, targetId: string) => {
         e.preventDefault();
+        console.log('Drop handler called. Dragged:', draggedItem, 'Target:', targetId);
         
         if (!draggedItem || draggedItem === targetId) {
             setDraggedItem(null);
@@ -124,18 +126,24 @@ export default function MediaPage() {
         const draggedIndex = mediaItems.findIndex(item => item.id === draggedItem);
         const targetIndex = mediaItems.findIndex(item => item.id === targetId);
 
+        console.log('Indices - Dragged:', draggedIndex, 'Target:', targetIndex);
+        
         if (draggedIndex === -1 || targetIndex === -1) return;
 
         // Determine if we need to move up or down
         if (draggedIndex < targetIndex) {
             // Moving down - call move-down multiple times
+            console.log(`Moving item down from position ${draggedIndex} to ${targetIndex}`);
             for (let i = draggedIndex; i < targetIndex; i++) {
-                await fetch(`/api/media/${draggedItem}/move-down`, { method: 'PUT' });
+                const response = await fetch(`/api/media/${draggedItem}/move-down`, { method: 'PUT' });
+                console.log(`Move down response for step ${i}:`, response.status);
             }
         } else {
             // Moving up - call move-up multiple times  
+            console.log(`Moving item up from position ${draggedIndex} to ${targetIndex}`);
             for (let i = draggedIndex; i > targetIndex; i--) {
-                await fetch(`/api/media/${draggedItem}/move-up`, { method: 'PUT' });
+                const response = await fetch(`/api/media/${draggedItem}/move-up`, { method: 'PUT' });
+                console.log(`Move up response for step ${i}:`, response.status);
             }
         }
 
