@@ -526,77 +526,82 @@ Lefkowitz's compositions have been released on more than twenty commercial recor
         }
     });
 
-    // Get all media items - hybrid approach: database + filesystem
+    // Get all media items - filesystem first approach
     app.get("/api/media", async (req, res) => {
         try {
-            // First, get all media from database
-            const dbMedia = await db
-                .select()
-                .from(media)
-                .where(eq(media.published, true))
-                .orderBy(media.display_order);
-            
-            // Then, check filesystem for any photos not in database
+            // Read all photos from filesystem
             const photosDir = path.join(process.cwd(), 'photos');
             const files = await fsPromises.readdir(photosDir);
             
-            // Filter for image files
+            // Filter for image files (excluding profile photos)
             const imageFiles = files.filter(file => 
-                /\.(jpg|jpeg|png|gif|webp)$/i.test(file)
+                /\.(jpg|jpeg|png|gif|webp)$/i.test(file) &&
+                !file.toLowerCase().includes('profile')
             );
             
-            // Get filenames that are already in database
-            const dbFileNames = new Set(dbMedia.map(m => m.file_name).filter(Boolean));
+            // Get all media from database
+            const dbMedia = await db
+                .select()
+                .from(media)
+                .orderBy(media.display_order);
+            
+            // Get image_urls that are already in database
+            const dbImageUrls = new Set(dbMedia.map(m => m.image_url).filter(Boolean));
             
             // Find photos in filesystem but not in database
-            const newFiles = imageFiles.filter(file => !dbFileNames.has(file));
+            const newFiles = imageFiles.filter(file => !dbImageUrls.has(`/photos/${file}`));
             
-            // Predefined photo credits for legacy files
-            const legacyPhotoCredits: { [key: string]: string } = {
-                "1. Lefkowitz 1370.jpg": "Photo: Laura R. Lefkowitz",
-                "2. Lefkowitz 1312.jpg": "Photo: Laura R. Lefkowitz",
-                "3. Lefkowitz 1351.jpg": "Photo: Laura R. Lefkowitz",
-                "4. Lefkowitz-17.jpg": "Photo: Rob H. Baker",
-                "5. Lefkowitz-30.jpg": "Photo: Rob H. Baker",
-                "6. Lefkowitz-31.jpg": "Photo: Rob H. Baker",
-                "7. David Lefkowitz Summer 2013.jpg": "Photo: David Waldorf",
-                "8. DavidSLefkowitz Hi-Res.jpg": "Photo: Laura R. Lefkowitz"
+            // Predefined photo credits and titles for legacy files
+            const legacyPhotoData: { [key: string]: { title: string, credits: string, order: number } } = {
+                "1. Lefkowitz 1370.jpg": { title: "01. Lefkowitz 1370", credits: "Photo: Laura R. Lefkowitz", order: 1 },
+                "2. Lefkowitz 1312.jpg": { title: "02. Lefkowitz 1312", credits: "Photo: Laura R. Lefkowitz", order: 2 },
+                "3. Lefkowitz 1351.jpg": { title: "03. Lefkowitz 1351", credits: "Photo: Laura R. Lefkowitz", order: 3 },
+                "4. Lefkowitz-17.jpg": { title: "04. Lefkowitz-17", credits: "Photo: Rob H. Baker", order: 4 },
+                "5. Lefkowitz-30.jpg": { title: "05. Lefkowitz-30", credits: "Photo: Rob H. Baker", order: 5 },
+                "6. Lefkowitz-31.jpg": { title: "06. Lefkowitz-31", credits: "Photo: Rob H. Baker", order: 6 },
+                "7. David Lefkowitz Summer 2013.jpg": { title: "07. David Lefkowitz Summer 2013", credits: "Photo: David Waldorf", order: 7 },
+                "8. DavidSLefkowitz Hi-Res.jpg": { title: "08. DavidSLefkowitz Hi-Res", credits: "Photo: Laura R. Lefkowitz", order: 8 },
+                "DSC_1870c-a 2 sm.jpg": { title: "09. DSC_1870c-a 2 sm", credits: "Photo: Laura R. Lefkowitz", order: 9 },
+                "DSC_2075c-a sm.jpg": { title: "10. DSC_2075c-a sm", credits: "Photo: Laura R. Lefkowitz", order: 10 },
+                "DSC_1944c-a sm.jpg": { title: "11. DSC_1944c-a sm", credits: "Photo: Laura R. Lefkowitz", order: 11 },
+                "DSC_1971c-a sm.jpg": { title: "12. DSC_1971c-a sm", credits: "Photo: Laura R. Lefkowitz", order: 12 }
             };
             
             // Add any new files to database
             for (const file of newFiles) {
-                const photoCredit = legacyPhotoCredits[file] || "";
+                const fileData = legacyPhotoData[file];
                 
-                // Get next display order
-                const maxOrderResult = await db
-                    .select({ maxOrder: sql<number>`COALESCE(MAX(${media.display_order}), 0)` })
-                    .from(media);
-                const nextOrder = (maxOrderResult[0]?.maxOrder || 0) + 1;
-                
-                // Insert into database
-                await db.insert(media).values({
-                    title: file.replace(/\.[^/.]+$/, "").replace(/^\d+\.\s*/, ''),
-                    description: "",
-                    image_url: `/photos/${file}`,
-                    alt_text: file.replace(/\.[^/.]+$/, "").replace(/^\d+\.\s*/, ''),
-                    photo_credits: photoCredit,
-                    category: "photo",
-                    file_name: file,
-                    published: true,
-                    display_order: nextOrder,
-                    date_taken: new Date(),
-                });
+                if (fileData) {
+                    // Insert into database with predefined data
+                    await db.insert(media).values({
+                        title: fileData.title,
+                        description: "",
+                        image_url: `/photos/${file}`,
+                        alt_text: fileData.title,
+                        photo_credits: fileData.credits,
+                        category: "photo",
+                        file_name: file,
+                        published: true,
+                        display_order: fileData.order,
+                        date_taken: new Date(),
+                    });
+                }
             }
             
             // Re-fetch all media from database after adding new files
             const allMedia = await db
                 .select()
                 .from(media)
-                .where(eq(media.published, true))
                 .orderBy(media.display_order);
             
-            // Map to API response format
-            const mediaItems = allMedia.map(item => ({
+            // Filter to only include photos from the /photos directory (not profile photos)
+            const photosOnly = allMedia.filter(item => 
+                item.image_url?.startsWith('/photos/') && 
+                !item.title?.toLowerCase().includes('profile')
+            );
+            
+            // Map to API response format - will be sorted by title on frontend
+            const mediaItems = photosOnly.map(item => ({
                 id: item.id,
                 title: item.title || "",
                 description: item.description || "",
@@ -605,7 +610,8 @@ Lefkowitz's compositions have been released on more than twenty commercial recor
                 category: item.category || "photo",
                 date_taken: item.date_taken ? item.date_taken.toISOString() : "",
                 photo_credits: item.photo_credits || "",
-                display_order: item.display_order || 0
+                display_order: item.display_order || 0,
+                published: true
             }));
             
             res.json(mediaItems);
