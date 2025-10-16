@@ -551,7 +551,7 @@ Lefkowitz's compositions have been released on more than twenty commercial recor
             // Find photos in filesystem but not in database
             const newFiles = imageFiles.filter(file => !dbImageUrls.has(`/photos/${file}`));
             
-            // Predefined photo credits and titles for legacy files
+            // Hardcoded photo data - these are the exact titles and credits the user wants
             const legacyPhotoData: { [key: string]: { title: string, credits: string, order: number } } = {
                 "1. Lefkowitz 1370.jpg": { title: "01. Lefkowitz 1370", credits: "Photo: Laura R. Lefkowitz", order: 1 },
                 "2. Lefkowitz 1312.jpg": { title: "02. Lefkowitz 1312", credits: "Photo: Laura R. Lefkowitz", order: 2 },
@@ -559,12 +559,12 @@ Lefkowitz's compositions have been released on more than twenty commercial recor
                 "4. Lefkowitz-17.jpg": { title: "04. Lefkowitz-17", credits: "Photo: Rob H. Baker", order: 4 },
                 "5. Lefkowitz-30.jpg": { title: "05. Lefkowitz-30", credits: "Photo: Rob H. Baker", order: 5 },
                 "6. Lefkowitz-31.jpg": { title: "06. Lefkowitz-31", credits: "Photo: Rob H. Baker", order: 6 },
-                "7. David Lefkowitz Summer 2013.jpg": { title: "07. David Lefkowitz Summer 2013", credits: "Photo: David Waldorf", order: 7 },
-                "8. DavidSLefkowitz Hi-Res.jpg": { title: "08. DavidSLefkowitz Hi-Res", credits: "Photo: Laura R. Lefkowitz", order: 8 },
-                "DSC_1870c-a 2 sm.jpg": { title: "09. DSC_1870c-a 2 sm", credits: "Photo: Laura R. Lefkowitz", order: 9 },
-                "DSC_2075c-a sm.jpg": { title: "10. DSC_2075c-a sm", credits: "Photo: Laura R. Lefkowitz", order: 10 },
-                "DSC_1944c-a sm.jpg": { title: "11. DSC_1944c-a sm", credits: "Photo: Laura R. Lefkowitz", order: 11 },
-                "DSC_1971c-a sm.jpg": { title: "12. DSC_1971c-a sm", credits: "Photo: Laura R. Lefkowitz", order: 12 }
+                "7. David Lefkowitz Summer 2013.jpg": { title: "11. David Lefkowitz Summer 2013", credits: "Photo: David Waldorf", order: 7 },
+                "8. DavidSLefkowitz Hi-Res.jpg": { title: "12. DavidSLefkowitz Hi-Res", credits: "Photo: Laura R. Lefkowitz", order: 8 },
+                "DSC_1870c-a 2 sm.jpg": { title: "07. DSC_1870c-a 2 sm", credits: "Photo: Laura R. Lefkowitz", order: 9 },
+                "DSC_2075c-a sm.jpg": { title: "08. DSC_2075c-a sm", credits: "Photo: Laura R. Lefkowitz", order: 10 },
+                "DSC_1944c-a sm.jpg": { title: "09. DSC_1944c-a sm", credits: "Photo: Laura R. Lefkowitz", order: 11 },
+                "DSC_1971c-a sm.jpg": { title: "10. DSC_1971c-a sm", credits: "Photo: Laura R. Lefkowitz", order: 12 }
             };
             
             // Add any new files to database
@@ -600,19 +600,26 @@ Lefkowitz's compositions have been released on more than twenty commercial recor
                 !item.title?.toLowerCase().includes('profile')
             );
             
-            // Map to API response format - will be sorted by title on frontend
-            const mediaItems = photosOnly.map(item => ({
-                id: item.id,
-                title: item.title || "",
-                description: item.description || "",
-                image_url: item.image_url,
-                alt_text: item.alt_text || "",
-                category: item.category || "photo",
-                date_taken: item.date_taken ? item.date_taken.toISOString() : "",
-                photo_credits: item.photo_credits || "",
-                display_order: item.display_order || 0,
-                published: true
-            }));
+            // Map to API response format - override with hardcoded data for consistency
+            const mediaItems = photosOnly.map(item => {
+                // Extract filename from image_url
+                const filename = item.image_url?.replace('/photos/', '') || '';
+                const hardcodedData = legacyPhotoData[filename];
+                
+                // Use hardcoded title and credits if available, otherwise use database values
+                return {
+                    id: item.id,
+                    title: hardcodedData?.title || item.title || "",
+                    description: item.description || "",
+                    image_url: item.image_url,
+                    alt_text: hardcodedData?.title || item.alt_text || "",
+                    category: item.category || "photo",
+                    date_taken: item.date_taken ? item.date_taken.toISOString() : "",
+                    photo_credits: hardcodedData?.credits || item.photo_credits || "",
+                    display_order: hardcodedData?.order || item.display_order || 0,
+                    published: true
+                };
+            });
             
             res.json(mediaItems);
         } catch (error) {
