@@ -1,0 +1,19 @@
+{
+  "id": "a2167b7c-2fe6-8345-9fd1-01ca927a388d",
+  "slug": "Single_Double_and_Triple_Fugues_Explainer",
+  "title": "Single, Double, and Triple Fugues, an Explainer",
+  "published_date": "2025-08-02",
+  "tags": [],
+  "published": true,
+  "content_blocks": [
+    "In my second blog post I gave a quick explainer of what a fugue is:  after the main melody (termed the <em>subject</em>) is played in one voice, a second voice will play that same melody starting on a higher or lower note (now termed the <em>answer</em>), while the first voice continues “in counterpoint” (meaning: two—or more—different melodic lines at the same time).  This procedure continues until the total number of voices that will be heard in the fugue have entered:  a three-voice fugue will eventually have three voices playing different musical material at the same time, a four-voice fugue will have four voices playing simultaneously, etc.",
+    "A fugue with only <em>one</em> subject would be called a “<u>single fugue</u>,” or simply “a fugue,” regardless of the number of voices.  But it is possible for there to be <em>more than one fugue melody</em>.  A <u>double fugue</u> will have <u>two fugue subjects</u>, a <u>triple fugue</u> will have <u>three fugue subjects</u>, etc.  There are two possible models for double (or triple) fugues:  in the first model both the first and the second (and the third) subjects are treated fugally at the same time right from the beginning of the piece (the “Kyrie” from Mozart’s Requiem is just such a double fugue, as you can see in <a href=\"https://youtu.be/8ybTabIfLgY?list=RD8ybTabIfLgY\" target=\"_blank\" rel=\"noopener noreferrer\">this</a> video); in the second model the first subject is treated fugally, then the second subject is treated fugally (and then the third subject), and then there is a section in which both (or all) subjects are treated fugally at the same time (as you can see in <a href=\"https://youtu.be/lP-8C1UF1mE?t=121\" target=\"_blank\" rel=\"noopener noreferrer\">this</a> triple fugue by Bach).",
+    "In <u>Expanded Universe</u> (Preludes and Fugues Book I) Fugue 2 is the first type of double fugue and Fugue 12 is the second type of double fugue.  In <u>Parallel Universes</u> (Preludes and Fugues Book II), Fugue 9 is the second type of double fugue, while Fugue 12 recalls an even <em>older</em> type of multi-subject fugue called a “polythematic ricercar,” in which the different fugue subjects don’t appear together at all.  Lastly, Fugue 13 is a triple fugue, of the second type.",
+    "A <u>double fugue</u> will have <u>two fugue subjects</u>, a <u>triple fugue</u> will have <u>three fugue subjects</u>, etc."
+  ],
+  "images": [],
+  "related_compositions": [
+    "https://app.notion.com/p/4f067b7c2fe683e8af57011e35950c6b",
+    "https://app.notion.com/p/53167b7c2fe683c296888122c4d55e98"
+  ]
+}

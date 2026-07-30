@@ -1,0 +1,19 @@
+{
+  "id": "a4a67b7c-2fe6-82e8-845d-01d873c6de28",
+  "slug": "Diatonic_Answers_Explainer",
+  "title": "Diatonic Answers: An Explainer",
+  "published_date": "2025-07-03",
+  "tags": [],
+  "published": true,
+  "content_blocks": [
+    "This one is for the musicians out there who already understand what a fugue is and how it works, and want to know more about what I do differently.",
+    "Every presentation of the subject in a fugue is called an ‘entry’ or an ‘entrance’. Traditionally, the <em>second</em> entrance of the subject is called the ‘answer’.  There are two different types of answers:  <em>real</em> answers, which are precise transpositions of the subject, and <em>tonal</em> answers, which are slightly-modified transpositions of the subject, in order to stay closer to the original key (and to help achieve the scale degree 1↔︎5 swap that is supposed to happen with a fugue answer).  With the exception of the slight modifications in tonal answers, though, the basic melodic structure of answers are always precisely what they are in the subjects:  melodic steps are answered by melodic steps, and larger leaps are answered by correspondingly-larger leaps.",
+    "Since intervals in some of my newly-devised modes—including the one I wrote about yesterday—change, though, transposing the subject up or down will change the character of the melody, sometimes dramatically so.  I call this a <em>diatonic</em> answer:  the <em>scale</em> pattern remains identical with the original subject, but the <em>intervals</em> from one note to another are changed.  I use this technique in many other fugues in both sets.",
+    "Since intervals in some of my newly-devised modes change, transposing the subject up or down will change the character of the melody, sometimes dramatically so.  I call this a <em>diatonic</em> answer."
+  ],
+  "images": [],
+  "related_compositions": [
+    "https://app.notion.com/p/53167b7c2fe683c296888122c4d55e98",
+    "https://app.notion.com/p/4f067b7c2fe683e8af57011e35950c6b"
+  ]
+}
