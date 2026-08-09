@@ -46,6 +46,28 @@ for src in glob.glob("photos/*"):
         import shutil; shutil.copy(src, dst); print("copied raw:", src, e)
 PY
 
+# sitemap from assembled routes
+python3 - << 'PY'
+import glob, os, urllib.parse
+base = "https://www.davidlefkowitz.com"
+urls = [f"{base}/", f"{base}/about", f"{base}/compositions", f"{base}/recordings",
+        f"{base}/blog", f"{base}/media", f"{base}/contact", f"{base}/fyc"]
+for f in sorted(glob.glob("static-api/api/compositions/*")):
+    n = os.path.basename(f)
+    if n != "index.html": urls.append(f"{base}/compositions/{urllib.parse.quote(n)}")
+for f in sorted(glob.glob("static-api/api/recordings/*")):
+    n = os.path.basename(f)
+    if n != "index.html" and "-" not in n[:9]: urls.append(f"{base}/recordings/{urllib.parse.quote(n)}")
+for d in sorted(glob.glob("static-api/api/blog-posts/*/")):
+    n = os.path.basename(d.rstrip("/"))
+    if len(n) != 36 or n.count("-") != 4: urls.append(f"{base}/blog/{urllib.parse.quote(n)}")
+xml = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
+xml += "".join(f"  <url><loc>{u}</loc></url>\n" for u in urls)
+xml += "</urlset>\n"
+open("dist/public/sitemap.xml", "w").write(xml)
+print(f"sitemap: {len(urls)} urls")
+PY
+
 # SPA fallback for client-side routing (Pages serves real files first)
 cat > dist/public/_redirects <<'EOF'
 /listennow  /fyc/listennow  301

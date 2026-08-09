@@ -1,4 +1,4 @@
-import { Suspense, lazy } from "react";
+import { Suspense, lazy, useEffect } from "react";
 import { Switch, Route, useLocation } from "wouter";
 import { queryClient } from "./lib/queryClient";
 import { QueryClientProvider } from "@tanstack/react-query";
@@ -32,8 +32,25 @@ const PageLoader = () => (
   </div>
 );
 
+
+function usePageTitle(location: string) {
+  useEffect(() => {
+    const seg = location.split("/").filter(Boolean);
+    const names: Record<string, string> = {
+      "": "David S. Lefkowitz — Composer", about: "About", compositions: "Compositions",
+      recordings: "Recordings", blog: "Blog", media: "Media", contact: "Contact",
+      fyc: "For Your Consideration",
+    };
+    let title = "David S. Lefkowitz — Composer";
+    if (seg.length === 1 && names[seg[0]]) title = `${names[seg[0]]} — David S. Lefkowitz`;
+    else if (seg.length >= 2) title = `${decodeURIComponent(seg[1]).replace(/_/g, " ")} — David S. Lefkowitz`;
+    document.title = title;
+  }, [location]);
+}
+
 function Router() {
   const [location] = useLocation();
+  usePageTitle(location);
   const isFYCPage = location === '/fyc' || location === '/fyc/listennow';
   
   return (
