@@ -71,7 +71,7 @@ export default function Footer() {
                 </div>
                 
                 <div className="mt-12 pt-1 text-center text-gray-600">
-                    <p style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>&copy; 2025 David S. Lefkowitz. All rights reserved.</p>
+                    <p style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>&copy; {new Date().getFullYear()} David S. Lefkowitz. All rights reserved.</p>
                 </div>
             </div>
         </footer>

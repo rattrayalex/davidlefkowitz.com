@@ -1,0 +1,12 @@
+import { chromium } from 'playwright';
+const S = '/workspace/davidlefkowitz.com/critique/shots-david';
+const browser = await chromium.launch({ executablePath: '/opt/pw-browsers/chromium-1194/chrome-linux/chrome' });
+const page = await browser.newPage({ viewport: { width: 1440, height: 900 } });
+await page.goto('http://localhost:8080/blog', { waitUntil: 'networkidle' });
+await page.waitForTimeout(1000);
+const link = page.getByText('Chaconne and Triple Fugue', { exact: false }).first();
+await link.click();
+await page.waitForTimeout(1500);
+console.log('URL after click:', page.url());
+await page.screenshot({ path: `${S}/14b-essay-clicked.png`, fullPage: true });
+await browser.close();

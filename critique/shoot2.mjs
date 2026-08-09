@@ -1,0 +1,10 @@
+import { chromium } from 'playwright';
+const OUT = '/workspace/davidlefkowitz.com/critique/shots-ux';
+const browser = await chromium.launch({ executablePath: '/opt/pw-browsers/chromium-1194/chrome-linux/chrome' });
+const ctx = await browser.newContext({ viewport: { width: 1440, height: 900 } });
+const page = await ctx.newPage();
+await page.goto('http://localhost:8080/compositions/Green%20Mountains', { waitUntil: 'networkidle' });
+await page.waitForTimeout(1500);
+await page.screenshot({ path: OUT + '/desktop-composition-green-mountains-full.png', fullPage: true });
+console.log('h1:', await page.locator('h1').first().textContent());
+await browser.close();

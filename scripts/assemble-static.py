@@ -76,16 +76,34 @@ for p in sorted(glob.glob(os.path.join(SD, "blog", "*.json"))):
         "_related": d.get("related_compositions", []),
     })
 posts.sort(key=lambda x: x["published_date"], reverse=True)
-write("api/blog-posts", [{k: v for k, v in p.items() if k != "_related"} for p in posts])
+clean = [{k: v for k, v in p.items() if k != "_related"} for p in posts]
+write("api/blog-posts/index.html", clean)
+for i, p in enumerate(clean):
+    nav = {
+        "next": ({"id": clean[i-1]["id"], "title": clean[i-1]["title"], "slug": clean[i-1]["slug"],
+                   "published_date": clean[i-1]["published_date"]} if i > 0 else None),
+        "previous": ({"id": clean[i+1]["id"], "title": clean[i+1]["title"], "slug": clean[i+1]["slug"],
+                       "published_date": clean[i+1]["published_date"]} if i < len(clean) - 1 else None),
+    }
+    for key in {p["slug"], p["id"]}:
+        if key:
+            write(f"api/blog-posts/{key}/index.html", p)
+            write(f"api/blog-posts/{key}/navigation", nav)
 
 # ---- compositions ---------------------------------------------------------
 recordings = read(os.path.join(SD, "recordings.json"))
 rec_by_slug = {r["slug"]: r for r in recordings}
 rec_by_title = {r["title"].strip(): r for r in recordings}
 
+def comp_slug(name):
+    # replicate sync.ts: spaces->underscore, then strip non [a-zA-Z0-9_-]
+    return re.sub(r"[^a-zA-Z0-9_-]", "", re.sub(r"\s+", "_", name))
+
 comps = []
 for p in sorted(glob.glob(os.path.join(SD, "compositions", "*.json"))):
-    comps.append(read(p))
+    c = read(p)
+    c["slug"] = comp_slug(c.get("slug") or c["title"])
+    comps.append(c)
 comps.sort(key=lambda c: (c.get("year") or 0), reverse=True)
 
 listing = [{

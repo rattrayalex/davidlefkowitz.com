@@ -19,15 +19,36 @@ cp site-images/logos/* dist/public/api/media-cache/
 [ -d site-images/blog ] && cp site-images/blog/* dist/public/api/media-cache/ 2>/dev/null || true
 cp server/media-cache/* dist/public/api/media-cache/ 2>/dev/null || true
 cp media-cache/* dist/public/api/media-cache/ 2>/dev/null || true
+# Home page hardcodes these hashed minibutton names
+cp site-images/logos/logo_spotify_minibutton.png \
+   "dist/public/api/media-cache/logo_spotify_minibutton_bdf3c836.png"
+cp site-images/logos/logo_youtube_minibutton.png \
+   "dist/public/api/media-cache/logo_youtube_minibutton_811dfb93.png"
+
 # FYC and Listen Now pages reference this exact legacy cache filename
 cp site-images/cover_Preludes_and_Fugues.jpg \
    "dist/public/api/media-cache/recording_26c3907b_2ee6_81cb_9edf_f38464971746_14045b66.jpg"
 
+# photos: downscale for web (originals are up to 12MB each)
 mkdir -p dist/public/photos
-cp photos/* dist/public/photos/
+python3 - << 'PY'
+from PIL import Image
+import os, glob
+for src in glob.glob("photos/*"):
+    dst = os.path.join("dist/public/photos", os.path.basename(src))
+    try:
+        im = Image.open(src); im.load()
+        if im.width > 1600:
+            im = im.resize((1600, round(im.height * 1600 / im.width)), Image.LANCZOS)
+        im = im.convert("RGB")
+        im.save(dst, "JPEG", quality=86, optimize=True, progressive=True)
+    except Exception as e:
+        import shutil; shutil.copy(src, dst); print("copied raw:", src, e)
+PY
 
 # SPA fallback for client-side routing (Pages serves real files first)
 cat > dist/public/_redirects <<'EOF'
+/listennow  /fyc/listennow  301
 /*  /index.html  200
 EOF
 
