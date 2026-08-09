@@ -104,6 +104,11 @@ export default function RecordingDetail() {
             }
         });
         
+        const seen: Record<string, number> = {};
+        for (const link of links) {
+            seen[link.name] = (seen[link.name] || 0) + 1;
+            if (seen[link.name] > 1) link.name = `${link.name} (${seen[link.name]})`;
+        }
         return links;
     };
 
@@ -240,7 +245,9 @@ export default function RecordingDetail() {
                                         }}
                                     >
                                         {parseStreamingLinks(recording.links).map((platform, index) => {
-                                            const logoPath = logos[platform.name];
+                                            const baseName = platform.name.replace(/ \(\d+\)$/, '');
+                                            const suffix = platform.name.match(/\((\d+)\)$/)?.[1];
+                                            const logoPath = logos[baseName];
                                             
                                             return (
                                                 <a 
@@ -248,6 +255,8 @@ export default function RecordingDetail() {
                                                     href={platform.url} 
                                                     target="_blank" 
                                                     rel="noopener noreferrer"
+                                                    title={platform.name}
+                                                    aria-label={`Listen on ${platform.name}`}
                                                     className="inline-flex items-center hover:opacity-80 transition-opacity"
                                                     style={{
                                                         backgroundColor: '#f9f9f9',
@@ -256,19 +265,22 @@ export default function RecordingDetail() {
                                                         border: '1px solid #e5e7eb',
                                                         width: '150px',
                                                         justifyContent: 'center',
-                                                        overflow: (platform.name === 'BeMusic' || platform.name === 'Naxos') ? 'hidden' : 'visible'
+                                                        overflow: (baseName === 'BeMusic' || baseName === 'Naxos') ? 'hidden' : 'visible'
                                                     }}
                                                 >
+                                                    {suffix && (
+                                                        <span style={{fontSize: '11px', color: '#6b7280', marginRight: '6px', fontWeight: 600}}>{suffix}</span>
+                                                    )}
                                                     {logoPath ? (
                                                         <img 
                                                             src={logoPath} 
                                                             alt={`${platform.name} logo`}
                                                             style={{ 
-                                                                height: platform.name === 'Amazon Music' ? '26px' : platform.name === 'Pandora' ? '28px' : '24px', 
+                                                                height: baseName === 'Amazon Music' ? '26px' : baseName === 'Pandora' ? '28px' : '24px', 
                                                                 maxWidth: '120px',
-                                                                objectFit: platform.name === 'BeMusic' ? 'cover' : 'contain',
-                                                                objectPosition: platform.name === 'BeMusic' ? 'center center' : 'center',
-                                                                transform: platform.name === 'Amazon Music' ? 'scaleX(1.075)' : platform.name === 'BeMusic' ? 'scale(4.0)' : platform.name === 'Naxos' ? 'scale(1.5)' : 'none',
+                                                                objectFit: baseName === 'BeMusic' ? 'cover' : 'contain',
+                                                                objectPosition: baseName === 'BeMusic' ? 'center center' : 'center',
+                                                                transform: baseName === 'Amazon Music' ? 'scaleX(1.075)' : baseName === 'BeMusic' ? 'scale(4.0)' : baseName === 'Naxos' ? 'scale(1.5)' : 'none',
                                                                 transformOrigin: 'center'
                                                             }}
                                                             onError={(e) => {

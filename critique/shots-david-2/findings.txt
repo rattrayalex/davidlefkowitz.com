@@ -1,0 +1,52 @@
+
+GM detail contains "2 Violins": false
+GM detail contains "’Cello": false
+GM detail contains "'Cello": false
+GM detail contains "Violin, Viola, Cello": true
+GM detail contains "15:05": false
+GM detail contains "13:30": true
+GM detail ctx: "David S. Lefkowitz\nHome\nAbout\nCompositions\nRecordings\nBlog\nMedia\nContact\nFYC\nBack to Compositions\nGreen Mountains, Now Black\nString Quartet\n2025\nInstrumentation\n\nViolin, Viola, Cello\n\nDuration:13:30\nRecording (click on image\nfor information and links)\n\nQuartet Integra\n\nPublisher\nFloating Point Music\nProgram Note\n\nThe name Monteverdi means, of course, green mou"
+QI youtube anchors: [
+ {
+  "href": "https://www.youtube.com/watch?v=AwUWmuyQ6Qg",
+  "text": "",
+  "aria": null,
+  "title": null,
+  "imgAlts": [
+   "YouTube logo"
+  ],
+  "html": "<img src=\"/api/media-cache/logo_youtube_4b24d04b.svg\" alt=\"YouTube logo\" style=\"height: 24px; max-width: 120px; object-fit: contain; object-position: center center; transform: none; transform-origin: center center;\">"
+ },
+ {
+  "href": "https://www.youtube.com/watch?v=ook5P7LPfvk",
+  "text": "",
+  "aria": null,
+  "title": null,
+  "imgAlts": [
+   "YouTube logo"
+  ],
+  "html": "<img src=\"/api/media-cache/logo_youtube_4b24d04b.svg\" alt=\"YouTube logo\" style=\"height: 24px; max-width: 120px; object-fit: contain; object-position: center center; transform: none; transform-origin: center center;\">"
+ }
+]
+HOME listen buttons: [
+ {
+  "text": "Listen on",
+  "href": "https://open.spotify.com/album/1AXDnGNFGtceS4zGvmLn8H",
+  "imgs": [
+   {
+    "alt": "Spotify logo",
+    "ok": true
+   }
+  ]
+ },
+ {
+  "text": "Listen on",
+  "href": "https://youtube.com/playlist?list=PL1WjDUvuhzW9pgsYIJhDD9i374wjGNkKi",
+  "imgs": [
+   {
+    "alt": "YouTube logo",
+    "ok": true
+   }
+  ]
+ }
+]
