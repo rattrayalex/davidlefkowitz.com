@@ -33,7 +33,7 @@ export default function FYC() {
     
     useEffect(() => {
         // Set the browser window title for this page
-        document.title = "FYC 2025: DAVID S. LEFKOWITZ PRELUDES AND FUGUES";
+        document.title = "FYC 2025: DAVID S. LEFKOWITZ GREEN MOUNTAINS, NOW BLACK";
         
         // Track FYC page visit
         fetch('/api/track', {
@@ -60,16 +60,16 @@ export default function FYC() {
                 {/* Subtitle */}
                 <h2 className="font-bold mb-4 mt-8" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif', fontSize: '1.375rem', paddingLeft: '24px', color: '#7A0C1C'}}>
                     DAVID S. LEFKOWITZ<br/>
-                    PRELUDES AND FUGUES FOR PIANO
+                    GREEN MOUNTAINS, NOW BLACK
                 </h2>
                 
                 {/* Album cover image - responsive positioning */}
                 <div className="block lg:absolute lg:right-0 lg:z-10 mb-6 lg:mb-0" style={{ paddingLeft: '24px', top: '64px' }}>
-                    <div className="w-full lg:w-auto" style={{ maxWidth: '320px', height: '380px' }}>
+                    <div className="w-full lg:w-auto" style={{ maxWidth: '420px' }}>
                         <LazyImage 
-                            src="/api/media-cache/recording_26c3907b_2ee6_81cb_9edf_f38464971746_14045b66.jpg"
-                            alt="Preludes and Fugues Album Cover"
-                            className="w-full h-full object-cover rounded-lg shadow-lg"
+                            src="/api/media-cache/cover_Quartet_Integra.jpg"
+                            alt="Green Mountains, Now Black — Quartet Integra Album Cover"
+                            className="w-full h-auto object-contain rounded-lg shadow-lg"
                         />
                     </div>
                 </div>
@@ -99,7 +99,7 @@ export default function FYC() {
                                     headers: { 'Content-Type': 'application/json' },
                                     body: JSON.stringify({ event_type: 'listen_now_click' })
                                 }).catch(() => {}); // Silent fail
-                                window.open('/fyc/listennow', '_blank');
+                                window.open('/recordings/Quartet_Integra', '_blank');
                             }}
                         >
                             LISTEN NOW
@@ -129,16 +129,6 @@ export default function FYC() {
                             </div>
                     </div>
 
-                    {/* Sixth Media Photo - positioned after Grammy sections on narrow screens */}
-                    <div className="block lg:absolute lg:right-0 mt-6 mb-6 lg:mt-0 lg:mb-0" style={{ top: '488px', paddingLeft: '12px' }}>
-                        <div className="w-full lg:w-auto" style={{ maxWidth: '320px', height: '380px' }}>
-                            <LazyImage 
-                                src="/photos/6. Lefkowitz-31.jpg"
-                                alt="David S. Lefkowitz"
-                                className="w-full h-full object-cover rounded-lg shadow-lg"
-                            />
-                        </div>
-                    </div>
 
                     {/* Album Details Section */}
                     <div className="relative rounded-lg pl-6 pr-6 lg:pr-6 pb-6 pt-0 lg:pt-16">
@@ -149,12 +139,8 @@ export default function FYC() {
                         <div className="space-y-2">
                             <div style={{fontFamily: 'Times, "Times New Roman", Palatino, serif', fontSize: '1.5rem', lineHeight: '1.35', fontWeight: 525}}>
                                 <span style={{fontWeight: 600}}>Composition:</span> {' '}
-                                <a href={streamingLinks["Preludes and Fugues Book I"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
-                                    Preludes and Fugues Book I
-                                </a>
-                                {" & "}
-                                <a href={streamingLinks["Preludes and Fugues Book II"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
-                                    Preludes and Fugues Book II
+                                <a href="https://www.davidlefkowitz.com/compositions/Green_Mountains" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
+                                    Green Mountains, Now Black
                                 </a>
                             </div>
                             
@@ -167,34 +153,13 @@ export default function FYC() {
                             
                             <div style={{fontFamily: 'Times, "Times New Roman", Palatino, serif', fontSize: '1.5rem', lineHeight: '1.35', fontWeight: 525}}>
                                 <span style={{fontWeight: 600}}>Performers:</span> {' '}
-                                <a href={streamingLinks["Steven Beck"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
-                                    Steven Beck
+                                <a href="https://quartetintegra.com/" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
+                                    Kyoka Misawa, Rintaro Kikuno, violin, Itsuki Yamamoto, viola, Ye Un Park, {'\u2019'}cello
                                 </a>
-                                {", "}
-                                <a href={streamingLinks["David Kaplan"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
-                                    David Kaplan
-                                </a>
-                                {", "}
-                                <a href={streamingLinks["Michael Mizrahi"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
-                                    Michael Mizrahi
-                                </a>
-                                {", & "}
-                                <a href={streamingLinks["Mika Sasaki"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
-                                    Mika Sasaki
-                                </a>
-                                {", pianos, with "}
-                                <a href={streamingLinks["Cantor Marcus Feldman"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
-                                    Cantor Marcus Feldman
-                                </a>
-                                {", baritone, and "}
-                                <a href={streamingLinks["David S. Lefkowitz"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
-                                    David S. Lefkowitz
-                                </a>
-                                {", whistling, and additional piano and extended piano techniques."}
                             </div>
                             
                             <div style={{fontFamily: 'Times, "Times New Roman", Palatino, serif', fontSize: '1.5rem', lineHeight: '1.35', fontWeight: 525}}>
-                                <span style={{fontWeight: 600}}>Duration:</span> 2:48:27
+                                <span style={{fontWeight: 600}}>Duration:</span> 15:05
                             </div>
                             
                             <div style={{fontFamily: 'Times, "Times New Roman", Palatino, serif', fontSize: '1.5rem', lineHeight: '1.35', fontWeight: 525}}>
@@ -204,19 +169,7 @@ export default function FYC() {
                                 </a>
                             </div>
                             
-                            <div style={{fontFamily: 'Times, "Times New Roman", Palatino, serif', fontSize: '1.5rem', lineHeight: '1.35', fontWeight: 525}}>
-                                <span style={{fontWeight: 600}}>David S. Lefkowitz Representation:</span> {' '}
-                                <a href={streamingLinks["Genevieve Spielberg Artists"]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
-                                    Genevieve Spielberg Artists
-                                </a>
-                                {' '}
-                                <a href="https://myemail.constantcontact.com/World-Premiere-Recording-By-Acclaimed-Contemporary-Composer-David-S--Lefkowitz-Preludes-and-Fugues-For-Piano-.html?soid=1103420701115&aid=L6AY6eaeS9M" 
-                                   target="_blank" 
-                                   rel="noopener noreferrer" 
-                                   className="text-primary hover:underline">
-                                    (Click for More Information)
-                                </a>
-                            </div>
+                            
                         </div>
                     </div>
                 </div>

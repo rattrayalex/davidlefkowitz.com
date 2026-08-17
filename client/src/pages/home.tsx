@@ -179,14 +179,21 @@ export default function Home() {
                             fontFamily: 'Times, "Times New Roman", Palatino, serif', 
                             fontSize: '1.75rem'
                         }}>
-                            Preludes and Fugues for Piano
+                            Green Mountains, Now Black
                         </h3>
+                        <p className="mb-2" style={{
+                            fontFamily: 'Times, "Times New Roman", Palatino, serif',
+                            fontSize: '1.15rem',
+                            marginTop: '-6px'
+                        }}>
+                            for String Quartet
+                        </p>
                         
                         {/* Streaming Links */}
                         <div className="flex justify-center gap-6">
                             {/* Spotify Link */}
                             <a 
-                                href="https://open.spotify.com/album/1AXDnGNFGtceS4zGvmLn8H"
+                                href="https://open.spotify.com/track/1pGSDQhaAa1JJ00ZuVrMIZ"
                                 target="_blank" 
                                 rel="noopener noreferrer"
                                 className="flex flex-col items-center justify-center p-4 hover:opacity-80 transition-opacity"
@@ -223,12 +230,9 @@ export default function Home() {
                                 )}
                             </a>
                             
-                            {/* YouTube Link */}
-                            <a 
-                                href="https://youtube.com/playlist?list=PL1WjDUvuhzW9pgsYIJhDD9i374wjGNkKi"
-                                target="_blank" 
-                                rel="noopener noreferrer"
-                                className="flex flex-col items-center justify-center p-4 hover:opacity-80 transition-opacity"
+                            {/* YouTube Links (two videos, stacked) */}
+                            <div
+                                className="flex flex-col items-center justify-center p-4"
                                 style={{
                                     backgroundColor: '#e8e8ff',
                                     border: '2.5px solid hsl(262.1, 83.3%, 57.8%)',
@@ -245,22 +249,36 @@ export default function Home() {
                                 }}>
                                     Listen on
                                 </span>
-                                {logos["YouTube"] ? (
-                                    <img 
-                                        src={logos["YouTube"]} 
-                                        alt="YouTube logo"
-                                        style={{ 
-                                            maxHeight: '30px', 
-                                            maxWidth: '100%',
-                                            objectFit: 'contain'
-                                        }}
-                                    />
-                                ) : (
-                                    <span className="text-center text-gray-700" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
-                                        YouTube
-                                    </span>
-                                )}
-                            </a>
+                                <a
+                                    href="https://www.youtube.com/watch?v=AwUWmuyQ6Qg"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="hover:opacity-80 transition-opacity"
+                                    aria-label="Watch on YouTube (video 1)"
+                                >
+                                    {logos["YouTube"] ? (
+                                        <img src={logos["YouTube"]} alt="YouTube logo"
+                                            style={{ height: '30px', width: 'auto', objectFit: 'contain', display: 'block' }} />
+                                    ) : (
+                                        <span className="text-center text-gray-700" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>YouTube</span>
+                                    )}
+                                </a>
+                                <a
+                                    href="https://www.youtube.com/watch?v=ook5P7LPfvk"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="hover:opacity-80 transition-opacity"
+                                    style={{ marginTop: '6px' }}
+                                    aria-label="Watch on YouTube (video 2)"
+                                >
+                                    {logos["YouTube"] ? (
+                                        <img src={logos["YouTube"]} alt="YouTube logo"
+                                            style={{ height: '30px', width: 'auto', objectFit: 'contain', display: 'block' }} />
+                                    ) : (
+                                        <span className="text-center text-gray-700" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>YouTube</span>
+                                    )}
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>
