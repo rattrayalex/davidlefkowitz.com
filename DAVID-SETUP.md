@@ -4,22 +4,33 @@ The site's content lives in a GitHub repository; publishing is automatic
 (any accepted change goes live in ~2 minutes). David describes changes to
 Claude in plain English; Claude edits the repository; done.
 
-## One-time setup (do together with Alex, ~15 minutes)
+Status: David's GitHub account **@lefko-w** already exists and already has
+Write access to this repository. Repo secrets are set, so pushes deploy
+automatically. Remaining: David's Claude Pro account + connecting Claude
+to GitHub (steps 1 and 3 below).
+
+The user-facing version of this guide was emailed to David (Aug 2026) and
+lives in a Google Doc shared with lefko@ucla.edu:
+https://docs.google.com/document/d/1cXFCIek4opmzRCjWDFtgrQXMGDCrs4d-gpNAdZQtlI8/edit
+
+## One-time setup (~15 minutes, with Alex or solo)
 
 1. **David gets a Claude account**: claude.ai → sign up with lefko@ucla.edu →
    subscribe to Claude Pro (~$20/mo — replaces the Replit subscription,
    which can be cancelled).
-2. **David gets a GitHub account** (it's just a login; he never has to look
-   at it): github.com → sign up with lefko@ucla.edu.
-3. **Alex grants access**: github.com/rattrayalex/davidlefkowitz.com →
-   Settings → Collaborators → Add → David's GitHub username.
-   David accepts the email invitation.
-4. **Connect Claude to the site**: in David's Claude account, open
-   claude.ai/code ("Claude Code"), connect GitHub when prompted, authorize
-   the davidlefkowitz.com repository, and create an environment for it
-   (defaults are fine; working branch: static-conversion).
-5. **Test together**: David starts a session and says
-   "Fix a typo on my About page: change X to Y." Watch it go live.
+2. **GitHub account**: already done — @lefko-w, already a collaborator with
+   Write. If the password is forgotten: github.com → Sign in → "Forgot
+   password?" with lefko@ucla.edu.
+3. **Connect Claude to GitHub** (the step that lets Claude edit the site):
+   a. Open claude.ai/code ("Claude Code").
+   b. Click "Connect GitHub" when offered.
+   c. Sign in to GitHub as lefko-w in the window that opens.
+   d. Authorize Claude (green button); if asked which repositories, choose
+      rattrayalex/davidlefkowitz.com.
+   e. Back at claude.ai/code, pick davidlefkowitz.com as the repository and
+      accept defaults (working branch: static-conversion).
+4. **Test**: David says "Fix a typo on my About page: change X to Y."
+   Watch it go live ~2 minutes later.
 
 ## Everyday use (David alone)
 
