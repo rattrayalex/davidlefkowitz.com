@@ -121,12 +121,6 @@ export default function FYC() {
                                         CLASSICAL COMPENDIUM
                                     </h3>
                                 </div>
-
-                                <div className="border-l-4 border-primary pl-4">
-                                    <h3 className="font-bold" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif', fontSize: '1.375rem', lineHeight: '2.0'}}>
-                                        PRODUCER OF THE YEAR, CLASSICAL
-                                    </h3>
-                                </div>
                             </div>
                     </div>
 
