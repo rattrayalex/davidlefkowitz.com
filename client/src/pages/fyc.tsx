@@ -118,7 +118,8 @@ export default function FYC() {
 
                                 <div className="border-l-4 border-primary pl-4">
                                     <h3 className="font-bold" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif', fontSize: '1.375rem', lineHeight: '2.0'}}>
-                                        CLASSICAL COMPENDIUM
+                                        CHAMBER MUSIC /<br/>
+                                        SMALL ENSEMBLE PERFORMANCE
                                     </h3>
                                 </div>
                             </div>
