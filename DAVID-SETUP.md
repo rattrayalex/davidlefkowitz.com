@@ -7,11 +7,15 @@ Claude in plain English; Claude edits the repository; done.
 Status: David's GitHub account **@lefko-w** already exists and already has
 Write access to this repository. Repo secrets are set, so pushes deploy
 automatically. Remaining: David's Claude Pro account + connecting Claude
-to GitHub (steps 1 and 3 below).
+to GitHub (steps 1 and 3 below). Sep 2026: David got stuck at the old
+step 3d — the GitHub App install picker, which can only ever list repos
+HE owns. Step 3 below is the corrected flow (App install is not needed
+for access; OAuth + collaborator visibility is what matters, per
+https://code.claude.com/docs/en/web-quickstart).
 
-The user-facing version of this guide was emailed to David (Aug 2026) and
-lives in a Google Doc shared with lefko@ucla.edu:
-https://docs.google.com/document/d/1cXFCIek4opmzRCjWDFtgrQXMGDCrs4d-gpNAdZQtlI8/edit
+The user-facing version of this guide was emailed to David (Aug + Sep
+2026) and lives in a Google Doc shared with lefko@ucla.edu:
+https://docs.google.com/document/d/1Km5iRPx5xm-z2gaLbikLW73pT6zwkFQd2anSaQEozvc/edit
 
 ## One-time setup (~15 minutes, with Alex or solo)
 
@@ -21,14 +25,22 @@ https://docs.google.com/document/d/1cXFCIek4opmzRCjWDFtgrQXMGDCrs4d-gpNAdZQtlI8/
 2. **GitHub account**: already done — @lefko-w, already a collaborator with
    Write. If the password is forgotten: github.com → Sign in → "Forgot
    password?" with lefko@ucla.edu.
-3. **Connect Claude to GitHub** (the step that lets Claude edit the site):
+3. **Connect Claude to GitHub** (corrected Sep 2026):
    a. Open claude.ai/code ("Claude Code").
-   b. Click "Connect GitHub" when offered.
-   c. Sign in to GitHub as lefko-w in the window that opens.
-   d. Authorize Claude (green button); if asked which repositories, choose
-      rattrayalex/davidlefkowitz.com.
-   e. Back at claude.ai/code, pick davidlefkowitz.com as the repository and
-      accept defaults (working branch: static-conversion).
+   b. Click "Connect GitHub" / "Sign in with GitHub"; sign in as lefko-w
+      and click the green Authorize button (plain OAuth — this is the
+      step that grants access).
+   c. If a screen asks to "install the Claude GitHub App" and lists
+      repositories: click **Skip**. That picker only shows repos David
+      owns; the website will never appear there. Installing on lefko-w
+      is neither needed nor harmful (it only enables Auto-fix webhooks).
+   d. Back at claude.ai/code, create the environment (defaults fine) and
+      pick rattrayalex/davidlefkowitz.com in the repository picker — it
+      appears because his account can see it as a collaborator (working
+      branch: static-conversion).
+   e. If the repo does not appear: verify, signed in as lefko-w, that
+      github.com/rattrayalex/davidlefkowitz.com opens; then reconnect
+      GitHub and retry.
 4. **Test**: David says "Fix a typo on my About page: change X to Y."
    Watch it go live ~2 minutes later.
 
@@ -48,6 +60,14 @@ Tips that make it go smoothly:
   with special punctuation. Claude preserves your typography exactly.
 - Ask "show me before you publish" if you want to preview first.
 - Anything Claude can't do safely, it will say so and suggest emailing Alex.
+
+## Domain name (Network Solutions)
+
+Network Solutions is only the **registrar** for davidlefkowitz.com (the
+name itself; paid through April 2027, keep auto-renew on). Site + email
+forwarding run on Cloudflare. David needs no hosting/builder products
+from Network Solutions — before he cancels any line items there, review
+the list with Alex.
 
 ## What NOT to do
 
