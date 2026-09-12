@@ -7,35 +7,41 @@ export default function ListenNow() {
     const streamingPlatforms = [
         {
             name: "Amazon Music",
-            url: "https://www.amazon.com/dp/B0F3FMBQVP",
+            url: "https://www.amazon.com/dp/B0FNYHCXL1/",
         },
         {
-            name: "Apple Music", 
-            url: "https://classical.music.apple.com/us/album/1818776381",
+            name: "Apple Music",
+            url: "https://music.apple.com/us/album/beethoven-ligeti-david-s-lefkowitz-string-quartets/1842288546",
         },
         {
             name: "Deezer",
-            url: "https://www.deezer.com/us/album/736897251",
+            url: "https://www.deezer.com/us/album/811971001",
         },
         {
-            name: "Pandora",
-            url: "https://www.pandora.com/artist/david-kaplan-mika-sasaki-michael-mizrahi-and-steven-beck/david-s-lefkowitz-preludes-and-fugues-for-piano/ALk9zhjXvZ56VgJ",
+            name: "BeMusic",
+            url: "https://bemusic.1.vebto.com/artist/232641032/quartet-integra",
         },
         {
             name: "Spotify",
-            url: "https://open.spotify.com/album/1AXDnGNFGtceS4zGvmLn8H",
+            url: "https://open.spotify.com/album/7w6RkfQclTfrWNmFnYdamF",
         },
         {
             name: "Tidal",
-            url: "https://tidal.com/browse/track/427812074",
+            url: "https://tidal.com/album/456756741",
         }
     ];
-    
-    // YouTube link separate
-    const youtubeLink = {
-        name: "YouTube",
-        url: "https://youtube.com/playlist?list=PL1WjDUvuhzW9pgsYIJhDD9i374wjGNkKi",
-    };
+
+    // YouTube links separate (this recording has two)
+    const youtubeLinks = [
+        {
+            name: "YouTube",
+            url: "https://www.youtube.com/watch?v=AwUWmuyQ6Qg",
+        },
+        {
+            name: "YouTube (2)",
+            url: "https://www.youtube.com/watch?v=ook5P7LPfvk",
+        },
+    ];
     
     useEffect(() => {
         // Fetch logos from API
@@ -56,9 +62,9 @@ export default function ListenNow() {
             <div className="max-w-3xl mx-auto px-6">
                 {/* Album Cover Image - centered at top */}
                 <div className="flex justify-center mb-8">
-                    <img 
-                        src="/api/media-cache/recording_26c3907b_2ee6_81cb_9edf_f38464971746_14045b66.jpg"
-                        alt="David S. Lefkowitz Preludes and Fugues Album Cover"
+                    <img
+                        src="/api/media-cache/cover_Quartet_Integra.jpg"
+                        alt="Green Mountains, Now Black — Quartet Integra Album Cover"
                         className="shadow-lg"
                         style={{ width: '400px', height: 'auto', borderRadius: '8px' }}
                     />
@@ -127,57 +133,60 @@ export default function ListenNow() {
                             })}
                         </div>
                         
-                        {/* YouTube Link - centered at bottom */}
-                        <div className="flex justify-center mt-6">
-                            <a 
-                                href={youtubeLink.url} 
-                                target="_blank" 
-                                rel="noopener noreferrer" 
-                                className="flex items-center justify-center p-4 hover:opacity-80 transition-opacity"
-                                style={{
-                                    backgroundColor: '#f9f9f9',
-                                    border: '1.5px solid hsl(262.1, 83.3%, 57.8%)',
-                                    borderRadius: '8px',
-                                    width: '150px',
-                                    minHeight: '80px'
-                                }}
-                                onClick={() => {
-                                    // Track streaming link click
-                                    fetch('/api/track', {
-                                        method: 'POST',
-                                        headers: { 'Content-Type': 'application/json' },
-                                        body: JSON.stringify({ 
-                                            event_type: 'streaming_link_click',
-                                            event_data: youtubeLink.name
-                                        })
-                                    }).catch(() => {}); // Silent fail
-                                }}
-                            >
-                                {logos[youtubeLink.name] ? (
-                                    <img 
-                                        src={logos[youtubeLink.name]} 
-                                        alt={`${youtubeLink.name} logo`}
-                                        style={{ 
-                                            maxHeight: '40px', 
-                                            maxWidth: '100%',
-                                            objectFit: 'contain'
-                                        }}
-                                        onError={(e) => {
-                                            // Fallback to text if image fails
-                                            e.currentTarget.style.display = 'none';
-                                            const textSpan = document.createElement('span');
-                                            textSpan.className = 'text-center text-gray-700';
-                                            textSpan.style.fontFamily = 'Times, "Times New Roman", Palatino, serif';
-                                            textSpan.textContent = youtubeLink.name;
-                                            e.currentTarget.parentElement?.appendChild(textSpan);
-                                        }}
-                                    />
-                                ) : (
-                                    <span className="text-center text-gray-700" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
-                                        {youtubeLink.name}
-                                    </span>
-                                )}
-                            </a>
+                        {/* YouTube Links - centered at bottom */}
+                        <div className="flex justify-center gap-6 mt-6">
+                            {youtubeLinks.map((link) => (
+                                <a
+                                    key={link.name}
+                                    href={link.url}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="flex items-center justify-center p-4 hover:opacity-80 transition-opacity"
+                                    style={{
+                                        backgroundColor: '#f9f9f9',
+                                        border: '1.5px solid hsl(262.1, 83.3%, 57.8%)',
+                                        borderRadius: '8px',
+                                        width: '150px',
+                                        minHeight: '80px'
+                                    }}
+                                    onClick={() => {
+                                        // Track streaming link click
+                                        fetch('/api/track', {
+                                            method: 'POST',
+                                            headers: { 'Content-Type': 'application/json' },
+                                            body: JSON.stringify({
+                                                event_type: 'streaming_link_click',
+                                                event_data: link.name
+                                            })
+                                        }).catch(() => {}); // Silent fail
+                                    }}
+                                >
+                                    {logos["YouTube"] ? (
+                                        <img
+                                            src={logos["YouTube"]}
+                                            alt={`${link.name} logo`}
+                                            style={{
+                                                maxHeight: '40px',
+                                                maxWidth: '100%',
+                                                objectFit: 'contain'
+                                            }}
+                                            onError={(e) => {
+                                                // Fallback to text if image fails
+                                                e.currentTarget.style.display = 'none';
+                                                const textSpan = document.createElement('span');
+                                                textSpan.className = 'text-center text-gray-700';
+                                                textSpan.style.fontFamily = 'Times, "Times New Roman", Palatino, serif';
+                                                textSpan.textContent = link.name;
+                                                e.currentTarget.parentElement?.appendChild(textSpan);
+                                            }}
+                                        />
+                                    ) : (
+                                        <span className="text-center text-gray-700" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
+                                            {link.name}
+                                        </span>
+                                    )}
+                                </a>
+                            ))}
                         </div>
                     </div>
                 </div>
