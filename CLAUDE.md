@@ -59,8 +59,12 @@ plain language, and never ask him to read code.
   becomes the purple highlight box), `tags: []`, `published: true`.
 - **Edit bio**: `profile.json` `bio` field (paragraphs separated by \n\n,
   inline HTML links allowed).
-- **FYC/Grammy season updates**: `client/src/pages/fyc.tsx` and the Latest
-  Release box in `home.tsx`.
+- **FYC/Grammy season updates**: `client/src/pages/fyc.tsx`, the Latest
+  Release box in `home.tsx`, AND `client/src/pages/listennow.tsx`
+  (`/fyc/listennow`) — all three hardcode the current album's cover and
+  streaming links independently and must be updated together each cycle.
+  (A past cycle updated only the first two and left listennow.tsx pointing
+  at the prior album for months — check it explicitly.)
 
 ## History
 
