@@ -12,9 +12,68 @@ cp -r static-api/api dist/public/api
 
 # images: recovered album art + logos + repo media cache + photos
 mkdir -p dist/public/api/media-cache
-for f in site-images/cover_* site-images/tracklist_*; do
-  cp "$f" "dist/public/api/media-cache/$(basename "$f")"
-done
+
+# Recording covers/tracklists: displayed at ~300-450px CSS width everywhere on
+# the site (recordings grid, recording/composition detail, FYC, listennow),
+# but source files run up to 3800px and 1.6MB (unedited label press art).
+# Cap at 1600px (same ceiling already proven fine for the Media-page photos
+# below) at quality 92 -- comfortably sharp past 3x retina at any on-site
+# display size, while cutting the oversized ones down substantially. Never
+# upscale a source that's already smaller than the cap.
+python3 - << 'PY'
+from PIL import Image
+import os, glob, shutil
+MAX_W = 1600
+for src in glob.glob("site-images/cover_*") + glob.glob("site-images/tracklist_*"):
+    name = os.path.basename(src)
+    # recordings.json hardcodes these exact filenames (extension included) --
+    # never rename, and encode in the format the extension promises so the
+    # server's Content-Type header still matches the bytes.
+    dst = f"dist/public/api/media-cache/{name}"
+    try:
+        im = Image.open(src)
+        width = im.size[0]
+    except Exception as e:
+        shutil.copy(src, dst)
+        print("copied raw (couldn't read):", src, e)
+        continue
+    if width <= MAX_W:
+        # Already an appropriate size -- re-encoding a source that's already
+        # well-compressed at this resolution can make it BIGGER, not
+        # smaller. Only touch files that are actually oversized.
+        shutil.copy(src, dst)
+        continue
+    ext = os.path.splitext(name)[1].lower()
+    tmp = dst + ".tmp"
+    try:
+        im.load()
+        im = im.resize((MAX_W, round(im.height * MAX_W / im.width)), Image.LANCZOS)
+        if ext == ".png":
+            im.save(tmp, "PNG", optimize=True)
+        else:
+            if im.mode in ("RGBA", "LA", "P"):
+                rgba = im.convert("RGBA")
+                bg = Image.new("RGB", im.size, (255, 255, 255))
+                bg.paste(rgba, mask=rgba.split()[-1])
+                im = bg
+            else:
+                im = im.convert("RGB")
+            im.save(tmp, "JPEG", quality=92, optimize=True, progressive=True)
+        # Even after downscaling, a source that was already compressed hard
+        # for its (oversized) resolution can re-encode larger at this
+        # quality. Never ship a result bigger than the untouched original.
+        if os.path.getsize(tmp) < os.path.getsize(src):
+            os.replace(tmp, dst)
+        else:
+            os.remove(tmp)
+            shutil.copy(src, dst)
+    except Exception as e:
+        if os.path.exists(tmp):
+            os.remove(tmp)
+        shutil.copy(src, dst)
+        print("copied raw (resize failed):", src, e)
+PY
+
 cp site-images/logos/* dist/public/api/media-cache/
 [ -d site-images/blog ] && cp site-images/blog/* dist/public/api/media-cache/ 2>/dev/null || true
 cp server/media-cache/* dist/public/api/media-cache/ 2>/dev/null || true
@@ -24,10 +83,6 @@ cp site-images/logos/logo_spotify_minibutton.png \
    "dist/public/api/media-cache/logo_spotify_minibutton_bdf3c836.png"
 cp site-images/logos/logo_youtube_minibutton.png \
    "dist/public/api/media-cache/logo_youtube_minibutton_811dfb93.png"
-
-# FYC and Listen Now pages reference this exact legacy cache filename
-cp site-images/cover_Preludes_and_Fugues.jpg \
-   "dist/public/api/media-cache/recording_26c3907b_2ee6_81cb_9edf_f38464971746_14045b66.jpg"
 
 # photos: downscale for web (originals are up to 12MB each)
 mkdir -p dist/public/photos

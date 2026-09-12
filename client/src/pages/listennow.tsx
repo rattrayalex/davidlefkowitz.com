@@ -109,7 +109,7 @@ export default function ListenNow() {
                                                 src={logoPath}
                                                 alt={`${platform.name} logo`}
                                                 style={{
-                                                    maxHeight: platform.name === "BeMusic" ? '64px' : '40px',
+                                                    maxHeight: '40px',
                                                     maxWidth: '100%',
                                                     objectFit: 'contain'
                                                 }}
