@@ -47,6 +47,20 @@ plain language, and never ask him to read code.
    these sessions unless Alex explicitly asks.
 7. If a request is destructive or confusing (delete a section, replace the
    whole catalog), restate what you understood and confirm before doing it.
+8. **Content edits push directly** to the deploy branch as above (that's
+   what keeps David's "ask Claude, live in 2 minutes" workflow fast):
+   changes to `static-data/`, `site-images/`, `photos/`, or wording in a
+   page's hardcoded copy.
+   **Larger/structural changes** — anything touching build tooling
+   (`scripts/`), component logic, layout/CSS structure, or config — go
+   through a pull request instead: open the PR with screenshots and/or a
+   screencast of the change (see `.github/pull_request_template.md`), and
+   let the "Claude (Fable) Code Review" workflow
+   (`.github/workflows/claude-review.yml`) review it. That workflow needs
+   an `ANTHROPIC_API_KEY` (or `CLAUDE_CODE_OAUTH_TOKEN`) repo secret to
+   run — Alex should add one under repo Settings → Secrets if it's missing.
+   Default to auto-merging once Fable approves cleanly; don't wait on a
+   human unless the review flags something.
 
 ## Common tasks
 
