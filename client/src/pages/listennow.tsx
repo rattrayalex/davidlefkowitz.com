@@ -105,11 +105,11 @@ export default function ListenNow() {
                                         }}
                                     >
                                         {logoPath ? (
-                                            <img 
-                                                src={logoPath} 
+                                            <img
+                                                src={logoPath}
                                                 alt={`${platform.name} logo`}
-                                                style={{ 
-                                                    maxHeight: '40px', 
+                                                style={{
+                                                    maxHeight: platform.name === "BeMusic" ? '64px' : '40px',
                                                     maxWidth: '100%',
                                                     objectFit: 'contain'
                                                 }}
@@ -133,8 +133,8 @@ export default function ListenNow() {
                             })}
                         </div>
                         
-                        {/* YouTube Links - centered at bottom */}
-                        <div className="flex justify-center gap-6 mt-6">
+                        {/* YouTube Links - same width as the platform tiles above */}
+                        <div className="grid grid-cols-2 gap-6 mt-6">
                             {youtubeLinks.map((link) => (
                                 <a
                                     key={link.name}
@@ -146,7 +146,6 @@ export default function ListenNow() {
                                         backgroundColor: '#f9f9f9',
                                         border: '1.5px solid hsl(262.1, 83.3%, 57.8%)',
                                         borderRadius: '8px',
-                                        width: '150px',
                                         minHeight: '80px'
                                     }}
                                     onClick={() => {
