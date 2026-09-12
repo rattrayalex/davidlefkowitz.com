@@ -57,7 +57,7 @@ export default function Contact() {
                                 <p className="text-xl text-gray-700 leading-relaxed mb-8" style={{fontFamily: 'Times, "Times New Roman", Palatino, serif'}}>
                                     I welcome inquiries about collaborations, commissions, academic opportunities, 
                                     and discussions about music theory and composition. Please feel free to reach out 
-                                    using the form or contact information below.
+                                    using the contact information below.
                                 </p>
                             </div>
 
