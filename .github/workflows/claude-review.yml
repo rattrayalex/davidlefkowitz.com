@@ -1,0 +1,50 @@
+name: Claude (Fable) Code Review
+
+# Reviews pull requests against the deploy branch before they can merge.
+# Requires an ANTHROPIC_API_KEY (or CLAUDE_CODE_OAUTH_TOKEN) repo secret --
+# see the note in davidlefkowitz.com's CLAUDE.md for setup.
+
+on:
+  pull_request:
+    branches: [static-conversion, main]
+    types: [opened, synchronize, reopened, ready_for_review]
+
+jobs:
+  review:
+    if: github.event.pull_request.draft == false
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+      issues: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: anthropics/claude-code-action@v1
+        with:
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          model: claude-fable-5-1
+          direct_prompt: |
+            You are reviewing a pull request against davidlefkowitz.com, a
+            small static personal website (React/Vite -> Cloudflare Pages)
+            for composer David S. Lefkowitz. Read CLAUDE.md in the repo root
+            first for context on conventions.
+
+            Review the diff for:
+            - Correctness bugs: broken links/paths, data that won't render,
+              logic errors, anything that would 404 or crash a page.
+            - Regressions to pages/behavior the diff doesn't intend to touch.
+            - Whether the PR description includes screenshots and/or a
+              screencast demonstrating the change, when the change affects
+              anything a site visitor would see. If the PR is visual/UI-facing
+              and has no screenshots, this is a blocking finding -- say so
+              explicitly and name what's missing.
+            - Typography/content fidelity where relevant (curly quotes,
+              exact punctuation) per CLAUDE.md's golden rules.
+
+            Post your findings as a normal PR review. Approve the PR only if
+            there are no blocking issues and (for visual changes) screenshots
+            are present and look correct. Otherwise request changes and be
+            specific about what would need to change to get an approval.
