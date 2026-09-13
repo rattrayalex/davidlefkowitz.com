@@ -1,8 +1,14 @@
 name: Deploy to Cloudflare Pages
 
+# Pushes to main build the static site and publish it to the live
+# davidlefkowitz.com. The Cloudflare Pages project 'davidlefkowitz' has
+# main as its production branch, which is why wrangler is passed
+# --branch main below; a different name would create a preview
+# deployment instead of updating the live site.
+
 on:
   push:
-    branches: [static-conversion, main]
+    branches: [main]
   workflow_dispatch:
 
 jobs:
