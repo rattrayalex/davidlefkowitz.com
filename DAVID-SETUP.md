@@ -37,7 +37,7 @@ https://docs.google.com/document/d/1Km5iRPx5xm-z2gaLbikLW73pT6zwkFQd2anSaQEozvc/
    d. Back at claude.ai/code, create the environment (defaults fine) and
       pick rattrayalex/davidlefkowitz.com in the repository picker — it
       appears because his account can see it as a collaborator (working
-      branch: static-conversion).
+      branch: main).
    e. If the repo does not appear: verify, signed in as lefko-w, that
       github.com/rattrayalex/davidlefkowitz.com opens; then reconnect
       GitHub and retry.

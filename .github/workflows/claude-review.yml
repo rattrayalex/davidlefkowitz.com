@@ -1,12 +1,21 @@
 name: Claude (Fable) Code Review
 
-# Reviews pull requests against the deploy branch before they can merge.
-# Requires an ANTHROPIC_API_KEY (or CLAUDE_CODE_OAUTH_TOKEN) repo secret --
-# see the note in davidlefkowitz.com's CLAUDE.md for setup.
+# Reviews pull requests against the deploy branch (main) before they merge.
+#
+# Auth: the action exchanges a GitHub OIDC token for a Claude GitHub App
+# token, so the job needs `id-token: write`. No ANTHROPIC_API_KEY secret is
+# required while the Claude GitHub App is installed on the repository; the
+# `anthropic_api_key` input stays wired to the (unset) secret so that adding
+# one later switches authentication over with no workflow change.
+#
+# The action refuses to run unless this file is byte-identical to the copy on
+# the repository's DEFAULT branch. A pull request that edits this file logs
+# "Skipping action due to workflow validation" and posts no review, so edits
+# to it take effect only once they are on main.
 
 on:
   pull_request:
-    branches: [static-conversion, main]
+    branches: [main]
     types: [opened, synchronize, reopened, ready_for_review]
 
 jobs:
@@ -17,6 +26,7 @@ jobs:
       contents: read
       pull-requests: write
       issues: write
+      id-token: write
     steps:
       - uses: actions/checkout@v4
         with:
@@ -25,8 +35,8 @@ jobs:
       - uses: anthropics/claude-code-action@v1
         with:
           anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
-          model: claude-fable-5-1
-          direct_prompt: |
+          claude_args: "--model claude-fable-5-1"
+          prompt: |
             You are reviewing a pull request against davidlefkowitz.com, a
             small static personal website (React/Vite -> Cloudflare Pages)
             for composer David S. Lefkowitz. Read CLAUDE.md in the repo root

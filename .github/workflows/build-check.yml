@@ -1,0 +1,41 @@
+name: Build check
+
+# Runs the same build the deploy uses, without deploying, so a pull request
+# that breaks scripts/build-site.sh is caught before it reaches main (a push
+# to main publishes the live site). Deliberately independent of the Claude
+# review workflow: this check still reports when that one self-skips.
+
+on:
+  pull_request:
+    branches: [main]
+    types: [opened, synchronize, reopened, ready_for_review]
+
+jobs:
+  build:
+    if: github.event.pull_request.draft == false
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: |
+          npm ci
+          pip3 install --quiet pillow
+
+      - name: Build static site
+        run: bash scripts/build-site.sh
+
+      - name: Check the build output
+        run: |
+          test -s dist/public/index.html
+          test -s dist/public/_redirects
+          test -s dist/public/sitemap.xml
+          test -s dist/public/api/profile
+          test -s dist/public/api/recordings/index.html
+          test -s dist/public/api/compositions/index.html
+          test -d dist/public/api/media-cache
