@@ -2,12 +2,12 @@ name: Build check
 
 # Runs the same build the deploy uses, without deploying, so a pull request
 # that breaks scripts/build-site.sh is caught before it reaches main (a push
-# to main publishes the live site). Deliberately independent of the Claude
-# review workflow: this check still reports when that one self-skips.
+# to main publishes the live site). No branch filter: every pull request gets
+# the check, whatever it targets. Deliberately independent of the Claude review
+# workflow, so a pull request still has a check when that one self-skips.
 
 on:
   pull_request:
-    branches: [main]
     types: [opened, synchronize, reopened, ready_for_review]
 
 jobs:
