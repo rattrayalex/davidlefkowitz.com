@@ -278,9 +278,9 @@ export default function RecordingDetail() {
                                                             style={{ 
                                                                 height: baseName === 'Amazon Music' ? '26px' : baseName === 'Pandora' ? '28px' : '24px', 
                                                                 maxWidth: '120px',
-                                                                objectFit: baseName === 'BeMusic' ? 'cover' : 'contain',
-                                                                objectPosition: baseName === 'BeMusic' ? 'center center' : 'center',
-                                                                transform: baseName === 'Amazon Music' ? 'scaleX(1.075)' : baseName === 'BeMusic' ? 'scale(4.0)' : baseName === 'Naxos' ? 'scale(1.5)' : 'none',
+                                                                objectFit: 'contain',
+                                                                objectPosition: 'center',
+                                                                transform: baseName === 'Amazon Music' ? 'scaleX(1.075)' : baseName === 'Naxos' ? 'scale(1.5)' : 'none',
                                                                 transformOrigin: 'center'
                                                             }}
                                                             onError={(e) => {
