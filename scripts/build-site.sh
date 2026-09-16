@@ -47,6 +47,12 @@ for src in glob.glob("site-images/cover_*") + glob.glob("site-images/tracklist_*
     tmp = dst + ".tmp"
     try:
         im.load()
+        # Resizing drops im.info (including any embedded color profile), so
+        # grab it before that -- Pillow's JPEG writer only keeps a source's
+        # ICC profile if it's explicitly passed back in on save, and without
+        # it browsers assume sRGB, visibly darkening/shifting scans that
+        # were tagged with a wider-gamut profile.
+        icc = im.info.get("icc_profile")
         im = im.resize((MAX_W, round(im.height * MAX_W / im.width)), Image.LANCZOS)
         if ext == ".png":
             im.save(tmp, "PNG", optimize=True)
@@ -58,7 +64,7 @@ for src in glob.glob("site-images/cover_*") + glob.glob("site-images/tracklist_*
                 im = bg
             else:
                 im = im.convert("RGB")
-            im.save(tmp, "JPEG", quality=92, optimize=True, progressive=True)
+            im.save(tmp, "JPEG", quality=92, optimize=True, progressive=True, icc_profile=icc)
         # Even after downscaling, a source that was already compressed hard
         # for its (oversized) resolution can re-encode larger at this
         # quality. Never ship a result bigger than the untouched original.

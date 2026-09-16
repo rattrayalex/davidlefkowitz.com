@@ -265,7 +265,7 @@ export default function RecordingDetail() {
                                                         border: '1px solid #e5e7eb',
                                                         width: '150px',
                                                         justifyContent: 'center',
-                                                        overflow: (baseName === 'BeMusic' || baseName === 'Naxos') ? 'hidden' : 'visible'
+                                                        overflow: baseName === 'Naxos' ? 'hidden' : 'visible'
                                                     }}
                                                 >
                                                     {suffix && (
