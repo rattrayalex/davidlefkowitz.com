@@ -17,6 +17,7 @@ jobs:
       contents: read
       pull-requests: write
       issues: write
+      id-token: write
     steps:
       - uses: actions/checkout@v4
         with:
@@ -25,8 +26,8 @@ jobs:
       - uses: anthropics/claude-code-action@v1
         with:
           anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
-          model: claude-fable-5-1
-          direct_prompt: |
+          claude_args: "--model claude-fable-5-1"
+          prompt: |
             You are reviewing a pull request against davidlefkowitz.com, a
             small static personal website (React/Vite -> Cloudflare Pages)
             for composer David S. Lefkowitz. Read CLAUDE.md in the repo root
