@@ -3,12 +3,27 @@
 This is the live website of composer David S. Lefkowitz (davidlefkowitz.com),
 a **fully static site**: a React/Vite frontend that reads JSON files served
 under `/api/*`. There is no server, no database, and no Notion — the old
-Replit/Notion stack is retired. Deploys go to Cloudflare Pages.
+Replit/Notion stack is retired. Deploys go to Cloudflare Pages: a push to
+`main` publishes the live site.
 
 Most sessions here are content edits requested by David himself (the
 composer) or his nephew Alex. David is not a programmer: interpret his
 requests generously, confirm understanding by describing what you changed in
 plain language, and never ask him to read code.
+
+## Branches
+
+1. **`main`** is the deploy branch and the GitHub default branch. A push to it
+   builds the site and publishes it to the live davidlefkowitz.com (Cloudflare
+   Pages project `davidlefkowitz`, whose production branch is also `main`).
+2. **`static-conversion`** was the deploy branch until September 2026, when
+   `main` replaced it. Nothing deploys from it.
+3. **`master`**, **`jekyll`**, **`gh-pages`** and **`musicmaestro-source`**
+   hold retired history: the pre-2026 Jekyll site and the old Replit app.
+   Do not build or deploy from them.
+4. The default branch matters to CI, not only to humans: the Claude review
+   action refuses to run unless `.github/workflows/claude-review.yml` on the
+   pull request is byte-identical to the copy on the default branch.
 
 ## Where content lives (edit THESE, never `dist/` or `static-api/`)
 
@@ -41,24 +56,30 @@ plain language, and never ask him to read code.
    affected pages (Playwright chromium is at
    `/opt/pw-browsers/chromium-*/chrome-linux/chrome` in Claude cloud envs;
    otherwise `curl` the `/api/...` files).
-5. **Pushing to the deploy branch publishes the live site** (GitHub Actions
-   → Cloudflare Pages, project `davidlefkowitz`). Commit with clear messages.
+5. **Pushing to `main` publishes the live site** (GitHub Actions → Cloudflare
+   Pages, project `davidlefkowitz`). Commit with clear messages.
 6. Never touch DNS, the `mx.` mail records, or Cloudflare settings from
    these sessions unless Alex explicitly asks.
 7. If a request is destructive or confusing (delete a section, replace the
    whole catalog), restate what you understood and confirm before doing it.
-8. **Content edits push directly** to the deploy branch as above (that's
-   what keeps David's "ask Claude, live in 2 minutes" workflow fast):
-   changes to `static-data/`, `site-images/`, `photos/`, or wording in a
-   page's hardcoded copy.
+8. **Content edits push directly** to `main` (that's what keeps David's
+   "ask Claude, live in 2 minutes" workflow fast): changes to
+   `static-data/`, `site-images/`, `photos/`, or wording in a page's
+   hardcoded copy.
    **Larger/structural changes** — anything touching build tooling
    (`scripts/`), component logic, layout/CSS structure, or config — go
-   through a pull request instead: open the PR with screenshots and/or a
-   screencast of the change (see `.github/pull_request_template.md`), and
-   let the "Claude (Fable) Code Review" workflow
-   (`.github/workflows/claude-review.yml`) review it. That workflow needs
-   an `ANTHROPIC_API_KEY` (or `CLAUDE_CODE_OAUTH_TOKEN`) repo secret to
-   run — Alex should add one under repo Settings → Secrets if it's missing.
+   through a pull request against `main` instead: open the PR with
+   screenshots and/or a screencast of the change (see
+   `.github/pull_request_template.md`). Two workflows then report on it:
+   1. "Build check" (`.github/workflows/build-check.yml`) runs the deploy's
+      own build and fails if the site does not build.
+   2. "Claude (Fable) Code Review"
+      (`.github/workflows/claude-review.yml`) reviews the diff. It needs no
+      repository secret: the action exchanges a GitHub OIDC token for a
+      Claude GitHub App token, which is why the job grants
+      `id-token: write`. Setting an `ANTHROPIC_API_KEY` (or
+      `CLAUDE_CODE_OAUTH_TOKEN`) secret is optional and switches
+      authentication to that key.
    Default to auto-merging once Fable approves cleanly; don't wait on a
    human unless the review flags something.
 
