@@ -28,6 +28,15 @@ on:
   # still runs. A job whose `if:` read `github.event_name == 'pull_request'`
   # would instead be skipped in a dispatch run; no job in this repository
   # has such a condition today.
+  #
+  # Measured Sep 19 2026, the first dispatch run this repository has had:
+  # the `build` job ran every step and the run concluded success
+  # (https://github.com/rattrayalex/davidlefkowitz.com/actions/runs/35455013821).
+  # It also ran while the default branch, `master`, carried no copy of this
+  # file at all: GitHub reads the trigger from the ref being dispatched, and
+  # this workflow was already registered under this path from its earlier
+  # `pull_request` runs. A workflow file that exists on no branch cannot be
+  # dispatched, so a repository adding its first one merges it first.
   workflow_dispatch:
 
 jobs:
