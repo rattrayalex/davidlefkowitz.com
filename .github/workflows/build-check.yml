@@ -9,6 +9,35 @@ name: Build check
 on:
   pull_request:
     types: [opened, synchronize, reopened, ready_for_review]
+  # Run this check by hand against any ref, from the Actions tab or
+  # `gh workflow run build-check.yml --ref <branch>`. It exists because a
+  # pull request whose branch conflicts with its base gets no `pull_request`
+  # run at all: GitHub builds that run from a test merge commit and cannot
+  # make one from a conflict, so such a pull request has no check of any kind
+  # and nothing to re-run. Foundry pull request 89 sat six hours that way on
+  # Sep 17 2026 (task 0467, which made the same edit there).
+  #
+  # What a dispatch run does not give: it checks out the branch head, not the
+  # merge with main, so it is evidence about that branch's own code and never
+  # a green light to merge. Read a green dispatch run as "this branch builds",
+  # and nothing more.
+  #
+  # The `build` job below is gated on `github.event.pull_request.draft`, which
+  # a dispatch run does not have. The expression is then `null == false`,
+  # and GitHub coerces both sides to a number, so it reads true and the job
+  # still runs. A job whose `if:` read `github.event_name == 'pull_request'`
+  # would instead be skipped in a dispatch run; no job in this repository
+  # has such a condition today.
+  #
+  # Measured Sep 19 2026, the first dispatch run this repository has had:
+  # the `build` job ran every step and the run concluded success
+  # (https://github.com/rattrayalex/davidlefkowitz.com/actions/runs/35455013821).
+  # It also ran while the default branch, `master`, carried no copy of this
+  # file at all: GitHub reads the trigger from the ref being dispatched, and
+  # this workflow was already registered under this path from its earlier
+  # `pull_request` runs. A workflow file that exists on no branch cannot be
+  # dispatched, so a repository adding its first one merges it first.
+  workflow_dispatch:
 
 jobs:
   build:
